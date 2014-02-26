@@ -1,0 +1,28 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>images/arrowdown.png</file>
+        <file>images/arrowup.png</file>
+        <file>images/folder.png</file>
+        <file>images/help.png</file>
+        <file>images/info.png</file>
+        <file>images/logo.png</file>
+        <file>images/myshares.png</file>
+        <file>images/offline.png</file>
+        <file>images/online.png</file>
+        <file>images/pcloud.ico</file>
+        <file>images/settings.png</file>
+        <file>images/settings2.png</file>
+        <file>images/sharedwithme.png</file>
+        <file>images/shares.png</file>
+        <file>images/synced.png</file>
+        <file>images/sync-full.png</file>
+        <file>images/syncing.png</file>
+        <file>images/sync-paused.png</file>
+        <file>images/user.png</file>
+        <file>images/web.png</file>
+        <file>images/folder-p.png</file>
+        <file>images/both.png</file>
+        <file>images/download.png</file>
+        <file>images/upload.png</file>
+    </qresource>
+</RCC>
