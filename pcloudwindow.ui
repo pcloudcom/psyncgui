@@ -36,7 +36,7 @@
          <bool>true</bool>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="pageAccntNotLogged">
          <property name="maximumSize">
@@ -1037,7 +1037,7 @@
                  </widget>
                 </item>
                 <item row="1" column="0">
-                 <widget class="QGroupBox" name="groupBoxSyncSpeed">
+                 <widget class="QGroupBox" name="groupBoxSyncUpldSpeed">
                   <property name="title">
                    <string>Upload Speed</string>
                   </property>
@@ -1112,7 +1112,7 @@
                  </widget>
                 </item>
                 <item row="1" column="2">
-                 <widget class="QGroupBox" name="groupBox">
+                 <widget class="QGroupBox" name="groupBoxSyncDwnldSpeed">
                   <property name="title">
                    <string>Download Speed</string>
                   </property>

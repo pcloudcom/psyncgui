@@ -5,6 +5,7 @@
 #include <QUrl>
 #include <QDir>
 #include <QDesktopServices>
+#include <unistd.h>
 #include <QDebug> //temp
 
 #ifdef Q_OS_MAC
@@ -122,7 +123,7 @@ void PCloudApp::openCloudDir(){
 
 void PCloudApp::logOut(){
     loggedin=false;
-/*p #ifdef Q_OS_WIN
+    /*p #ifdef Q_OS_WIN
     if (notifythread){
         notifythread->terminate();
         notifythread->wait();
@@ -132,7 +133,7 @@ void PCloudApp::logOut(){
 #endif
 */
     username="";
-    psync_set_bool_value("saveauth",0);
+    psync_logout(); //sets auth to ""
     tray->setContextMenu(notloggedmenu);
     tray->setToolTip("pCloud");
     tray->setIcon(QIcon(OFFLINE_ICON));
@@ -140,7 +141,6 @@ void PCloudApp::logOut(){
     pCloudWin->hide();
     this->authentication = "";
     //p unmount
-    //psync_stop();
 }
 
 
@@ -151,7 +151,7 @@ void PCloudApp::doExit(){
 }
 
 void PCloudApp::showOnClick(){
-   /*p  if (loggedin)
+    /*p  if (loggedin)
         openCloudDir();
     else
         showLogin();
@@ -168,45 +168,45 @@ void PCloudApp::trayClicked(QSystemTrayIcon::ActivationReason reason){
 void PCloudApp::createMenus(){
     notloggedmenu=new QMenu();
 
-    registerAction=new QAction(tr ("&Register"), this);
+    registerAction=new QAction(trUtf8 ("&Register"), this);
     connect(registerAction, SIGNAL(triggered()), this, SLOT(showRegister()));
-    loginAction=new QAction(tr("&Login"), this);
+    loginAction=new QAction(trUtf8("&Login"), this);
     connect(loginAction, SIGNAL(triggered()), this, SLOT(showLogin()));
-   //p settingsAction=new QAction(tr("Se&ttings"), this);
+    //p settingsAction=new QAction(trUtf8("Se&ttings"), this);
     //p connect(settingsAction, SIGNAL(triggered()), this, SLOT(showSettings()));
-    helpAction = new QAction(tr("&Help"),this);
+    helpAction = new QAction(trUtf8("&Help"),this);
     connect(helpAction, SIGNAL(triggered()), this, SLOT(showpcloudHelp()));
-    aboutPCloudAction = new QAction(tr("&About"), this);
+    aboutPCloudAction = new QAction(trUtf8("&About"), this);
     connect(aboutPCloudAction, SIGNAL(triggered()), this, SLOT(showpCloudAbout()));
-    exitAction=new QAction(tr("&Exit"), this); // to be hidden in account tab
+    exitAction=new QAction(trUtf8("&Exit"), this); // to be hidden in account tab
     connect(exitAction, SIGNAL(triggered()), this, SLOT(doExit()));
 
     notloggedmenu->addAction(registerAction);
     notloggedmenu->addAction(loginAction);
-   //p notloggedmenu->addAction(settingsAction);
+    //p notloggedmenu->addAction(settingsAction);
     notloggedmenu->addAction(helpAction);
     notloggedmenu->addAction(aboutPCloudAction);
     notloggedmenu->addSeparator();
     notloggedmenu->addAction(exitAction); // to be hidden in account tab or settings
 
 
-    accountAction = new QAction(tr("&Account"), this); // Account tab
+    accountAction = new QAction(trUtf8("&Account"), this); // Account tab
     connect(accountAction, SIGNAL(triggered()),this, SLOT(showAccount()));
     //p openAction=new QAction("&Open pCloud folder", this);
     //p connect(openAction, SIGNAL(triggered()), this, SLOT(openCloudDir()));
-    //p sharesAction = new QAction(tr("Sha&res"),this);
+    //p sharesAction = new QAction(trUtf8("Sha&res"),this);
     //p connect(sharesAction, SIGNAL(triggered()), this, SLOT(showShares()));
     logoutAction=new QAction("Logout", this);
     connect(logoutAction, SIGNAL(triggered()), this, SLOT(logOut()));
 
     //sync menu
-    syncAction = new QAction(tr("&Sync"),this);
+    syncAction = new QAction(trUtf8("&Sync"),this);
     connect(syncAction, SIGNAL(triggered()), this, SLOT(showSync()));
-    pauseSyncAction = new QAction(tr("&Pause Sync"),this);
+    pauseSyncAction = new QAction(trUtf8("&Pause Sync"),this);
     connect(pauseSyncAction, SIGNAL(triggered()),this,SLOT(pauseSync()));
-    addSyncAction = new QAction(tr("&Add New Sync"),this);
+    addSyncAction = new QAction(trUtf8("&Add New Sync"),this);
     connect(addSyncAction, SIGNAL(triggered()),this, SLOT(addNewSync()));
-    resumeSyncAction = new QAction(tr("Sta&rt Sync"), this);
+    resumeSyncAction = new QAction(trUtf8("Sta&rt Sync"), this);
     connect(resumeSyncAction, SIGNAL(triggered()), this, SLOT(resumeSync()));
 
     loggedmenu = new QMenu();
@@ -214,11 +214,16 @@ void PCloudApp::createMenus(){
     loggedmenu->addAction(accountAction);
     //p loggedmenu->addAction(sharesAction);
     //p loggedmenu->addAction(syncAction);
-    syncMenu = loggedmenu->addMenu(tr("Sync &Folders"));
+    syncMenu = loggedmenu->addMenu(trUtf8("Sync &Folders"));
     loggedmenu->addAction(syncAction);
     loggedmenu->addAction(pauseSyncAction);
     loggedmenu->addAction(resumeSyncAction);
-    resumeSyncAction->setVisible(false);
+    pstatus_t status;
+    psync_get_status(&status);
+    if (status.status != PSTATUS_PAUSED)
+        resumeSyncAction->setVisible(false);
+    else
+        pauseSyncAction->setVisible(false);
     //p loggedmenu->addAction(settingsAction);
     loggedmenu->addAction(helpAction);
     loggedmenu->addAction(aboutPCloudAction);
@@ -236,10 +241,10 @@ void PCloudApp::createMenus(){
     syncStatusListWidget->setFlow(QListWidget::LeftToRight);
     syncStatusListWidget->setMovement(QListView::Static);
     syncStatusListWidget->setMaximumHeight(100);
-    new QListWidgetItem(QIcon(":/images/images/arrowdown.png"),tr("Everything\ndownloaded"),syncStatusListWidget); //index 0 download
+    new QListWidgetItem(QIcon(":/images/images/arrowdown.png"),trUtf8("Everything\ndownloaded"),syncStatusListWidget); //index 0 download
     syncStatusListWidget->item(0)->setFlags(Qt::NoItemFlags);
     syncStatusListWidget->item(0)->setForeground(*(new QBrush(Qt::black)));
-    new QListWidgetItem(QIcon(":/images/images/arrowup.png"),tr("Everything\nuploaded"),syncStatusListWidget); //index 1 upload
+    new QListWidgetItem(QIcon(":/images/images/arrowup.png"),trUtf8("Everything\nuploaded"),syncStatusListWidget); //index 1 upload
     syncStatusListWidget->item(1)->setFlags(Qt::NoItemFlags);
     syncStatusListWidget->item(1)->setForeground(*(new QBrush(Qt::black)));
 
@@ -255,19 +260,25 @@ void status_callback(pstatus_t *status)
     {
     case PSTATUS_READY:                     //0
         qDebug()<<"PSTATUS_READY";
-        // QApplication::restoreOverrideCursor(); with slot for gui thread
-        PCloudApp::appStatic->changeSyncIconPublic(":/images/images/synced");
-        if(PCloudApp::appStatic->bytestoDwnld)
+        if (PCloudApp::appStatic->isLogedIn()) //
         {
-            PCloudApp::appStatic->bytestoDwnld = 0; // to keep it in QMap<str, val>
-            PCloudApp::appStatic->filesToDwnld = 0;
-            PCloudApp::appStatic->dwnldSpeed = 0;
+            PCloudApp::appStatic->changeSyncIconPublic(":/images/images/synced");
+            if (PCloudApp::appStatic->isCursorChanged) // after connecting, scaning
+                // PCloudApp::appStatic->changeCursorPublic(false);
+                if (PCloudApp::appStatic->bytestoDwnld)
+                {
+                    PCloudApp::appStatic->bytestoDwnld = 0; // to keep it in QMap<str, val>
+                    PCloudApp::appStatic->filesToDwnld = 0;
+                    PCloudApp::appStatic->dwnldSpeed = 0;
+                }
+            if(PCloudApp::appStatic->bytestoUpld)
+            {
+                PCloudApp::appStatic->bytestoUpld = 0;
+                PCloudApp::appStatic->filesToUpld = 0;
+                PCloudApp::appStatic->upldSpeed = 0;
+            }
         }
-        if(PCloudApp::appStatic->bytestoUpld)
-        {            PCloudApp::appStatic->bytestoUpld = 0;
-            PCloudApp::appStatic->filesToUpld = 0;
-            PCloudApp::appStatic->upldSpeed = 0;
-        }
+        //else sleep
         break;
 
     case PSTATUS_DOWNLOADING:               //1
@@ -303,11 +314,10 @@ void status_callback(pstatus_t *status)
     case PSTATUS_DOWNLOADINGANDUPLOADING:   //3
         qDebug()<<"PSTATUS_DOWNLOADINGANDUPLOADING";
         PCloudApp::appStatic->changeSyncIconPublic(":/images/images/syncing");
-
-        qDebug()<<"DOWNLOAD bytes downlaoded "<<status->bytesdownloaded << "bytestodownload= "<<status->bytestodownload << " current "<<status->bytestodownloadcurrent<< " speed" <<status->downloadspeed;
-        qDebug()<<"DOWNLOAD files filesdownloading "<<status->filesdownloading<< " filestodownload="<<status->filestodownload;
         if (PCloudApp::appStatic->isMenuActive())
         {
+            qDebug()<<"DOWNLOAD bytes downlaoded "<<status->bytesdownloaded << "bytestodownload= "<<status->bytestodownload << " current "<<status->bytestodownloadcurrent<< " speed" <<status->downloadspeed;
+            qDebug()<<"DOWNLOAD files filesdownloading "<<status->filesdownloading<< " filestodownload="<<status->filestodownload;
             PCloudApp::appStatic->bytestoDwnld = status->bytestodownload;
             PCloudApp::appStatic->filesToDwnld = status->filestodownload;
             if(status->downloadspeed)// sometimes is 0
@@ -329,7 +339,13 @@ void status_callback(pstatus_t *status)
 
     case PSTATUS_BAD_LOGIN_DATA:            //5
         qDebug()<<"PSTATUS_BAD_LOGIN_DATA";
-        PCloudApp::appStatic->setLogWinError("Invalid user and password combination");
+        //PCloudApp::appStatic->setLogWinError("Invalid user and password combination");
+        // PCloudApp::appStatic->setTextErrPublic(1,"Invalid user and password combination"); //loginwin - managed from the win
+        /*if (PCloudApp::appStatic->isLogedIn())
+        {
+            PCloudApp::appStatic->logOut();
+            emit PCloudApp::appStatic->showLogin();
+        }*/
         break;
 
     case PSTATUS_ACCOUNT_FULL:              //6
@@ -344,7 +360,9 @@ void status_callback(pstatus_t *status)
 
     case PSTATUS_PAUSED:                    //8
         qDebug()<<"PSTATUS_PAUSED";
-        PCloudApp::appStatic->changeSyncIconPublic(":/images/images/sync-paused");
+        if (PCloudApp::appStatic->isLogedIn())
+            PCloudApp::appStatic->changeSyncIconPublic(":/images/images/sync-paused");
+        //update menu -> start sync for initial login
         break;
 
     case PSTATUS_STOPPED:                   //9
@@ -361,16 +379,19 @@ void status_callback(pstatus_t *status)
 
     case PSTATUS_CONNECTING:                //11
         qDebug()<<"PSTATUS_CONNECTING";
-         PCloudApp::appStatic->changeSyncIconPublic(":/images/images/syncing");
+        // PCloudApp::appStatic->changeSyncIconPublic(":/images/images/syncing"); // or offlineicon
+        //PCloudApp::appStatic->changeCursorPublic(true);
         break;
 
     case PSTATUS_SCANNING:                  //12
         qDebug()<<" PSTATUS_SCANNING";
-         PCloudApp::appStatic->changeSyncIconPublic(":/images/images/syncing");
-        // QApplication::setOverrideCursor(Qt::WaitCursor);
+        //PCloudApp::appStatic->changeSyncIconPublic(":/images/images/syncing"); - to del
+        // PCloudApp::appStatic->changeCursorPublic(true);
         break;
 
     case PSTATUS_USER_MISMATCH:             //13
+        //case when set wrong user
+        // PCloudApp::appStatic->setTextErrPublic(1,"Invalid user and password combination"); //loginwin regwin
         qDebug()<<"PSTATUS_USER_MISMATCH";
         break;
 
@@ -427,7 +448,8 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     filesToUpld = 0;
     dwnldSpeed = 0;
     upldSpeed = 0;
-    psync_init();
+    isCursorChanged = false;
+    psync_init(); // toadd checks
     psync_start_sync(status_callback,event_callback);
     pCloudWin = new PCloudWindow(this);  //needs settings to be created
     pCloudWin->layout()->setSizeConstraint(QLayout::SetFixedSize); //for auto resize
@@ -440,11 +462,29 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     connect(tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayClicked(QSystemTrayIcon::ActivationReason)));
     //p connect(tray, SIGNAL(messageClicked()), this, SLOT(trayMsgClicked()));
     connect(this, SIGNAL(changeSyncIcon(QString)), this, SLOT(setTrayIcon(QString)));
+    connect(this, SIGNAL(changeCursor(bool)), this, SLOT(setCursor(bool)));
+    connect(this, SIGNAL(sendErrText(int, const char*)), this, SLOT(setErrText(int,const char*)));
     tray->show();
-    int saved = psync_get_bool_value("saveauth");
-    if (!saved)
+    for(;;)
     {
-       //p othread=NULL;
+        pstatus_t status;
+        psync_get_status(&status);
+        if (status.status == PSTATUS_CONNECTING || status.status == PSTATUS_SCANNING )
+        {
+            sleep(1);
+            continue;
+        }
+        else
+            break;
+    }
+
+    // to move in status_ready
+    QString auth = psync_get_auth_string();
+    //if ((psync_get_auth_string() == ""))
+    if (auth == "")
+    {
+        //case not remembered
+        //p othread=NULL;
         QString name = psync_get_username();
         if (name == "") // case after unlink
             this->isFirstLaunch = true;
@@ -453,10 +493,8 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
         showLogin();
     }
     else
-    {
         logIn(psync_get_username(),true);
-        //bool remember = psync_get_bool_setting("saveauth");
-    }
+
     /* p
         else
         othread=new OnlineThread(this);
@@ -467,7 +505,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
 }
 
 PCloudApp::~PCloudApp(){
-   /*p if (othread){
+    /*p if (othread){
         if (othread->isRunning())
             othread->terminate();
         othread->wait();
@@ -498,7 +536,7 @@ PCloudApp::~PCloudApp(){
         delete regwin;
     if (logwin)
         delete logwin;
-   /*p if (settingswin)
+    /*p if (settingswin)
         delete settingswin;
     if (sharefolderwin)
         delete sharefolderwin;   p*/
@@ -518,7 +556,7 @@ void PCloudApp::showTrayMessage(QString title, QString msg)
     tray->showMessage(title, msg, QSystemTrayIcon::Information);
 }*/
 
-void PCloudApp::logIn(QString uname, bool remember)
+void PCloudApp::logIn(QString uname, bool remember) //needs STATUS_READY
 {
     this->username = uname;
     this->rememberMe = remember;
@@ -527,7 +565,7 @@ void PCloudApp::logIn(QString uname, bool remember)
     this->isVerified = psync_get_bool_value("emailverified");
     this->isPremium = psync_get_bool_value("premium");
     quint64 quota = psync_get_uint_value("quota");
-    if (quota){ // temp if; smtimes quota after unlik is 0
+    if (quota){
         this->planStr =  QString::number(quota >> 30 ) + " GB";
         quint64 usedquota =  psync_get_uint_value("usedquota");
         qDebug() << quota<< "used quota " << usedquota;
@@ -536,14 +574,13 @@ void PCloudApp::logIn(QString uname, bool remember)
     }
 
 
-  //p  setSettings(); // for pcloud
+    //p  setSettings(); // for pcloud
     tray->setToolTip(username);
     //if (loggedmenu){
     //loggedmenu->actions()[0]->setText(username);
     //}
     pCloudWin->setOnlineItems(true);
     pCloudWin->setOnlinePages();
-//    tray->setIcon(QIcon(ONLINE_ICON));
     tray->setIcon(QIcon( ":/images/images/synced"));
     tray->setContextMenu(loggedmenu);
     //isFirstLaunch = true; // for test
@@ -602,20 +639,62 @@ bool PCloudApp::isMenuActive()
         return false;
 }
 
-void PCloudApp::setLogWinError(const char *msg)
-{
-    this->logwin->setError(msg);
-}
-void PCloudApp::setTrayIcon(const QString icon)
-{
-    tray->setIcon(QIcon(icon));
-}
 // use public function to change sync icon according to statuses
 //because static vars can't emit signals( signals are protected i qt4)
 void PCloudApp::changeSyncIconPublic(const QString icon)
 {
-    this->changeSyncIcon(icon);
+    emit this->changeSyncIcon(icon);
 }
+
+void PCloudApp::changeCursorPublic(bool change)
+{
+    emit this->changeCursor(change);
+}
+void PCloudApp::setTextErrPublic(int win, const char *err)
+{
+    emit this->sendErrText(win,err);
+}
+
+void PCloudApp::setErrText(int win, const char *err)
+{
+    switch(win)
+    {
+    case 1:
+        if (this->logwin)
+            logwin->setError(err);
+        break;
+    default:
+        break;
+    }
+}
+
+void PCloudApp::setLogWinError(const char *msg)
+{
+    if (this->logwin)
+        this->logwin->setError(msg);
+}
+void PCloudApp::setTrayIcon(const QString icon)
+{
+    tray->setIcon(QIcon(icon));
+    if (icon == OFFLINE_ICON)
+        this->logOut();
+}
+void PCloudApp::setCursor(bool change)
+{
+    if (change)
+    {
+        this->isCursorChanged = true; // flag for status_callback
+        QApplication::setOverrideCursor(Qt::WaitCursor);
+    }
+    else
+    {
+        this->isCursorChanged = false;
+        //QApplication::restoreOverrideCursor(); // work only in debug
+        QApplication::changeOverrideCursor(Qt::ArrowCursor);
+        qDebug() <<"ready ";
+    }
+}
+
 void PCloudApp::pauseSync()
 {
     psync_pause();
@@ -670,9 +749,9 @@ void PCloudApp::updateSyncStatusInMenu()
     {
         if (dwnldSpeed)
         {
-            syncStatusListWidget->item(0)->setText(tr("Remaining:\n") + bytesConvert(bytestoDwnld) + "\n" + QString::number(filesToDwnld) + " files\n"
+            syncStatusListWidget->item(0)->setText(trUtf8("Remaining:\n") + bytesConvert(bytestoDwnld) + "\n" + QString::number(filesToDwnld) + " files\n"
                                                    + timeConvert(bytestoDwnld/dwnldSpeed));
-            syncStatusListWidget->item(0)->setToolTip(tr("Download speed: ") + QString::number(dwnldSpeed/1000) + "kB/s");
+            syncStatusListWidget->item(0)->setToolTip(trUtf8("Download speed: ") + QString::number(dwnldSpeed/1000) + "kB/s");
             qDebug()<< timeConvert(bytestoDwnld/dwnldSpeed);
         }
         else
@@ -680,7 +759,7 @@ void PCloudApp::updateSyncStatusInMenu()
 
     }
     else
-        syncStatusListWidget->item(0)->setText(tr("Everything\ndownloaded"));
+        syncStatusListWidget->item(0)->setText(trUtf8("Everything\ndownloaded"));
 
 
     qDebug()<<"update menu UPLOAD " << bytestoUpld << bytesConvert(bytestoUpld) << filesToUpld<< upldSpeed;// << timeConvert(bytestoDwnld/dwnldSpeed);
@@ -688,16 +767,16 @@ void PCloudApp::updateSyncStatusInMenu()
     {
         if (upldSpeed)
         {
-            syncStatusListWidget->item(1)->setText(tr("Remaining:\n") + bytesConvert(bytestoUpld) + "\n" + QString::number(filesToUpld) + " files\n"
+            syncStatusListWidget->item(1)->setText(trUtf8("Remaining:\n") + bytesConvert(bytestoUpld) + "\n" + QString::number(filesToUpld) + " files\n"
                                                    + timeConvert(bytestoUpld/upldSpeed));
-            syncStatusListWidget->item(1)->setToolTip(tr("Upload speed: ") + QString::number(upldSpeed/1000) + "kB/s");
+            syncStatusListWidget->item(1)->setToolTip(trUtf8("Upload speed: ") + QString::number(upldSpeed/1000) + "kB/s");
             qDebug()<< timeConvert(bytestoUpld/upldSpeed);
         }
         else
             syncStatusListWidget->item(1)->setText(bytesConvert(bytestoUpld) + " left\n" + QString::number(filesToUpld) + " files\n");
     }
     else
-        syncStatusListWidget->item(1)->setText(tr("Everything\nuploaded"));
+        syncStatusListWidget->item(1)->setText(trUtf8("Everything\nuploaded"));
 
 }
 void PCloudApp::setFirstLaunch(bool b)

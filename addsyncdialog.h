@@ -22,12 +22,11 @@ class addSyncDialog : public QDialog
 public:
     friend class WelcomeScreen;
     explicit addSyncDialog(PCloudApp *a,PCloudWindow *w,SyncPage *sp,WelcomeScreen *wlcm, QWidget *parent = 0);
-  //  explicit addSyncDialog(PCloudApp *a,WelcomeScreen *w, QWidget *parent = 0);
     ~addSyncDialog();
 
 private:
     Ui::addSyncDialog *ui;
-   PCloudApp *app;
+    PCloudApp *app;
     PCloudWindow *win;
     SyncPage *syncpage;
     WelcomeScreen *welcomewin;

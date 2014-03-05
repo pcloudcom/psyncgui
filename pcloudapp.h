@@ -77,6 +77,7 @@ public:
     quint64 dwnldSpeed;
     quint64 upldSpeed;
     uint32_t lastMessageType; // for Shares; online status
+    bool isCursorChanged;
     explicit PCloudApp(int &argc, char **argv);
     ~PCloudApp();
     //p bool isMounted();
@@ -89,6 +90,8 @@ public:
     bool isLogedIn();
     void setLogWinError(const char *msg); // sets err in logwin; called from static function status_callback
     void changeSyncIconPublic(const QString icon); //called from static function status_callbac;  signals are protected and can't be accessed by static vars
+    void changeCursorPublic(bool change);
+    void setTextErrPublic(int win , const char *err);
     void addNewFolderInMenu(QAction *fldrAction); // refresh menu when add new sync
     QString bytesConvert(quint64 bytes);
     QString timeConvert(quint64 seconds);
@@ -96,6 +99,8 @@ public:
     void setFirstLaunch(bool b); // case after unlink - to display suggestions
 signals:
     void changeSyncIcon(const QString icon);
+    void changeCursor(bool change);
+    void sendErrText(int win, const char *err);
 public slots:
     // void showTrayMessage(QString title, QString msg);
     void trayClicked(QSystemTrayIcon::ActivationReason reason);
@@ -114,6 +119,8 @@ public slots:
     //p void trayMsgClicked(); //show shares
     //p void setOnlineStatus(bool online);
     void setTrayIcon(const QString icon);
+    void setCursor(bool change);
+    void setErrText(int win, const char *err);
     void pauseSync();
     void resumeSync();
     void openLocalDir(); // for local sync folder

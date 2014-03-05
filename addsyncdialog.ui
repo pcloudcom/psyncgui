@@ -26,7 +26,7 @@
      <item>
       <widget class="QComboBox" name="comboSyncType">
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <item>
         <property name="text">
@@ -131,7 +131,7 @@
       <widget class="QTreeWidget" name="treeSyncRemote">
        <column>
         <property name="text">
-         <string notr="true">1</string>
+         <string notr="true">Name</string>
         </property>
        </column>
       </widget>

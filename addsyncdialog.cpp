@@ -20,11 +20,11 @@ addSyncDialog::addSyncDialog(PCloudApp *a, PCloudWindow *w, SyncPage *sp,Welcome
     connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(hideDialog()));
     if (welcomewin && welcomewin->getChangeItem())
     {
-        ui->btnAdd->setText(tr("Change"));
-        this->setWindowTitle(tr("Change sync"));
+        ui->btnAdd->setText(trUtf8("Change"));
+        this->setWindowTitle(trUtf8("Change sync"));
     }
     else
-        this->setWindowTitle(tr("Add new sync"));
+        this->setWindowTitle(trUtf8("Add new sync"));
 
     //ui->comboSyncType->insertItem(1,QIcon(":images/images/both.png"), "");
 
@@ -66,7 +66,7 @@ static QList<QTreeWidgetItem *> listRemoteFldrs(QString parentPath)
             //or to set fldr id
             item->addChildren(listRemoteFldrs(path));
             items.append(item);
-           // qDebug()<<path;
+            // qDebug()<<path;
         }
     }
     return items;
@@ -78,27 +78,27 @@ void addSyncDialog::load()
     QList<QTreeWidgetItem *> items;
     QString root = "/";
     QTreeWidgetItem *rootItem = new QTreeWidgetItem(QStringList(root));
+    rootItem->setIcon(0,QIcon(":images/images/folder-p.png"));
     ui->treeSyncRemote->insertTopLevelItem(0,rootItem);
     ui->treeSyncRemote->setCurrentItem(rootItem);
     items = listRemoteFldrs(root);
     rootItem->addChildren(items);
-    //add new folders
     ui->treeSyncRemote->expandItem(rootItem);
-    ui->treeSyncRemote->sortByColumn(0, Qt::AscendingOrder);
+    ui->treeSyncRemote->sortByColumn(1, Qt::AscendingOrder);
     ui->treeSyncRemote->setSortingEnabled(true);
+
 
     //local tree
     model = new QFileSystemModel;
     model->setFilter(QDir::NoDotAndDotDot | QDir::Dirs);
     QString path = QDir::homePath();
     model->setRootPath(QDir::homePath()); //currentPath
-    //model->setRootPath(path); //currentPath
     ui->treeSyncLocal->setModel(model);
+    ui->treeSyncLocal->sortByColumn(0,Qt::AscendingOrder);
     ui->treeSyncLocal->setColumnHidden(1,true);
     ui->treeSyncLocal->setColumnHidden(2, true);
     ui->treeSyncLocal->setColumnHidden(3, true);
     ui->treeSyncLocal->setAnimated(false);
-    // ui->treeSyncLocal->setIndentation(20);
     ui->treeSyncLocal->setSortingEnabled(true);
     ui->treeSyncLocal->expandAll();
     if (this->welcomewin == NULL)
@@ -129,14 +129,43 @@ void addSyncDialog::load()
             // welcomewin->setChangeItem(false);
 
 
-            // for test:
-            QList<QTreeWidgetItem*> res =  ui->treeSyncRemote->findItems(welcomewin->getCurrRemotePath(),Qt::MatchContains  | Qt::MatchRecursive);
+            // remote tree - add new remote Fodlers from suggestions
+            if (welcomewin->newRemoteFldrsLst.length() > 0 )
+            {
+                for (int i = 0; i < welcomewin->newRemoteFldrsLst.length(); i++)
+                {
+                    qDebug()<<welcomewin->newRemoteFldrsLst.at(i);
+                    QTreeWidgetItem *newitem = new QTreeWidgetItem((QTreeWidgetItem*)0,QStringList(welcomewin->newRemoteFldrsLst.at(i)));
+                    newitem->setIcon(0, QIcon(":images/images/folder-p.png"));
+                    QString rootName = welcomewin->newRemoteFldrsLst.at(i);
+                    rootName.insert(0,"/");
+                    newitem->setData(0, Qt::UserRole, rootName);
+                    items.append(newitem);
+                    rootItem->addChild(newitem);
+                }
+                ui->treeSyncRemote->sortByColumn(0, Qt::AscendingOrder);
+            }
+
+            //scroll to selected item
+            QString remotePath = welcomewin->getCurrRemotePath();
+            QString localName = welcomewin->getCurrRemotePath().section("/", -1, 1);
+            QList<QTreeWidgetItem*> res =  ui->treeSyncRemote->findItems(localName,Qt::MatchExactly  | Qt::MatchRecursive);
+            qDebug()<< welcomewin->getCurrRemotePath() << localName << res.length();
             if (res.length() > 0)
             {
                 for (int i = 0; i < res.length(); i++)
-                qDebug() << " find items" << res.length()<< res.at(i)->data(0,Qt::UserRole);
+                {
+                    QTreeWidgetItem * current = res.at(i);
+                    qDebug() << " find items" << res.length()<< current->data(0,Qt::UserRole);
+                    if (remotePath == (current->data(0,Qt::UserRole).toString()))
+                    {
+                        ui->treeSyncRemote->setCurrentItem(current);
+                        ui->treeSyncRemote->scrollToItem(current);
+                    }
+                }
             }
-
+            else
+                qDebug()<< "find items: 0";
         }
     }
 
@@ -176,14 +205,14 @@ void addSyncDialog::newLocalFldr()
 {
     QModelIndex current = ui->treeSyncLocal->currentIndex();
     QDir dir(model->filePath(current));
-    QString newName = "New Folder";
+    QString newName = "New Sync Folder";
     if(dir.exists(newName))
     {
         int i = 1;
         while(dir.exists(newName))
         {
             i++;
-            newName = "New Folder(" + QString::number(i) + ")"; // here to take default str for new folder
+            newName = "New Sync Folder(" + QString::number(i) + ")";
         }
     }
     model->mkdir(current,newName);

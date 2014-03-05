@@ -22,7 +22,7 @@ public:
     friend class SyncItemsDelegate;
     explicit WelcomeScreen(PCloudApp *a,QWidget *parent = 0);
     ~WelcomeScreen();
-    QStringList remoteFldrsNamesLst;
+    QStringList remoteFldrsNamesLst, newRemoteFldrsLst;
     QString getCurrLocalPath();
     QString getCurrRemotePath();
     int getCurrType();
@@ -39,7 +39,7 @@ private:
     QString currentLocal, currentRemote;
     int currentType;
     bool isChangingItem; //indicates if user adds a new sync or changes a suggested one
-    QList<int> syncsToAdd;
+  //  QList<int> syncsToAdd;
 protected:
     void closeEvent(QCloseEvent *event);
 public slots:

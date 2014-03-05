@@ -2,6 +2,7 @@
 #include "ui_pcloudwindow.h"
 #include "pcloudapp.h"
 #include "changepassdialog.h"
+#include "ui_changepassdialog.h"
 #include "common.h"
 #include <QDesktopServices>
 #include <QUrl>
@@ -34,13 +35,13 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     // TEMP comment ui->listButtonsWidget->setFrameStyle(QFrame::Sunken); //hides frame
 
     //create Items for QListWidget
-    new QListWidgetItem(QIcon(":/images/images/user.png"),tr("Account"),ui->listButtonsWidget); //index 0
-    new QListWidgetItem(QIcon(":/images/images/user.png"),tr("Account"),ui->listButtonsWidget); //index 1
-    new QListWidgetItem(QIcon(":/images/images/shares.png"),tr("Shares"),ui->listButtonsWidget); //index 2
-    new QListWidgetItem(QIcon(":/images/images/shares.png"),tr("Sync"),ui->listButtonsWidget); //Sync Page index 3
-    new QListWidgetItem(QIcon(":/images/images/settings.png"),tr("Settings"),ui->listButtonsWidget); //index 4
-    new QListWidgetItem(QIcon(":/images/images/help.png"),tr("Help"),ui->listButtonsWidget); //index 5
-    new QListWidgetItem(QIcon(":/images/images/info.png"),tr("About"),ui->listButtonsWidget); //index 6
+    new QListWidgetItem(QIcon(":/images/images/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 0
+    new QListWidgetItem(QIcon(":/images/images/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 1
+    new QListWidgetItem(QIcon(":/images/images/shares.png"),trUtf8("Shares"),ui->listButtonsWidget); //index 2
+    new QListWidgetItem(QIcon(":/images/images/shares.png"),trUtf8("Sync"),ui->listButtonsWidget); //Sync Page index 3
+    new QListWidgetItem(QIcon(":/images/images/settings.png"),trUtf8("Settings"),ui->listButtonsWidget); //index 4
+    new QListWidgetItem(QIcon(":/images/images/help.png"),trUtf8("Help"),ui->listButtonsWidget); //index 5
+    new QListWidgetItem(QIcon(":/images/images/info.png"),trUtf8("About"),ui->listButtonsWidget); //index 6
 
     fillAcountNotLoggedPage();
     fillAboutPage();
@@ -210,7 +211,7 @@ void PCloudWindow::fillAccountLoggedPage()
     connect(ui->tbtnGetSpace, SIGNAL(clicked()), this, SLOT(upgradePlan()));
     connect(ui->label, SIGNAL(linkActivated(QString)), this, SLOT(upgradePlan()));
     ui->tbtnGetSpace->setVisible(false);
-   //p connect(ui->tbtnOpenFolder, SIGNAL(clicked()),app,SLOT(openCloudDir()));
+    //p connect(ui->tbtnOpenFolder, SIGNAL(clicked()),app,SLOT(openCloudDir()));
     connect(ui->tBtnExit, SIGNAL(clicked()), app, SLOT(doExit())); // to move in this class
     connect(ui->tBtnLogout, SIGNAL(clicked()), app, SLOT(logOut()));
 
@@ -234,16 +235,34 @@ SyncPage* PCloudWindow::get_sync_page()
 }
 
 //SLOTS
-void PCloudWindow::changePass() // hasn't implemented
+void PCloudWindow::changePass()
 {
-    //psync_change_pass...
     ChangePassDialog *dialog = new ChangePassDialog();
-    dialog->exec();
+    dialog->ui->label_email->setText(app->username);
+    if (dialog->exec() == QDialog::Accepted)
+    {
+        char *err = NULL;
+        int res =  psync_change_password(dialog->ui->line_pass->text().toUtf8(), dialog->ui->line_newpass->text().toUtf8(), &err);
+        if (!res)
+        {
+            psync_set_pass(dialog->ui->line_newpass->text().toUtf8(),0);
+            QMessageBox::information(this,trUtf8("New password"), trUtf8("Password successfully changed!"));
+        }
+        else
+        {
+            if (res == -1 )
+                QMessageBox::information(this,trUtf8("New password"), trUtf8("No internet connection"));
+            else
+                QMessageBox::information(this,trUtf8("New password"), trUtf8(err));
+        }
+        free(err);
+    }
+
 }
 void PCloudWindow::unlinkSync()
 {
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::warning(this,"", tr("If You unlink your account from this computer any data about your synced folders will be lost. Do you still want to unlink?"),
+    reply = QMessageBox::warning(this,"", trUtf8("If You unlink your account from this computer any data about your synced folders will be lost. Do you still want to unlink?"),
                                  QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::Yes)
     {
@@ -256,11 +275,21 @@ void PCloudWindow::unlinkSync()
 }
 
 void PCloudWindow::verifyEmail(){    // not implemented
-    auth=app->authentication.toUtf8();
-            //psync_verify_email(app->username); // check return val
-    // psync_verify...
-    QMessageBox::information(this, "Please check your e-mail", "E-mail verification sent to: "+app->username);
-    verifyClicked = true;
+    char *err = NULL;
+    int res = psync_verify_email(&err);
+    if (!res)
+    {
+        QMessageBox::information(this, "Verify e-mail", "E-mail verification sent to: "+app->username);
+        verifyClicked = true;
+    }
+    else
+    {
+        if(res == -1 )
+            QMessageBox::information(this,trUtf8("Verify e-mail"), trUtf8("No internet connection"));
+        else
+            QMessageBox::information(this,trUtf8("Verify e-mail"), trUtf8(err));
+    }
+    free(err);
 }
 
 void PCloudWindow::checkVerify() // has the user verified after had clicked "Verify Now"

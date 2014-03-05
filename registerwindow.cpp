@@ -11,6 +11,9 @@ RegisterWindow::RegisterWindow(PCloudApp *a, QWidget *parent) :
     app=a;
     setWindowIcon(QIcon(WINDOW_ICON));
     ui->setupUi(this);
+    QPalette palette;
+    palette.setColor(QPalette::WindowText, Qt::red);
+    ui->error->setPalette(palette);
     connect(ui->registerButton, SIGNAL(clicked()), this, SLOT(doRegister()));
     connect(ui->email, SIGNAL(returnPressed()), this, SLOT(focusPass()));
     connect(ui->password, SIGNAL(returnPressed()), this, SLOT(focusConfirm()));
@@ -22,6 +25,32 @@ RegisterWindow::~RegisterWindow()
 {
     delete ui;
 }
+void RegisterWindow::showEvent(QShowEvent *event)
+{
+    QString user = psync_get_username();
+    if (user != "")
+    {
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("pCloud");
+        msgBox.setText(trUtf8 ("User %1 has already linked in.").arg(user));
+        msgBox.setInformativeText(trUtf8 ("Do you want to unlink %1 and to continue").arg(user));
+        msgBox.setStandardButtons(QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Cancel);
+        QAbstractButton *btnUnlink = msgBox.addButton(trUtf8("Unlink"), QMessageBox::YesRole);
+        msgBox.exec();
+        if (msgBox.clickedButton() == btnUnlink)
+        {
+            psync_unlink();
+            app->setFirstLaunch(true); // to show suggestions list
+            event->accept();
+        }
+        else
+        {
+            event->ignore();
+            this->hide();
+        }
+    }
+}
 
 void RegisterWindow::closeEvent(QCloseEvent *event){
     hide();
@@ -29,7 +58,7 @@ void RegisterWindow::closeEvent(QCloseEvent *event){
 }
 
 void RegisterWindow::setError(const char *err){
-    ui->error->setText(err);
+    ui->error->setText(trUtf8(err));
 }
 
 void RegisterWindow::focusPass(){
@@ -59,19 +88,30 @@ void RegisterWindow::doRegister(){
     }
     QByteArray email=ui->email->text().toUtf8();
     QByteArray password=ui->password->text().toUtf8();
-    int res = psync_register(email,password,true,NULL);
+    char *err = NULL;
+    int res = psync_register(email,password,1,&err);
     if (!res)
+    {
+        psync_set_user_pass(email,password,0); //PSTATUS_LOGIN_REQUIRED appers after register
         app->logIn(email,false);
-    else{
+    }
+    else
+    {
         if (res == -1 )
         {
             setError("No internet connection");
             return;
         }
-        //else ... err str
+        else
+        {
+            setError(err);
+            return;
+        }
     }
+    free(err);
     ui->password->clear();
     ui->confirmpassword->clear();
+    setError("");
     hide();
     //p app->openCloudDir();
 

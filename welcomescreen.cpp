@@ -47,26 +47,26 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
     QDir pcloudDir(path);
     //QDir pcloudDir(path.append("pCloudSync"));
     if(!pcloudDir.exists())
+    {
         QDir::home().mkdir("pCloudSync");
-        //home.mkdir("pCloudSync");
+        remoteFldrsNamesLst.append("pCloudSync");
+        newRemoteFldrsLst.append("pCloudSync");
+    }
+    //home.mkdir("pCloudSync");
     //QString
     //if(QDir(path.append("/pCloudSync")))
     //    QDir::home().mkdir("pCloudSync");
     // QDir defaultLocaldir;
 
-
-
-   // TEMP  defaultItem->setText(1,defaultLocaldir.path());
-    //TEMP defaultItem->setData(1,Qt::UserRole, defaultLocaldir.path());
     defaultItem->setText(1,pcloudDir.path());
     defaultItem->setData(1,Qt::UserRole, pcloudDir.path());
-    defaultItem->setText(2,tr("Download and Upload"));
+    defaultItem->setText(2,trUtf8("Download and Upload"));
+    //defaultItem->setIcon(2,QIcon(":images/images/both.png"));
     defaultItem->setData(2,Qt::UserRole, PSYNC_FULL -1); //for combos and typestr[] indexes
     defaultItem->setText(3,defaultRemoteFldr);
     defaultItem->setData(3,Qt::UserRole,defaultRemoteFldr);
     ui->treeWidget->insertTopLevelItem(0,defaultItem);
 
-    // suggestions goes to internal loop smwhere
     psuggested_folders_t *suggestedFldrs = psync_get_sync_suggestions();
     for (int i = 0; i < suggestedFldrs->entrycnt; i++)
     {
@@ -78,6 +78,7 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
         item->setData(1,Qt::UserRole,suggestedFldrs->entries[i].localpath);
         QString rootName = checkRemoteName(suggestedFldrs->entries[i].name);
         remoteFldrsNamesLst.append(rootName);
+        newRemoteFldrsLst.append(rootName);
         //root.append(rootName);
         rootName.insert(0,"/");
         item->setText(3,rootName);
@@ -95,7 +96,7 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
     ui->treeWidget->resizeColumnToContents(3);
     ui->treeWidget->setMinimumWidth(500);
     // ui->tableWidget->setItemDelegate(new SyncItemsDelegate());
-   }
+}
 
 void WelcomeScreen::testPrintTree(QTreeWidgetItem* itm,int col)
 {
@@ -176,7 +177,7 @@ void WelcomeScreen::modifyType()
     QTreeWidgetItem *current = ui->treeWidget->currentItem();
     if(!current)
     {
-        QMessageBox::information(this,"",tr("Please select an item to modify"));
+        QMessageBox::information(this,"",trUtf8("Please select an item to modify"));
         return;
     }
     else
@@ -200,15 +201,21 @@ void WelcomeScreen::finish()
     {
         if ((*it)->checkState(0) == Qt::Checked)
         {
-            qDebug()<<"ADDING item delayed (from suggestions) " << (*it)->data(1,Qt::UserRole).toString() << (*it)->data(3,Qt::UserRole).toString() <<((*it)->data(2,Qt::UserRole).toInt() +1);
-             psync_add_sync_by_path_delayed((*it)->data(1,Qt::UserRole).toString().toUtf8(),
-                                        (*it)->data(3,Qt::UserRole).toString().toUtf8(),
-                                       ((*it)->data(2,Qt::UserRole).toInt()) +1) ;
+            QString localpath = (*it)->data(1,Qt::UserRole).toString();
+            qDebug()<<"ADDING item delayed (from suggestions) " << (*it)->data(1,Qt::UserRole).toString().toUtf8() << (*it)->data(3,Qt::UserRole).toString().toUtf8() <<((*it)->data(2,Qt::UserRole).toInt() +1);
+            psync_add_sync_by_path_delayed(localpath.toUtf8(),
+                                           (*it)->data(3,Qt::UserRole).toString().toUtf8(),
+                                           ((*it)->data(2,Qt::UserRole).toInt()) +1) ;
 
+            QAction * fldrAction = new QAction(localpath, app);
+            fldrAction->setProperty("path", localpath);
+            connect(fldrAction, SIGNAL(triggered()), app, SLOT(openLocalDir()));
+            app->addNewFolderInMenu(fldrAction);
         }
         ++it;
     }
     app->pCloudWin->get_sync_page()->load();
+    //refresh menu
     this->hide();
 }
 QString WelcomeScreen::checkRemoteName(QString entryName)
@@ -218,10 +225,8 @@ QString WelcomeScreen::checkRemoteName(QString entryName)
         int i = 1;
         QString newName = entryName;
         while (remoteFldrsNamesLst.contains(newName)) {
-            // newName = entryName + "(" + QString::number(i) + ")";
             newName = entryName + "(" + QString::number(i) + ")";
             i++;
-            //++ to add it
         }
         return newName;
     }

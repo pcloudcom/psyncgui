@@ -20,10 +20,8 @@ private:
     PCloudApp *app;
     bool SSL;
     QString minLocalSpace;
-    int upldSpeed;
-    int dwnldSpeed;
-    QString maxUpldSpeed;
-    QString maxDwnldSpeed;
+    int upldSpeed, upldSpeedNew;
+    int dwnldSpeed, dwnldSpeedNew;
     QString patterns;
     void initSyncPage();
     void loadSettings();
@@ -31,14 +29,14 @@ private:
 public slots:
     void refreshTab(int index);
     void modifySync();
-    void stopSync();
-    void pauseSync();
+    void stopSync();    
     void addSync();
     void saveSettings();
     void cancelSettings();
     void enableSaveBtn();
-  //  void editUpldEnable(bool b);
-
+    void setNewDwnldSpeed();
+    void setNewUpldSpeed();
+    void setNewSpeedFromEditline();
 };
 
 #endif // SYNCPAGE_H
