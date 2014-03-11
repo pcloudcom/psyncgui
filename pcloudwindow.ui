@@ -57,7 +57,7 @@
          <bool>true</bool>
         </property>
         <property name="currentIndex">
-         <number>5</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="pageAccntNotLogged">
          <property name="maximumSize">
@@ -189,7 +189,7 @@
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap>:/images128x128/images/128x128/FolderIconX.png</pixmap>
+               <pixmap resource="Resources.qrc">:/128x128/images/128x128/FolderIconX.png</pixmap>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
