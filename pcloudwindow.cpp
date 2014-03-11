@@ -225,7 +225,8 @@ void PCloudWindow::fillAccountLoggedPage()
     connect(ui->label, SIGNAL(linkActivated(QString)), this, SLOT(upgradePlan()));    
     //p connect(ui->tbtnOpenFolder, SIGNAL(clicked()),app,SLOT(openCloudDir()));
     connect(ui->tBtnExit, SIGNAL(clicked()), app, SLOT(doExit())); // to move in this class
-    connect(ui->tBtnLogout, SIGNAL(clicked()), app, SLOT(logOut()));    
+    //connect(ui->tBtnLogout, SIGNAL(clicked()), app, SLOT(logOut()));
+    connect(ui->btnLgout, SIGNAL(clicked()), app, SLOT(logOut()));
     connect(ui->btnChangePass, SIGNAL(clicked()), this, SLOT(changePass()));
     connect(ui->btnForgotPass, SIGNAL(clicked()), this, SLOT(forgotPass()));
     connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(unlinkSync()));

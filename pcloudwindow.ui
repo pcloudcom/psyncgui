@@ -456,7 +456,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QToolButton" name="tBtnLogout">
+                  <widget class="QPushButton" name="btnLgout">
                    <property name="text">
                     <string>Logout</string>
                    </property>
