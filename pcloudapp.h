@@ -56,7 +56,6 @@ private:
     void createMenus();
     void hideAllWindows();
     void showWindow(QMainWindow *win);
-    void createSyncFolderActions(QMenu *syncMenu);
 public:
     static PCloudApp *appStatic;
     PCloudWindow *pCloudWin;
@@ -87,11 +86,13 @@ public:
     //p void setSettings();
     void showError(QString err);
     void showOnClick();
-    bool isLogedIn();
+    bool isLogedIn();    
     void setLogWinError(const char *msg); // sets err in logwin; called from static function status_callback
     void changeSyncIconPublic(const QString icon); //called from static function status_callbac;  signals are protected and can't be accessed by static vars
     void changeCursorPublic(bool change);
     void setTextErrPublic(int win , const char *err);
+    void createSyncFolderActions(QMenu *syncMenu);
+    QMenu* getSyncMenu();
     void addNewFolderInMenu(QAction *fldrAction); // refresh menu when add new sync
     QString bytesConvert(quint64 bytes);
     QString timeConvert(quint64 seconds);
@@ -115,7 +116,7 @@ public slots:
     //p void openCloudDir();
     //p void shareFolder();
     void logOut();
-    void doExit();
+    void doExit();    
     //p void trayMsgClicked(); //show shares
     //p void setOnlineStatus(bool online);
     void setTrayIcon(const QString icon);

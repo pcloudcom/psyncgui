@@ -51,7 +51,7 @@ static QList<QTreeWidgetItem *> listRemoteFldrs(QString parentPath)
     QList<QTreeWidgetItem *> items;
     pfolder_list_t *res = psync_list_remote_folder_by_path(parentPath.toUtf8(),PLIST_FOLDERS);
 
-    if (res)
+    if (res->entrycnt)
     {
         for(int i = 0; i < res->entrycnt; i++)
         {
@@ -185,7 +185,29 @@ void addSyncDialog::addSync()
         welcomewin->addNewItem(localpath,remotepath,type);
     else
     {
-        psync_add_sync_by_path(localpath.toUtf8(), remotepath.toUtf8(),type+1);
+        quint32 id = psync_add_sync_by_path(localpath.toUtf8(), remotepath.toUtf8(),type+1);
+        if (id == -1)
+        {
+            quint32 err = psync_get_last_error();
+            switch (err)
+            {
+            case 7:
+                QMessageBox::information(this,trUtf8("Add new sync"), trUtf8("Local folder access denied!"));
+                break;
+                return;
+            case 8:
+                QMessageBox::information(this,trUtf8("Add new sync"), trUtf8("Remote folder access denied!"));
+                break;
+                return;
+            case 9:
+                QMessageBox::information(this,trUtf8("Add new sync"), trUtf8("Folder already synchronized"));
+                break;
+                return;
+            default:
+                break;
+            }
+        }
+
         syncpage->load();
     }
     this->hide();

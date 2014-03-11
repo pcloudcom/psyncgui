@@ -80,7 +80,7 @@ void SyncPage::load()
         {
             qDebug()<<"Load sync tab"<< fldrsList->folders[i].folderid << " "<<fldrsList->folders[i].localname<< " "
                    <<fldrsList->folders[i].localpath << " "<<fldrsList->folders[i].remotename
-                   << " "<<fldrsList->folders[i].remotepath<< " sync id="<<fldrsList->folders[i].syncid<< "sync type "<<fldrsList->folders[i].synctype;
+                  << " "<<fldrsList->folders[i].remotepath<< " sync id="<<fldrsList->folders[i].syncid<< "sync type "<<fldrsList->folders[i].synctype;
 
             QStringList row;
             // row << fldrsList->folders[i].localpath << QString::number(fldrsList->folders[i].synctype) << fldrsList->folders[i].remotepath;
@@ -94,7 +94,7 @@ void SyncPage::load()
         }
 
         free(fldrsList);
-    }    
+    }
 }
 
 
@@ -140,14 +140,16 @@ void SyncPage::stopSync()
         return;
     }
     else
-    {        
+    {
         psync_syncid_t syncid = current->data(3,Qt::UserRole).toInt();
         qDebug()<<"Stop sync with id " <<syncid;
         if (psync_delete_sync(syncid)) //0 -ok, -1 err
-            //win->ui->label_errSync->setText("Error during deleting");
             showError();
         else
+        {
             load();
+            app->createSyncFolderActions(app->getSyncMenu());
+        }
     }
 }
 
@@ -187,7 +189,7 @@ void SyncPage::loadSettings()
             win->ui->edit_DwnldSpeed->setEnabled(false);
         }
         else
-        {           
+        {
             win->ui->rbtnSyncDwnlChoose->setChecked(true);
             win->ui->edit_DwnldSpeed->setText(QString::number(dwnldSpeed/1000));
             win->ui->rbtnSyncDwnlChoose->setEnabled(true);
@@ -198,14 +200,14 @@ void SyncPage::loadSettings()
     upldSpeedNew = upldSpeed;
     if (!upldSpeed)
     {
-        win->ui->rBtnSyncUpldAuto->setChecked(true);        
+        win->ui->rBtnSyncUpldAuto->setChecked(true);
         win->ui->edit_UpldSpeed->setEnabled(false);
     }
     else
     {
         if (upldSpeed == -1)
         {
-            win->ui->rBtnSyncUpldUnlimit->setChecked(true);            
+            win->ui->rBtnSyncUpldUnlimit->setChecked(true);
             win->ui->edit_UpldSpeed->setEnabled(false);
         }
         else
@@ -323,12 +325,12 @@ void SyncPage::saveSettings()
     }
     if (minLocalSpace != win->ui->edit_minLocalSpace->text())
     {
-        minLocalSpace = win->ui->edit_minLocalSpace->text();     
+        minLocalSpace = win->ui->edit_minLocalSpace->text();
         psync_set_uint_setting("minlocalfreespace", (((minLocalSpace.toInt()*1024*1024))));
     }
 
     if(upldSpeed != upldSpeedNew)
-    {        
+    {
         psync_set_int_setting("maxuploadspeed",upldSpeedNew);
         upldSpeed = upldSpeedNew;
     }

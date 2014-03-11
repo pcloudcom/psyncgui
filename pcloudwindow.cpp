@@ -6,6 +6,7 @@
 #include "common.h"
 #include <QDesktopServices>
 #include <QUrl>
+#include <QDateTime>
 #include <QDebug>
 
 
@@ -35,13 +36,13 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     // TEMP comment ui->listButtonsWidget->setFrameStyle(QFrame::Sunken); //hides frame
 
     //create Items for QListWidget
-    new QListWidgetItem(QIcon(":/images/images/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 0
-    new QListWidgetItem(QIcon(":/images/images/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 1
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 0
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 1
     new QListWidgetItem(QIcon(":/images/images/shares.png"),trUtf8("Shares"),ui->listButtonsWidget); //index 2
-    new QListWidgetItem(QIcon(":/images/images/shares.png"),trUtf8("Sync"),ui->listButtonsWidget); //Sync Page index 3
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/sync.png"),trUtf8("Sync"),ui->listButtonsWidget); //Sync Page index 3
     new QListWidgetItem(QIcon(":/images/images/settings.png"),trUtf8("Settings"),ui->listButtonsWidget); //index 4
-    new QListWidgetItem(QIcon(":/images/images/help.png"),trUtf8("Help"),ui->listButtonsWidget); //index 5
-    new QListWidgetItem(QIcon(":/images/images/info.png"),trUtf8("About"),ui->listButtonsWidget); //index 6
+    new QListWidgetItem(QIcon(":/128x128/images/128x128//help.png"),trUtf8("Help"),ui->listButtonsWidget); //index 5
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/info.png"),trUtf8("About"),ui->listButtonsWidget); //index 6
 
     fillAcountNotLoggedPage();
     fillAboutPage();
@@ -59,10 +60,11 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     for(int i = 0; i < ui->pagesWidget->count(); i++)
         ui->pagesWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
-    ui->verticalLayout_10->setAlignment(Qt::AlignCenter); //tab help
+    //ui->verticalLayout_10->setAlignment(Qt::AlignCenter); //tab help
 
     setWindowIcon(QIcon(WINDOW_ICON));
     setWindowTitle("pCloud");
+    // ui notes - set statusbar max size to (0,0)
 }
 
 PCloudWindow::~PCloudWindow()
@@ -197,36 +199,50 @@ void PCloudWindow::fillAccountLoggedPage()
     }
     ui->checkBoxVerified->setEnabled(false);
 
-    ui->progressBar_space->setMinimum(0);
-    ui->progressBar_space->setMaximum(100);
-    ui->progressBar_space->setValue(app->freeSpacePercentage);
-    ui->progressBar_space->setFormat("%v% free");
-    ui->label_space->setText(QString::number(app->usedSpace, 'f', 1) + " GB used of " + app->planStr);
+  //  ui->progressBar_space->setMinimum(0); //todel
+    //ui->progressBar_space->setMaximum(100);
+    //ui->progressBar_space->setValue(app->freeSpacePercentage);
+    //ui->progressBar_space->setFormat("%v% free");
+    //ui->label_space->setText(QString::number(app->usedSpace, 'f', 1) + " GB used of " + app->planStr);
+    ui->label_space->setText(QString::number(app->usedSpace, 'f', 1) + "GB (" + QString::number(app->freeSpacePercentage) + "% free)");
 
     ui->label_planVal->setText(app->planStr);
 
-    ui->toolBtnChangePass->setStyleSheet("QToolButton{background-color:transparent;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");
-    connect(ui->toolBtnOpenWeb, SIGNAL(clicked()), this, SLOT(openWebPage()));
-    // connect(ui->toolBtnChangePass, SIGNAL(clicked()), this, SLOT(changePass()));
-    connect(ui->tbtnGetSpace, SIGNAL(clicked()), this, SLOT(upgradePlan()));
-    connect(ui->label, SIGNAL(linkActivated(QString)), this, SLOT(upgradePlan()));
-    ui->tbtnGetSpace->setVisible(false);
+    if (app->isPremium)
+    {
+        quint64 unixTime = psync_get_uint_value("premiumexpires");
+        QDateTime timestamp;
+        timestamp.setTime_t(unixTime);
+        ui->label_expDtVal->setText(timestamp.toString("dd.MM.yyyy"));
+    }
+    else
+    {
+        ui->label_expDt->setVisible(false);
+        ui->label_expDtVal->setVisible(false);
+    }
+
+    connect(ui->toolBtnOpenWeb, SIGNAL(clicked()), this, SLOT(openWebPage()));       
+    connect(ui->label, SIGNAL(linkActivated(QString)), this, SLOT(upgradePlan()));    
     //p connect(ui->tbtnOpenFolder, SIGNAL(clicked()),app,SLOT(openCloudDir()));
     connect(ui->tBtnExit, SIGNAL(clicked()), app, SLOT(doExit())); // to move in this class
-    connect(ui->tBtnLogout, SIGNAL(clicked()), app, SLOT(logOut()));
-
-
-
+    connect(ui->tBtnLogout, SIGNAL(clicked()), app, SLOT(logOut()));    
     connect(ui->btnChangePass, SIGNAL(clicked()), this, SLOT(changePass()));
+    connect(ui->btnForgotPass, SIGNAL(clicked()), this, SLOT(forgotPass()));
     connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(unlinkSync()));
 
     //for sync hide some widgets till start use new fs
-    ui->tBtnExit->setVisible(false);
-    ui->tBtnLogout->setVisible(false);
-    ui->toolBtnChangePass->setVisible(false);
-    ui->line_2->setVisible(false);
-    ui->toolBtnOpenWeb->setVisible(false);
+   // ui->tBtnExit->setVisible(false); ?
+
     ui->tbtnOpenFolder->setVisible(false);
+    ui->tBtnExit->setVisible(false);    
+
+    //make frame white, leave widgets with normal colors
+    //ui->frame_account->setStyleSheet("background-color:lightblue");
+    QPalette p;// = ui->frame->palette();
+    p.setColor(ui->frame_account->backgroundRole(),Qt::white);
+    p.setColor(ui->frame_account->foregroundRole(), Qt::black);
+    ui->frame_account->setAutoFillBackground(true);
+    ui->frame_account->setPalette(p);
 }
 
 SyncPage* PCloudWindow::get_sync_page()
@@ -259,6 +275,35 @@ void PCloudWindow::changePass()
     }
 
 }
+void PCloudWindow::forgotPass()
+{
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+    char *err = NULL;
+    int res = psync_lost_password(app->username.toUtf8(),&err);
+    if (!res) // returns 0 on success
+    {
+        QApplication::restoreOverrideCursor();
+        QMessageBox::information(this, trUtf8("Reset password"), trUtf8("An email with passowrd reset instructions is sent to your address."));
+    }
+    else
+    {
+        if (res == -1)
+        {
+            QMessageBox::information(this, trUtf8("Reset password"), trUtf8("No internet connection"));
+            QApplication::restoreOverrideCursor();
+            return;
+        }
+        else
+        {
+            QMessageBox::information(this, trUtf8("Reset password"), trUtf8(err));
+            QApplication::restoreOverrideCursor();
+            return;
+        }
+    }
+    QApplication::restoreOverrideCursor();
+    free(err);
+}
+
 void PCloudWindow::unlinkSync()
 {
     QMessageBox::StandardButton reply;

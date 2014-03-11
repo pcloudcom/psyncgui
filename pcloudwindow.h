@@ -61,6 +61,7 @@ public slots:
     void sendFeedback();
     void contactUs();
     void changePass();
+    void forgotPass();
     void upgradePlan();
     void verifyEmail();
     void unlinkSync(); // to move in sync.h

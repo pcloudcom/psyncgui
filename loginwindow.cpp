@@ -70,9 +70,10 @@ void LoginWindow::logIn()
     QByteArray password=ui->password->text().toUtf8();
     int ischecked = ui->checkBox->isChecked()? 1: 0;
     QApplication::setOverrideCursor(Qt::WaitCursor); // or to add QSplashSCreen instead
-    QString auth = psync_get_auth_string();
-    if (auth == "")
-        //if (psync_get_auth_string() == "")
+    //QString auth = psync_get_auth_string();
+    //if (auth == "")
+    bool savedauth = psync_get_bool_value("saveauth"); //works when syns is paused also
+    if (!savedauth)
         psync_set_user_pass(email,password,ischecked);
     else
         psync_set_pass(password,ischecked);

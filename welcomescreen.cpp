@@ -72,7 +72,8 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
     {
         QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
 
-        item->setCheckState(0,Qt::Checked);
+        //item->setCheckState(0,Qt::Checked);
+        item->setCheckState(0,Qt::Unchecked);
         item->setData(0,Qt::UserRole,true);
         item->setText(1,suggestedFldrs->entries[i].localpath);
         item->setData(1,Qt::UserRole,suggestedFldrs->entries[i].localpath);
@@ -116,6 +117,7 @@ WelcomeScreen::~WelcomeScreen()
 }
 void WelcomeScreen::closeEvent(QCloseEvent *event)
 {
+    //check is default sync created(finishes pressed)
     this->hide();
     event->ignore();
 }
@@ -207,7 +209,8 @@ void WelcomeScreen::finish()
                                            (*it)->data(3,Qt::UserRole).toString().toUtf8(),
                                            ((*it)->data(2,Qt::UserRole).toInt()) +1) ;
 
-            QAction * fldrAction = new QAction(localpath, app);
+            QString name = localpath.section("/", -1);
+            QAction * fldrAction = new QAction(name, app);
             fldrAction->setProperty("path", localpath);
             connect(fldrAction, SIGNAL(triggered()), app, SLOT(openLocalDir()));
             app->addNewFolderInMenu(fldrAction);
