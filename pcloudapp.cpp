@@ -421,7 +421,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
 {
 
 #ifdef Q_OS_WIN
-    notifythread = NULL;
+ //   notifythread = NULL;
 #endif
     appStatic = this;
     regwin=NULL;

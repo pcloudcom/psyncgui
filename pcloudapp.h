@@ -49,7 +49,7 @@ private:
     QListWidget *syncStatusListWidget;
     bool isFirstLaunch; //hardcoded for tests
 #ifdef Q_OS_WIN
-    RevNotifyThread *notifythread;
+    //pRevNotifyThread *notifythread;
 #endif
     // OnlineThread *othread;
     bool loggedin;
