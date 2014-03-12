@@ -46,7 +46,7 @@ FORMS    += loginwindow.ui \
     modifysyncdialog.ui \
     pcloudwindow.ui \
     welcomescreen.ui
-
+win32:RC_FILE= pCloud.rc
 RESOURCES += \
     Resources.qrc
 
