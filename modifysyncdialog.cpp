@@ -1,5 +1,6 @@
 #include "modifysyncdialog.h"
 #include "ui_modifysyncdialog.h"
+#include "common.h"
 
 const char* typeNames[3]={"Donwload only", "Upload only", "Download and Upload"};
 
@@ -14,6 +15,8 @@ ModifySyncDialog::ModifySyncDialog(QString local, QString remote,int type, QWidg
     ui->combo_Directions->setCurrentIndex(type-1);
     connect(ui->bntSave, SIGNAL(clicked()), this, SLOT(accept()));
     connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(hide()));
+    this->setWindowTitle("pCloud");
+    this->setWindowIcon(QIcon(WINDOW_ICON));
 }
 
 ModifySyncDialog::~ModifySyncDialog()

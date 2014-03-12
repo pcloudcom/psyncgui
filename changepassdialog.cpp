@@ -19,12 +19,13 @@ void ChangePassDialog::checkPasses()
 {
     if (ui->line_newpass->text() != ui->line_newpass2->text())
     {
-        QMessageBox::information(this,trUtf8("New password"), trUtf8("New passwords do not match"));
+        //QMessageBox::information(this,trUtf8("New password"), trUtf8("New passwords do not match"));
+        QMessageBox::warning(this,trUtf8("New password"), trUtf8("New passwords do not match"));
         return;
     }
     if(ui->line_newpass->text().length() < 6)
     {
-        QMessageBox::information(this,trUtf8("New password"), trUtf8("New passwors should consists of at least six symbols"));
+        QMessageBox::warning(this,trUtf8("New password"), trUtf8("New passwors should consists of at least six symbols"));
         ui->line_newpass->setFocus();
         return;
     }

@@ -43,6 +43,7 @@ void LoginWindow::showEvent(QShowEvent *)
     if (username == "")
     {
         ui->btnUnlink->setVisible(false);
+        ui->email->setEnabled(true);
         ui->email->clear();
         ui->password->clear();
     }
@@ -87,7 +88,7 @@ void LoginWindow::logIn()
         times++;
         pstatus_t status;
         psync_get_status(&status);
-
+        qDebug()<<"login btn "<< status.status<< times;
         if (status.status == PSTATUS_CONNECTING || status.status == PSTATUS_SCANNING )
         {
             sleep(1);
@@ -104,7 +105,8 @@ void LoginWindow::logIn()
             else
             {
                 // PSTATUS_PAUSED is returned before and after PSTATUS_BAD_LOGIN_DATA
-                if ((status.status == PSTATUS_PAUSED  || status.status == PSTATUS_READY) && times == 1)
+                //if ((status.status == PSTATUS_PAUSED  || status.status == PSTATUS_READY) && times == 1)
+                if (status.status == PSTATUS_PAUSED && times == 1)
                 {
                     sleep(3);
                     //pstatus_t newstatus;
