@@ -85,7 +85,7 @@ void addSyncDialog::load()
     ui->treeSyncRemote->setCurrentItem(rootItem);
     items = listRemoteFldrs(root);
     rootItem->addChildren(items);
-    ui->treeSyncRemote->expandItem(rootItem);
+    ui->treeSyncRemote->expandItem(rootItem);    
     ui->treeSyncRemote->sortByColumn(1, Qt::AscendingOrder);
     ui->treeSyncRemote->setSortingEnabled(true);
 
@@ -182,7 +182,7 @@ void addSyncDialog::addSync()
    // remotepath = "/"; //?
     remotepath.append( ui->treeSyncRemote->currentItem()->data(0,Qt::UserRole).toString());
     type = ui->comboSyncType->currentIndex();
-    qDebug()<<"TO ADD NEW SYNC :   localpath = "<<localpath<< " remotepath = "<<remotepath << " type = "<<type<< "local folder name ="<<localname;
+    qDebug()<<"TO ADD NEW SYNC :   localpath = "<<localpath<< " remotepath = "<<remotepath << " type = "<<type+1<< "local folder name ="<<localname;
     if(this->welcomewin)
         welcomewin->addNewItem(localpath,remotepath,type);
     else
