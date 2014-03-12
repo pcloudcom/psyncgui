@@ -284,7 +284,7 @@ void PCloudWindow::forgotPass()
     if (!res) // returns 0 on success
     {
         QApplication::restoreOverrideCursor();
-        QMessageBox::information(this, trUtf8("Reset password"), trUtf8("An email with passowrd reset instructions is sent to your address."));
+        QMessageBox::information(this, trUtf8("Reset password"), trUtf8("An email with password reset instructions is sent to your address."));
     }
     else
     {
