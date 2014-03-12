@@ -38,6 +38,8 @@ private:
     QAction *pauseSyncAction;
     QAction *resumeSyncAction;
     QAction *addSyncAction;
+    QAction *syncDownldAction;
+    QAction *syncUpldAction;
     QMenu *notloggedmenu;
     QMenu *loggedmenu;
     QMenu *syncMenu;
@@ -46,7 +48,7 @@ private:
     LoginWindow *logwin;
     //p ShareFolderWindow *sharefolderwin;
     //MonitoringThread *mthread;
-    QListWidget *syncStatusListWidget;
+   // QListWidget *syncStatusListWidget; to del
     bool isFirstLaunch; //hardcoded for tests
 #ifdef Q_OS_WIN
     //pRevNotifyThread *notifythread;

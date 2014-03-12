@@ -1,7 +1,7 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#define WINDOW_ICON ":/24x24/images/24x24/online.png"
+#define WINDOW_ICON ":/images/images/logo.png"
 #define ONLINE_ICON ":/24x24/images/24x24/online.png"
 #define OFFLINE_ICON ":/24x24/images/24x24/offline.png"
 #define SYNCED_ICON ":/24x24/images/24x24/synced.png"

@@ -51,7 +51,8 @@ static QList<QTreeWidgetItem *> listRemoteFldrs(QString parentPath)
     QList<QTreeWidgetItem *> items;
     pfolder_list_t *res = psync_list_remote_folder_by_path(parentPath.toUtf8(),PLIST_FOLDERS);
 
-    if (res->entrycnt)
+    //if (res->entrycnt)
+    if (res != NULL)
     {
         for(int i = 0; i < res->entrycnt; i++)
         {
@@ -69,6 +70,7 @@ static QList<QTreeWidgetItem *> listRemoteFldrs(QString parentPath)
             // qDebug()<<path;
         }
     }
+    // else get last err
     return items;
 }
 
@@ -177,8 +179,8 @@ void addSyncDialog::addSync()
     int type;
     localpath = model->filePath(ui->treeSyncLocal->currentIndex());
     localname = model->fileName(ui->treeSyncLocal->currentIndex());
-    remotepath = "/";
-    remotepath.append( ui->treeSyncRemote->currentItem()->data(0,0).toString());
+   // remotepath = "/"; //?
+    remotepath.append( ui->treeSyncRemote->currentItem()->data(0,Qt::UserRole).toString());
     type = ui->comboSyncType->currentIndex();
     qDebug()<<"TO ADD NEW SYNC :   localpath = "<<localpath<< " remotepath = "<<remotepath << " type = "<<type<< "local folder name ="<<localname;
     if(this->welcomewin)

@@ -218,6 +218,10 @@ void PCloudApp::createMenus(){
         resumeSyncAction->setVisible(false);
     else
         pauseSyncAction->setVisible(false);
+    syncDownldAction = new QAction(QIcon(":/images/images/arrowdown.png"),trUtf8("Everything downloaded"),this);
+    syncUpldAction = new QAction(QIcon(":/images/images/arrowup.png"),trUtf8("Everything uploaded"),this);
+    loggedmenu->addAction(syncDownldAction);
+    loggedmenu->addAction(syncUpldAction);
     //p loggedmenu->addAction(settingsAction);
     loggedmenu->addAction(helpAction);
     loggedmenu->addAction(aboutPCloudAction);
@@ -230,7 +234,7 @@ void PCloudApp::createMenus(){
 
 
     //create upload/download info at the menu
-    QWidgetAction *syncWdgtAction = new QWidgetAction(loggedmenu);
+  /*  QWidgetAction *syncWdgtAction = new QWidgetAction(loggedmenu);
     syncStatusListWidget = new QListWidget(loggedmenu);
     syncStatusListWidget->setFlow(QListWidget::LeftToRight);
     syncStatusListWidget->setMovement(QListView::Static);
@@ -243,7 +247,7 @@ void PCloudApp::createMenus(){
     syncStatusListWidget->item(1)->setForeground(*(new QBrush(Qt::black)));
 
     syncWdgtAction->setDefaultWidget(syncStatusListWidget);
-    loggedmenu->addAction(syncWdgtAction);
+    loggedmenu->addAction(syncWdgtAction); */
     connect(loggedmenu, SIGNAL(aboutToShow()), this, SLOT(updateSyncStatusInMenu()));
 
 }
@@ -273,6 +277,10 @@ void status_callback(pstatus_t *status)
                 PCloudApp::appStatic->bytestoUpld = 0;
                 PCloudApp::appStatic->filesToUpld = 0;
                 PCloudApp::appStatic->upldSpeed = 0;
+            }
+            if (PCloudApp::appStatic->isMenuActive())
+            {
+                PCloudApp::appStatic->updateSyncStatusInMenu();
             }
         }
         break;
@@ -421,7 +429,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
 {
 
 #ifdef Q_OS_WIN
- //   notifythread = NULL;
+    //   notifythread = NULL;
 #endif
     appStatic = this;
     regwin=NULL;
@@ -759,17 +767,25 @@ void PCloudApp::updateSyncStatusInMenu()
     {
         if (dwnldSpeed)
         {
-            syncStatusListWidget->item(0)->setText(trUtf8("Remaining:\n") + bytesConvert(bytestoDwnld) + "\n" + QString::number(filesToDwnld) + " files\n"
-                                                   + timeConvert(bytestoDwnld/dwnldSpeed));
-            syncStatusListWidget->item(0)->setToolTip(trUtf8("Download speed: ") + QString::number(dwnldSpeed/1000) + "kB/s");
-            qDebug()<< timeConvert(bytestoDwnld/dwnldSpeed);
+           // syncDownldAction->setText(trUtf8("Remaining: ") + bytesConvert(bytestoDwnld) + " " + QString::number(filesToDwnld) + " files "
+             //                         + timeConvert(bytestoDwnld/dwnldSpeed));
+
+            syncDownldAction->setText(timeConvert(bytestoDwnld/dwnldSpeed) + trUtf8("remaining: ") + bytesConvert(bytestoDwnld) + " " + QString::number(filesToDwnld) + " files ");
+            syncDownldAction->setToolTip(trUtf8("Download speed: ") + QString::number(dwnldSpeed/1000) + "kB/s");
+
+        //    syncStatusListWidget->item(0)->setText(trUtf8("Remaining:\n") + bytesConvert(bytestoDwnld) + "\n" + QString::number(filesToDwnld) + " files\n"
+            //                                       + timeConvert(bytestoDwnld/dwnldSpeed));
+          //  syncStatusListWidget->item(0)->setToolTip(trUtf8("Download speed: ") + QString::number(dwnldSpeed/1000) + "kB/s");
+            qDebug()<<"dwnld speed: "<< timeConvert(bytestoDwnld/dwnldSpeed);
         }
         else
-            syncStatusListWidget->item(0)->setText(bytesConvert(bytestoDwnld) + " left\n" + QString::number(filesToDwnld) + " files\n");
+            syncDownldAction->setText(trUtf8("Remaining: ") + bytesConvert(bytestoDwnld) + " " + QString::number(filesToDwnld) + " files ");
+            //syncStatusListWidget->item(0)->setText(bytesConvert(bytestoDwnld) + " left\n" + QString::number(filesToDwnld) + " files\n");
 
     }
     else
-        syncStatusListWidget->item(0)->setText(trUtf8("Everything\ndownloaded"));
+        //syncStatusListWidget->item(0)->setText(trUtf8("Everything\ndownloaded"));
+        syncDownldAction->setText(trUtf8("Everything downloaded"));
 
 
     qDebug()<<"update menu UPLOAD " << bytestoUpld << bytesConvert(bytestoUpld) << filesToUpld<< upldSpeed;// << timeConvert(bytestoDwnld/dwnldSpeed);
@@ -777,16 +793,19 @@ void PCloudApp::updateSyncStatusInMenu()
     {
         if (upldSpeed)
         {
-            syncStatusListWidget->item(1)->setText(trUtf8("Remaining:\n") + bytesConvert(bytestoUpld) + "\n" + QString::number(filesToUpld) + " files\n"
-                                                   + timeConvert(bytestoUpld/upldSpeed));
-            syncStatusListWidget->item(1)->setToolTip(trUtf8("Upload speed: ") + QString::number(upldSpeed/1000) + "kB/s");
-            qDebug()<< timeConvert(bytestoUpld/upldSpeed);
+           // syncStatusListWidget->item(1)->setText(trUtf8("Remaining:\n") + bytesConvert(bytestoUpld) + "\n" + QString::number(filesToUpld) + " files\n"
+            //                                       + timeConvert(bytestoUpld/upldSpeed));
+            //syncStatusListWidget->item(1)->setToolTip(trUtf8("Upload speed: ") + QString::number(upldSpeed/1000) + "kB/s");
+            syncUpldAction->setText(timeConvert(bytestoUpld/upldSpeed) + trUtf8("remaining: ") + bytesConvert(bytestoUpld) + " " + QString::number(filesToUpld) + " files ");
+            qDebug()<<"Upld speed:" << timeConvert(bytestoUpld/upldSpeed);
         }
         else
-            syncStatusListWidget->item(1)->setText(bytesConvert(bytestoUpld) + " left\n" + QString::number(filesToUpld) + " files\n");
+            syncUpldAction->setText(trUtf8("Remaining: ") + bytesConvert(bytestoUpld) + " " + QString::number(filesToUpld) + " files ");
+          //  syncStatusListWidget->item(1)->setText(bytesConvert(bytestoUpld) + " left " + QString::number(filesToUpld) + " files");
     }
     else
-        syncStatusListWidget->item(1)->setText(trUtf8("Everything\nuploaded"));
+        syncUpldAction->setText(trUtf8("Everything uploaded"));
+        //syncStatusListWidget->item(1)->setText(trUtf8("Everything\nuploaded"));
 
 }
 void PCloudApp::setFirstLaunch(bool b)
