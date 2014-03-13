@@ -92,6 +92,7 @@ public:
     void setLogWinError(const char *msg); // sets err in logwin; called from static function status_callback
     void changeSyncIconPublic(const QString icon); //called from static function status_callbac;  signals are protected and can't be accessed by static vars
     void changeCursorPublic(bool change);
+    void updateSyncStatusInMenuPublic();
     void setTextErrPublic(int win , const char *err);
     void createSyncFolderActions(QMenu *syncMenu);
     QMenu* getSyncMenu();
@@ -104,6 +105,7 @@ signals:
     void changeSyncIcon(const QString icon);
     void changeCursor(bool change);
     void sendErrText(int win, const char *err);
+    void updateSyncStatusInMenuSgnl();
 public slots:
     // void showTrayMessage(QString title, QString msg);
     void trayClicked(QSystemTrayIcon::ActivationReason reason);

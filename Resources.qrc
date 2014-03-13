@@ -43,4 +43,20 @@
         <file>images/24x24/syncing.png</file>
         <file>images/24x24/sync-paused.png</file>
     </qresource>
+    <qresource prefix="/menu">
+        <file>images/menu 48x48/download.png</file>
+        <file>images/menu 48x48/emptyfolder.png</file>
+        <file>images/menu 48x48/exit.png</file>
+        <file>images/menu 48x48/help.png</file>
+        <file>images/menu 48x48/info.png</file>
+        <file>images/menu 48x48/login.png</file>
+        <file>images/menu 48x48/newsync.png</file>
+        <file>images/menu 48x48/pause.png</file>
+        <file>images/menu 48x48/register.png</file>
+        <file>images/menu 48x48/resume.png</file>
+        <file>images/menu 48x48/settings.png</file>
+        <file>images/menu 48x48/sync.png</file>
+        <file>images/menu 48x48/upload.png</file>
+        <file>images/menu 48x48/user.png</file>
+    </qresource>
 </RCC>
