@@ -5,6 +5,7 @@
 #include "modifysyncdialog.h"
 #include "ui_modifysyncdialog.h"
 #include "psynclib.h"
+#include "common.h"
 
 #include <QDesktopServices>
 #include <QDebug>
@@ -26,14 +27,15 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
     connect(ui->btnModify, SIGNAL(clicked()), this, SLOT(modifyType()));
     //++ slot za currentdata
 
+    this->setWindowTitle("Welcome to pCloud");
+    this->setWindowIcon(QIcon(WINDOW_ICON));
     //default synced fldrs
-
     QString root = "/";
     pfolder_list_t *remoteRootChildFldrs = psync_list_remote_folder_by_path(root.toUtf8(),PLIST_FOLDERS);
     //build list with remote root child names in order to check: when we add new sync delay if the folderName exists.
     for (int i = 0; i < remoteRootChildFldrs->entrycnt; i++)
         remoteFldrsNamesLst.append(remoteRootChildFldrs->entries[i].name);
-    qDebug()<<remoteFldrsNamesLst;
+    qDebug()<<"Remote init folders list form lib"<<remoteFldrsNamesLst;
     QString defaultRemoteFldr = checkRemoteName("pCloudSync");
     defaultRemoteFldr.insert(0,"/");
 
@@ -41,9 +43,8 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
     defaultItem->setCheckState(0,Qt::Checked);
     defaultItem->setFlags(Qt::NoItemFlags);
 
-    //QDir home = QDir::home();
+
     QString path = QDir::home().path().append("/pCloudSync");
-    //path.append("/pCloudSync");
     QDir pcloudDir(path);
     //QDir pcloudDir(path.append("pCloudSync"));
     if(!pcloudDir.exists())

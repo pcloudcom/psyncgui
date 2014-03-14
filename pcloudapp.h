@@ -16,6 +16,9 @@
 #include <QApplication>
 #include <QAction>
 #include <QSystemTrayIcon>
+#include <QtNetwork/QNetworkSession>
+#include <QtNetwork/QNetworkConfiguration>
+#include <QtNetwork/QNetworkConfigurationManager>
 
 
 class WelcomeScreen;
@@ -50,6 +53,9 @@ private:
     //MonitoringThread *mthread;
    // QListWidget *syncStatusListWidget; to del
     bool isFirstLaunch; //hardcoded for tests
+    QNetworkConfigurationManager manager;
+    QNetworkConfiguration cfg;
+    QNetworkSession *session;
 #ifdef Q_OS_WIN
     //pRevNotifyThread *notifythread;
 #endif
@@ -131,6 +137,7 @@ public slots:
     void openLocalDir(); // for local sync folder
     void addNewSync();
     void updateSyncStatusInMenu();
+    void networkConnectionChanged(QNetworkSession::State state);
 };
 
 #endif // PCLOUDAPP_H

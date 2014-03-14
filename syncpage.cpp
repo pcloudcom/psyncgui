@@ -72,6 +72,7 @@ static QString get_sync_type(int synctype)
 void SyncPage::load()
 {
 
+    win->ui->label_errSync->clear();
     win->ui->treeSyncList->clear();
     psync_folder_list_t *fldrsList = psync_get_sync_list();
     if (fldrsList != NULL && fldrsList->foldercnt)
@@ -141,15 +142,23 @@ void SyncPage::stopSync()
     }
     else
     {
-        psync_syncid_t syncid = current->data(3,Qt::UserRole).toInt();
-        qDebug()<<"Stop sync with id " <<syncid;
-        if (psync_delete_sync(syncid)) //0 -ok, -1 err
-            showError();
-        else
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::warning(this,"Stop Sync", trUtf8("Do you really want to stop selected sync?"),
+                                     QMessageBox::Yes|QMessageBox::No);
+        if (reply == QMessageBox::Yes)
         {
-            load();
-            app->createSyncFolderActions(app->getSyncMenu());
+            psync_syncid_t syncid = current->data(3,Qt::UserRole).toInt();
+            qDebug()<<"Stop sync with id " <<syncid;
+            if (psync_delete_sync(syncid)) //0 -ok, -1 err
+                showError();
+            else
+            {
+                load();
+                app->createSyncFolderActions(app->getSyncMenu());
+            }
         }
+        else
+            return;
     }
 }
 

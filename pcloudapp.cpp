@@ -234,7 +234,7 @@ void PCloudApp::createMenus(){
     //syncMenu->addAction(addSyncAction);
     this->createSyncFolderActions(syncMenu);
 
-  //  loggedmenu->setStyleSheet("QMenu::item{padding: 4 8 4 50;}");
+    //  loggedmenu->setStyleSheet("QMenu::item{padding: 4 8 4 50;}");
 
 
     //create upload/download info at the menu
@@ -453,6 +453,10 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     dwnldSpeed = 0;
     upldSpeed = 0;
     isCursorChanged = false;
+    tray=new QSystemTrayIcon(this);
+    tray->setIcon(QIcon(OFFLINE_ICON));
+    tray->setToolTip("pCloud");
+    tray->show();
     psync_init(); // toadd checks
     psync_start_sync(status_callback,event_callback);
     QApplication::setOverrideCursor(Qt::WaitCursor);
@@ -473,17 +477,13 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     pCloudWin->layout()->setSizeConstraint(QLayout::SetFixedSize); //for auto resize
     pCloudWin->setOnlineItems(false);
     createMenus(); //needs sync to be started
-    tray=new QSystemTrayIcon(this);
-    tray->setIcon(QIcon(OFFLINE_ICON));
     tray->setContextMenu(notloggedmenu);
-    tray->setToolTip("pCloud");
     connect(tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayClicked(QSystemTrayIcon::ActivationReason)));
     //p connect(tray, SIGNAL(messageClicked()), this, SLOT(trayMsgClicked()));
     connect(this, SIGNAL(changeSyncIcon(QString)), this, SLOT(setTrayIcon(QString)));
     connect(this, SIGNAL(changeCursor(bool)), this, SLOT(setCursor(bool)));
     connect(this, SIGNAL(sendErrText(int, const char*)), this, SLOT(setErrText(int,const char*)));
     connect(this, SIGNAL(updateSyncStatusInMenuSgnl()), this, SLOT(updateSyncStatusInMenu()));
-    tray->show();
 
     // to move in status_ready
     //QString auth = psync_get_auth_string();
@@ -502,6 +502,10 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     else
         logIn(psync_get_username(),true);
 
+    cfg = manager.defaultConfiguration();
+    session = new QNetworkSession(cfg);
+    session->open();
+    connect(session, SIGNAL(stateChanged(QNetworkSession::State)), this, SLOT(networkConnectionChanged(QNetworkSession::State)));
     /* p
         else
         othread=new OnlineThread(this);
@@ -855,4 +859,11 @@ QString PCloudApp::timeConvert(quint64 seconds)
         return QString::number(seconds/60) + mins;
     else
         return QString::number(seconds/3600) + "h and " + QString::number((seconds%3600)/60) + mins;
+}
+
+void PCloudApp::networkConnectionChanged(QNetworkSession::State state)
+{
+    qDebug()<<"network connection state changed " << state;
+    if (state == QNetworkSession::NotAvailable || state == QNetworkSession::Connected)
+        psync_network_exception();
 }
