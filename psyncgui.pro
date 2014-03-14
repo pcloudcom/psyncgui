@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT +=network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -51,6 +52,8 @@ RESOURCES += \
     Resources.qrc
 
 LIBS += -lssl -lcrypto -lsqlite3
-LIBS += -L$$PWD/../../git/sync/pclsync -lpsync
+#LIBS += -L$$PWD/../../git/sync/pclsync -lpsync
+LIBS += -L$$PWD/../../sync/pclsync -lpsync
 
-INCLUDEPATH += $$PWD/../../git/sync/pclsync
+#INCLUDEPATH += $$PWD/../../git/sync/pclsync
+INCLUDEPATH += $$PWD/../../sync/pclsync
