@@ -15,6 +15,7 @@ TEMPLATE = app
 VERSION = 1.0.1
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += DEBUG_LEVEL=D_NOTICE
+DEFINES += P_OS_WINDOWS
 
 SOURCES += main.cpp\
         loginwindow.cpp \
