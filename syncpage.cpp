@@ -128,6 +128,7 @@ void SyncPage::modifySync()
             if(res  ==-1)
                 showError();
             modifyDialog.hide();
+            load();
         }
     }
 }
