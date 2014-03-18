@@ -123,11 +123,10 @@ void SyncPage::modifySync()
         {
             //if ((psync_change_synctype(current->data(3, Qt::UserRole),(modidyDialog->ui->combo_Directions->currentIndex()+1))));
             quint32 type = modifyDialog.ui->combo_Directions->currentIndex()+1;
-            //quint32 syncid = current->data(3, Qt::UserRole).toInt();
-            //int res = psync_change_synctype(syncid,type);
-            // psync_change_synctype(syncid, type); NOT IMPLEMENTED
-            //if(res)
-            showError();
+            quint32 syncid = current->data(3, Qt::UserRole).toInt();
+            int res = psync_change_synctype(syncid,type);
+            if(res  ==-1)
+                showError();
             modifyDialog.hide();
         }
     }
