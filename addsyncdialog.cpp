@@ -92,6 +92,7 @@ void addSyncDialog::load()
 
     //local tree
     model = new QFileSystemModel;
+    model->setReadOnly(false);
     model->setFilter(QDir::NoDotAndDotDot | QDir::Dirs);
     QString path = QDir::homePath();
     model->setRootPath(QDir::homePath()); //currentPath

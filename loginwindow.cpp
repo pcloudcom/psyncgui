@@ -98,7 +98,10 @@ void LoginWindow::logIn()
         {
             if ((loginStatusLst.contains(status.status)))
             {
-                this->setError("Invalid user and password combination");
+                if (status.status != PSTATUS_OFFLINE)
+                    this->setError("Invalid user and password combination");
+                else
+                    this->setError("No internet connection");
                 QApplication::restoreOverrideCursor();
                 return;
             }
