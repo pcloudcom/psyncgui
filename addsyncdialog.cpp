@@ -179,8 +179,10 @@ void addSyncDialog::addSync()
     QString localpath,localname, remotepath;
     int type;
     localpath = model->filePath(ui->treeSyncLocal->currentIndex());
-    localname = model->fileName(ui->treeSyncLocal->currentIndex());
-   // remotepath = "/"; //?
+#ifdef Q_OS_WIN
+    localpath.replace("/","\\");
+#endif
+    localname = model->fileName(ui->treeSyncLocal->currentIndex());   
     remotepath.append( ui->treeSyncRemote->currentItem()->data(0,Qt::UserRole).toString());
     type = ui->comboSyncType->currentIndex();
     qDebug()<<"TO ADD NEW SYNC :   localpath = "<<localpath<< " remotepath = "<<remotepath << " type = "<<type+1<< "local folder name ="<<localname;

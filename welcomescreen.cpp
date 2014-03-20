@@ -46,6 +46,12 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
 
     QString path = QDir::home().path().append("/pCloudSync");
     QDir pcloudDir(path);
+    QString nativepath;
+#ifdef Q_OS_WIN
+    nativepath = pcloudDir.toNativeSeparators(path);
+#else
+    nativepath = pcloudDir.path();
+#endif
     //QDir pcloudDir(path.append("pCloudSync"));
     if(!pcloudDir.exists())
     {
@@ -59,8 +65,8 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
     //    QDir::home().mkdir("pCloudSync");
     // QDir defaultLocaldir;
 
-    defaultItem->setText(1,pcloudDir.path());
-    defaultItem->setData(1,Qt::UserRole, pcloudDir.path());
+    defaultItem->setText(1,nativepath);
+    defaultItem->setData(1,Qt::UserRole, nativepath);
     defaultItem->setText(2,trUtf8("Download and Upload"));
     //defaultItem->setIcon(2,QIcon(":images/images/both.png"));
     defaultItem->setData(2,Qt::UserRole, PSYNC_FULL -1); //for combos and typestr[] indexes
