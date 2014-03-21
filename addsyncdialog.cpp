@@ -178,13 +178,18 @@ void addSyncDialog::addSync()
 {
     QString localpath,localname, remotepath;
     int type;
-    localpath = model->filePath(ui->treeSyncLocal->currentIndex());
+    localpath = model->filePath(ui->treeSyncLocal->currentIndex());    
 #ifdef Q_OS_WIN
     localpath.replace("/","\\");
 #endif
     localname = model->fileName(ui->treeSyncLocal->currentIndex());   
     remotepath.append( ui->treeSyncRemote->currentItem()->data(0,Qt::UserRole).toString());
     type = ui->comboSyncType->currentIndex();
+    if(localpath == "" || remotepath == "")
+    {
+        QMessageBox::warning(this, "pCloud", trUtf8("Please select both paths!"));
+        return;
+    }
     qDebug()<<"TO ADD NEW SYNC :   localpath = "<<localpath<< " remotepath = "<<remotepath << " type = "<<type+1<< "local folder name ="<<localname;
     if(this->welcomewin)
         welcomewin->addNewItem(localpath,remotepath,type);

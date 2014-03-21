@@ -809,7 +809,7 @@ void PCloudApp::updateSyncStatusInMenu()
             // syncStatusListWidget->item(1)->setText(trUtf8("Remaining:\n") + bytesConvert(bytestoUpld) + "\n" + QString::number(filesToUpld) + " files\n"
             //                                       + timeConvert(bytestoUpld/upldSpeed));
             //syncStatusListWidget->item(1)->setToolTip(trUtf8("Upload speed: ") + QString::number(upldSpeed/1000) + "kB/s");
-            syncUpldAction->setText(timeConvert(bytestoUpld/upldSpeed) + trUtf8("remaining: \n") + bytesConvert(bytestoUpld) + " " + QString::number(filesToUpld) + " files ");
+            syncUpldAction->setText(timeConvert(bytestoUpld/upldSpeed) + trUtf8(" remaining: \n") + bytesConvert(bytestoUpld) + " " + QString::number(filesToUpld) + " files ");
             qDebug()<<"Upld speed:" << timeConvert(bytestoUpld/upldSpeed);
         }
         else
@@ -853,12 +853,10 @@ QString PCloudApp::timeConvert(quint64 seconds)
 {
     if (seconds < 60)
         return QString::number(seconds) + "s";
-    QString mins;
-    (seconds % 60) ? mins = " mins" : mins = " min";
     if(seconds < 3600)
-        return QString::number(seconds/60) + mins;
+        return QString::number(seconds/60) + " m";
     else
-        return QString::number(seconds/3600) + "h and " + QString::number((seconds%3600)/60) + mins;
+        return QString::number(seconds/3600) + "h and " + QString::number((seconds%3600)/60) + " m";
 }
 
 void PCloudApp::networkConnectionChanged(QNetworkSession::State state)

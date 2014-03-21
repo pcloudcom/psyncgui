@@ -104,18 +104,16 @@ void SyncPage::initSyncPage()
     load();
     loadSettings();
 }
-
 void SyncPage::modifySync()
 {
     QTreeWidgetItem *current = win->ui->treeSyncList->currentItem();
     if (!current)
-    {
-        win->ui->label_errSync->setText(trUtf8("Please select a sync!"));
+    {      
+        QMessageBox::warning(this,"pCloud", trUtf8("Please select a sync!"));
         return;
     }
     else
-    {
-        //if statuses may be
+    {        
         //ModifySyncDialog modifyDialog(current->data(0, Qt::UserRole).toString(), current->data(2, Qt::UserRole).toString(), current->data(1, Qt::UserRole).toString());
         ModifySyncDialog modifyDialog(current->data(0, Qt::UserRole).toString(), current->data(2, Qt::UserRole).toString(),current->data(1, Qt::UserRole).toInt());
 
@@ -137,7 +135,8 @@ void SyncPage::stopSync()
     QTreeWidgetItem *current = win->ui->treeSyncList->currentItem();
     if (!current)
     {
-        win->ui->label_errSync->setText("Please select a sync!");
+       // win->ui->label_errSync->setText("Please select a sync!");
+        QMessageBox::warning(this,"pCloud", trUtf8("Please select a sync!"));
         return;
     }
     else
