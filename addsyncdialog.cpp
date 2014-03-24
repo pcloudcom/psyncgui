@@ -2,6 +2,8 @@
 #include "ui_addsyncdialog.h"
 
 #include <QFileSystemModel>
+#include <QInputDialog>
+#include <QMessageBox>
 #include <QDebug>
 
 addSyncDialog::addSyncDialog(PCloudApp *a, PCloudWindow *w, SyncPage *sp,WelcomeScreen *wlcm, QWidget *parent) :
@@ -16,7 +18,6 @@ addSyncDialog::addSyncDialog(PCloudApp *a, PCloudWindow *w, SyncPage *sp,Welcome
     connect(ui->btnAdd, SIGNAL(clicked()), this, SLOT(addSync()));
     connect(ui->btnNewFldrLocal, SIGNAL(clicked()), this, SLOT(newLocalFldr()));
     connect(ui->btnNewFldrRemote, SIGNAL(clicked()), this, SLOT(newRemoteFldr()));
-    ui->btnNewFldrRemote->setVisible(false); //temp; till newREmoteFolder is not available
     connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(hideDialog()));
     if (welcomewin && welcomewin->getChangeItem())
     {
@@ -78,6 +79,7 @@ void addSyncDialog::load()
 {
     //remote tree
     QList<QTreeWidgetItem *> items;
+    ui->treeSyncRemote->clear();
     QString root = "/";
     QTreeWidgetItem *rootItem = new QTreeWidgetItem(QStringList(root));
     rootItem->setIcon(0,QIcon(":images/images/folder-p.png"));
@@ -85,7 +87,7 @@ void addSyncDialog::load()
     ui->treeSyncRemote->setCurrentItem(rootItem);
     items = listRemoteFldrs(root);
     rootItem->addChildren(items);
-    ui->treeSyncRemote->expandItem(rootItem);    
+    ui->treeSyncRemote->expandItem(rootItem);
     ui->treeSyncRemote->sortByColumn(1, Qt::AscendingOrder);
     ui->treeSyncRemote->setSortingEnabled(true);
 
@@ -178,11 +180,11 @@ void addSyncDialog::addSync()
 {
     QString localpath,localname, remotepath;
     int type;
-    localpath = model->filePath(ui->treeSyncLocal->currentIndex());    
+    localpath = model->filePath(ui->treeSyncLocal->currentIndex());
 #ifdef Q_OS_WIN
     localpath.replace("/","\\");
 #endif
-    localname = model->fileName(ui->treeSyncLocal->currentIndex());   
+    localname = model->fileName(ui->treeSyncLocal->currentIndex());
     remotepath.append( ui->treeSyncRemote->currentItem()->data(0,Qt::UserRole).toString());
     type = ui->comboSyncType->currentIndex();
     if(localpath == "" || remotepath == "")
@@ -198,26 +200,9 @@ void addSyncDialog::addSync()
         quint32 id = psync_add_sync_by_path(localpath.toUtf8(), remotepath.toUtf8(),type+1);
         if (id == -1)
         {
-            quint32 err = psync_get_last_error();
-            switch (err)
-            {
-            case 7:
-                QMessageBox::information(this,trUtf8("Add new sync"), trUtf8("Local folder access denied!"));
-                break;
-                return;
-            case 8:
-                QMessageBox::information(this,trUtf8("Add new sync"), trUtf8("Remote folder access denied!"));
-                break;
-                return;
-            case 9:
-                QMessageBox::information(this,trUtf8("Add new sync"), trUtf8("Folder already synchronized"));
-                break;
-                return;
-            default:
-                break;
-            }
+            app->check_error();
+            return;
         }
-
         syncpage->load();
     }
     this->hide();
@@ -256,6 +241,26 @@ void addSyncDialog::newRemoteFldr()
 {
     //to check for existing name - in welcomescreen.checkRemoteName
     // add it in the list
+    char *err = NULL;
+    QString dirname = QInputDialog::getText(this,
+                                            tr("Create Directory"),
+                                            tr("Directory name"));
+    QString parentpath = ui->treeSyncRemote->currentItem()->data(0, Qt::UserRole).toString();
+    parentpath.append("/").append(dirname);
+    psync_create_remote_folder_by_path(parentpath.toUtf8(),&err);
+    if (err)
+    {
+        QMessageBox::critical(this,"pCloud",trUtf8(err));
+        return;
+    }
+
+    if (this->welcomewin)
+    {
+        welcomewin->addNewRemoteFldr(dirname);
+    }
+    free(err);
+    this->load();
+
 }
 
 

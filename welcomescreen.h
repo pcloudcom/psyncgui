@@ -32,6 +32,7 @@ public:
     bool getChangeItem();
     void setChangeItem(bool);
     QString checkRemoteName(QString entryName);
+    void addNewRemoteFldr(QString name);
   //  QString checkLocalPathExists(QString path,QString dirName);
 private:
     Ui::WelcomeScreen *ui;

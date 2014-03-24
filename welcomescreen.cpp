@@ -243,6 +243,10 @@ QString WelcomeScreen::checkRemoteName(QString entryName)
     else
         return entryName;
 }
+void WelcomeScreen::addNewRemoteFldr(QString name)
+{
+    this->remoteFldrsNamesLst.append(name);
+}
 
 QString WelcomeScreen::getCurrLocalPath()
 {

@@ -107,6 +107,7 @@ public:
     QString timeConvert(quint64 seconds);
     bool isMenuActive();
     void setFirstLaunch(bool b); // case after unlink - to display suggestions
+     void check_error();
 signals:
     void changeSyncIcon(const QString icon);
     void changeCursor(bool change);

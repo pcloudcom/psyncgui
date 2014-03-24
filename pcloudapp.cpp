@@ -528,6 +528,7 @@ PCloudApp::~PCloudApp(){
         mthread->wait();
         delete mthread;
     } p*/
+    psync_destroy();
     delete settings;
     delete tray;
     if (loggedmenu)
@@ -557,6 +558,77 @@ PCloudApp::~PCloudApp(){
         delete welcomeWin;
 }
 
+void PCloudApp::check_error()
+{
+    quint32 err = psync_get_last_error();
+    QMessageBox msgBox;
+    msgBox.setIcon(QMessageBox::Critical);
+    switch (err)
+    {
+    case PERROR_LOCAL_FOLDER_NOT_FOUND: //1
+        qDebug()<< PERROR_LOCAL_FOLDER_NOT_FOUND;
+        break;
+    case PERROR_REMOTE_FOLDER_NOT_FOUND: //2
+        qDebug()<<PERROR_REMOTE_FOLDER_NOT_FOUND;
+        break;
+    case PERROR_DATABASE_OPEN: //3
+        msgBox.setText(trUtf8("Database open error!"));
+        msgBox.setInformativeText(trUtf8("Please Check your free disk space or contact our support."));
+           msgBox.exec();
+        // ++ exit
+        break;
+    case PERROR_NO_HOMEDIR: //4
+        msgBox.setText(trUtf8("No home directory!"));
+        msgBox.setInformativeText(trUtf8("Please contact our support"));
+        msgBox.exec();
+        // ++ exit
+        break;
+    case PERROR_SSL_INIT_FAILED: //5
+        msgBox.setText(trUtf8("SSL initialization failed!"));
+        msgBox.setInformativeText(trUtf8("Please contact our support"));
+        msgBox.exec();
+        // ++ exit
+        break;
+    case PERROR_DATABASE_ERROR: //6
+        msgBox.setText(trUtf8("Database error!"));
+        msgBox.setInformativeText(trUtf8("Please check your free disk space or contact support."));
+        msgBox.exec();
+        // ++ exit
+        break;
+    case PERROR_LOCAL_FOLDER_ACC_DENIED: //7
+        msgBox.setText(trUtf8("Can not add new sync: Local folder access denied!"));
+        msgBox.setInformativeText(trUtf8("Please check folder permissions according to sync type"));
+        msgBox.exec();
+        break;
+    case PERROR_REMOTE_FOLDER_ACC_DENIED: //8
+        msgBox.setText(trUtf8("Can not add new sync: Remote folder access denied!"));
+        msgBox.setInformativeText(trUtf8("Please check folder permissions according to sync type"));
+        msgBox.exec();
+        break;
+    case PERROR_FOLDER_ALREADY_SYNCING: //9
+        msgBox.setText(trUtf8("Can not add new sync: Folder has already synchronized"));
+        msgBox.exec();
+        break;
+    case PERROR_INVALID_SYNCTYPE:  //10
+        qDebug()<< PERROR_INVALID_SYNCTYPE;
+        break;
+    case PERROR_OFFLINE: //11
+        msgBox.setText(trUtf8("Internal error!"));
+        msgBox.setInformativeText(trUtf8("pCloud is offline now. Please reconnect"));
+        msgBox.exec();
+        break;
+    case PERROR_INVALID_SYNCID: //12
+        qDebug()<<PERROR_INVALID_SYNCID;
+        break;
+    case PERROR_PARENT_OR_SUBFOLDER_ALREADY_SYNCING: //13
+        msgBox.setText(trUtf8("Can not add new sync: Parent folder or subfolder of it has already synchronized!"));
+        msgBox.setInformativeText(trUtf8("Please check your synchronized folders list"));
+        msgBox.exec();
+        break;
+    default:
+        break;
+    }
+}
 
 void PCloudApp::showError(QString err){
     tray->showMessage("Error", err, QSystemTrayIcon::Warning);
