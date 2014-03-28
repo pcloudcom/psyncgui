@@ -68,7 +68,7 @@ static QList<QTreeWidgetItem *> listRemoteFldrs(QString parentPath)
             item->setData(0,Qt::UserRole, path);
             item->addChildren(listRemoteFldrs(path));
             items.append(item);
-           // qDebug()<<path<< "name flrd" << name.toUtf8();
+            // qDebug()<<path<< "name flrd" << name.toUtf8();
         }
     }
     free(res);
@@ -90,8 +90,8 @@ void addSyncDialog::load()
     items = listRemoteFldrs(root);
     rootItem->addChildren(items);
     ui->treeSyncRemote->expandItem(rootItem);
-    ui->treeSyncRemote->sortByColumn(1, Qt::AscendingOrder);
     ui->treeSyncRemote->setSortingEnabled(true);
+    ui->treeSyncRemote->sortByColumn(0, Qt::AscendingOrder);
 
 
     //local tree
@@ -234,9 +234,10 @@ void addSyncDialog::newLocalFldr()
             newName = "New Sync Folder(" + QString::number(i) + ")";
         }
     }
-    model->mkdir(current,newName);
+    QModelIndex newIndex =  model->mkdir(current,newName);
+    ui->treeSyncLocal->scrollTo(newIndex,QAbstractItemView::PositionAtTop);
+    ui->treeSyncLocal->setCurrentIndex(newIndex);
     model->setReadOnly(false);
-    //++ to scroll to it
 }
 
 void addSyncDialog::newRemoteFldr()
@@ -255,14 +256,17 @@ void addSyncDialog::newRemoteFldr()
         QMessageBox::critical(this,"pCloud",trUtf8(err));
         return;
     }
-
+    free(err);
     if (this->welcomewin)
     {
         welcomewin->addNewRemoteFldr(dirname);
     }
-    free(err);
-    this->load();
-
+    QTreeWidgetItem *item = new QTreeWidgetItem((QTreeWidgetItem*)0,QStringList(dirname));
+    item->setIcon(0,QIcon(":images/images/folder-p.png"));
+    item->setData(0,Qt::UserRole, parentpath);
+    ui->treeSyncRemote->currentItem()->insertChild(0,item);
+    ui->treeSyncRemote->setCurrentItem(item);
+    ui->treeSyncRemote->scrollToItem(item);
 }
 
 
