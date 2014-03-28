@@ -15,7 +15,7 @@ ModifySyncDialog::ModifySyncDialog(QString local, QString remote,int type, QWidg
     ui->combo_Directions->setCurrentIndex(type-1);
     connect(ui->bntSave, SIGNAL(clicked()), this, SLOT(accept()));
     connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(hide()));
-    this->setWindowTitle("pCloud");
+    this->setWindowTitle("pCloud Sync");
     this->setWindowIcon(QIcon(WINDOW_ICON));
 }
 

@@ -31,7 +31,7 @@ void RegisterWindow::showEvent(QShowEvent *event)
     if (user != "")
     {
         QMessageBox msgBox;
-        msgBox.setWindowTitle("pCloud");
+        msgBox.setWindowTitle("pCloud Sync");
         msgBox.setText(trUtf8 ("User %1 has already linked in.").arg(user));
         msgBox.setInformativeText(trUtf8 ("Do you want to unlink %1 and to continue").arg(user));
         msgBox.setStandardButtons(QMessageBox::Cancel);

@@ -13,7 +13,7 @@ LoginWindow::LoginWindow(PCloudApp *a, QWidget *parent) :
     app=a;
     ui->setupUi(this);
     setWindowIcon(QIcon(WINDOW_ICON));
-    setWindowTitle("pCloud");
+    setWindowTitle("pCloud Sync");
     QPalette palette;
     palette.setColor(QPalette::WindowText, Qt::red);
     ui->error->setPalette(palette);
