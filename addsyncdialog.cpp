@@ -4,6 +4,7 @@
 #include <QFileSystemModel>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QTextCodec>
 #include <QDebug>
 
 addSyncDialog::addSyncDialog(PCloudApp *a, PCloudWindow *w, SyncPage *sp,WelcomeScreen *wlcm, QWidget *parent) :
@@ -15,6 +16,7 @@ addSyncDialog::addSyncDialog(PCloudApp *a, PCloudWindow *w, SyncPage *sp,Welcome
     win = w;
     syncpage = sp;
     welcomewin = wlcm;
+    ui->treeSyncRemote->header()->setSortIndicatorShown(true);
     connect(ui->btnAdd, SIGNAL(clicked()), this, SLOT(addSync()));
     connect(ui->btnNewFldrLocal, SIGNAL(clicked()), this, SLOT(newLocalFldr()));
     connect(ui->btnNewFldrRemote, SIGNAL(clicked()), this, SLOT(newRemoteFldr()));
@@ -26,7 +28,6 @@ addSyncDialog::addSyncDialog(PCloudApp *a, PCloudWindow *w, SyncPage *sp,Welcome
     }
     else
         this->setWindowTitle(trUtf8("Add new sync"));
-
     //ui->comboSyncType->insertItem(1,QIcon(":images/images/both.png"), "");
 
 }
@@ -47,12 +48,12 @@ void addSyncDialog::hideDialog()
     this->hide();
 }
 
+
 static QList<QTreeWidgetItem *> listRemoteFldrs(QString parentPath)
 {
     QList<QTreeWidgetItem *> items;
     pfolder_list_t *res = psync_list_remote_folder_by_path(parentPath.toUtf8(),PLIST_FOLDERS);
 
-    //if (res->entrycnt)
     if (res != NULL)
     {
         for(int i = 0; i < res->entrycnt; i++)
@@ -65,18 +66,19 @@ static QList<QTreeWidgetItem *> listRemoteFldrs(QString parentPath)
             QTreeWidgetItem *item = new QTreeWidgetItem((QTreeWidgetItem*)0, QStringList(res->entries[i].name));
             item->setIcon(0,QIcon(":images/images/folder-p.png"));
             item->setData(0,Qt::UserRole, path);
-            //or to set fldr id
             item->addChildren(listRemoteFldrs(path));
             items.append(item);
-            // qDebug()<<path;
+           // qDebug()<<path<< "name flrd" << name.toUtf8();
         }
     }
-    // else get last err
+    free(res);
     return items;
 }
 
 void addSyncDialog::load()
 {
+
+
     //remote tree
     QList<QTreeWidgetItem *> items;
     ui->treeSyncRemote->clear();
@@ -120,7 +122,7 @@ void addSyncDialog::load()
             //  emit model->directoryLoaded(welcomewin->getCurrLocalPath());
             //ui->treeSyncLocal->scrollTo(model->index(welcomewin->getCurrLocalPath()));
 
-            ui->treeSyncLocal->scrollTo(model->index(welcomewin->getCurrLocalPath()),QAbstractItemView::PositionAtCenter);
+            ui->treeSyncLocal->scrollTo(model->index(welcomewin->getCurrLocalPath()),QAbstractItemView::PositionAtTop);
             ui->treeSyncLocal->setCurrentIndex(model->index(welcomewin->getCurrLocalPath()));
 
             //ui->treeSyncRemote->setCurrentI;

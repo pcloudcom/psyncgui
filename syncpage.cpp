@@ -14,7 +14,6 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
     win = w;
     app = a;
 
-    // win->ui->label_errSync->setVisible(false);
     initSyncPage();
     win->ui->tabWidgetSync->setTabText(0, trUtf8("Synced Folders"));
     win->ui->tabWidgetSync->setTabText(1, trUtf8("Sync Settings"));
@@ -31,11 +30,13 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
     connect(win->ui->btnSyncModify,SIGNAL(clicked()), this, SLOT(modifySync()));
     connect(win->ui->btnSyncStop, SIGNAL(clicked()), this, SLOT(stopSync()));
     connect(win->ui->btnSyncAdd, SIGNAL(clicked()), this, SLOT(addSync()));
+    connect(win->ui->btnResumeSync, SIGNAL(clicked()), app, SLOT(resumeSync()));
+    connect(win->ui->btnPauseSync, SIGNAL(clicked()), app, SLOT(pauseSync()));
 
     connect(win->ui->btnSyncSttngsSave, SIGNAL(clicked()), this, SLOT(saveSettings()));
-    connect(win->ui->btnSyncSttngCancel, SIGNAL(clicked()), this, SLOT(cancelSettings()));
-    connect(win->ui->edit_DwnldSpeed, SIGNAL(textEdited(QString)), this, SLOT(enableSaveBtn()));
-    connect(win->ui->edit_UpldSpeed, SIGNAL(textEdited(QString)), this, SLOT(enableSaveBtn()));
+    connect(win->ui->btnSyncSttngCancel, SIGNAL(clicked()), this, SLOT(cancelSettings()));    
+    connect(win->ui->edit_DwnldSpeed, SIGNAL(textChanged(QString)), this, SLOT(enableSaveBtn()));
+    connect(win->ui->edit_UpldSpeed, SIGNAL(textChanged(QString)), this, SLOT(enableSaveBtn()));
     connect(win->ui->edit_minLocalSpace, SIGNAL(textEdited(QString)), this, SLOT(enableSaveBtn()));
     connect(win->ui->checkBoxSyncSSL, SIGNAL(stateChanged(int)), this, SLOT(enableSaveBtn()));
     connect(win->ui->text_patterns, SIGNAL(textChanged()), this, SLOT(enableSaveBtn()));
@@ -50,9 +51,16 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
 void SyncPage::refreshTab(int index)
 {
     if (index)
+    {qDebug() << "refresh settngs";
         loadSettings();
+    }
     else
+    {
+        qDebug()<< "load sync tab";
+        QApplication::setOverrideCursor(Qt::WaitCursor);
         load();
+        QApplication::restoreOverrideCursor();
+    }
 }
 static QString get_sync_type(int synctype)
 {
@@ -70,9 +78,7 @@ static QString get_sync_type(int synctype)
 }
 
 void SyncPage::load()
-{
-
-    win->ui->label_errSync->clear();
+{    
     win->ui->treeSyncList->clear();
     psync_folder_list_t *fldrsList = psync_get_sync_list();
     if (fldrsList != NULL && fldrsList->foldercnt)
@@ -90,7 +96,7 @@ void SyncPage::load()
             item->setData(0, Qt::UserRole,fldrsList->folders[i].localpath);
             item->setData(1, Qt::UserRole, fldrsList->folders[i].synctype);
             item->setData(2, Qt::UserRole, fldrsList->folders[i].remotepath);
-            item->setData(3,  Qt::UserRole, fldrsList->folders[i].syncid);
+            item->setData(3, Qt::UserRole, fldrsList->folders[i].syncid);
             win->ui->treeSyncList->insertTopLevelItem(i, item);
         }
 
@@ -134,8 +140,7 @@ void SyncPage::stopSync()
 {
     QTreeWidgetItem *current = win->ui->treeSyncList->currentItem();
     if (!current)
-    {
-       // win->ui->label_errSync->setText("Please select a sync!");
+    {       
         QMessageBox::warning(this,"pCloud", trUtf8("Please select a sync!"));
         return;
     }
@@ -229,10 +234,11 @@ void SyncPage::loadSettings()
     connect(win->ui->rBtnSyncDwldAuto, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
     connect(win->ui->rBtnSyncDwldUnlimit, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
     connect(win->ui->rbtnSyncDwnlChoose, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
+    connect(win->ui->edit_DwnldSpeed, SIGNAL(textChanged(QString)), SLOT(setNewSpeedFromEditline()));
     connect(win->ui->rBtnSyncUpldAuto, SIGNAL(clicked()),this, SLOT(setNewUpldSpeed()));
     connect(win->ui->rBtnSyncUpldUnlimit, SIGNAL(clicked()),this, SLOT(setNewUpldSpeed()));
     connect(win->ui->rbtnSyncupldChoose, SIGNAL(clicked()),this, SLOT(setNewUpldSpeed()));
-
+    connect(win->ui->edit_UpldSpeed, SIGNAL(textChanged(QString)), this, SLOT(setNewSpeedFromEditline()));
 
     patterns = psync_get_string_setting("ignorepatterns");
     win->ui->text_patterns->setText(patterns);
@@ -244,7 +250,7 @@ void SyncPage::loadSettings()
 void SyncPage::setNewDwnldSpeed()
 {
     QObject *obj = this->sender();
-    qDebug()<< "object: "<< obj->objectName();
+    //qDebug()<< "object: "<< obj->objectName();
     QString objname = obj->objectName();
     if (objname == "rBtnSyncDwldAuto")
     {
@@ -298,7 +304,7 @@ void SyncPage::setNewUpldSpeed()
 void SyncPage::setNewSpeedFromEditline()
 {
     QObject *obj = this->sender();
-    qDebug()<< "object: "<< obj->objectName();
+  //  qDebug()<< "object: "<< obj->objectName();
     QString objname = obj->objectName();
     if (objname == "edit_UpldSpeed")
         upldSpeedNew = (win->ui->edit_UpldSpeed->text().toInt()) *1000 ;

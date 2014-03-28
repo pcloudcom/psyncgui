@@ -871,7 +871,58 @@
          </layout>
         </widget>
         <widget class="QWidget" name="pageSync">
-         <layout class="QVBoxLayout" name="verticalLayout_32">
+         <layout class="QVBoxLayout" name="verticalLayout_31">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_36">
+            <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnResumeSync">
+              <property name="toolTip">
+               <string>Resume Sync</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="Resources.qrc">
+                <normaloff>:/menu/images/menu 48x48/resume.png</normaloff>:/menu/images/menu 48x48/resume.png</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnPauseSync">
+              <property name="toolTip">
+               <string>Pause Sync</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="Resources.qrc">
+                <normaloff>:/menu/images/menu 48x48/pause.png</normaloff>:/menu/images/menu 48x48/pause.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
           <item>
            <widget class="QTabWidget" name="tabWidgetSync">
             <property name="currentIndex">
@@ -884,13 +935,6 @@
              <layout class="QHBoxLayout" name="horizontalLayout_25">
               <item>
                <layout class="QVBoxLayout" name="verticalLayout_21">
-                <item>
-                 <widget class="QLabel" name="label_errSync">
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
                 <item>
                  <widget class="QLabel" name="label_sync">
                   <property name="text">
@@ -916,19 +960,6 @@
                    </property>
                   </column>
                  </widget>
-                </item>
-                <item>
-                 <spacer name="verticalSpacer_3">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>20</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
                 </item>
                 <item>
                  <layout class="QHBoxLayout" name="horizontalLayout_20">
@@ -968,6 +999,47 @@
                   </item>
                  </layout>
                 </item>
+                <item>
+                 <widget class="Line" name="line_2">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_forspace">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_dwnld">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_upld">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_3">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
                </layout>
               </item>
              </layout>
@@ -982,7 +1054,7 @@
                 <item row="0" column="0">
                  <widget class="QGroupBox" name="groupBoxSyncSSL">
                   <property name="title">
-                   <string>Security</string>
+                   <string>Use Secure Connection</string>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_27">
                    <item>
@@ -990,7 +1062,7 @@
                      <item>
                       <widget class="QCheckBox" name="checkBoxSyncSSL">
                        <property name="text">
-                        <string>Use SSL</string>
+                        <string>SSL</string>
                        </property>
                       </widget>
                      </item>
@@ -1015,7 +1087,7 @@
                 <item row="0" column="1" colspan="2">
                  <widget class="QGroupBox" name="groupBoxSyncSpace">
                   <property name="title">
-                   <string>Minimum Disc Space</string>
+                   <string>Minimum Disc Space </string>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_25">
                    <item>
@@ -1058,7 +1130,7 @@
                 <item row="1" column="0">
                  <widget class="QGroupBox" name="groupBoxSyncUpldSpeed">
                   <property name="title">
-                   <string>Upload Speed</string>
+                   <string>Upload Speed Limit</string>
                   </property>
                   <layout class="QHBoxLayout" name="horizontalLayout_30">
                    <item>
@@ -1130,10 +1202,71 @@
                   </layout>
                  </widget>
                 </item>
-                <item row="1" column="2">
+                <item row="2" column="0" colspan="3">
+                 <widget class="QGroupBox" name="groupBoxSyncPatterns">
+                  <property name="title">
+                   <string>Exceptions</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_26">
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_24">
+                     <item>
+                      <widget class="QLabel" name="label_exptns">
+                       <property name="text">
+                        <string>Ingore the following patterns:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QTextEdit" name="text_patterns">
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>150</height>
+                        </size>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item row="3" column="0" colspan="2">
+                 <layout class="QHBoxLayout" name="horizontalLayout_23">
+                  <item>
+                   <widget class="QPushButton" name="btnSyncSttngCancel">
+                    <property name="text">
+                     <string>Cancel</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="btnSyncSttngsSave">
+                    <property name="text">
+                     <string>Save</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_21">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item row="1" column="1">
                  <widget class="QGroupBox" name="groupBoxSyncDwnldSpeed">
                   <property name="title">
-                   <string>Download Speed</string>
+                   <string>Download Speed Limit</string>
                   </property>
                   <layout class="QHBoxLayout" name="horizontalLayout_28">
                    <item>
@@ -1197,67 +1330,6 @@
                    </item>
                   </layout>
                  </widget>
-                </item>
-                <item row="2" column="0" colspan="3">
-                 <widget class="QGroupBox" name="groupBoxSyncPatterns">
-                  <property name="title">
-                   <string>Exceptions</string>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_26">
-                   <item>
-                    <layout class="QVBoxLayout" name="verticalLayout_24">
-                     <item>
-                      <widget class="QLabel" name="label_exptns">
-                       <property name="text">
-                        <string>Ingore the following patterns:</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QTextEdit" name="text_patterns">
-                       <property name="maximumSize">
-                        <size>
-                         <width>16777215</width>
-                         <height>150</height>
-                        </size>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item row="3" column="0" colspan="2">
-                 <layout class="QHBoxLayout" name="horizontalLayout_23">
-                  <item>
-                   <widget class="QPushButton" name="btnSyncSttngCancel">
-                    <property name="text">
-                     <string>Cancel</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="btnSyncSttngsSave">
-                    <property name="text">
-                     <string>Save</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <spacer name="horizontalSpacer_21">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
                 </item>
                </layout>
               </item>

@@ -63,7 +63,7 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     //ui->verticalLayout_10->setAlignment(Qt::AlignCenter); //tab help
 
     setWindowIcon(QIcon(WINDOW_ICON));
-    setWindowTitle("pCloud");
+    setWindowTitle("pCloud Sync");
     // ui notes - set statusbar max size to (0,0)
 }
 

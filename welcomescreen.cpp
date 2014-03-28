@@ -27,7 +27,7 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
     connect(ui->btnModify, SIGNAL(clicked()), this, SLOT(modifyType()));
     //++ slot za currentdata
 
-    this->setWindowTitle("Welcome to pCloud");
+    this->setWindowTitle(trUtf8("Welcome to pCloud Sync"));
     this->setWindowIcon(QIcon(WINDOW_ICON));
     //default synced fldrs
     QString root = "/";
@@ -36,8 +36,9 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
     for (int i = 0; i < remoteRootChildFldrs->entrycnt; i++)
         remoteFldrsNamesLst.append(remoteRootChildFldrs->entries[i].name);
     qDebug()<<"Remote init folders list form lib"<<remoteFldrsNamesLst;
-    QString defaultRemoteFldr = checkRemoteName("pCloudSync");
-    defaultRemoteFldr.insert(0,"/");
+   // QString defaultRemoteFldr = checkRemoteName("pCloudSync");
+    QString defaultRemoteFldr = "/pCloudSync";
+    //defaultRemoteFldr.insert(0,"/");
 
     QTreeWidgetItem *defaultItem = new QTreeWidgetItem(ui->treeWidget); // the default sync; the first item in the view; uneditable
     defaultItem->setCheckState(0,Qt::Checked);
@@ -127,6 +128,7 @@ void WelcomeScreen::closeEvent(QCloseEvent *event)
     //check is default sync created(finishes pressed)
     this->hide();
     event->ignore();
+    app->showAccount();
 }
 void WelcomeScreen::addSync()
 {
@@ -227,6 +229,7 @@ void WelcomeScreen::finish()
     app->pCloudWin->get_sync_page()->load();
     //refresh menu
     this->hide();
+    app->showAccount();
 }
 QString WelcomeScreen::checkRemoteName(QString entryName)
 {

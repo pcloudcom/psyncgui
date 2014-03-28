@@ -68,8 +68,8 @@ public:
     static PCloudApp *appStatic;
     PCloudWindow *pCloudWin;
     WelcomeScreen *welcomeWin;
-    QString username;
-    QString authentication;
+    QString username, authentication;
+    QString downldInfo, uplodInfo;
     bool rememberMe;
     bool isPremium;
     bool isVerified;
@@ -77,12 +77,9 @@ public:
     quint64 freeSpacePercentage;
     qreal usedSpace;
     PSettings *settings;
+    bool upldFlag,downldFlag;
     quint64 bytestoDwnld;
     quint64 bytestoUpld;
-    quint32 filesToDwnld;
-    quint32 filesToUpld;
-    quint64 dwnldSpeed;
-    quint64 upldSpeed;
     uint32_t lastMessageType; // for Shares; online status
     bool isCursorChanged;
     explicit PCloudApp(int &argc, char **argv);
@@ -98,21 +95,21 @@ public:
     void setLogWinError(const char *msg); // sets err in logwin; called from static function status_callback
     void changeSyncIconPublic(const QString icon); //called from static function status_callbac;  signals are protected and can't be accessed by static vars
     void changeCursorPublic(bool change);
-    void updateSyncStatusInMenuPublic();
+    void updateSyncStatusPublic();
     void setTextErrPublic(int win , const char *err);
     void createSyncFolderActions(QMenu *syncMenu);
     QMenu* getSyncMenu();
     void addNewFolderInMenu(QAction *fldrAction); // refresh menu when add new sync
     QString bytesConvert(quint64 bytes);
     QString timeConvert(quint64 seconds);
-    bool isMenuActive();
+    bool isMenuorWinActive();
     void setFirstLaunch(bool b); // case after unlink - to display suggestions
      void check_error();
 signals:
     void changeSyncIcon(const QString icon);
     void changeCursor(bool change);
     void sendErrText(int win, const char *err);
-    void updateSyncStatusInMenuSgnl();
+    void updateSyncStatusSgnl();
 public slots:
     // void showTrayMessage(QString title, QString msg);
     void trayClicked(QSystemTrayIcon::ActivationReason reason);
@@ -137,7 +134,7 @@ public slots:
     void resumeSync();
     void openLocalDir(); // for local sync folder
     void addNewSync();
-    void updateSyncStatusInMenu();
+    void updateSyncStatus();
     void networkConnectionChanged(QNetworkSession::State state);
 };
 
