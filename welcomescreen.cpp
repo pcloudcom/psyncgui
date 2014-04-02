@@ -87,7 +87,7 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
     */
 
 #if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
-    QDir docs (QStandardPaths::writableLocation(QDesktopServices::DocumentsLocation));
+    QDir docs (QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
     QDir music(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
     QDir photos(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
     QDir movies(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
