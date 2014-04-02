@@ -1,0 +1,11 @@
+Package: pclsync
+Version: 0.102+nmu15
+Architecture: amd64
+Maintainer: Vasil Kolev <vasil@mobileinno.com>
+Installed-Size: 916
+Depends: libc6 (>= 2.4), libgcc1 (>= 1:4.1.1), libqt4-network (>= 4:4.7.0~beta1), libqtcore4 (>= 4:4.7.0~beta1), libqtgui4 (>= 4:4.6.1), libsqlite3-0 (>= 3.5.9), libssl1.0.0 (>= 1.0.0), libstdc++6 (>= 4.1.1)
+Section: unknown
+Priority: extra
+Homepage: http://pcloud.com
+Description: pCloud syncer
+ A QT-based pcloud sync client

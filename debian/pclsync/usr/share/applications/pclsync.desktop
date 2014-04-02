@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=pclsync
+GenericName=pclsync
+Comment=pCloud sync client
+Icon=/usr/share/pixmaps/pcloud.xpm
+Type=Application
+Categories=Network
+Exec=psyncgui
+Terminal=false
+

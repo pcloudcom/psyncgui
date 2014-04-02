@@ -1,0 +1,7 @@
+?package(pclsync):needs="x11"\
+  section="Applications/Network/Communication"           \
+  title="pclsync"                               \
+  longtitle="pCloud sync client" \
+  command="/usr/bin/psyncgui" \
+  icon="/usr/share/pixmaps/debian-logo.png" 
+
