@@ -1,5 +1,5 @@
 #include "pcloudapp.h"
-#include "mylogger.h"
+//#include "mylogger.h"
 #include <QApplication>
 
 #ifdef Q_OS_WIN
