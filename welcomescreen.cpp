@@ -66,7 +66,7 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
     defaultItem->setData(3,Qt::UserRole,defaultRemoteFldr);
     ui->treeWidget->insertTopLevelItem(0,defaultItem);
 
-  /*  psuggested_folders_t *suggestedFldrs = psync_get_sync_suggestions();
+    /*  psuggested_folders_t *suggestedFldrs = psync_get_sync_suggestions();
     for (int i = 0; i < suggestedFldrs->entrycnt; i++)
     {
         QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
@@ -86,12 +86,18 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
     }
     */
 
-    QDir docs(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
+#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
+    QDir docs (QStandardPaths::writableLocation(QDesktopServices::DocumentsLocation));
     QDir music(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
     QDir photos(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
     QDir movies(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
+#else
+    QDir docs(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+    QDir music(QStandardPaths::writableLocation(QStandardPaths::MusicLocation));
+    QDir photos(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
+    QDir movies(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
+#endif
     QList<QStringList> itemsLst;
-
     itemsLst << (QStringList() << docs.absolutePath() << "/My Documents")
              << (QStringList() << music.absolutePath() << "/My Music")
              << (QStringList() << photos.absolutePath() << "/My Pictures")
