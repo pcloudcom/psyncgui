@@ -735,7 +735,7 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     else
         tray->setIcon(QIcon(PAUSED_ICON));
     tray->setContextMenu(loggedmenu);
-    isFirstLaunch = true; // for test
+   // isFirstLaunch = true; // for test
     if (isFirstLaunch)
     {
         welcomeWin = new WelcomeScreen(this);
