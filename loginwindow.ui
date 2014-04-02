@@ -23,7 +23,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Login to pCloud</string>
+       <string>Login to pCloud Sync</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>

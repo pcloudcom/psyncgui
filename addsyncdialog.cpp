@@ -28,8 +28,7 @@ addSyncDialog::addSyncDialog(PCloudApp *a, PCloudWindow *w, SyncPage *sp,Welcome
     }
     else
         this->setWindowTitle(trUtf8("Add new sync"));
-    //ui->comboSyncType->insertItem(1,QIcon(":images/images/both.png"), "");
-
+    load();
 }
 
 addSyncDialog::~addSyncDialog()
@@ -40,6 +39,8 @@ addSyncDialog::~addSyncDialog()
 void addSyncDialog::showEvent(QShowEvent *)
 {
     load();
+    QModelIndex ind = ui->treeSyncLocal->currentIndex();
+    ui->treeSyncLocal->scrollTo(ind);
 }
 void addSyncDialog::hideDialog()
 {
@@ -117,23 +118,9 @@ void addSyncDialog::load()
     {
         if (welcomewin->getChangeItem())
         {
-            //
-            //QFileSystemModel::directoryLoaded ( const QString & path ) [signal]
-            //  emit model->directoryLoaded(welcomewin->getCurrLocalPath());
-            //ui->treeSyncLocal->scrollTo(model->index(welcomewin->getCurrLocalPath()));
-
-            ui->treeSyncLocal->scrollTo(model->index(welcomewin->getCurrLocalPath()),QAbstractItemView::PositionAtTop);
             ui->treeSyncLocal->setCurrentIndex(model->index(welcomewin->getCurrLocalPath()));
-
-            //ui->treeSyncRemote->setCurrentI;
-
-            //QModelIndex index = model->index(QDir::currentPath());
-            //ui->treeSyncLocal->expand(index);
-            //ui->treeSyncLocal->scrollTo(index);
-            //ui->treeSyncLocal->scrollTo(ui->treeSyncLocal->currentIndex(),QAbstractItemView::PositionAtCenter); //QAbstractItemView::PositionAtCenter
-
+            //ui->treeSyncLocal->scrollTo(model->index(welcomewin->getCurrLocalPath()),QAbstractItemView::PositionAtCenter);
             ui->comboSyncType->setCurrentIndex(welcomewin->getCurrType());
-            // welcomewin->setChangeItem(false);
 
 
             // remote tree - add new remote Fodlers from suggestions
@@ -152,7 +139,6 @@ void addSyncDialog::load()
                 }
                 ui->treeSyncRemote->sortByColumn(0, Qt::AscendingOrder);
             }
-
             //scroll to selected item
             QString remotePath = welcomewin->getCurrRemotePath();
             QString localName = welcomewin->getCurrRemotePath().section("/", -1, 1);
@@ -235,7 +221,7 @@ void addSyncDialog::newLocalFldr()
         }
     }
     QModelIndex newIndex =  model->mkdir(current,newName);
-    ui->treeSyncLocal->scrollTo(newIndex,QAbstractItemView::PositionAtTop);
+    ui->treeSyncLocal->scrollTo(newIndex,QAbstractItemView::PositionAtCenter);
     ui->treeSyncLocal->setCurrentIndex(newIndex);
     model->setReadOnly(false);
 }

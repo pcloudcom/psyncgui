@@ -24,6 +24,8 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
     QRegExp regExpSpeed("[1-9][0-9]{0,4}");
     win->ui->edit_DwnldSpeed->setValidator(new QRegExpValidator(regExpSpeed, this));
     win->ui->edit_UpldSpeed->setValidator(new QRegExpValidator(regExpSpeed, this));
+    win->ui->label_dwnld->setText(app->downldInfo);
+    win->ui->label_upld->setText(app->uplodInfo);
 
     connect(win->ui->tabWidgetSync, SIGNAL(currentChanged(int)), this, SLOT(refreshTab(int)));
     connect(win->ui->treeSyncList, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(modifySync()));
@@ -39,6 +41,7 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
     connect(win->ui->edit_UpldSpeed, SIGNAL(textChanged(QString)), this, SLOT(enableSaveBtn()));
     connect(win->ui->edit_minLocalSpace, SIGNAL(textEdited(QString)), this, SLOT(enableSaveBtn()));
     connect(win->ui->checkBoxSyncSSL, SIGNAL(stateChanged(int)), this, SLOT(enableSaveBtn()));
+    connect(win->ui->checkBoxp2p, SIGNAL(stateChanged(int)), this, SLOT(enableSaveBtn()));
     connect(win->ui->text_patterns, SIGNAL(textChanged()), this, SLOT(enableSaveBtn()));
     connect(win->ui->rbtnSyncDwnlChoose, SIGNAL(clicked()), this, SLOT(enableSaveBtn()));
     connect(win->ui->rBtnSyncDwldAuto, SIGNAL(clicked()), this, SLOT(enableSaveBtn()));
@@ -174,17 +177,19 @@ void SyncPage::addSync()
 
 }
 
-
 // Settings tab
 void SyncPage::loadSettings()
 {
     SSL = psync_get_bool_setting("usessl");
     win->ui->checkBoxSyncSSL->setChecked(SSL);
 
+    p2p = psync_get_bool_setting("p2psync");
+    win->ui->checkBoxp2p->setChecked(p2p);
+
     minLocalSpace = QString::number((psync_get_uint_setting("minlocalfreespace"))/1024/1024);
     win->ui->edit_minLocalSpace->setText(minLocalSpace);
 
-    // maximum upload speed in bytes per second, 0 for auto-shaper, -1 for no limit
+    //maximum upload speed in bytes per second, 0 for auto-shaper, -1 for no limit
     //donwload default - unlimitted -1
     //upload default - auto-shater 0
     dwnldSpeed = psync_get_int_setting("maxdownloadspeed");
@@ -315,6 +320,7 @@ void SyncPage::setNewSpeedFromEditline()
 void SyncPage::enableSaveBtn()
 {
     if (SSL != win->ui->checkBoxSyncSSL->isChecked()
+            || p2p != win->ui->checkBoxp2p->isChecked()
             || minLocalSpace != win->ui->edit_minLocalSpace->text()
             || upldSpeed != upldSpeedNew || dwnldSpeed != dwnldSpeedNew
             || win->ui->text_patterns->document()->isModified())
@@ -336,6 +342,11 @@ void SyncPage::saveSettings()
         SSL = !SSL;
         psync_set_bool_setting("usessl", SSL);
         qDebug()<<SSL;
+    }
+    if (p2p != win->ui->checkBoxp2p->isChecked())
+    {
+        p2p = !p2p;
+        psync_set_bool_setting("p2psync", p2p);
     }
     if (minLocalSpace != win->ui->edit_minLocalSpace->text())
     {

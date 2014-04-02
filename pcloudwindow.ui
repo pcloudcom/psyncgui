@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>845</width>
-    <height>644</height>
+    <height>671</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -519,7 +519,7 @@
           <item>
            <widget class="QTabWidget" name="tabWidgetShares">
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="tabMyShares">
              <attribute name="title">
@@ -926,7 +926,7 @@
           <item>
            <widget class="QTabWidget" name="tabWidgetSync">
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="tabSyncList">
              <attribute name="title">
@@ -1048,7 +1048,7 @@
              <attribute name="title">
               <string>Tab 2</string>
              </attribute>
-             <layout class="QHBoxLayout" name="horizontalLayout_29">
+             <layout class="QHBoxLayout" name="horizontalLayout_37">
               <item>
                <layout class="QGridLayout" name="gridLayout">
                 <item row="0" column="0">
@@ -1084,7 +1084,7 @@
                   </layout>
                  </widget>
                 </item>
-                <item row="0" column="1" colspan="2">
+                <item row="0" column="1">
                  <widget class="QGroupBox" name="groupBoxSyncSpace">
                   <property name="title">
                    <string>Minimum Disc Space </string>
@@ -1202,67 +1202,6 @@
                   </layout>
                  </widget>
                 </item>
-                <item row="2" column="0" colspan="3">
-                 <widget class="QGroupBox" name="groupBoxSyncPatterns">
-                  <property name="title">
-                   <string>Exceptions</string>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_26">
-                   <item>
-                    <layout class="QVBoxLayout" name="verticalLayout_24">
-                     <item>
-                      <widget class="QLabel" name="label_exptns">
-                       <property name="text">
-                        <string>Ingore the following patterns:</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QTextEdit" name="text_patterns">
-                       <property name="maximumSize">
-                        <size>
-                         <width>16777215</width>
-                         <height>150</height>
-                        </size>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item row="3" column="0" colspan="2">
-                 <layout class="QHBoxLayout" name="horizontalLayout_23">
-                  <item>
-                   <widget class="QPushButton" name="btnSyncSttngCancel">
-                    <property name="text">
-                     <string>Cancel</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="btnSyncSttngsSave">
-                    <property name="text">
-                     <string>Save</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <spacer name="horizontalSpacer_21">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
-                </item>
                 <item row="1" column="1">
                  <widget class="QGroupBox" name="groupBoxSyncDwnldSpeed">
                   <property name="title">
@@ -1330,6 +1269,94 @@
                    </item>
                   </layout>
                  </widget>
+                </item>
+                <item row="2" column="0" colspan="2">
+                 <widget class="QGroupBox" name="groupBoxSyncPatterns">
+                  <property name="title">
+                   <string>Exceptions</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_26">
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_24">
+                     <item>
+                      <widget class="QLabel" name="label_exptns">
+                       <property name="text">
+                        <string>Ingore the following patterns:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QTextEdit" name="text_patterns">
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>150</height>
+                        </size>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_29">
+                  <item>
+                   <widget class="QCheckBox" name="checkBoxp2p">
+                    <property name="text">
+                     <string>peer-to-peer</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_3">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item row="4" column="0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_23">
+                  <item>
+                   <widget class="QPushButton" name="btnSyncSttngCancel">
+                    <property name="text">
+                     <string>Cancel</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="btnSyncSttngsSave">
+                    <property name="text">
+                     <string>Save</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_21">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
                 </item>
                </layout>
               </item>

@@ -87,13 +87,13 @@ public:
     //p bool isMounted();
     //p void mount();
     //p void unMount();
-    void logIn(QString uname, bool remember);
+    void logIn(const QString &uname, bool remember);
     //p void setSettings();
-    void showError(QString err);
+    void showError(QString &err);
     void showOnClick();
     bool isLogedIn();    
     void setLogWinError(const char *msg); // sets err in logwin; called from static function status_callback
-    void changeSyncIconPublic(const QString icon); //called from static function status_callbac;  signals are protected and can't be accessed by static vars
+    void changeSyncIconPublic(const QString &icon); //called from static function status_callbac;  signals are protected and can't be accessed by static vars
     void changeCursorPublic(bool change);
     void updateSyncStatusPublic();
     void setTextErrPublic(int win , const char *err);
@@ -106,7 +106,7 @@ public:
     void setFirstLaunch(bool b); // case after unlink - to display suggestions
      void check_error();
 signals:
-    void changeSyncIcon(const QString icon);
+    void changeSyncIcon(const QString &icon);
     void changeCursor(bool change);
     void sendErrText(int win, const char *err);
     void updateSyncStatusSgnl();
@@ -127,7 +127,7 @@ public slots:
     void doExit();    
     //p void trayMsgClicked(); //show shares
     //p void setOnlineStatus(bool online);
-    void setTrayIcon(const QString icon);
+    void setTrayIcon(const QString &icon);
     void setCursor(bool change);
     void setErrText(int win, const char *err);
     void pauseSync();

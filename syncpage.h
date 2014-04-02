@@ -18,7 +18,7 @@ public:
 private:
     PCloudWindow *win;
     PCloudApp *app;
-    bool SSL;
+    bool SSL, p2p;
     QString minLocalSpace;
     int upldSpeed, upldSpeedNew;
     int dwnldSpeed, dwnldSpeedNew;

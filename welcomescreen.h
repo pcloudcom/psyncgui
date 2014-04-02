@@ -28,28 +28,24 @@ public:
     int getCurrType();
     QTreeWidgetItem* getCurrItem();
     void load();
-    void addNewItem(QString localpath, QString remotepath, int type);
+    void addNewItem(QString &localpath, QString &remotepath, int type);
     bool getChangeItem();
     void setChangeItem(bool);
-    QString checkRemoteName(QString entryName);
-    void addNewRemoteFldr(QString name);
-  //  QString checkLocalPathExists(QString path,QString dirName);
+    QString checkRemoteName(QString &entryName);
+    void addNewRemoteFldr(QString &name);
 private:
     Ui::WelcomeScreen *ui;
     PCloudApp *app;
     QString currentLocal, currentRemote;
     int currentType;
-    bool isChangingItem; //indicates if user adds a new sync or changes a suggested one
-  //  QList<int> syncsToAdd;
+    bool isChangingItem; //indicates if user adds a new sync or changes a suggested one  
 protected:
     void closeEvent(QCloseEvent *event);
 public slots:
     void addSync();
     void changeCurrItem(QModelIndex index);
     void testPrint(QModelIndex index);
-    void testPrintTree(QTreeWidgetItem*itm,int col);
- //   void chClicked(QModelIndex i1,QModelIndex i2);
-   // void comboClicked(int index);
+    void testPrintTree(QTreeWidgetItem*itm,int col); 
     void modifyType();
     void finish();
 };
