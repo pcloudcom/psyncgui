@@ -56,6 +56,8 @@ private:
     QNetworkConfigurationManager manager;
     QNetworkConfiguration cfg;
     QNetworkSession *session;
+    void getQuota();
+    void getUserInfo();
 #ifdef Q_OS_WIN
     //pRevNotifyThread *notifythread;
 #endif
@@ -96,6 +98,7 @@ public:
     void changeSyncIconPublic(const QString &icon); //called from static function status_callbac;  signals are protected and can't be accessed by static vars
     void changeCursorPublic(bool change);
     void updateSyncStatusPublic();
+    void updateUserInfoPublic(const char* param);
     void setTextErrPublic(int win , const char *err);
     void createSyncFolderActions(QMenu *syncMenu);
     QMenu* getSyncMenu();
@@ -110,6 +113,7 @@ signals:
     void changeCursor(bool change);
     void sendErrText(int win, const char *err);
     void updateSyncStatusSgnl();
+    void updateUserInfoSgnl(const char* &param);
 public slots:
     // void showTrayMessage(QString title, QString msg);
     void trayClicked(QSystemTrayIcon::ActivationReason reason);
@@ -135,6 +139,7 @@ public slots:
     void openLocalDir(); // for local sync folder
     void addNewSync();
     void updateSyncStatus();
+    void updateUserInfo(const char* &param);
     void networkConnectionChanged(QNetworkSession::State state);
 };
 

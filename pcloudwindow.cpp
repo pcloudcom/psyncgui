@@ -45,15 +45,14 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     new QListWidgetItem(QIcon(":/128x128/images/128x128/info.png"),trUtf8("About"),ui->listButtonsWidget); //index 6
 
     fillAcountNotLoggedPage();
-    fillAboutPage();
-    fillHelpPage();
+    fillAboutPage();    
     //p settngsPage = new SettingsPage(this, app);
 
     // indexes of Items in listWidget and their coresponding pages in StackWidget are the same
     connect(ui->listButtonsWidget,
             SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
             this, SLOT(changePage(QListWidgetItem*,QListWidgetItem*)));
-
+     connect(ui->btnVerify, SIGNAL(clicked()), this, SLOT(verifyEmail()));
     //p connect(ui->btnShareFolder,SIGNAL(clicked()), app, SLOT(shareFolder()));
 
     //for resize
@@ -65,6 +64,23 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     setWindowIcon(QIcon(WINDOW_ICON));
     setWindowTitle("pCloud Sync");
     // ui notes - set statusbar max size to (0,0)
+
+    connect(ui->btnLogin, SIGNAL(clicked()),app, SLOT(showLogin()));
+    connect(ui->btnRegstr, SIGNAL(clicked()), app, SLOT(showRegister()));
+    connect(ui->btnExit, SIGNAL(clicked()), app, SLOT(doExit()));
+    connect(ui->toolBtnContact, SIGNAL(clicked()), this, SLOT(contactUs()));
+    connect(ui->tBtnOnlineHelp, SIGNAL(clicked()), this, SLOT(openOnlineHelp()));
+    connect(ui->tBtnOnlineTutorial, SIGNAL(clicked()), this, SLOT(openOnlineTutorial()));
+    connect(ui->tBtnFeedback, SIGNAL(clicked()), this, SLOT(sendFeedback()));
+    connect(ui->toolBtnOpenWeb, SIGNAL(clicked()), this, SLOT(openWebPage()));
+    connect(ui->label, SIGNAL(linkActivated(QString)), this, SLOT(upgradePlan()));
+    //p connect(ui->tbtnOpenFolder, SIGNAL(clicked()),app,SLOT(openCloudDir()));
+    connect(ui->tBtnExit, SIGNAL(clicked()), app, SLOT(doExit())); // to move in this class
+    connect(ui->btnLgout, SIGNAL(clicked()), app, SLOT(logOut()));
+    connect(ui->btnChangePass, SIGNAL(clicked()), this, SLOT(changePass()));
+    connect(ui->btnForgotPass, SIGNAL(clicked()), this, SLOT(forgotPass()));
+    connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(unlinkSync()));
+
 }
 
 PCloudWindow::~PCloudWindow()
@@ -164,23 +180,12 @@ void PCloudWindow::setOnlinePages()
 }
 void PCloudWindow::fillAcountNotLoggedPage()
 {
-    connect(ui->btnLogin, SIGNAL(clicked()),app, SLOT(showLogin()));
-    connect(ui->btnRegstr, SIGNAL(clicked()), app, SLOT(showRegister()));
-    connect(ui->btnExit, SIGNAL(clicked()), app, SLOT(doExit())); // to move slot in this class
-    connect(ui->toolBtnContact, SIGNAL(clicked()), this, SLOT(contactUs()));
     ui->toolBtnContact->setStyleSheet("QToolButton{background-color:transparent;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");
 }
 
 void PCloudWindow::fillAboutPage()
 {
     ui->label_versionVal->setText(APP_VERSION);
-}
-
-void PCloudWindow::fillHelpPage()
-{
-    connect(ui->tBtnOnlineHelp, SIGNAL(clicked()), this, SLOT(openOnlineHelp()));
-    connect(ui->tBtnOnlineTutorial, SIGNAL(clicked()), this, SLOT(openOnlineTutorial()));
-    connect(ui->tBtnFeedback, SIGNAL(clicked()), this, SLOT(sendFeedback()));
 }
 
 void PCloudWindow::fillAccountLoggedPage()
@@ -194,18 +199,10 @@ void PCloudWindow::fillAccountLoggedPage()
     else
     {
         ui->checkBoxVerified->setCheckState(Qt::Unchecked);
-        ui->btnVerify->setVisible(true);
-        connect(ui->btnVerify, SIGNAL(clicked()), this, SLOT(verifyEmail()));
+        ui->btnVerify->setVisible(true);       
     }
     ui->checkBoxVerified->setEnabled(false);
-
-  //  ui->progressBar_space->setMinimum(0); //todel
-    //ui->progressBar_space->setMaximum(100);
-    //ui->progressBar_space->setValue(app->freeSpacePercentage);
-    //ui->progressBar_space->setFormat("%v% free");
-    //ui->label_space->setText(QString::number(app->usedSpace, 'f', 1) + " GB used of " + app->planStr);
     ui->label_space->setText(QString::number(app->usedSpace, 'f', 1) + "GB (" + QString::number(app->freeSpacePercentage) + "% free)");
-
     ui->label_planVal->setText(app->planStr);
 
     if (app->isPremium)
@@ -221,29 +218,22 @@ void PCloudWindow::fillAccountLoggedPage()
         ui->label_expDtVal->setVisible(false);
     }
 
-    connect(ui->toolBtnOpenWeb, SIGNAL(clicked()), this, SLOT(openWebPage()));       
-    connect(ui->label, SIGNAL(linkActivated(QString)), this, SLOT(upgradePlan()));    
-    //p connect(ui->tbtnOpenFolder, SIGNAL(clicked()),app,SLOT(openCloudDir()));
-    connect(ui->tBtnExit, SIGNAL(clicked()), app, SLOT(doExit())); // to move in this class
-    //connect(ui->tBtnLogout, SIGNAL(clicked()), app, SLOT(logOut()));
-    connect(ui->btnLgout, SIGNAL(clicked()), app, SLOT(logOut()));
-    connect(ui->btnChangePass, SIGNAL(clicked()), this, SLOT(changePass()));
-    connect(ui->btnForgotPass, SIGNAL(clicked()), this, SLOT(forgotPass()));
-    connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(unlinkSync()));
-
     //for sync hide some widgets till start use new fs
    // ui->tBtnExit->setVisible(false); ?
 
     ui->tbtnOpenFolder->setVisible(false);
     ui->tBtnExit->setVisible(false);    
 
-    //make frame white, leave widgets with normal colors
-    //ui->frame_account->setStyleSheet("background-color:lightblue");
+    //make frame white, leave widgets with normal colors    
     QPalette p;// = ui->frame->palette();
     p.setColor(ui->frame_account->backgroundRole(),Qt::white);
     p.setColor(ui->frame_account->foregroundRole(), Qt::black);
     ui->frame_account->setAutoFillBackground(true);
     ui->frame_account->setPalette(p);
+}
+void PCloudWindow::refreshUserinfo()
+{
+    this->fillAccountLoggedPage();
 }
 
 SyncPage* PCloudWindow::get_sync_page()
@@ -383,4 +373,3 @@ void PCloudWindow::contactUs(){
     QUrl url ("https://my.pcloud.com/#page=contact");
     QDesktopServices::openUrl(url);
 }
-

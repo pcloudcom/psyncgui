@@ -23,6 +23,7 @@ LoginWindow::LoginWindow(PCloudApp *a, QWidget *parent) :
     connect(ui->email, SIGNAL(returnPressed()), this, SLOT(focusPass()));
     connect(ui->registerButton, SIGNAL(clicked()), app, SLOT(showRegister()));
     connect(ui->forgotPassBtn,SIGNAL(clicked()), this,SLOT(forgotPassword()));
+    connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(unlinkSync()));
 
 }
 
@@ -46,13 +47,13 @@ void LoginWindow::showEvent(QShowEvent *)
         ui->email->setEnabled(true);
         ui->email->clear();
         ui->password->clear();
+        ui->email->setFocus();
     }
     else
     {
         ui->email->setText(username);
         ui->email->setEnabled(false);
-        ui->btnUnlink->setVisible(true);
-        connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(unlinkSync()));
+        ui->btnUnlink->setVisible(true);       
     }
 }
 

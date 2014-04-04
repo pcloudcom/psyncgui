@@ -48,7 +48,18 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
     connect(win->ui->rBtnSyncDwldUnlimit, SIGNAL(clicked()), this, SLOT(enableSaveBtn()));
     connect(win->ui->rbtnSyncupldChoose, SIGNAL(clicked()), this, SLOT(enableSaveBtn()));
     connect(win->ui->rBtnSyncUpldAuto, SIGNAL(clicked()), this, SLOT(enableSaveBtn()));
-    connect(win->ui->rBtnSyncUpldUnlimit, SIGNAL(clicked()), this, SLOT(enableSaveBtn()));
+    connect(win->ui->rBtnSyncUpldUnlimit, SIGNAL(clicked()), this, SLOT(enableSaveBtn()));    
+
+    connect(win->ui->rBtnSyncDwldAuto, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
+    connect(win->ui->rBtnSyncDwldUnlimit, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
+    connect(win->ui->rbtnSyncDwnlChoose, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
+    connect(win->ui->edit_DwnldSpeed, SIGNAL(textChanged(QString)), SLOT(setNewSpeedFromEditline()));
+    connect(win->ui->rBtnSyncUpldAuto, SIGNAL(clicked()),this, SLOT(setNewUpldSpeed()));
+    connect(win->ui->rBtnSyncUpldUnlimit, SIGNAL(clicked()),this, SLOT(setNewUpldSpeed()));
+    connect(win->ui->rbtnSyncupldChoose, SIGNAL(clicked()),this, SLOT(setNewUpldSpeed()));
+    connect(win->ui->edit_UpldSpeed, SIGNAL(textChanged(QString)), this, SLOT(setNewSpeedFromEditline()));
+    connect(win->ui->edit_DwnldSpeed, SIGNAL(textEdited(QString)), this, SLOT(setNewSpeedFromEditline()));
+    connect(win->ui->edit_UpldSpeed, SIGNAL(textEdited(QString)), this, SLOT(setNewSpeedFromEditline()));
 
 }
 void SyncPage::refreshTab(int index)
@@ -236,15 +247,6 @@ void SyncPage::loadSettings()
         }
     }
 
-    connect(win->ui->rBtnSyncDwldAuto, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
-    connect(win->ui->rBtnSyncDwldUnlimit, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
-    connect(win->ui->rbtnSyncDwnlChoose, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
-    connect(win->ui->edit_DwnldSpeed, SIGNAL(textChanged(QString)), SLOT(setNewSpeedFromEditline()));
-    connect(win->ui->rBtnSyncUpldAuto, SIGNAL(clicked()),this, SLOT(setNewUpldSpeed()));
-    connect(win->ui->rBtnSyncUpldUnlimit, SIGNAL(clicked()),this, SLOT(setNewUpldSpeed()));
-    connect(win->ui->rbtnSyncupldChoose, SIGNAL(clicked()),this, SLOT(setNewUpldSpeed()));
-    connect(win->ui->edit_UpldSpeed, SIGNAL(textChanged(QString)), this, SLOT(setNewSpeedFromEditline()));
-
     patterns = psync_get_string_setting("ignorepatterns");
     win->ui->text_patterns->setText(patterns);
 
@@ -273,8 +275,7 @@ void SyncPage::setNewDwnldSpeed()
     }
     if (objname == "rbtnSyncDwnlChoose")
     {
-        win->ui->edit_DwnldSpeed->setEnabled(true);
-        connect(win->ui->edit_DwnldSpeed, SIGNAL(textEdited(QString)), this, SLOT(setNewSpeedFromEditline()));
+        win->ui->edit_DwnldSpeed->setEnabled(true);       
         return;
     }
 }
@@ -299,8 +300,7 @@ void SyncPage::setNewUpldSpeed()
         return;
     }
     if (objname == "rbtnSyncupldChoose")
-    {
-        connect(win->ui->edit_UpldSpeed, SIGNAL(textEdited(QString)), this, SLOT(setNewSpeedFromEditline()));
+    {        
         win->ui->edit_UpldSpeed->setEnabled(true);
         return;
     }

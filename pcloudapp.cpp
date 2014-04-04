@@ -9,9 +9,11 @@
 #include "unistd.h" //for sync statuses
 #include <QTextCodec>
 #include <QWidgetAction> //temp maybe
+#include <QMutex>
 
 
 PCloudApp * PCloudApp::appStatic = NULL;
+QMutex mutex(QMutex::Recursive);
 
 void PCloudApp::hideAllWindows(){
     if (regwin)
@@ -107,7 +109,7 @@ void PCloudApp::openCloudDir(){
     }
 #endif
 }
-
+*/
 /*p void PCloudApp::shareFolder(){ // for Shares page btn
     //  hideAllWindows();
     if (!sharefolderwin)
@@ -256,6 +258,7 @@ void PCloudApp::createMenus(){
 
 void status_callback(pstatus_t *status)
 {    
+mutex.lock();
     quint32 err = psync_get_last_error();
     if(err)
         qDebug()<<"last error: "<<err;
@@ -410,7 +413,7 @@ void status_callback(pstatus_t *status)
 
     case PSTATUS_ACCOUNT_FULL:              //6
         qDebug()<<"PSTATUS_ACCOUNT_FULL";
-        PCloudApp::appStatic->changeSyncIconPublic(SYNC_FULL_ICON);        
+        PCloudApp::appStatic->changeSyncIconPublic(SYNC_FULL_ICON);
         break;
 
     case PSTATUS_DISK_FULL:                 //7
@@ -451,30 +454,104 @@ void status_callback(pstatus_t *status)
     default:
         break;
     }
-
+mutex.unlock();
 }
-//static void event_callback(psync_eventtype_t event, psync_syncid_t syncid, psync_fileorfolderid_t remoteid, const char *name, const char *localpath, const char *remotepath)
 static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
-{
-    //qDebug()<<event << " " << syncid<< " " << name <<" " << localpath <<" " <<remotepath<< " "<<remoteid;
+{    
+    mutex.lock();
     qDebug()<<"Event callback" << event;
     switch(event)
     {
+    case PEVENT_LOCAL_FOLDER_CREATED:
+        qDebug() << "PEVENT_LOCAL_FOLDER_CREATED";
+        break;
+    case PEVENT_REMOTE_FOLDER_CREATED:
+        qDebug()<<"PEVENT_REMOTE_FOLDER_CREATED";
+        break;
+    case PEVENT_FILE_DOWNLOAD_STARTED:
+        qDebug()<<"PEVENT_FILE_DOWNLOAD_STARTED";
+        break;
     case PEVENT_FILE_DOWNLOAD_FINISHED:
         qDebug()<<"PEVENT_FILE_DOWNLOAD_FINISHED";
+        break;
+    case PEVENT_FILE_DOWNLOAD_FAILED:
+        qDebug()<<"PEVENT_FILE_DOWNLOAD_FAILED";
+        break;
+    case PEVENT_FILE_UPLOAD_STARTED:
+        qDebug()<<"PEVENT_FILE_UPLOAD_STARTED";
         break;
     case PEVENT_FILE_UPLOAD_FINISHED:
         qDebug()<<"PEVENT_FILE_UPLOAD_FINISHED";
         break;
-    case PEVENT_LOCAL_FOLDER_DELETED:
-        qDebug()<<PEVENT_LOCAL_FOLDER_DELETED;
-        //refresh lists
+    case PEVENT_FILE_UPLOAD_FAILED:
+        qDebug()<<"PEVENT_FILE_UPLOAD_FAILED";
         break;
-        // ++ event za changed pass
+    case PEVENT_LOCAL_FOLDER_DELETED:
+        qDebug()<<"PEVENT_LOCAL_FOLDER_DELETED";
+        break;
+    case PEVENT_REMOTE_FOLDER_DELETED:
+        qDebug()<<"PEVENT_REMOTE_FOLDER_DELETED";
+        break;
+    case PEVENT_LOCAL_FILE_DELETED:
+        qDebug()<<"PEVENT_LOCAL_FILE_DELETED";
+        break;
+    case PEVENT_REMOTE_FILE_DELETED:
+        qDebug()<<"PEVENT_REMOTE_FILE_DELETED";
+        break;
+    case PEVENT_LOCAL_FOLDER_RENAMED:
+        qDebug()<<"PEVENT_LOCAL_FOLDER_RENAMED";
+        break;
+    case PEVENT_USERINFO_CHANGED:
+        qDebug()<<"PEVENT_USERINFO_CHANGED";
+        if (PCloudApp::appStatic->isLogedIn())
+            PCloudApp::appStatic->updateUserInfoPublic("userinfo");
+        break;
+    case PEVENT_USEDQUOTA_CHANGED:
+        qDebug()<<"PEVENT_USEDQUOTA_CHANGED";
+        if (PCloudApp::appStatic->isLogedIn())
+            PCloudApp::appStatic->updateUserInfoPublic("quota");
+        break;
+    case PEVENT_SHARE_REQUESTIN:
+        qDebug()<<"PEVENT_SHARE_REQUESTIN";
+        break;
+    case PEVENT_SHARE_REQUESTOUT:
+        qDebug()<<"PEVENT_SHARE_REQUESTOUT";
+        break;
+    case PEVENT_SHARE_ACCEPTIN:
+        qDebug()<<"PEVENT_SHARE_ACCEPTIN";
+        break;
+    case PEVENT_SHARE_ACCEPTOUT:
+        qDebug()<<"PEVENT_SHARE_ACCEPTOUT";
+        break;
+    case PEVENT_SHARE_DECLINEIN:
+        qDebug()<<"PEVENT_SHARE_DECLINEIN";
+        break;
+    case PEVENT_SHARE_DECLINEOUT:
+        qDebug()<<"PEVENT_SHARE_DECLINEOUT";
+        break;
+    case PEVENT_SHARE_CANCELIN:
+        qDebug()<<"PEVENT_SHARE_CANCELIN";
+        break;
+    case PEVENT_SHARE_CANCELOUT:
+        qDebug()<<"PEVENT_SHARE_CANCELOUT";
+        break;
+    case PEVENT_SHARE_REMOVEIN:
+        qDebug()<<"PEVENT_SHARE_REMOVEIN";
+        break;
+    case PEVENT_SHARE_REMOVEOUT:
+        qDebug()<<"PEVENT_SHARE_REMOVEOUT";
+        break;
+    case PEVENT_SHARE_MODIFYIN:
+        qDebug()<<"PEVENT_SHARE_MODIFYIN";
+        break;
+    case PEVENT_SHARE_MODIFYOUT:
+        qDebug()<<"PEVENT_SHARE_MODIFYOUT";
+        break;
     default:
         break;
 
     }
+    mutex.unlock();
 }
 
 PCloudApp::PCloudApp(int &argc, char **argv) :
@@ -541,6 +618,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     connect(this, SIGNAL(changeCursor(bool)), this, SLOT(setCursor(bool)));
     connect(this, SIGNAL(sendErrText(int, const char*)), this, SLOT(setErrText(int,const char*)));
     connect(this, SIGNAL(updateSyncStatusSgnl()), this, SLOT(updateSyncStatus()));
+    connect(this,SIGNAL(updateUserInfoSgnl(const char* &)), this, SLOT(updateUserInfo(const char* &)));
 
     bool savedauth = psync_get_bool_value("saveauth"); //works when syns is paused also
     if (!savedauth)
@@ -701,8 +779,41 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
 {
     this->username = uname;
     this->rememberMe = remember;
-    this->authentication = psync_get_auth_string();
+    this->getUserInfo();
     this->loggedin=true;
+    //p  setSettings(); // for pcloud
+    tray->setToolTip(username);
+    //if (loggedmenu){
+    //loggedmenu->actions()[0]->setText(username);
+    //}
+    pCloudWin->setOnlineItems(true);
+    pCloudWin->setOnlinePages();
+    pstatus_t status;
+    psync_get_status(&status);
+    if (status.status != PSTATUS_PAUSED)
+        tray->setIcon(QIcon(SYNCED_ICON));
+    else
+        tray->setIcon(QIcon(PAUSED_ICON));
+    tray->setContextMenu(loggedmenu);
+    // isFirstLaunch = true; // for test
+    if (isFirstLaunch)
+    {
+        welcomeWin = new WelcomeScreen(this);
+        this->showWindow(welcomeWin);
+    }
+    else
+        showAccount();
+
+}
+void PCloudApp::getUserInfo()
+{
+    this->authentication = psync_get_auth_string();
+    this->isVerified = psync_get_bool_value("emailverified");
+    this->isPremium = psync_get_bool_value("premium");
+    this->getQuota();
+}
+void PCloudApp::getQuota()
+{
     quint64 quota = psync_get_uint_value("quota");
     if (quota){
         this->planStr =  QString::number(quota >> 30 ) + " GB";
@@ -719,32 +830,8 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
         this->usedSpace = static_cast<double>(usedquota) / (1<<30);
         this->freeSpacePercentage = (100*(quota - usedquota))/quota;
     }
-    this->isVerified = psync_get_bool_value("emailverified");
-    this->isPremium = psync_get_bool_value("premium");
-    //p  setSettings(); // for pcloud
-    tray->setToolTip(username);
-    //if (loggedmenu){
-    //loggedmenu->actions()[0]->setText(username);
-    //}
-    pCloudWin->setOnlineItems(true);
-    pCloudWin->setOnlinePages();
-    pstatus_t status;
-    psync_get_status(&status);
-    if (status.status != PSTATUS_PAUSED)
-        tray->setIcon(QIcon(SYNCED_ICON));
-    else
-        tray->setIcon(QIcon(PAUSED_ICON));
-    tray->setContextMenu(loggedmenu);
-   // isFirstLaunch = true; // for test
-    if (isFirstLaunch)
-    {
-        welcomeWin = new WelcomeScreen(this);
-        this->showWindow(welcomeWin);
-    }
-    else
-        showAccount();
-
 }
+
 /*p
 void PCloudApp::trayMsgClicked()
 {
@@ -811,8 +898,13 @@ void PCloudApp::setTextErrPublic(int win, const char *err)
 }
 void PCloudApp::updateSyncStatusPublic()
 {
-    emit this->updateSyncStatusSgnl();    
+    emit this->updateSyncStatusSgnl();
 
+}
+void PCloudApp::updateUserInfoPublic(const char* param)
+{
+    emit updateUserInfoSgnl(param);
+    emit this->pCloudWin->refreshUserinfo();
 }
 
 void PCloudApp::setErrText(int win, const char *err)
@@ -875,7 +967,7 @@ void PCloudApp::createSyncFolderActions(QMenu *syncMenu)
     psync_folder_list_t *fldrsList = psync_get_sync_list();
     if (fldrsList != NULL && fldrsList->foldercnt)
     {
-        for (int i = 0; i< fldrsList->foldercnt; i++)
+        for (uint i = 0; i< fldrsList->foldercnt; i++)
         {
             QAction *fldrAction = new QAction(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),fldrsList->folders[i].localname,this);
             fldrAction->setProperty("path", fldrsList->folders[i].localpath);
@@ -917,6 +1009,15 @@ void PCloudApp::updateSyncStatus()
 
     this->tray->setToolTip(traymsg);
 }
+void PCloudApp::updateUserInfo(const char* &param)
+{
+    //if(param.compare("quota"))
+    if (param == "quota")
+        this->getQuota();
+    else
+        this->getUserInfo();
+}
+
 void PCloudApp::setFirstLaunch(bool b)
 {
     this->isFirstLaunch = b;
@@ -924,7 +1025,7 @@ void PCloudApp::setFirstLaunch(bool b)
 
 QString PCloudApp::bytesConvert(quint64 bytes)
 {
-    if(bytes >= 0 && bytes < 1<<10)
+    if(bytes < 1<<10)
         return QString::number(bytes) + " B";
 
     if(bytes < 1<<20)

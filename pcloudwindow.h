@@ -31,8 +31,7 @@ public:
     friend class SyncPage;
     explicit PCloudWindow(PCloudApp *a, QWidget *parent = 0);
     ~PCloudWindow();
-    SyncPage* get_sync_page();
-
+    SyncPage* get_sync_page();    
 private:
     Ui::PCloudWindow *ui;
     PCloudApp *app;
@@ -44,8 +43,7 @@ private:
     void checkVerify();
     void closeEvent(QCloseEvent *event);
     void fillAcountNotLoggedPage();
-    void fillAccountLoggedPage();
-    void fillHelpPage();
+    void fillAccountLoggedPage();    
     void fillAboutPage();
     void refreshPages();
 protected:
@@ -55,6 +53,7 @@ public slots:
     void showpcloudWindow(int index);
     void setOnlineItems(bool online);
     void setOnlinePages();  //when the user logs in
+    void refreshUserinfo();
     void openWebPage();
     void openOnlineTutorial();
     void openOnlineHelp();

@@ -1,5 +1,5 @@
 #include "pcloudapp.h"
-//#include "mylogger.h"
+#include "mylogger.h"
 #include <QApplication>
 
 #ifdef Q_OS_WIN
@@ -44,6 +44,6 @@ int main(int argc, char *argv[])
         return 1;
     }
 #endif
-  //  MyLogger logger;
+   // MyLogger logger;
     return PCloudApp(argc, argv).exec();
 }
