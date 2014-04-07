@@ -196,13 +196,13 @@ void PCloudWindow::fillAccountLoggedPage()
         ui->btnVerify->setVisible(false);
         ui->checkBoxVerified->setVisible(true);
         ui->checkBoxVerified->setCheckState(Qt::Checked);
+        ui->checkBoxVerified->setEnabled(false);
     }
     else
     {
         ui->checkBoxVerified->setVisible(false);
         ui->btnVerify->setVisible(true);       
     }
-    ui->checkBoxVerified->setEnabled(false);
     ui->label_space->setText(QString::number(app->usedSpace, 'f', 1) + "GB (" + QString::number(app->freeSpacePercentage) + "% free)");
     ui->label_planVal->setText(app->planStr);
 
