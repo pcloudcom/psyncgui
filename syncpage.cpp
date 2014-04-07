@@ -113,7 +113,6 @@ void SyncPage::load()
             item->setData(3, Qt::UserRole, fldrsList->folders[i].syncid);
             win->ui->treeSyncList->insertTopLevelItem(i, item);
         }
-
         free(fldrsList);
     }
 }

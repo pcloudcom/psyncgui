@@ -194,11 +194,12 @@ void PCloudWindow::fillAccountLoggedPage()
     if (app->isVerified)
     {
         ui->btnVerify->setVisible(false);
+        ui->checkBoxVerified->setVisible(true);
         ui->checkBoxVerified->setCheckState(Qt::Checked);
     }
     else
     {
-        ui->checkBoxVerified->setCheckState(Qt::Unchecked);
+        ui->checkBoxVerified->setVisible(false);
         ui->btnVerify->setVisible(true);       
     }
     ui->checkBoxVerified->setEnabled(false);

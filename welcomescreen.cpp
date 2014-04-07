@@ -144,11 +144,9 @@ WelcomeScreen::~WelcomeScreen()
     delete ui;
 }
 void WelcomeScreen::closeEvent(QCloseEvent *event)
-{
-    //check is default sync created(finishes pressed)
-    this->hide();
+{    
+    this->finish();
     event->ignore();
-    app->showAccount();
 }
 void WelcomeScreen::addSync()
 {
