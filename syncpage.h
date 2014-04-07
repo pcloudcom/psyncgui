@@ -15,6 +15,7 @@ public:
     friend class addSyncDialog;
     explicit SyncPage(PCloudWindow *w, PCloudApp *a,QWidget *parent = 0);
     void load();
+    void loadSettings();
 private:
     PCloudWindow *win;
     PCloudApp *app;
@@ -23,8 +24,7 @@ private:
     int upldSpeed, upldSpeedNew;
     int dwnldSpeed, dwnldSpeedNew;
     QString patterns;
-    void initSyncPage();
-    void loadSettings();
+    void initSyncPage();    
     void showError();
 public slots:
     void refreshTab(int index);

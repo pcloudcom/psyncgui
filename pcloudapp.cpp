@@ -578,6 +578,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     bytestoUpld = 0;
     downldInfo = QObject::trUtf8("Everything downloaded");
     uplodInfo = QObject::trUtf8("Everything uploaded");
+    unlinkFlag = false;
     isCursorChanged = false;
     tray=new QSystemTrayIcon(QIcon(OFFLINE_ICON),this);
 #ifdef Q_OS_LINUX    
@@ -777,6 +778,19 @@ void PCloudApp::showTrayMessage(QString title, QString msg)
 
 void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
 {
+    if (this->unlinkFlag)
+    {
+        syncMenu->clear();
+        resumeSyncAction->setVisible(false);
+        pauseSyncAction->setVisible(true);
+        this->downldInfo = QObject::trUtf8("Everything downloaded");
+        this->uplodInfo = QObject::trUtf8("Everything uploaded");
+        this->pCloudWin->get_sync_page()->load();
+        this->pCloudWin->get_sync_page()->loadSettings();
+        pCloudWin->ui->btnResumeSync->setVisible(false);
+        pCloudWin->ui->btnPauseSync->setVisible(true);
+        this->unlinkFlag = false;
+    }
     this->username = uname;
     this->rememberMe = remember;
     this->getUserInfo();

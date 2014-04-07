@@ -297,6 +297,7 @@ void PCloudWindow::forgotPass()
 
 void PCloudWindow::unlinkSync()
 {
+    app->unlinkFlag = true;
     QMessageBox::StandardButton reply;
     reply = QMessageBox::warning(this,trUtf8("Unlink"), trUtf8("If You unlink your account from this computer any data about your synced folders will be lost. Do you still want to unlink?"),
                                  QMessageBox::Yes|QMessageBox::No);
@@ -341,7 +342,7 @@ void PCloudWindow::checkVerify() // has the user verified after had clicked "Ver
 
 void PCloudWindow::openWebPage()
 {
-    QUrl url("https://my.pcloud.com/#page=filemanager");
+    QUrl url("https://my.pcloud.com/#page=filemanager"+app->authentication);
     QDesktopServices::openUrl(url);
 }
 

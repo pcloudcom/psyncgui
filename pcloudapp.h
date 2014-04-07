@@ -75,6 +75,7 @@ public:
     bool rememberMe;
     bool isPremium;
     bool isVerified;
+    bool unlinkFlag;
     QString planStr;
     quint64 freeSpacePercentage;
     qreal usedSpace;

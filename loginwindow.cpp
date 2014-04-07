@@ -171,6 +171,7 @@ void LoginWindow::forgotPassword()
 }
 void LoginWindow::unlinkSync() // to be moved in sync class
 {
+    app->unlinkFlag = true;
     QMessageBox::StandardButton reply;
     reply = QMessageBox::warning(this,trUtf8("Unlink"), trUtf8("If You unlink your account from this computer any data about your synced folders will be lost. Do you still want to unlink?"),
                                  QMessageBox::Yes|QMessageBox::No);
