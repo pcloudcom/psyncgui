@@ -191,13 +191,13 @@ void addSyncDialog::addSync()
             app->check_error();
             return;
         }
+        QAction *fldrAction = new QAction(localname,app);
+        fldrAction->setProperty("path",localpath);
+        connect(fldrAction,SIGNAL(triggered()),app, SLOT(openLocalDir()));
+        app->addNewFolderInMenu(fldrAction);
         syncpage->load();
     }
-    this->hide();
-    QAction *fldrAction = new QAction(localname,app);
-    fldrAction->setProperty("path",localpath);
-    connect(fldrAction,SIGNAL(triggered()),app, SLOT(openLocalDir()));
-    app->addNewFolderInMenu(fldrAction);
+    this->hide();    
 
 }
 
