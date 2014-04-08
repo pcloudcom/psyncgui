@@ -57,7 +57,7 @@
          <bool>true</bool>
         </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>6</number>
         </property>
         <widget class="QWidget" name="pageAccntNotLogged">
          <property name="maximumSize">
@@ -1807,7 +1807,7 @@
                <enum>Qt::LeftToRight</enum>
               </property>
               <property name="text">
-               <string>&lt;a href=&quot;https://www.pcloud.com/pcloud-terms-and-conditions&quot;&gt;Terms of Service&lt;/a&gt;</string>
+               <string>&lt;a href=&quot;https://www.pcloud.com/terms_and_conditions.html&quot;&gt;Terms of Service&lt;/a&gt;</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -1826,7 +1826,7 @@
             <item>
              <widget class="QLabel" name="label_pp">
               <property name="text">
-               <string>&lt;a href=&quot;https://www.pcloud.com/pcloud-privacy-policy&quot;&gt;Privacy policy&lt;/a&gt;</string>
+               <string>&lt;a href=&quot;https://www.pcloud.com/privacy_policy.html&quot;&gt;Privacy policy&lt;/a&gt;</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -1842,7 +1842,7 @@
             <item>
              <widget class="QLabel" name="label_ipp">
               <property name="text">
-               <string>&lt;a href=&quot;https://www.pcloud.com/pcloud-intellectual-property&quot;&gt;Intelectual Property Policy&lt;/a&gt;</string>
+               <string>&lt;a href=&quot;https://www.pcloud.com/int_pr_policy.html&quot;&gt;Intelectual Property Policy&lt;/a&gt;</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
