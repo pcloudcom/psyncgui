@@ -304,11 +304,11 @@ void PCloudWindow::unlinkSync()
                                  QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::Yes)
     {
-        emit app->logOut(); //sets offlineimtes too
-        emit setOnlineItems(false);
-        // if (app->isLogedIn())
-        app->setFirstLaunch(true);
         psync_unlink();
+        emit app->logOut(); //sets offlineimtes too
+        emit setOnlineItems(false);        
+        app->setFirstLaunch(true);
+
     }
 }
 
