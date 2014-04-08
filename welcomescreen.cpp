@@ -45,11 +45,30 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
 
     QString path = QDir::home().path().append("/pCloudSync");
     QDir pcloudDir(path);
-    QString nativepath;
+#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
+    QDir docs (QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
+    QDir music(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
+    QDir photos(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
+    QDir movies(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
+#else
+    QDir docs(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+    QDir music(QStandardPaths::writableLocation(QStandardPaths::MusicLocation));
+    QDir photos(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
+    QDir movies(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
+#endif
+    QString nativepath, docspath, musicpath,moviespath, photospath;
 #ifdef Q_OS_WIN
     nativepath = pcloudDir.toNativeSeparators(path);
+    docspath = docs.toNativeSeparators(docs.absolutePath());
+    musicpath = music.toNativeSeparators(music.absolutePath());
+    moviespath = movies.toNativeSeparators(music.absolutePath());
+    photospath = photos.toNativeSeparators(photos.absolutePath());
 #else
     nativepath = pcloudDir.path();
+    docspath = docs.absolutePath();
+    musicpath = music.absolutePath();
+    moviespath = movies.absolutePath();
+    photospath = photos.absolutePath();
 #endif    
     if(!pcloudDir.exists())
     {
@@ -86,22 +105,12 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
     }
     */
 
-#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
-    QDir docs (QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
-    QDir music(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
-    QDir photos(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
-    QDir movies(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
-#else
-    QDir docs(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
-    QDir music(QStandardPaths::writableLocation(QStandardPaths::MusicLocation));
-    QDir photos(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
-    QDir movies(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
-#endif
+
     QList<QStringList> itemsLst;
-    itemsLst << (QStringList() << docs.absolutePath() << "/My Documents")
-             << (QStringList() << music.absolutePath() << "/My Music")
-             << (QStringList() << photos.absolutePath() << "/My Pictures")
-             << (QStringList()<< movies.absolutePath()<< "/My Videos");
+    itemsLst << (QStringList() << docspath << "/My Documents")
+             << (QStringList() << musicpath << "/My Music")
+             << (QStringList() << photospath << "/My Pictures")
+             << (QStringList() << moviespath << "/My Videos");
     remoteFldrsNamesLst.append("My Documents");
     newRemoteFldrsLst.append("My Documents");
 
@@ -120,11 +129,12 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
     }
 
     ui->treeWidget->resizeColumnToContents(0);
-    ui->treeWidget->setColumnWidth(1,250);
+    ui->treeWidget->setColumnWidth(1,200);
     ui->treeWidget->resizeColumnToContents(2);
     ui->treeWidget->resizeColumnToContents(3);
-    ui->treeWidget->setMinimumWidth(600);
-    // ui->tableWidget->setItemDelegate(new SyncItemsDelegate());
+    ui->treeWidget->setMinimumWidth(400);
+    //ui->tableWidget->setItemDelegate(new SyncItemsDelegate());
+    // this->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
 }
 
 void WelcomeScreen::testPrintTree(QTreeWidgetItem* itm,int col)
@@ -223,6 +233,7 @@ void WelcomeScreen::modifyType()
 }
 void WelcomeScreen::finish()
 {
+    QStringList fldrActionsLst;
     QTreeWidgetItemIterator it(ui->treeWidget);
     while (*it)
     {
@@ -235,10 +246,14 @@ void WelcomeScreen::finish()
                                            ((*it)->data(2,Qt::UserRole).toInt()) +1) ;
 
             QString name = localpath.section("/", -1);
-            QAction * fldrAction = new QAction(name, app);
-            fldrAction->setProperty("path", localpath);
-            connect(fldrAction, SIGNAL(triggered()), app, SLOT(openLocalDir()));
-            app->addNewFolderInMenu(fldrAction);
+            if (!fldrActionsLst.contains(name))
+            {
+                QAction * fldrAction = new QAction(name, app);
+                fldrAction->setProperty("path", localpath);
+                connect(fldrAction, SIGNAL(triggered()), app, SLOT(openLocalDir()));
+                app->addNewFolderInMenu(fldrAction);
+                fldrActionsLst<<name;
+            }
         }
         ++it;
     }
