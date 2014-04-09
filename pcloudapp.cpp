@@ -129,13 +129,15 @@ void PCloudApp::logOut(){
 #endif
 */
     username="";
+    qDebug()<< " before psynclogout";
     psync_logout(); //sets auth to ""
+    qDebug()<< " after psynclogout";
     tray->setContextMenu(notloggedmenu);
-    tray->setToolTip("pCloud");
-    tray->setIcon(QIcon(OFFLINE_ICON));
-    pCloudWin->setOnlineItems(false);
+    tray->setToolTip("pCloud");    
+    pCloudWin->setOnlineItems(false);   
+    emit changeSyncIcon(OFFLINE_ICON);
     pCloudWin->hide();
-    this->authentication = "";
+    this->authentication = "";    
     //p unmount
 }
 

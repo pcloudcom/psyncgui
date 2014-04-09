@@ -47,7 +47,7 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     fillAcountNotLoggedPage();
     fillAboutPage();    
     //p settngsPage = new SettingsPage(this, app);
-
+     syncPage = new SyncPage(this, app);
     // indexes of Items in listWidget and their coresponding pages in StackWidget are the same
     connect(ui->listButtonsWidget,
             SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
@@ -173,9 +173,7 @@ void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when
 }
 
 void PCloudWindow::setOnlinePages()
-{
-    //p sharesPage = new SharesPage(this, app);
-    syncPage = new SyncPage(this, app);
+{    
     fillAccountLoggedPage();
 }
 void PCloudWindow::fillAcountNotLoggedPage()
