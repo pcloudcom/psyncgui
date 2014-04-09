@@ -129,15 +129,14 @@ void PCloudApp::logOut(){
 #endif
 */
     username="";
-    qDebug()<< " before psynclogout";
     psync_logout(); //sets auth to ""
-    qDebug()<< " after psynclogout";
     tray->setContextMenu(notloggedmenu);
-    tray->setToolTip("pCloud");    
-    pCloudWin->setOnlineItems(false);   
+    tray->setToolTip("pCloud");
+    pCloudWin->setOnlineItems(false);
     emit changeSyncIcon(OFFLINE_ICON);
     pCloudWin->hide();
-    this->authentication = "";    
+    this->authentication = "";
+    this->setFirstLaunch(false);
     //p unmount
 }
 
@@ -407,10 +406,12 @@ mutex.lock();
 
     case PSTATUS_LOGIN_REQUIRED:            //4
         qDebug()<<"PSTATUS_LOGIN_REQUIRED";
+        PCloudApp::appStatic->changeSyncIconPublic(OFFLINE_ICON);
         break;
 
     case PSTATUS_BAD_LOGIN_DATA:            //5
         qDebug()<<"PSTATUS_BAD_LOGIN_DATA";
+        PCloudApp::appStatic->changeSyncIconPublic(OFFLINE_ICON);
         break;
 
     case PSTATUS_ACCOUNT_FULL:              //6

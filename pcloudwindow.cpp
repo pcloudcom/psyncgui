@@ -223,12 +223,14 @@ void PCloudWindow::fillAccountLoggedPage()
     ui->tbtnOpenFolder->setVisible(false);
     ui->tBtnExit->setVisible(false);    
 
+#ifdef Q_OS_WIN
     //make frame white, leave widgets with normal colors    
     QPalette p;// = ui->frame->palette();
     p.setColor(ui->frame_account->backgroundRole(),Qt::white);
     p.setColor(ui->frame_account->foregroundRole(), Qt::black);
     ui->frame_account->setAutoFillBackground(true);
     ui->frame_account->setPalette(p);
+#endif
 }
 void PCloudWindow::refreshUserinfo()
 {
@@ -341,7 +343,7 @@ void PCloudWindow::checkVerify() // has the user verified after had clicked "Ver
 
 void PCloudWindow::openWebPage()
 {
-    QUrl url("https://my.pcloud.com/#page=filemanager"+app->authentication);
+    QUrl url("https://my.pcloud.com/#page=filemanager&authtoken="+app->authentication);
     QDesktopServices::openUrl(url);
 }
 

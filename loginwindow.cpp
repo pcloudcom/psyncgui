@@ -53,7 +53,7 @@ void LoginWindow::showEvent(QShowEvent *)
     {
         ui->email->setText(username);
         ui->email->setEnabled(false);
-        ui->btnUnlink->setVisible(true);       
+        ui->btnUnlink->setVisible(true);
     }
 }
 
@@ -68,12 +68,12 @@ void LoginWindow::setError(const char *err)
 
 void LoginWindow::logIn()
 {
+    ui->error->setText("");
     QByteArray email=ui->email->text().toUtf8();
     QByteArray password=ui->password->text().toUtf8();
     int ischecked = ui->checkBox->isChecked()? 1: 0;
     QApplication::setOverrideCursor(Qt::WaitCursor); // or to add QSplashSCreen instead
-    //QString auth = psync_get_auth_string();
-    //if (auth == "")
+
     bool savedauth = psync_get_bool_value("saveauth"); //works when syns is paused also
     if (!savedauth)
         psync_set_user_pass(email,password,ischecked);
@@ -100,7 +100,10 @@ void LoginWindow::logIn()
             if ((loginStatusLst.contains(status.status)))
             {
                 if (status.status != PSTATUS_OFFLINE)
+                {
                     this->setError("Invalid user and password combination");
+                    psync_set_bool_setting("saveauth",false);
+                }
                 else
                     this->setError("No internet connection");
                 QApplication::restoreOverrideCursor();
@@ -109,15 +112,9 @@ void LoginWindow::logIn()
             else
             {
                 // PSTATUS_PAUSED is returned before and after PSTATUS_BAD_LOGIN_DATA
-                //if ((status.status == PSTATUS_PAUSED  || status.status == PSTATUS_READY) && times == 1)
                 if (status.status == PSTATUS_PAUSED && times == 1)
                 {
                     sleep(3);
-                    //pstatus_t newstatus;
-                    //psync_get_status(&newstatus);
-                    //qDebug()<< newstatus.status;
-                    //if(newstatus.status == PSTATUS_PAUSED)
-                    //break;
                     continue;
                 }
                 else

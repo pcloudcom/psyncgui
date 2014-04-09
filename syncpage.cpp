@@ -19,7 +19,7 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
     win->ui->tabWidgetSync->setTabText(1, trUtf8("Sync Settings"));
     win->ui->tabWidgetSync->setCurrentIndex(0);
 
-    QRegExp regExp("[1-9][0-9]{0,3}");
+    QRegExp regExp("[1-9][0-9]{0,4}");
     win->ui->edit_minLocalSpace->setValidator(new QRegExpValidator(regExp, this));
     QRegExp regExpSpeed("[1-9][0-9]{0,4}");
     win->ui->edit_DwnldSpeed->setValidator(new QRegExpValidator(regExpSpeed, this));
