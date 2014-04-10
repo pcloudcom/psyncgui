@@ -100,6 +100,7 @@ public:
     void changeCursorPublic(bool change);
     void updateSyncStatusPublic();
     void updateUserInfoPublic(const char* param);
+    void changeOnlineItemsPublic(bool logged);
     void setTextErrPublic(int win , const char *err);
     void createSyncFolderActions(QMenu *syncMenu);
     QMenu* getSyncMenu();
@@ -115,6 +116,7 @@ signals:
     void sendErrText(int win, const char *err);
     void updateSyncStatusSgnl();
     void updateUserInfoSgnl(const char* &param);
+    void changeOnlineItemsSgnl(bool logged);
 public slots:
     // void showTrayMessage(QString title, QString msg);
     void trayClicked(QSystemTrayIcon::ActivationReason reason);
@@ -141,6 +143,7 @@ public slots:
     void addNewSync();
     void updateSyncStatus();
     void updateUserInfo(const char* &param);
+    void changeOnlineItems(bool logged);
     void networkConnectionChanged(QNetworkSession::State state);
 };
 

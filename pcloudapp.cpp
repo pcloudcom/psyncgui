@@ -259,7 +259,7 @@ void PCloudApp::createMenus(){
 
 void status_callback(pstatus_t *status)
 {    
-mutex.lock();
+    mutex.lock();
     quint32 err = psync_get_last_error();
     if(err)
         qDebug()<<"last error: "<<err;
@@ -439,6 +439,7 @@ mutex.lock();
     case PSTATUS_OFFLINE:                   //10
         qDebug()<<"PSTATUS_OFFLINE";
         PCloudApp::appStatic->changeSyncIconPublic(OFFLINE_ICON);
+        PCloudApp::appStatic->changeOnlineItemsPublic(false);
         break;
 
     case PSTATUS_CONNECTING:                //11
@@ -457,7 +458,7 @@ mutex.lock();
     default:
         break;
     }
-mutex.unlock();
+    mutex.unlock();
 }
 static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
 {    
@@ -619,6 +620,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     connect(tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayClicked(QSystemTrayIcon::ActivationReason)));
     //p connect(tray, SIGNAL(messageClicked()), this, SLOT(trayMsgClicked()));
     connect(this, SIGNAL(changeSyncIcon(QString)), this, SLOT(setTrayIcon(QString)));
+    connect(this, SIGNAL(changeOnlineItemsSgnl(bool)), this, SLOT(changeOnlineItems(bool)));
     connect(this, SIGNAL(changeCursor(bool)), this, SLOT(setCursor(bool)));
     connect(this, SIGNAL(sendErrText(int, const char*)), this, SLOT(setErrText(int,const char*)));
     connect(this, SIGNAL(updateSyncStatusSgnl()), this, SLOT(updateSyncStatus()));
@@ -904,6 +906,10 @@ void PCloudApp::changeSyncIconPublic(const QString &icon)
 {
     emit this->changeSyncIcon(icon);
 }
+void PCloudApp::changeOnlineItemsPublic(bool logged)
+{
+    emit this->changeOnlineItemsSgnl(logged);
+}
 
 void PCloudApp::changeCursorPublic(bool change)
 {
@@ -1033,6 +1039,23 @@ void PCloudApp::updateUserInfo(const char* &param)
         this->getQuota();
     else
         this->getUserInfo();
+}
+void PCloudApp::changeOnlineItems(bool logged)
+{
+    if(logged)
+    {
+        tray->setContextMenu(loggedmenu);
+        pCloudWin->setOnlineItems(true);
+    }
+    else
+    {
+        tray->setContextMenu(notloggedmenu);
+        if (pCloudWin)
+        {
+            pCloudWin->setOnlineItems(false);
+            pCloudWin->hide();
+        }
+    }
 }
 
 void PCloudApp::setFirstLaunch(bool b)
