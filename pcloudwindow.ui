@@ -18,7 +18,16 @@
     <property name="spacing">
      <number>0</number>
     </property>
-    <property name="margin">
+    <property name="leftMargin">
+     <number>6</number>
+    </property>
+    <property name="topMargin">
+     <number>6</number>
+    </property>
+    <property name="rightMargin">
+     <number>6</number>
+    </property>
+    <property name="bottomMargin">
      <number>6</number>
     </property>
     <item>
@@ -37,7 +46,16 @@
         <property name="spacing">
          <number>0</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
@@ -57,7 +75,7 @@
          <bool>true</bool>
         </property>
         <property name="currentIndex">
-         <number>6</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="pageAccntNotLogged">
          <property name="maximumSize">
@@ -912,12 +930,6 @@
               <property name="icon">
                <iconset resource="Resources.qrc">
                 <normaloff>:/menu/images/menu 48x48/pause.png</normaloff>:/menu/images/menu 48x48/pause.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>24</width>
-                <height>24</height>
-               </size>
               </property>
              </widget>
             </item>
@@ -1881,7 +1893,7 @@
      <x>0</x>
      <y>0</y>
      <width>845</width>
-     <height>27</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
