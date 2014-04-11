@@ -1033,8 +1033,7 @@ void PCloudApp::updateSyncStatus()
     this->tray->setToolTip(traymsg);
 }
 void PCloudApp::updateUserInfo(const char* &param)
-{
-    //if(param.compare("quota"))
+{    
     if (param == "quota")
         this->getQuota();
     else

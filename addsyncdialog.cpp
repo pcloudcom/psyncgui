@@ -57,7 +57,7 @@ static QList<QTreeWidgetItem *> listRemoteFldrs(QString parentPath)
 
     if (res != NULL)
     {
-        for(int i = 0; i < res->entrycnt; i++)
+        for(uint i = 0; i < res->entrycnt; i++)
         {
             QString path = parentPath;
             if (parentPath != "/")

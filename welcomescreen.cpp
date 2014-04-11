@@ -34,7 +34,7 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
     QString root = "/";
     pfolder_list_t *remoteRootChildFldrs = psync_list_remote_folder_by_path(root.toUtf8(),PLIST_FOLDERS);
     //build list with remote root child names in order to check: when we add new sync delay if the folderName exists.
-    for (int i = 0; i < remoteRootChildFldrs->entrycnt; i++)
+    for (uint i = 0; i < remoteRootChildFldrs->entrycnt; i++)
         remoteFldrsNamesLst.append(remoteRootChildFldrs->entries[i].name);
     qDebug()<<"Remote init folders list form lib"<<remoteFldrsNamesLst;
     QString defaultRemoteFldr = "/pCloudSync";

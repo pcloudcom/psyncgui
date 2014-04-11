@@ -17,8 +17,7 @@ class ModifySyncDialog : public QDialog
     Q_OBJECT
 
 public:
-    friend class SyncPage;
-    friend class ModifySyncDialog;
+    friend class SyncPage;    
     explicit ModifySyncDialog(QString local, QString remote, int type,QWidget *parent = 0);
     ~ModifySyncDialog();
     int returnNewType();

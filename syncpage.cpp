@@ -87,8 +87,9 @@ static QString get_sync_type(int synctype)
     case PSYNC_FULL:
         return "Download and Upload";
     default:
+        return "";
         break;
-    }
+    }    
 }
 
 void SyncPage::load()
@@ -97,7 +98,7 @@ void SyncPage::load()
     psync_folder_list_t *fldrsList = psync_get_sync_list();
     if (fldrsList != NULL && fldrsList->foldercnt)
     {
-        for (int i = 0; i< fldrsList->foldercnt; i++)
+        for (uint i = 0; i< fldrsList->foldercnt; i++)
         {
             qDebug()<<"Load sync tab"<< fldrsList->folders[i].folderid << " "<<fldrsList->folders[i].localname<< " "
                    <<fldrsList->folders[i].localpath << " "<<fldrsList->folders[i].remotename
