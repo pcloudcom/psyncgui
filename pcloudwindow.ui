@@ -6,32 +6,17 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>845</width>
-    <height>671</height>
+    <width>924</width>
+    <height>657</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_32">
-    <property name="spacing">
-     <number>0</number>
-    </property>
-    <property name="leftMargin">
-     <number>6</number>
-    </property>
-    <property name="topMargin">
-     <number>6</number>
-    </property>
-    <property name="rightMargin">
-     <number>6</number>
-    </property>
-    <property name="bottomMargin">
-     <number>6</number>
-    </property>
+   <layout class="QVBoxLayout" name="verticalLayout_11">
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_11">
+     <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -41,132 +26,54 @@
       <property name="topMargin">
        <number>0</number>
       </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QListWidget" name="listButtonsWidget"/>
-        </item>
-       </layout>
+       <widget class="QListWidget" name="listButtonsWidget"/>
       </item>
-      <item>
-       <widget class="QStackedWidget" name="pagesWidget">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="autoFillBackground">
-         <bool>true</bool>
-        </property>
-        <property name="currentIndex">
-         <number>3</number>
-        </property>
-        <widget class="QWidget" name="pageAccntNotLogged">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_22">
+     </layout>
+    </item>
+    <item>
+     <widget class="QStackedWidget" name="pagesWidget">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
+      <property name="currentIndex">
+       <number>5</number>
+      </property>
+      <widget class="QWidget" name="pageAccntNotLogged">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_22">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_4">
+           <layout class="QVBoxLayout" name="verticalLayout_3">
             <item>
-             <layout class="QVBoxLayout" name="verticalLayout_3">
+             <layout class="QHBoxLayout" name="horizontalLayout_14">
               <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_14">
-                <item>
-                 <widget class="QPushButton" name="btnLogin">
-                  <property name="text">
-                   <string>Login</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_or">
+               <widget class="QPushButton" name="btnLogin">
                 <property name="text">
-                 <string>          or</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 <string>Login</string>
                 </property>
                </widget>
               </item>
               <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_15">
-                <item>
-                 <widget class="QPushButton" name="btnRegstr">
-                  <property name="text">
-                   <string>Register</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_10">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="Line" name="line">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_16">
-              <item>
-               <widget class="QPushButton" name="btnExit">
-                <property name="text">
-                 <string>Exit</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="horizontalSpacer_11">
+               <spacer name="horizontalSpacer">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
@@ -181,719 +88,334 @@
              </layout>
             </item>
             <item>
-             <widget class="QToolButton" name="toolBtnContact">
+             <widget class="QLabel" name="label_or">
               <property name="text">
-               <string>Contact Us</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="pageAccntLogged">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_8">
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_6">
-            <item>
-             <widget class="QLabel" name="label_11">
-              <property name="text">
-               <string/>
-              </property>
-              <property name="pixmap">
-               <pixmap resource="Resources.qrc">:/128x128/images/128x128/FolderIconX.png</pixmap>
+               <string>          or</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
               </property>
              </widget>
             </item>
             <item>
-             <layout class="QFormLayout" name="formLayout">
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_14">
-                <property name="text">
-                 <string>Space: </string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QLabel" name="label_space">
-                <property name="text">
-                 <string>fdsfsfds</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="label_plan">
-                <property name="text">
-                 <string>Plan:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <layout class="QHBoxLayout" name="horizontalLayout">
-                <item>
-                 <widget class="QLabel" name="label_planVal">
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label">
-                  <property name="text">
-                   <string>&lt;a href=&quot;https://www.pcloud.com/&quot;&gt;Get More Space&lt;/a&gt; </string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="label_expDt">
-                <property name="text">
-                 <string>Expiry date:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QLabel" name="label_expDtVal">
-                <property name="text">
-                 <string>TextLabel</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <spacer name="verticalSpacer_6">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_5">
+             <layout class="QHBoxLayout" name="horizontalLayout_15">
               <item>
-               <widget class="QToolButton" name="tbtnOpenFolder">
+               <widget class="QPushButton" name="btnRegstr">
                 <property name="text">
-                 <string>Open pCloud Folder</string>
-                </property>
-                <property name="icon">
-                 <iconset resource="Resources.qrc">
-                  <normaloff>:/images/images/folder.png</normaloff>:/images/images/folder.png</iconset>
-                </property>
-                <property name="toolButtonStyle">
-                 <enum>Qt::ToolButtonTextBesideIcon</enum>
+                 <string>Register</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QToolButton" name="toolBtnOpenWeb">
-                <property name="text">
-                 <string>Open Web Page</string>
+               <spacer name="horizontalSpacer_10">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
                 </property>
-                <property name="icon">
-                 <iconset resource="Resources.qrc">
-                  <normaloff>:/images/images/web.png</normaloff>:/images/images/web.png</iconset>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
                 </property>
-                <property name="toolButtonStyle">
-                 <enum>Qt::ToolButtonTextBesideIcon</enum>
-                </property>
-               </widget>
+               </spacer>
               </item>
              </layout>
             </item>
            </layout>
           </item>
           <item>
-           <widget class="QFrame" name="frame_account">
-            <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
+           <widget class="Line" name="line">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_31">
-             <item>
-              <layout class="QVBoxLayout" name="verticalLayout_30">
-               <item>
-                <layout class="QVBoxLayout" name="verticalLayout_2">
-                 <item>
-                  <widget class="QLabel" name="label_12">
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="pixmap">
-                    <pixmap resource="Resources.qrc">:/images/images/logo.png</pixmap>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_13">
-                   <property name="text">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;pCloud&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_4">
-                 <item>
-                  <widget class="QLabel" name="label_user">
-                   <property name="text">
-                    <string>Account:</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_email">
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QCheckBox" name="checkBoxVerified">
-                   <property name="layoutDirection">
-                    <enum>Qt::LeftToRight</enum>
-                   </property>
-                   <property name="text">
-                    <string>Verified</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="btnVerify">
-                   <property name="text">
-                    <string>Verify Now</string>
-                   </property>
-                   <property name="default">
-                    <bool>false</bool>
-                   </property>
-                   <property name="flat">
-                    <bool>false</bool>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_9">
-                 <item>
-                  <widget class="QLabel" name="label_pass">
-                   <property name="text">
-                    <string>Password:</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="btnForgotPass">
-                   <property name="text">
-                    <string>Forgot Password</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="btnChangePass">
-                   <property name="text">
-                    <string>Change Password</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <spacer name="horizontalSpacer_15">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <spacer name="verticalSpacer_7">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>60</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_18">
-                 <item>
-                  <spacer name="horizontalSpacer_4">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="btnUnlink">
-                   <property name="text">
-                    <string>Unlink</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="btnLgout">
-                   <property name="text">
-                    <string>Logout</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QToolButton" name="tBtnExit">
-                   <property name="text">
-                    <string>Exit</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-              </layout>
-             </item>
-            </layout>
            </widget>
           </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="pageShares">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_20">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_13">
+           <layout class="QHBoxLayout" name="horizontalLayout_16">
             <item>
-             <spacer name="horizontalSpacer_8">
+             <widget class="QPushButton" name="btnExit">
+              <property name="text">
+               <string>Exit</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_11">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>308</width>
+                <width>40</width>
                 <height>20</height>
                </size>
               </property>
              </spacer>
             </item>
-            <item>
-             <widget class="QPushButton" name="btnShareFolder">
-              <property name="maximumSize">
-               <size>
-                <width>180</width>
-                <height>16777215</height>
-               </size>
-              </property>
+           </layout>
+          </item>
+          <item>
+           <widget class="QToolButton" name="toolBtnContact">
+            <property name="text">
+             <string>Contact Us</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageAccntLogged">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap resource="Resources.qrc">:/128x128/images/128x128/FolderIconX.png</pixmap>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QFormLayout" name="formLayout">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_14">
               <property name="text">
-               <string>Share Folder</string>
+               <string>Space Usage: </string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLabel" name="label_space">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_plan">
+              <property name="text">
+               <string>Current Plan:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <layout class="QHBoxLayout" name="horizontalLayout">
+              <item>
+               <widget class="QLabel" name="label_planVal">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="text">
+                 <string>&lt;a href=&quot;https://www.pcloud.com/&quot;&gt;Get More Space&lt;/a&gt; </string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_expDt">
+              <property name="text">
+               <string>Expiry date:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLabel" name="label_expDtVal">
+              <property name="text">
+               <string>TextLabel</string>
               </property>
              </widget>
             </item>
            </layout>
           </item>
           <item>
-           <widget class="QTabWidget" name="tabWidgetShares">
-            <property name="currentIndex">
-             <number>1</number>
+           <spacer name="verticalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
             </property>
-            <widget class="QWidget" name="tabMyShares">
-             <attribute name="title">
-              <string>Tab 1</string>
-             </attribute>
-             <layout class="QVBoxLayout" name="verticalLayout_18">
-              <item>
-               <layout class="QVBoxLayout" name="verticalLayout_7">
-                <item>
-                 <widget class="QLabel" name="label_errorMyShares">
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_myshares">
-                  <property name="text">
-                   <string>My Shares:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QTreeWidget" name="treeMyShares">
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="autoScroll">
-                   <bool>true</bool>
-                  </property>
-                  <attribute name="headerDefaultSectionSize">
-                   <number>100</number>
-                  </attribute>
-                  <column>
-                   <property name="text">
-                    <string>To</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Folder</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Permissions                                               </string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Actions</string>
-                   </property>
-                  </column>
-                 </widget>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_2">
-                  <item>
-                   <widget class="QPushButton" name="btnTempModify">
-                    <property name="text">
-                     <string>Modify</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="btnTempStop">
-                    <property name="text">
-                     <string>Stop</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <spacer name="horizontalSpacer_5">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>88</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <spacer name="verticalSpacer">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>20</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="Line" name="line_4">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_noMyRqsts">
-                  <property name="layoutDirection">
-                   <enum>Qt::LeftToRight</enum>
-                  </property>
-                  <property name="text">
-                   <string>You don't have pending requests</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_myreq">
-                  <property name="text">
-                   <string>My Requests:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QTreeWidget" name="treeMyRequest">
-                  <column>
-                   <property name="text">
-                    <string notr="true">To</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Folder</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Permissions</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Actions</string>
-                   </property>
-                  </column>
-                 </widget>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_10">
-                  <item>
-                   <widget class="QPushButton" name="btnTempCancel">
-                    <property name="text">
-                     <string>Cancel</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <spacer name="horizontalSpacer_9">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </widget>
-            <widget class="QWidget" name="tabSharedWithMe">
-             <attribute name="title">
-              <string>Tab 2</string>
-             </attribute>
-             <layout class="QVBoxLayout" name="verticalLayout_19">
-              <item>
-               <layout class="QVBoxLayout" name="verticalLayout_8">
-                <item>
-                 <widget class="QLabel" name="label_errorShrdWithMe">
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_shared">
-                  <property name="text">
-                   <string>Shared with me:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QTreeWidget" name="treeSharedWithMe">
-                  <column>
-                   <property name="text">
-                    <string>From</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Folder</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Permissions                                        </string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Actions</string>
-                   </property>
-                  </column>
-                 </widget>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_12">
-                  <item>
-                   <widget class="QPushButton" name="btnTempStop2">
-                    <property name="text">
-                     <string>Stop</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <spacer name="horizontalSpacer_6">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <spacer name="verticalSpacer_2">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>20</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="Line" name="line_3">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_noRqstsWithMe">
-                  <property name="text">
-                   <string>You don't have pending requests</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_requests">
-                  <property name="text">
-                   <string>Pending Requests:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QTreeWidget" name="treeRequestsWithMe">
-                  <column>
-                   <property name="text">
-                    <string notr="true">From</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Folder</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Permissions</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Actions</string>
-                   </property>
-                  </column>
-                 </widget>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_11">
-                  <item>
-                   <widget class="QPushButton" name="btnTempAccept">
-                    <property name="text">
-                     <string>Accept</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="btnTempCancel2">
-                    <property name="text">
-                     <string>Reject</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <spacer name="horizontalSpacer_7">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>98</width>
-                      <height>48</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </widget>
-           </widget>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <item>
+             <widget class="QToolButton" name="tbtnOpenFolder">
+              <property name="text">
+               <string>Open pCloud Folder</string>
+              </property>
+              <property name="icon">
+               <iconset resource="Resources.qrc">
+                <normaloff>:/images/images/folder.png</normaloff>:/images/images/folder.png</iconset>
+              </property>
+              <property name="toolButtonStyle">
+               <enum>Qt::ToolButtonTextBesideIcon</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="tbtnMyPcloud">
+              <property name="text">
+               <string>mypcloud.com</string>
+              </property>
+              <property name="icon">
+               <iconset resource="Resources.qrc">
+                <normaloff>:/images/images/folder.png</normaloff>:/images/images/folder.png</iconset>
+              </property>
+              <property name="toolButtonStyle">
+               <enum>Qt::ToolButtonTextBesideIcon</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="toolBtnOpenWeb">
+              <property name="text">
+               <string>Open Web Page</string>
+              </property>
+              <property name="icon">
+               <iconset resource="Resources.qrc">
+                <normaloff>:/images/images/web.png</normaloff>:/images/images/web.png</iconset>
+              </property>
+              <property name="toolButtonStyle">
+               <enum>Qt::ToolButtonTextBesideIcon</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
-        </widget>
-        <widget class="QWidget" name="pageSync">
-         <layout class="QVBoxLayout" name="verticalLayout_31">
+        </item>
+        <item>
+         <widget class="Line" name="line_5">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_30">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_36">
+           <layout class="QVBoxLayout" name="verticalLayout_2"/>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
             <item>
-             <spacer name="horizontalSpacer_2">
+             <widget class="QLabel" name="label_user">
+              <property name="text">
+               <string>Account:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_email">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnAccntMenu">
+              <property name="maximumSize">
+               <size>
+                <width>20</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <item>
+             <widget class="QLabel" name="label_status">
+              <property name="text">
+               <string>Status:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkBoxVerified">
+              <property name="layoutDirection">
+               <enum>Qt::LeftToRight</enum>
+              </property>
+              <property name="text">
+               <string>Verified</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnVerify">
+              <property name="text">
+               <string>Verify Now</string>
+              </property>
+              <property name="default">
+               <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_15">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>60</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_18">
+            <item>
+             <spacer name="horizontalSpacer_4">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
@@ -906,147 +428,244 @@
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="btnResumeSync">
-              <property name="toolTip">
-               <string>Resume Sync</string>
-              </property>
+             <widget class="QPushButton" name="btnUnlink">
               <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="Resources.qrc">
-                <normaloff>:/menu/images/menu 48x48/resume.png</normaloff>:/menu/images/menu 48x48/resume.png</iconset>
+               <string>Unlink</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="btnPauseSync">
-              <property name="toolTip">
-               <string>Pause Sync</string>
-              </property>
+             <widget class="QPushButton" name="btnLgout">
               <property name="text">
-               <string/>
+               <string>Logout</string>
               </property>
-              <property name="icon">
-               <iconset resource="Resources.qrc">
-                <normaloff>:/menu/images/menu 48x48/pause.png</normaloff>:/menu/images/menu 48x48/pause.png</iconset>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="tBtnExit">
+              <property name="text">
+               <string>Exit</string>
               </property>
              </widget>
             </item>
            </layout>
           </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageShares">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_20">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_13">
           <item>
-           <widget class="QTabWidget" name="tabWidgetSync">
-            <property name="currentIndex">
-             <number>0</number>
+           <spacer name="horizontalSpacer_8">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
-            <widget class="QWidget" name="tabSyncList">
-             <attribute name="title">
-              <string>Tab 1</string>
-             </attribute>
-             <layout class="QHBoxLayout" name="horizontalLayout_25">
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>308</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnShareFolder">
+            <property name="maximumSize">
+             <size>
+              <width>180</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Share Folder</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTabWidget" name="tabWidgetShares">
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <widget class="QWidget" name="tabMyShares">
+           <attribute name="title">
+            <string>Tab 1</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_18">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_7">
               <item>
-               <layout class="QVBoxLayout" name="verticalLayout_21">
+               <widget class="QLabel" name="label_errorMyShares">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_myshares">
+                <property name="text">
+                 <string>My Shares:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QTreeWidget" name="treeMyShares">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="autoScroll">
+                 <bool>true</bool>
+                </property>
+                <attribute name="headerDefaultSectionSize">
+                 <number>100</number>
+                </attribute>
+                <column>
+                 <property name="text">
+                  <string>To</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Folder</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Permissions                                               </string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Actions</string>
+                 </property>
+                </column>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_2">
                 <item>
-                 <widget class="QLabel" name="label_sync">
+                 <widget class="QPushButton" name="btnTempModify">
                   <property name="text">
-                   <string>Synced Folders:</string>
+                   <string>Modify</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QTreeWidget" name="treeSyncList">
-                  <column>
-                   <property name="text">
-                    <string>Local path</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Sync Type</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Remote Path</string>
-                   </property>
-                  </column>
+                 <widget class="QPushButton" name="btnTempStop">
+                  <property name="text">
+                   <string>Stop</string>
+                  </property>
                  </widget>
                 </item>
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_20">
-                  <item>
-                   <widget class="QPushButton" name="btnSyncAdd">
-                    <property name="text">
-                     <string>Add New Sync</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="btnSyncModify">
-                    <property name="text">
-                     <string>Modify Sync Type</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="btnSyncStop">
-                    <property name="text">
-                     <string>Stop </string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <spacer name="horizontalSpacer_16">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <widget class="Line" name="line_2">
+                 <spacer name="horizontalSpacer_5">
                   <property name="orientation">
                    <enum>Qt::Horizontal</enum>
                   </property>
-                 </widget>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>88</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
                 </item>
+               </layout>
+              </item>
+              <item>
+               <spacer name="verticalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="Line" name="line_4">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_noMyRqsts">
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
+                </property>
+                <property name="text">
+                 <string>You don't have pending requests</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_myreq">
+                <property name="text">
+                 <string>My Requests:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QTreeWidget" name="treeMyRequest">
+                <column>
+                 <property name="text">
+                  <string notr="true">To</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Folder</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Permissions</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Actions</string>
+                 </property>
+                </column>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_10">
                 <item>
-                 <widget class="QLabel" name="label_forspace">
+                 <widget class="QPushButton" name="btnTempCancel">
                   <property name="text">
-                   <string/>
+                   <string>Cancel</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_dwnld">
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_upld">
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="verticalSpacer_3">
+                 <spacer name="horizontalSpacer_9">
                   <property name="orientation">
-                   <enum>Qt::Vertical</enum>
+                   <enum>Qt::Horizontal</enum>
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
-                    <width>20</width>
+                    <width>40</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -1055,57 +674,386 @@
                </layout>
               </item>
              </layout>
-            </widget>
-            <widget class="QWidget" name="tabSyncSettngs">
-             <attribute name="title">
-              <string>Tab 2</string>
-             </attribute>
-             <layout class="QHBoxLayout" name="horizontalLayout_37">
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tabSharedWithMe">
+           <attribute name="title">
+            <string>Tab 2</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_19">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_8">
               <item>
-               <layout class="QGridLayout" name="gridLayout">
-                <item row="0" column="0">
-                 <widget class="QGroupBox" name="groupBoxSyncSSL">
-                  <property name="title">
-                   <string>Use Secure Connection</string>
+               <widget class="QLabel" name="label_errorShrdWithMe">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_shared">
+                <property name="text">
+                 <string>Shared with me:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QTreeWidget" name="treeSharedWithMe">
+                <column>
+                 <property name="text">
+                  <string>From</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Folder</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Permissions                                        </string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Actions</string>
+                 </property>
+                </column>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_12">
+                <item>
+                 <widget class="QPushButton" name="btnTempStop2">
+                  <property name="text">
+                   <string>Stop</string>
                   </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_27">
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_6">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="Line" name="line_3">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_noRqstsWithMe">
+                <property name="text">
+                 <string>You don't have pending requests</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_requests">
+                <property name="text">
+                 <string>Pending Requests:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QTreeWidget" name="treeRequestsWithMe">
+                <column>
+                 <property name="text">
+                  <string notr="true">From</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Folder</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Permissions</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Actions</string>
+                 </property>
+                </column>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_11">
+                <item>
+                 <widget class="QPushButton" name="btnTempAccept">
+                  <property name="text">
+                   <string>Accept</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btnTempCancel2">
+                  <property name="text">
+                   <string>Reject</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_7">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>98</width>
+                    <height>48</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageSync">
+       <layout class="QVBoxLayout" name="verticalLayout_31">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_36">
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnResumeSync">
+            <property name="toolTip">
+             <string>Resume Sync</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="Resources.qrc">
+              <normaloff>:/menu/images/menu 48x48/resume.png</normaloff>:/menu/images/menu 48x48/resume.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnPauseSync">
+            <property name="toolTip">
+             <string>Pause Sync</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="Resources.qrc">
+              <normaloff>:/menu/images/menu 48x48/pause.png</normaloff>:/menu/images/menu 48x48/pause.png</iconset>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTabWidget" name="tabWidgetSync">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="tabSyncList">
+           <attribute name="title">
+            <string>Tab 1</string>
+           </attribute>
+           <layout class="QHBoxLayout" name="horizontalLayout_25">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_21">
+              <item>
+               <widget class="QLabel" name="label_sync">
+                <property name="text">
+                 <string>Synced Folders:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QTreeWidget" name="treeSyncList">
+                <column>
+                 <property name="text">
+                  <string>Local path</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Sync Type</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Remote Path</string>
+                 </property>
+                </column>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_20">
+                <item>
+                 <widget class="QPushButton" name="btnSyncAdd">
+                  <property name="text">
+                   <string>Add New Sync</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btnSyncModify">
+                  <property name="text">
+                   <string>Modify Sync Type</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btnSyncStop">
+                  <property name="text">
+                   <string>Stop </string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_16">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="Line" name="line_2">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_forspace">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_dwnld">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_upld">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_3">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tabSyncSettngs">
+           <attribute name="title">
+            <string>Tab 2</string>
+           </attribute>
+           <layout class="QHBoxLayout" name="horizontalLayout_37">
+            <item>
+             <layout class="QGridLayout" name="gridLayout">
+              <item row="1" column="1">
+               <widget class="QGroupBox" name="groupBoxSyncDwnldSpeed">
+                <property name="title">
+                 <string>Download Speed Limit</string>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_28">
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_29">
                    <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_21">
+                    <widget class="QRadioButton" name="rBtnSyncDwldAuto">
+                     <property name="text">
+                      <string>auto(recommended)</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QRadioButton" name="rBtnSyncDwldUnlimit">
+                     <property name="text">
+                      <string>unlimited</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_26">
                      <item>
-                      <widget class="QCheckBox" name="checkBoxSyncSSL">
+                      <widget class="QRadioButton" name="rbtnSyncDwnlChoose">
                        <property name="text">
-                        <string>SSL</string>
+                        <string/>
                        </property>
                       </widget>
                      </item>
                      <item>
-                      <spacer name="horizontalSpacer_20">
-                       <property name="orientation">
-                        <enum>Qt::Horizontal</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>40</width>
-                         <height>20</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                    </layout>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QGroupBox" name="groupBoxSyncSpace">
-                  <property name="title">
-                   <string>Minimum Disc Space </string>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_25">
-                   <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_22" stretch="0,0,0">
-                     <item>
-                      <widget class="QLineEdit" name="edit_minLocalSpace">
+                      <widget class="QLineEdit" name="edit_DwnldSpeed">
                        <property name="maximumSize">
                         <size>
                          <width>70</width>
@@ -1115,14 +1063,14 @@
                       </widget>
                      </item>
                      <item>
-                      <widget class="QLabel" name="label_syncmb">
+                      <widget class="QLabel" name="label_4">
                        <property name="text">
-                        <string>MB</string>
+                        <string>kB/s</string>
                        </property>
                       </widget>
                      </item>
                      <item>
-                      <spacer name="horizontalSpacer_17">
+                      <spacer name="horizontalSpacer_19">
                        <property name="orientation">
                         <enum>Qt::Horizontal</enum>
                        </property>
@@ -1137,116 +1085,91 @@
                     </layout>
                    </item>
                   </layout>
-                 </widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QGroupBox" name="groupBoxSyncUpldSpeed">
-                  <property name="title">
-                   <string>Upload Speed Limit</string>
-                  </property>
-                  <layout class="QHBoxLayout" name="horizontalLayout_30">
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QGroupBox" name="groupBoxSyncSpace">
+                <property name="title">
+                 <string>Minimum Disc Space </string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_25">
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_22" stretch="0,0,0">
                    <item>
-                    <layout class="QVBoxLayout" name="verticalLayout_28">
-                     <item>
-                      <widget class="QRadioButton" name="rBtnSyncUpldAuto">
-                       <property name="accessibleName">
-                        <string>upldAuto</string>
-                       </property>
-                       <property name="text">
-                        <string>auto (recommended)</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QRadioButton" name="rBtnSyncUpldUnlimit">
-                       <property name="text">
-                        <string>unlimited</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <layout class="QHBoxLayout" name="horizontalLayout_27">
-                       <item>
-                        <layout class="QHBoxLayout" name="horizontalLayout_24">
-                         <item>
-                          <widget class="QRadioButton" name="rbtnSyncupldChoose">
-                           <property name="text">
-                            <string/>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLineEdit" name="edit_UpldSpeed">
-                           <property name="maximumSize">
-                            <size>
-                             <width>70</width>
-                             <height>16777215</height>
-                            </size>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLabel" name="label_3">
-                           <property name="text">
-                            <string>kB/s</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <spacer name="horizontalSpacer_18">
-                           <property name="orientation">
-                            <enum>Qt::Horizontal</enum>
-                           </property>
-                           <property name="sizeHint" stdset="0">
-                            <size>
-                             <width>40</width>
-                             <height>20</height>
-                            </size>
-                           </property>
-                          </spacer>
-                         </item>
-                        </layout>
-                       </item>
-                      </layout>
-                     </item>
-                    </layout>
+                    <widget class="QLineEdit" name="edit_minLocalSpace">
+                     <property name="maximumSize">
+                      <size>
+                       <width>70</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_syncmb">
+                     <property name="text">
+                      <string>MB</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_17">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
                    </item>
                   </layout>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QGroupBox" name="groupBoxSyncDwnldSpeed">
-                  <property name="title">
-                   <string>Download Speed Limit</string>
-                  </property>
-                  <layout class="QHBoxLayout" name="horizontalLayout_28">
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QGroupBox" name="groupBoxSyncUpldSpeed">
+                <property name="title">
+                 <string>Upload Speed Limit</string>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_30">
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_28">
                    <item>
-                    <layout class="QVBoxLayout" name="verticalLayout_29">
+                    <widget class="QRadioButton" name="rBtnSyncUpldAuto">
+                     <property name="accessibleName">
+                      <string>upldAuto</string>
+                     </property>
+                     <property name="text">
+                      <string>auto (recommended)</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QRadioButton" name="rBtnSyncUpldUnlimit">
+                     <property name="text">
+                      <string>unlimited</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_27">
                      <item>
-                      <widget class="QRadioButton" name="rBtnSyncDwldAuto">
-                       <property name="text">
-                        <string>auto(recommended)</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QRadioButton" name="rBtnSyncDwldUnlimit">
-                       <property name="text">
-                        <string>unlimited</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <layout class="QHBoxLayout" name="horizontalLayout_26">
+                      <layout class="QHBoxLayout" name="horizontalLayout_24">
                        <item>
-                        <widget class="QRadioButton" name="rbtnSyncDwnlChoose">
+                        <widget class="QRadioButton" name="rbtnSyncupldChoose">
                          <property name="text">
                           <string/>
                          </property>
                         </widget>
                        </item>
                        <item>
-                        <widget class="QLineEdit" name="edit_DwnldSpeed">
+                        <widget class="QLineEdit" name="edit_UpldSpeed">
                          <property name="maximumSize">
                           <size>
                            <width>70</width>
@@ -1256,14 +1179,14 @@
                         </widget>
                        </item>
                        <item>
-                        <widget class="QLabel" name="label_4">
+                        <widget class="QLabel" name="label_3">
                          <property name="text">
                           <string>kB/s</string>
                          </property>
                         </widget>
                        </item>
                        <item>
-                        <spacer name="horizontalSpacer_19">
+                        <spacer name="horizontalSpacer_18">
                          <property name="orientation">
                           <enum>Qt::Horizontal</enum>
                          </property>
@@ -1280,610 +1203,643 @@
                     </layout>
                    </item>
                   </layout>
-                 </widget>
-                </item>
-                <item row="2" column="0" colspan="2">
-                 <widget class="QGroupBox" name="groupBoxSyncPatterns">
-                  <property name="title">
-                   <string>Exceptions</string>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_26">
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QGroupBox" name="groupBoxSyncSSL">
+                <property name="title">
+                 <string>Use Secure Connection</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_27">
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_21">
                    <item>
-                    <layout class="QVBoxLayout" name="verticalLayout_24">
-                     <item>
-                      <widget class="QLabel" name="label_exptns">
-                       <property name="text">
-                        <string>Ingore the following patterns:</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QTextEdit" name="text_patterns">
-                       <property name="maximumSize">
-                        <size>
-                         <width>16777215</width>
-                         <height>150</height>
-                        </size>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
+                    <widget class="QCheckBox" name="checkBoxSyncSSL">
+                     <property name="text">
+                      <string>SSL</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_20">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
                    </item>
                   </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <layout class="QHBoxLayout" name="horizontalLayout_29">
+                <item>
+                 <widget class="QCheckBox" name="checkBoxp2p">
+                  <property name="text">
+                   <string>allow peer-to-peer</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
                  </widget>
                 </item>
-                <item row="3" column="0">
-                 <layout class="QHBoxLayout" name="horizontalLayout_29">
-                  <item>
-                   <widget class="QCheckBox" name="checkBoxp2p">
-                    <property name="text">
-                     <string>peer-to-peer</string>
-                    </property>
-                    <property name="checked">
-                     <bool>true</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <spacer name="horizontalSpacer_3">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
+                <item>
+                 <spacer name="horizontalSpacer_3">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
                 </item>
-                <item row="4" column="0">
-                 <layout class="QHBoxLayout" name="horizontalLayout_23">
-                  <item>
-                   <widget class="QPushButton" name="btnSyncSttngCancel">
-                    <property name="text">
-                     <string>Cancel</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="btnSyncSttngsSave">
-                    <property name="text">
-                     <string>Save</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <spacer name="horizontalSpacer_21">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
+               </layout>
+              </item>
+              <item row="2" column="0" colspan="2">
+               <widget class="QGroupBox" name="groupBoxSyncPatterns">
+                <property name="title">
+                 <string>Exceptions</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_26">
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_24">
+                   <item>
+                    <widget class="QLabel" name="label_exptns">
+                     <property name="text">
+                      <string>Ingore the following patterns:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QTextEdit" name="text_patterns">
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>150</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item row="4" column="1">
+               <layout class="QHBoxLayout" name="horizontalLayout_23">
+                <item>
+                 <spacer name="horizontalSpacer_21">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btnSyncSttngsSave">
+                  <property name="text">
+                   <string>Save</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btnSyncSttngCancel">
+                  <property name="text">
+                   <string>Cancel</string>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </item>
              </layout>
-            </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageSettings">
+       <layout class="QVBoxLayout" name="verticalLayout_23">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_9">
+          <item>
+           <widget class="QGroupBox" name="groupBox_fldr">
+            <property name="title">
+             <string>Mount Point</string>
+            </property>
+            <property name="flat">
+             <bool>false</bool>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_15">
+             <item>
+              <widget class="QLabel" name="label_fldrVal">
+               <property name="text">
+                <string>pCloud</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_6">
+               <item>
+                <widget class="QPushButton" name="btnChangeDestFldr">
+                 <property name="text">
+                  <string>Change Folder</string>
+                 </property>
+                 <property name="flat">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_12">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+            </layout>
            </widget>
           </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="pageSettings">
-         <layout class="QVBoxLayout" name="verticalLayout_23">
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_9">
-            <item>
-             <widget class="QGroupBox" name="groupBox_fldr">
-              <property name="title">
-               <string>Mount Point</string>
-              </property>
-              <property name="flat">
-               <bool>false</bool>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_15">
-               <item>
-                <widget class="QLabel" name="label_fldrVal">
-                 <property name="text">
-                  <string>pCloud</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_6">
-                 <item>
-                  <widget class="QPushButton" name="btnChangeDestFldr">
-                   <property name="text">
-                    <string>Change Folder</string>
-                   </property>
-                   <property name="flat">
-                    <bool>false</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <spacer name="horizontalSpacer_12">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                </layout>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QGroupBox" name="groupBox_ssl">
-              <property name="title">
-               <string>SSL</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_16">
-               <item>
-                <layout class="QVBoxLayout" name="verticalLayout_14">
-                 <item>
-                  <widget class="QLabel" name="label_ssl">
-                   <property name="text">
-                    <string>Secure Connection:</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QCheckBox" name="checkBox_ssl">
-                   <property name="enabled">
-                    <bool>true</bool>
-                   </property>
-                   <property name="text">
-                    <string>Use SSL</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QGroupBox" name="groupBox_cache">
-              <property name="title">
-               <string>Cache</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_17">
-               <item>
-                <widget class="QLabel" name="label_2">
-                 <property name="text">
-                  <string>Change pCloud memory usage:</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_7">
-                 <item>
-                  <widget class="QLabel" name="label_cache">
-                   <property name="text">
-                    <string>Cache size:</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="edit_cache">
-                   <property name="maximumSize">
-                    <size>
-                     <width>100</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="inputMethodHints">
-                    <set>Qt::ImhDigitsOnly</set>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_mb">
-                   <property name="text">
-                    <string>MB</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <spacer name="horizontalSpacer_14">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                </layout>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_3">
-              <item>
-               <widget class="QPushButton" name="btnSaveSttngs">
-                <property name="text">
-                 <string>Save</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="btnCancelSttngs">
-                <property name="text">
-                 <string>Cancel</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="horizontalSpacer_13">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="pageHelp">
-         <layout class="QHBoxLayout" name="horizontalLayout_35">
-          <property name="spacing">
-           <number>25</number>
-          </property>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_10">
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_17">
-              <item>
-               <widget class="QLabel" name="label_5">
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="pixmap">
-                 <pixmap resource="Resources.qrc">:/48x48/images/48x48/faq-modal.png</pixmap>
-                </property>
-                <property name="scaledContents">
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_10">
-                <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Online Tutorial &lt;/span&gt;&lt;/p&gt;&lt;p&gt;Go throught our online tutorial&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="horizontalSpacer_24">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QToolButton" name="tBtnOnlineTutorial">
-                <property name="text">
-                 <string>See Tutorial</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="Line" name="line_6">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_33">
-              <item>
-               <widget class="QLabel" name="label_7">
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="pixmap">
-                 <pixmap resource="Resources.qrc">:/48x48/images/48x48/onlinehelp-modal.png</pixmap>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_8">
-                <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Online Help&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br/&gt;&lt;/span&gt;Our online F.A.Q. cover almost all aspects of pCloud&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="horizontalSpacer_23">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QToolButton" name="tBtnOnlineHelp">
-                <property name="text">
-                 <string>Get Help</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="Line" name="line_7">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_34">
-              <item>
-               <widget class="QLabel" name="label_6">
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="pixmap">
-                 <pixmap resource="Resources.qrc">:/48x48/images/48x48/feedback-modal.png</pixmap>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_9">
-                <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Feedback&lt;/span&gt;&lt;br/&gt;Still need help? Contact us&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="horizontalSpacer_25">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QToolButton" name="tBtnFeedback">
-                <property name="text">
-                 <string>Send Feedback</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="pageAbout">
-         <layout class="QVBoxLayout" name="verticalLayout_13">
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_12">
-            <property name="spacing">
-             <number>0</number>
+           <widget class="QGroupBox" name="groupBox_ssl">
+            <property name="title">
+             <string>SSL</string>
             </property>
+            <layout class="QVBoxLayout" name="verticalLayout_16">
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_14">
+               <item>
+                <widget class="QLabel" name="label_ssl">
+                 <property name="text">
+                  <string>Secure Connection:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="checkBox_ssl">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="text">
+                  <string>Use SSL</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox_cache">
+            <property name="title">
+             <string>Cache</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_17">
+             <item>
+              <widget class="QLabel" name="label_2">
+               <property name="text">
+                <string>Change pCloud memory usage:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_7">
+               <item>
+                <widget class="QLabel" name="label_cache">
+                 <property name="text">
+                  <string>Cache size:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="edit_cache">
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="inputMethodHints">
+                  <set>Qt::ImhDigitsOnly</set>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_mb">
+                 <property name="text">
+                  <string>MB</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_14">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
-             <widget class="QLabel" name="label_logo">
+             <widget class="QPushButton" name="btnSaveSttngs">
+              <property name="text">
+               <string>Save</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnCancelSttngs">
+              <property name="text">
+               <string>Cancel</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_13">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageHelp">
+       <layout class="QHBoxLayout" name="horizontalLayout_35">
+        <property name="spacing">
+         <number>25</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_10">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_17">
+            <item>
+             <widget class="QLabel" name="label_5">
               <property name="text">
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="Resources.qrc">:/images/images/logo.png</pixmap>
+               <pixmap resource="Resources.qrc">:/48x48/images/48x48/faq-modal.png</pixmap>
               </property>
               <property name="scaledContents">
                <bool>false</bool>
               </property>
-              <property name="alignment">
-               <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_10">
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Online Tutorial&lt;/span&gt;&lt;br/&gt;Go throught our online tutorial&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_pcloud">
-              <property name="font">
-               <font>
-                <pointsize>16</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
+             <spacer name="horizontalSpacer_24">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
               </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QToolButton" name="tBtnOnlineTutorial">
               <property name="text">
-               <string>pCloud</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignHCenter|Qt::AlignTop</set>
+               <string>See Tutorial</string>
               </property>
              </widget>
             </item>
            </layout>
           </item>
           <item>
-           <spacer name="verticalSpacer_4">
+           <widget class="Line" name="line_6">
             <property name="orientation">
-             <enum>Qt::Vertical</enum>
+             <enum>Qt::Horizontal</enum>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>50</height>
-             </size>
-            </property>
-           </spacer>
+           </widget>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_5">
-            <property name="spacing">
-             <number>12</number>
-            </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_33">
             <item>
-             <widget class="QLabel" name="label_version">
+             <widget class="QLabel" name="label_7">
               <property name="text">
-               <string>Version</string>
+               <string/>
               </property>
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              <property name="pixmap">
+               <pixmap resource="Resources.qrc">:/48x48/images/48x48/onlinehelp-modal.png</pixmap>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_versionVal">
+             <widget class="QLabel" name="label_8">
               <property name="text">
-               <string>val</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Online Help&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br/&gt;&lt;/span&gt;Our online F.A.Q. cover almost all aspects of pCloud&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_23">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QToolButton" name="tBtnOnlineHelp">
+              <property name="text">
+               <string>Get Help</string>
               </property>
              </widget>
             </item>
            </layout>
           </item>
           <item>
-           <spacer name="verticalSpacer_5">
+           <widget class="Line" name="line_7">
             <property name="orientation">
-             <enum>Qt::Vertical</enum>
+             <enum>Qt::Horizontal</enum>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>75</height>
-             </size>
-            </property>
-           </spacer>
+           </widget>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_19">
-            <property name="spacing">
-             <number>20</number>
-            </property>
-            <property name="bottomMargin">
-             <number>10</number>
-            </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_34">
             <item>
-             <widget class="QLabel" name="label_tos">
-              <property name="layoutDirection">
-               <enum>Qt::LeftToRight</enum>
-              </property>
+             <widget class="QLabel" name="label_6">
               <property name="text">
-               <string>&lt;a href=&quot;https://www.pcloud.com/terms_and_conditions.html&quot;&gt;Terms of Service&lt;/a&gt;</string>
+               <string/>
               </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-              <property name="wordWrap">
-               <bool>true</bool>
-              </property>
-              <property name="openExternalLinks">
-               <bool>true</bool>
-              </property>
-              <property name="textInteractionFlags">
-               <set>Qt::LinksAccessibleByMouse</set>
+              <property name="pixmap">
+               <pixmap resource="Resources.qrc">:/48x48/images/48x48/feedback-modal.png</pixmap>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_pp">
+             <widget class="QLabel" name="label_9">
               <property name="text">
-               <string>&lt;a href=&quot;https://www.pcloud.com/privacy_policy.html&quot;&gt;Privacy policy&lt;/a&gt;</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-              <property name="wordWrap">
-               <bool>true</bool>
-              </property>
-              <property name="openExternalLinks">
-               <bool>true</bool>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Feedback&lt;/span&gt;&lt;br/&gt;Still need help? Contact us&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_ipp">
+             <spacer name="horizontalSpacer_25">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QToolButton" name="tBtnFeedback">
               <property name="text">
-               <string>&lt;a href=&quot;https://www.pcloud.com/int_pr_policy.html&quot;&gt;Intelectual Property Policy&lt;/a&gt;</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-              <property name="wordWrap">
-               <bool>false</bool>
-              </property>
-              <property name="openExternalLinks">
-               <bool>true</bool>
+               <string>Send Feedback</string>
               </property>
              </widget>
             </item>
            </layout>
           </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageAbout">
+       <layout class="QVBoxLayout" name="verticalLayout_13">
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_12">
+          <property name="spacing">
+           <number>0</number>
+          </property>
           <item>
-           <widget class="QLabel" name="label_copyright">
+           <widget class="QLabel" name="label_logo">
             <property name="text">
-             <string>Copyright @ 2014 pCloud. All rights reserved.</string>
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap resource="Resources.qrc">:/images/images/logo.png</pixmap>
+            </property>
+            <property name="scaledContents">
+             <bool>false</bool>
             </property>
             <property name="alignment">
              <set>Qt::AlignBottom|Qt::AlignHCenter</set>
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QLabel" name="label_pcloud">
+            <property name="font">
+             <font>
+              <pointsize>16</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>pCloud</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignHCenter|Qt::AlignTop</set>
+            </property>
+           </widget>
+          </item>
          </layout>
-        </widget>
-       </widget>
-      </item>
-     </layout>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>50</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <property name="spacing">
+           <number>12</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_version">
+            <property name="text">
+             <string>Version</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_versionVal">
+            <property name="text">
+             <string>val</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>75</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_19">
+          <property name="spacing">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_tos">
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
+            <property name="text">
+             <string>&lt;a href=&quot;https://www.pcloud.com/terms_and_conditions.html&quot;&gt;Terms of Service&lt;/a&gt;</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+            <property name="openExternalLinks">
+             <bool>true</bool>
+            </property>
+            <property name="textInteractionFlags">
+             <set>Qt::LinksAccessibleByMouse</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_pp">
+            <property name="text">
+             <string>&lt;a href=&quot;https://www.pcloud.com/privacy_policy.html&quot;&gt;Privacy policy&lt;/a&gt;</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+            <property name="openExternalLinks">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_ipp">
+            <property name="text">
+             <string>&lt;a href=&quot;https://www.pcloud.com/int_pr_policy.html&quot;&gt;Intelectual Property Policy&lt;/a&gt;</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+            <property name="openExternalLinks">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_copyright">
+          <property name="text">
+           <string>Copyright @ 2014 pCloud. All rights reserved.</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -1892,7 +1848,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>845</width>
+     <width>924</width>
      <height>21</height>
     </rect>
    </property>

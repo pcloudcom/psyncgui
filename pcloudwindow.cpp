@@ -26,14 +26,11 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     ui->listButtonsWidget->setSpacing(12);
 
     ui->listButtonsWidget->setStyleSheet("background-color:transparent");
-    //ui->listButtonsWidget->setWrapping(true); //
-    //ui->listButtonsWidget->setSelectionRectVisible(false); //
     ui->listButtonsWidget->setMovement(QListView::Static); //not to move items with the mouse
     //temp
     ui->listButtonsWidget->setMinimumWidth(360);
     ui->listButtonsWidget->setMaximumHeight(85);
-    ui->listButtonsWidget->setMinimumHeight(84); // precakva mi layouta
-    // TEMP comment ui->listButtonsWidget->setFrameStyle(QFrame::Sunken); //hides frame
+    ui->listButtonsWidget->setMinimumHeight(84); // precakva mi layouta    
 
     //create Items for QListWidget
     new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 0
@@ -59,8 +56,6 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     for(int i = 0; i < ui->pagesWidget->count(); i++)
         ui->pagesWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
-    //ui->verticalLayout_10->setAlignment(Qt::AlignCenter); //tab help
-
     setWindowIcon(QIcon(WINDOW_ICON));
     setWindowTitle("pCloud Sync");
     // ui notes - set statusbar max size to (0,0)
@@ -73,13 +68,22 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     connect(ui->tBtnOnlineTutorial, SIGNAL(clicked()), this, SLOT(openOnlineTutorial()));
     connect(ui->tBtnFeedback, SIGNAL(clicked()), this, SLOT(sendFeedback()));
     connect(ui->toolBtnOpenWeb, SIGNAL(clicked()), this, SLOT(openWebPage()));
+    connect(ui->tbtnMyPcloud, SIGNAL(clicked()), this, SLOT(openMyPcloud()));
     connect(ui->label, SIGNAL(linkActivated(QString)), this, SLOT(upgradePlan()));
     //p connect(ui->tbtnOpenFolder, SIGNAL(clicked()),app,SLOT(openCloudDir()));
-    connect(ui->tBtnExit, SIGNAL(clicked()), app, SLOT(doExit())); // to move in this class
-    connect(ui->btnLgout, SIGNAL(clicked()), app, SLOT(logOut()));
-    connect(ui->btnChangePass, SIGNAL(clicked()), this, SLOT(changePass()));
-    connect(ui->btnForgotPass, SIGNAL(clicked()), this, SLOT(forgotPass()));
+    connect(ui->tBtnExit, SIGNAL(clicked()), app, SLOT(doExit()));
+    connect(ui->btnLgout, SIGNAL(clicked()), app, SLOT(logOut()));    
     connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(unlinkSync()));
+
+    QMenu *menuAccnt = new QMenu(this);
+    QAction *actionChangePass = new QAction(trUtf8("Change Password"),this);
+    connect(actionChangePass, SIGNAL(triggered()), this, SLOT(changePass()));
+    QAction *forgotPassAction = new QAction(trUtf8("Forgot Password"), this);
+    connect(forgotPassAction, SIGNAL(triggered()), this, SLOT(forgotPass()));
+
+    menuAccnt->addAction(actionChangePass);
+    menuAccnt->addAction(forgotPassAction);
+    ui->btnAccntMenu->setMenu(menuAccnt);
 
 }
 
@@ -223,14 +227,6 @@ void PCloudWindow::fillAccountLoggedPage()
     ui->tbtnOpenFolder->setVisible(false);
     ui->tBtnExit->setVisible(false);    
 
-#ifdef Q_OS_WIN
-    //make frame white, leave widgets with normal colors    
-    QPalette p;// = ui->frame->palette();
-    p.setColor(ui->frame_account->backgroundRole(),Qt::white);
-    p.setColor(ui->frame_account->foregroundRole(), Qt::black);
-    ui->frame_account->setAutoFillBackground(true);
-    ui->frame_account->setPalette(p);
-#endif
 }
 void PCloudWindow::refreshUserinfo()
 {
@@ -342,6 +338,11 @@ void PCloudWindow::checkVerify() // has the user verified after had clicked "Ver
 }
 
 void PCloudWindow::openWebPage()
+{
+    QUrl url("https://www.pcloud.com/");
+    QDesktopServices::openUrl(url);
+}
+void PCloudWindow::openMyPcloud()
 {
     QUrl url("https://my.pcloud.com/#page=filemanager&authtoken="+app->authentication);
     QDesktopServices::openUrl(url);

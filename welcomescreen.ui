@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1013</width>
-    <height>497</height>
+    <width>884</width>
+    <height>421</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,7 +26,7 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <property name="spacing">
-           <number>24</number>
+           <number>16</number>
           </property>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_7">
@@ -119,7 +119,7 @@
             <item>
              <layout class="QVBoxLayout" name="verticalLayout">
               <property name="spacing">
-               <number>6</number>
+               <number>0</number>
               </property>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_6">
@@ -302,7 +302,7 @@
                 <item>
                  <widget class="QLabel" name="label_9">
                   <property name="text">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Download and Upload&lt;br/&gt;&lt;/span&gt;files are copied in both directons, upload and download&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;Download and Upload&lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;&lt;br/&gt;&lt;/span&gt;files are copied in both directons, upload and download&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="scaledContents">
                    <bool>true</bool>
@@ -355,8 +355,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1013</width>
-     <height>27</height>
+     <width>884</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>

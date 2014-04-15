@@ -55,6 +55,7 @@ public slots:
     void setOnlinePages();  //when the user logs in
     void refreshUserinfo();
     void openWebPage();
+    void openMyPcloud();
     void openOnlineTutorial();
     void openOnlineHelp();
     void sendFeedback();

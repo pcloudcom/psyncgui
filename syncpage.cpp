@@ -36,7 +36,7 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
     connect(win->ui->btnPauseSync, SIGNAL(clicked()), app, SLOT(pauseSync()));
 
     connect(win->ui->btnSyncSttngsSave, SIGNAL(clicked()), this, SLOT(saveSettings()));
-    connect(win->ui->btnSyncSttngCancel, SIGNAL(clicked()), this, SLOT(cancelSettings()));    
+    connect(win->ui->btnSyncSttngCancel, SIGNAL(clicked()), this, SLOT(cancelSettings()));
     connect(win->ui->edit_DwnldSpeed, SIGNAL(textChanged(QString)), this, SLOT(enableSaveBtn()));
     connect(win->ui->edit_UpldSpeed, SIGNAL(textChanged(QString)), this, SLOT(enableSaveBtn()));
     connect(win->ui->edit_minLocalSpace, SIGNAL(textEdited(QString)), this, SLOT(enableSaveBtn()));
@@ -48,7 +48,7 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
     connect(win->ui->rBtnSyncDwldUnlimit, SIGNAL(clicked()), this, SLOT(enableSaveBtn()));
     connect(win->ui->rbtnSyncupldChoose, SIGNAL(clicked()), this, SLOT(enableSaveBtn()));
     connect(win->ui->rBtnSyncUpldAuto, SIGNAL(clicked()), this, SLOT(enableSaveBtn()));
-    connect(win->ui->rBtnSyncUpldUnlimit, SIGNAL(clicked()), this, SLOT(enableSaveBtn()));    
+    connect(win->ui->rBtnSyncUpldUnlimit, SIGNAL(clicked()), this, SLOT(enableSaveBtn()));
 
     connect(win->ui->rBtnSyncDwldAuto, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
     connect(win->ui->rBtnSyncDwldUnlimit, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
@@ -89,7 +89,7 @@ static QString get_sync_type(int synctype)
     default:
         return "";
         break;
-    }    
+    }
 }
 
 void SyncPage::load()
@@ -109,8 +109,11 @@ void SyncPage::load()
             row << fldrsList->folders[i].localpath <<get_sync_type(fldrsList->folders[i].synctype) << fldrsList->folders[i].remotepath;
             QTreeWidgetItem *item = new QTreeWidgetItem(row);
             item->setData(0, Qt::UserRole,fldrsList->folders[i].localpath);
-            item->setData(1, Qt::UserRole, fldrsList->folders[i].synctype);
+            item->setToolTip(0,fldrsList->folders[i].localpath);
+            item->setData(0, Qt::UserRole, fldrsList->folders[i].synctype);
+            item->setToolTip(1,QString::number(fldrsList->folders[i].synctype));
             item->setData(2, Qt::UserRole, fldrsList->folders[i].remotepath);
+            item->setToolTip(2,fldrsList->folders[i].remotepath);
             item->setData(3, Qt::UserRole, fldrsList->folders[i].syncid);
             win->ui->treeSyncList->insertTopLevelItem(i, item);
         }
@@ -128,12 +131,12 @@ void SyncPage::modifySync()
 {
     QTreeWidgetItem *current = win->ui->treeSyncList->currentItem();
     if (!current)
-    {      
+    {
         QMessageBox::warning(this,"pCloud", trUtf8("Please select a sync!"));
         return;
     }
     else
-    {        
+    {
         //ModifySyncDialog modifyDialog(current->data(0, Qt::UserRole).toString(), current->data(2, Qt::UserRole).toString(), current->data(1, Qt::UserRole).toString());
         ModifySyncDialog modifyDialog(current->data(0, Qt::UserRole).toString(), current->data(2, Qt::UserRole).toString(),current->data(1, Qt::UserRole).toInt());
 
@@ -154,7 +157,7 @@ void SyncPage::stopSync()
 {
     QTreeWidgetItem *current = win->ui->treeSyncList->currentItem();
     if (!current)
-    {       
+    {
         QMessageBox::warning(this,"pCloud", trUtf8("Please select a sync!"));
         return;
     }
@@ -275,7 +278,7 @@ void SyncPage::setNewDwnldSpeed()
     }
     if (objname == "rbtnSyncDwnlChoose")
     {
-        win->ui->edit_DwnldSpeed->setEnabled(true);       
+        win->ui->edit_DwnldSpeed->setEnabled(true);
         return;
     }
 }
@@ -300,7 +303,7 @@ void SyncPage::setNewUpldSpeed()
         return;
     }
     if (objname == "rbtnSyncupldChoose")
-    {        
+    {
         win->ui->edit_UpldSpeed->setEnabled(true);
         return;
     }
@@ -309,7 +312,7 @@ void SyncPage::setNewUpldSpeed()
 void SyncPage::setNewSpeedFromEditline()
 {
     QObject *obj = this->sender();
-  //  qDebug()<< "object: "<< obj->objectName();
+    //  qDebug()<< "object: "<< obj->objectName();
     QString objname = obj->objectName();
     if (objname == "edit_UpldSpeed")
         upldSpeedNew = (win->ui->edit_UpldSpeed->text().toInt()) *1000 ;
@@ -351,7 +354,9 @@ void SyncPage::saveSettings()
     if (minLocalSpace != win->ui->edit_minLocalSpace->text())
     {
         minLocalSpace = win->ui->edit_minLocalSpace->text();
-        psync_set_uint_setting("minlocalfreespace", (((minLocalSpace.toInt()*1024*1024))));
+        // minLocalSpace.toInt()*1024*1024 doesnt returns right result if space = 9999mb
+        quint64 n = 1024*1024;
+        psync_set_uint_setting("minlocalfreespace", minLocalSpace.toInt()*n);
     }
 
     if(upldSpeed != upldSpeedNew)

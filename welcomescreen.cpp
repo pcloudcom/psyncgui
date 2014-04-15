@@ -105,12 +105,14 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
     }
     */
 
-
     QList<QStringList> itemsLst;
-    itemsLst << (QStringList() << docspath << "/My Documents")
-             << (QStringList() << musicpath << "/My Music")
-             << (QStringList() << photospath << "/My Pictures")
-             << (QStringList() << moviespath << "/My Videos");
+    if (QSysInfo::windowsVersion() != QSysInfo::WV_XP)
+        itemsLst << (QStringList() << docspath << "/My Documents")
+                 << (QStringList() << musicpath << "/My Music")
+                 << (QStringList() << photospath << "/My Pictures")
+                 << (QStringList() << moviespath << "/My Videos");
+    else
+        itemsLst << (QStringList() << docspath << "/My Documents");
     remoteFldrsNamesLst.append("My Documents");
     newRemoteFldrsLst.append("My Documents");
 
@@ -125,7 +127,6 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
         item->setData(3, Qt::UserRole, itemsLst.at(i).at(1));
         item->setText(2, typeStr[2]);
         item->setData(2, Qt::UserRole, PSYNC_FULL - 1);
-
     }
 
     ui->treeWidget->resizeColumnToContents(0);
