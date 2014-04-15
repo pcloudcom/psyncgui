@@ -6,6 +6,7 @@
 #include "addsyncdialog.h"
 
 #include <QWidget>
+#include <QTreeWidgetItem>
 
 class SyncPage : public QWidget // or qmainwin
 {
@@ -28,6 +29,7 @@ private:
     void showError();
 public slots:
     void refreshTab(int index);
+    void syncDoubleClicked(QTreeWidgetItem *item,int col);
     void modifySync();
     void stopSync();    
     void addSync();

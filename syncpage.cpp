@@ -5,6 +5,9 @@
 #include "modifysyncdialog.h"
 #include "ui_modifysyncdialog.h"
 #include <QRegExp>
+#include<QDesktopServices>
+#include <QUrl>
+#include <QDir>
 #include <QDebug> //temp
 
 
@@ -28,7 +31,7 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
     win->ui->label_upld->setText(app->uplodInfo);
 
     connect(win->ui->tabWidgetSync, SIGNAL(currentChanged(int)), this, SLOT(refreshTab(int)));
-    connect(win->ui->treeSyncList, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(modifySync()));
+    connect(win->ui->treeSyncList, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(syncDoubleClicked(QTreeWidgetItem*,int)));
     connect(win->ui->btnSyncModify,SIGNAL(clicked()), this, SLOT(modifySync()));
     connect(win->ui->btnSyncStop, SIGNAL(clicked()), this, SLOT(stopSync()));
     connect(win->ui->btnSyncAdd, SIGNAL(clicked()), this, SLOT(addSync()));
@@ -110,11 +113,13 @@ void SyncPage::load()
             QTreeWidgetItem *item = new QTreeWidgetItem(row);
             item->setData(0, Qt::UserRole,fldrsList->folders[i].localpath);
             item->setToolTip(0,fldrsList->folders[i].localpath);
-            item->setData(0, Qt::UserRole, fldrsList->folders[i].synctype);
+            item->setData(1, Qt::UserRole, fldrsList->folders[i].synctype);
             item->setToolTip(1,QString::number(fldrsList->folders[i].synctype));
             item->setData(2, Qt::UserRole, fldrsList->folders[i].remotepath);
             item->setToolTip(2,fldrsList->folders[i].remotepath);
             item->setData(3, Qt::UserRole, fldrsList->folders[i].syncid);
+            quint64 fldrid = fldrsList->folders[i].folderid;
+            item->setData(4,Qt::UserRole, fldrid);
             win->ui->treeSyncList->insertTopLevelItem(i, item);
         }
         free(fldrsList);
@@ -127,6 +132,36 @@ void SyncPage::initSyncPage()
     load();
     loadSettings();
 }
+void SyncPage::syncDoubleClicked(QTreeWidgetItem *item, int col)
+{
+    switch (col) {
+    case 0:   //opens local folder
+    {
+        QString localpath = item->data(0,Qt::UserRole).toString();
+        QDesktopServices::openUrl(QUrl::fromLocalFile(localpath));
+        break;
+    }
+    case 1: //opens modify sync type dialog
+    {
+        this->modifySync();
+        break;
+    }
+    case 2: //opens remote folder
+    {
+        quint64 fldrid = item->data(4,Qt::UserRole).toLongLong();
+        QString urlstr = "https://my.pcloud.com/#folder=";
+        qDebug()<< " open remote folder, auth = "<< app->authentication;
+        urlstr.append(QString::number(fldrid) + "&page=filemanager&authtoken=" + app->authentication);
+        QUrl url(urlstr);
+        QDesktopServices::openUrl(url);
+        break;
+    }
+    default:
+        break;
+    }
+
+}
+
 void SyncPage::modifySync()
 {
     QTreeWidgetItem *current = win->ui->treeSyncList->currentItem();
