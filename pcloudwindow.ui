@@ -49,7 +49,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>5</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="pageAccntNotLogged">
        <property name="maximumSize">
@@ -172,281 +172,299 @@
          <height>16777215</height>
         </size>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_8">
+       <layout class="QVBoxLayout" name="verticalLayout_30">
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_6">
+         <layout class="QHBoxLayout" name="horizontalLayout_9">
           <item>
-           <widget class="QLabel" name="label_11">
-            <property name="text">
-             <string/>
-            </property>
-            <property name="pixmap">
-             <pixmap resource="Resources.qrc">:/128x128/images/128x128/FolderIconX.png</pixmap>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QFormLayout" name="formLayout">
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_14">
-              <property name="text">
-               <string>Space Usage: </string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QLabel" name="label_space">
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <item>
+             <widget class="QLabel" name="label_11">
               <property name="text">
                <string/>
               </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_plan">
-              <property name="text">
-               <string>Current Plan:</string>
+              <property name="pixmap">
+               <pixmap resource="Resources.qrc">:/128x128/images/128x128/FolderIconX.png</pixmap>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <layout class="QHBoxLayout" name="horizontalLayout">
-              <item>
-               <widget class="QLabel" name="label_planVal">
+            <item>
+             <layout class="QFormLayout" name="formLayout">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_14">
+                <property name="text">
+                 <string>Space Usage: </string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="label_space">
                 <property name="text">
                  <string/>
                 </property>
                </widget>
               </item>
-              <item>
-               <widget class="QLabel" name="label">
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_plan">
                 <property name="text">
-                 <string>&lt;a href=&quot;https://www.pcloud.com/&quot;&gt;Get More Space&lt;/a&gt; </string>
+                 <string>Current Plan:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <layout class="QHBoxLayout" name="horizontalLayout">
+                <item>
+                 <widget class="QLabel" name="label_planVal">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label">
+                  <property name="text">
+                   <string>&lt;a href=&quot;https://www.pcloud.com/&quot;&gt;Get More Space&lt;/a&gt; </string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_expDt">
+                <property name="text">
+                 <string>Expiry date:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLabel" name="label_expDtVal">
+                <property name="text">
+                 <string>TextLabel</string>
                 </property>
                </widget>
               </item>
              </layout>
             </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_expDt">
-              <property name="text">
-               <string>Expiry date:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QLabel" name="label_expDtVal">
-              <property name="text">
-               <string>TextLabel</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_6">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_5">
             <item>
-             <widget class="QToolButton" name="tbtnOpenFolder">
-              <property name="text">
-               <string>Open pCloud Folder</string>
+             <spacer name="verticalSpacer_6">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
               </property>
-              <property name="icon">
-               <iconset resource="Resources.qrc">
-                <normaloff>:/images/images/folder.png</normaloff>:/images/images/folder.png</iconset>
-              </property>
-              <property name="toolButtonStyle">
-               <enum>Qt::ToolButtonTextBesideIcon</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="tbtnMyPcloud">
-              <property name="text">
-               <string>mypcloud.com</string>
-              </property>
-              <property name="icon">
-               <iconset resource="Resources.qrc">
-                <normaloff>:/images/images/folder.png</normaloff>:/images/images/folder.png</iconset>
-              </property>
-              <property name="toolButtonStyle">
-               <enum>Qt::ToolButtonTextBesideIcon</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="toolBtnOpenWeb">
-              <property name="text">
-               <string>Open Web Page</string>
-              </property>
-              <property name="icon">
-               <iconset resource="Resources.qrc">
-                <normaloff>:/images/images/web.png</normaloff>:/images/images/web.png</iconset>
-              </property>
-              <property name="toolButtonStyle">
-               <enum>Qt::ToolButtonTextBesideIcon</enum>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="Line" name="line_5">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_30">
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_2"/>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <item>
-             <widget class="QLabel" name="label_user">
-              <property name="text">
-               <string>Account:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_email">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="btnAccntMenu">
-              <property name="maximumSize">
+              <property name="sizeHint" stdset="0">
                <size>
                 <width>20</width>
-                <height>20</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_9">
-            <item>
-             <widget class="QLabel" name="label_status">
-              <property name="text">
-               <string>Status:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="checkBoxVerified">
-              <property name="layoutDirection">
-               <enum>Qt::LeftToRight</enum>
-              </property>
-              <property name="text">
-               <string>Verified</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="btnVerify">
-              <property name="text">
-               <string>Verify Now</string>
-              </property>
-              <property name="default">
-               <bool>false</bool>
-              </property>
-              <property name="flat">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_15">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
+                <height>40</height>
                </size>
               </property>
              </spacer>
             </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_5">
+              <item>
+               <widget class="QToolButton" name="tbtnOpenFolder">
+                <property name="text">
+                 <string>Open pCloud Folder</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="Resources.qrc">
+                  <normaloff>:/images/images/folder.png</normaloff>:/images/images/folder.png</iconset>
+                </property>
+                <property name="toolButtonStyle">
+                 <enum>Qt::ToolButtonTextBesideIcon</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QToolButton" name="tbtnMyPcloud">
+                <property name="text">
+                 <string>my.pcloud.com</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="Resources.qrc">
+                  <normaloff>:/images/images/folder.png</normaloff>:/images/images/folder.png</iconset>
+                </property>
+                <property name="toolButtonStyle">
+                 <enum>Qt::ToolButtonTextBesideIcon</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QToolButton" name="toolBtnOpenWeb">
+                <property name="text">
+                 <string>Open Web Page</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="Resources.qrc">
+                  <normaloff>:/images/images/web.png</normaloff>:/images/images/web.png</iconset>
+                </property>
+                <property name="toolButtonStyle">
+                 <enum>Qt::ToolButtonTextBesideIcon</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
            </layout>
           </item>
           <item>
-           <spacer name="verticalSpacer_7">
+           <widget class="Line" name="line_5">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>60</height>
-             </size>
-            </property>
-           </spacer>
+           </widget>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_18">
+           <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
-             <spacer name="horizontalSpacer_4">
+             <layout class="QFormLayout" name="formLayout_2">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_user">
+                <property name="text">
+                 <string>Account:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <layout class="QHBoxLayout" name="horizontalLayout_8">
+                <item>
+                 <widget class="QLabel" name="label_email">
+                  <property name="text">
+                   <string>fdds</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btnAccntMenu">
+                  <property name="maximumSize">
+                   <size>
+                    <width>20</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_22">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_status">
+                <property name="text">
+                 <string>Status:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <item>
+                 <widget class="QCheckBox" name="checkBoxVerified">
+                  <property name="layoutDirection">
+                   <enum>Qt::LeftToRight</enum>
+                  </property>
+                  <property name="text">
+                   <string>Verified</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btnVerify">
+                  <property name="text">
+                   <string>Verify Now</string>
+                  </property>
+                  <property name="default">
+                   <bool>false</bool>
+                  </property>
+                  <property name="flat">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_15">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_7">
               <property name="orientation">
-               <enum>Qt::Horizontal</enum>
+               <enum>Qt::Vertical</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>40</width>
-                <height>20</height>
+                <width>20</width>
+                <height>60</height>
                </size>
               </property>
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="btnUnlink">
-              <property name="text">
-               <string>Unlink</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="btnLgout">
-              <property name="text">
-               <string>Logout</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="tBtnExit">
-              <property name="text">
-               <string>Exit</string>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout" name="horizontalLayout_18">
+              <item>
+               <spacer name="horizontalSpacer_4">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnUnlink">
+                <property name="text">
+                 <string>Unlink</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnLgout">
+                <property name="text">
+                 <string>Logout</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QToolButton" name="tBtnExit">
+                <property name="text">
+                 <string>Exit</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
            </layout>
           </item>

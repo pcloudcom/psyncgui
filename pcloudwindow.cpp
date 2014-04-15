@@ -331,7 +331,9 @@ void PCloudWindow::checkVerify() // has the user verified after had clicked "Ver
     bool verified = psync_get_bool_value("emailverified");
     if (verified)
     {
+        ui->checkBoxVerified->setVisible(true);
         ui->checkBoxVerified->setChecked(true);
+        ui->checkBoxVerified->setEnabled(false);
         ui->btnVerify->setVisible(false);
         verifyClicked = false;
     }
