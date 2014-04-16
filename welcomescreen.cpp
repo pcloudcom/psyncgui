@@ -45,6 +45,7 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
 
     QString path = QDir::home().path().append("/pCloudSync");
     QDir pcloudDir(path);
+    QList<QStringList> itemsLst;
 #if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
     QDir docs (QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
     QDir music(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
@@ -56,19 +57,30 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
     QDir photos(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
     QDir movies(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
 #endif
-    QString nativepath, docspath, musicpath,moviespath, photospath;
+
+    QString nativepath;
 #ifdef Q_OS_WIN
+    QString docspath;
     nativepath = pcloudDir.toNativeSeparators(path);
     docspath = docs.toNativeSeparators(docs.absolutePath());
-    musicpath = music.toNativeSeparators(music.absolutePath());
-    moviespath = movies.toNativeSeparators(music.absolutePath());
-    photospath = photos.toNativeSeparators(photos.absolutePath());
+    itemsLst << (QStringList() << docspath << "/My Documents");
+    // in win xp My music, My pictures and My videos are located in My documents by default
+    if (QSysInfo::windowsVersion() != QSysInfo::WV_XP)
+    {
+        QString musicpath,moviespath, photospath;
+        musicpath = music.toNativeSeparators(music.absolutePath());
+        moviespath = movies.toNativeSeparators(music.absolutePath());
+        photospath = photos.toNativeSeparators(photos.absolutePath());
+        itemsLst << (QStringList() << musicpath << "/My Music")
+                 << (QStringList() << photospath << "/My Pictures")
+                 << (QStringList() << moviespath << "/My Videos");
+    }
 #else
     nativepath = pcloudDir.path();
-    docspath = docs.absolutePath();
-    musicpath = music.absolutePath();
-    moviespath = movies.absolutePath();
-    photospath = photos.absolutePath();
+    itemsLst << (QStringList() << docs.absolutePath() << "/My Documents")
+             << (QStringList() << music.absolutePath() << "/My Music")
+             << (QStringList() << photos.absolutePath() << "/My Pictures")
+             << (QStringList() << movies.absolutePath() << "/My Videos");
 #endif    
     if(!pcloudDir.exists())
     {
@@ -105,14 +117,6 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
     }
     */
 
-    QList<QStringList> itemsLst;
-    if (QSysInfo::windowsVersion() != QSysInfo::WV_XP)
-        itemsLst << (QStringList() << docspath << "/My Documents")
-                 << (QStringList() << musicpath << "/My Music")
-                 << (QStringList() << photospath << "/My Pictures")
-                 << (QStringList() << moviespath << "/My Videos");
-    else
-        itemsLst << (QStringList() << docspath << "/My Documents");
     remoteFldrsNamesLst.append("My Documents");
     newRemoteFldrsLst.append("My Documents");
 
