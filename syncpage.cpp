@@ -114,7 +114,7 @@ void SyncPage::load()
             item->setData(0, Qt::UserRole,fldrsList->folders[i].localpath);
             item->setToolTip(0,fldrsList->folders[i].localpath);
             item->setData(1, Qt::UserRole, fldrsList->folders[i].synctype);
-            item->setToolTip(1,QString::number(fldrsList->folders[i].synctype));
+            item->setToolTip(1,get_sync_type(fldrsList->folders[i].synctype));
             item->setData(2, Qt::UserRole, fldrsList->folders[i].remotepath);
             item->setToolTip(2,fldrsList->folders[i].remotepath);
             item->setData(3, Qt::UserRole, fldrsList->folders[i].syncid);
@@ -219,11 +219,9 @@ void SyncPage::stopSync()
 }
 
 void SyncPage::addSync()
-{
-    //check za statusi
+{       
     addSyncDialog *addSync = new addSyncDialog(app,win,this, NULL);
     addSync->exec(); //or show
-
 }
 
 // Settings tab
