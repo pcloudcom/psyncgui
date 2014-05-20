@@ -585,9 +585,8 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     unlinkFlag = false;
     isCursorChanged = false;
     tray=new QSystemTrayIcon(QIcon(OFFLINE_ICON),this);
-#ifdef Q_OS_LINUX    
-    if(QT_VERSION < QT_VERSION_CHECK(5,0,0))
-        QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8")); // for non-latin strings
+#if defined(Q_OS_LINUX) && QT_VERSION<QT_VERSION_CHECK(5,0,0)
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8")); // for non-latin strings
 #endif
     tray->setToolTip("pCloud");
     tray->show();
