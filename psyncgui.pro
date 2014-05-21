@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     pcloudwindow.cpp \
     psettings.cpp \
     syncpage.cpp \
-    welcomescreen.cpp
+    welcomescreen.cpp \
+    settingspage.cpp
 
 HEADERS  += loginwindow.h \
     registerwindow.h \
@@ -42,7 +43,8 @@ HEADERS  += loginwindow.h \
     psettings.h \
     syncpage.h \
     welcomescreen.h \
-    common.h
+    common.h \
+    settingspage.h
 
 FORMS    += loginwindow.ui \
     registerwindow.ui \
@@ -55,7 +57,7 @@ win32:RC_FILE= pCloud.rc
 RESOURCES += \
     Resources.qrc
 
-LIBS += -lssl -lcrypto -lsqlite3
+LIBS += -lssl -lcrypto -lsqlite3 -lfuse
 #LIBS += -L$$PWD/../../git/sync/pclsync -lpsync
 LIBS += -L$$PWD/../../sync/pclsync -lpsync
 

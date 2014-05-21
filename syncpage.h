@@ -4,6 +4,7 @@
 #include "pcloudwindow.h"
 #include "psynclib.h"
 #include "addsyncdialog.h"
+#include "settingspage.h"
 
 #include <QWidget>
 #include <QTreeWidgetItem>

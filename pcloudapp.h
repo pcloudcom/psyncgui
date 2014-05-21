@@ -33,7 +33,7 @@ private:
     QAction *logoutAction;
     //p  QAction *openAction; //open pcld fldr
     QAction *accountAction;
-    //p QAction *settingsAction;  //Settings page
+     QAction *settingsAction;  //Settings page
     //p QAction *sharesAction; // Shares page(2)
     QAction *syncAction; //Sync Tab (3)
     QAction *helpAction; // Help Tab (5)
@@ -125,7 +125,7 @@ public slots:
     void showAccount();
     //p void showShares();
     void showSync();
-    //p void showSettings();
+    void showSettings();
     void showpCloudAbout();
     void showpcloudHelp();
     //p void openCloudDir();

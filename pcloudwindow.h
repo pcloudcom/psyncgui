@@ -1,6 +1,5 @@
 #ifndef PCLOUDWINDOW_H
 #define PCLOUDWINDOW_H
-//p in fs+sync only  #include "settingspage.h"
 //p #include "sharespage.h"
 //p #include "sharefolderwindow.h"
 #include "syncpage.h"
@@ -15,7 +14,7 @@ class PCloudWindow;
 }
 
 class PCloudApp;
-//p class SettingsPage;
+class SettingsPage;
 //p class SharesPage;
 class SyncPage;
 
@@ -25,7 +24,7 @@ class PCloudWindow : public QMainWindow
 
 public:
     friend class PCloudApp;
-    //p friend class SettingsPage; // to access ui
+    friend class SettingsPage; // to access ui
     //p friend class SharesPage;
     //p friend class ShareFolderWindow;
     friend class SyncPage;
@@ -35,7 +34,7 @@ public:
 private:
     Ui::PCloudWindow *ui;
     PCloudApp *app;
-    //p  SettingsPage *settngsPage;
+     SettingsPage *settngsPage;
     //p SharesPage *sharesPage;
     SyncPage *syncPage;
     QByteArray auth; // to del
