@@ -1033,7 +1033,7 @@ void PCloudApp::updateSyncStatus()
 }
 void PCloudApp::updateUserInfo(const char* &param)
 {    
-    if (param == "quota")
+    if (!strcmp(param, "quota"))
         this->getQuota();
     else
         this->getUserInfo();
