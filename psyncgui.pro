@@ -57,7 +57,9 @@ RESOURCES += \
 
 LIBS += -lssl -lcrypto -lsqlite3
 #LIBS += -L$$PWD/../../git/sync/pclsync -lpsync
-LIBS += -L$$PWD/../../sync/pclsync -lpsync
+LIBS += $$PWD/../pclsync/psynclib.a
+
 
 #INCLUDEPATH += $$PWD/../../git/sync/pclsync
-INCLUDEPATH += $$PWD/../../sync/pclsync
+INCLUDEPATH += $$PWD/../pclsync
+QMAKE_CXXFLAGS += -g
