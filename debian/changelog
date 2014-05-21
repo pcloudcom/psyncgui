@@ -1,13 +1,9 @@
-pclsync (0.102+nmu21) UNRELEASED; urgency=low
+pclsync (0.102+nmu22) UNRELEASED; urgency=low
 
-  * 
-  * 
-  * 
-  * 
-  * 
-  * debian/changelog
+  [ Damyanka Miteva ]
+  * release with fs
 
- -- Damyanka Miteva <damyanka@iain.office.mobileinno.com>  Tue, 22 Apr 2014 17:57:41 +0300
+ -- Damyanka Miteva <damyanka@iain.office.mobileinno.com>  Wed, 21 May 2014 14:38:23 +0000
 
 pclsync (0.102+nmu21) unstable; urgency=low
 
