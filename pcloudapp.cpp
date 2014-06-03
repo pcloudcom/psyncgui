@@ -119,15 +119,24 @@ void PCloudApp::openCloudDir(){
 
 void PCloudApp::logOut(){
     loggedin=false;
-    /*p #ifdef Q_OS_WIN
+
+#ifdef Q_OS_WIN
+    /*p
     if (notifythread){
         notifythread->terminate();
         notifythread->wait();
         delete notifythread;
         notifythread = NULL;
     }
-#endif
 */
+    if(shellExtThread)
+    {
+        shellExtThread->terminate();
+        shellExtThread->wait();
+        delete shellExtThread;
+        shellExtThread = NULL;
+    }
+#endif
     username="";
     psync_logout(); //sets auth to ""
     tray->setContextMenu(notloggedmenu);
@@ -209,6 +218,7 @@ void PCloudApp::createMenus(){
     connect(pauseSyncAction, SIGNAL(triggered()),this,SLOT(pauseSync()));
     addSyncAction = new QAction(QIcon(":/menu/images/menu 48x48/newsync.png"),trUtf8("&Add New Sync"),this);
     connect(addSyncAction, SIGNAL(triggered()),this, SLOT(addNewSync()));
+    connect(this,SIGNAL(addNewSyncSgnl()), this,SLOT(addNewSync()));
     resumeSyncAction = new QAction(QIcon(":/menu/images/menu 48x48/resume.png"),trUtf8("Sta&rt Sync"), this);
     connect(resumeSyncAction, SIGNAL(triggered()), this, SLOT(resumeSync()));
 
@@ -591,13 +601,15 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
 #endif
     tray->setToolTip("pCloud");
     tray->show();
+
     if (psync_init() == -1)
     {
         QMessageBox::critical(NULL, "pCloud sync", tr("pCloud sync has stopped. Please connect to our support"));
         qDebug()<<" psync-init returned -1 "<<psync_get_last_error();
         this->quit();
     }
-    psync_start_sync(status_callback,event_callback);
+
+    psync_start_sync(status_callback,event_callback); // if not started from context menu ++
     QApplication::setOverrideCursor(Qt::WaitCursor);
     for(;;)
     {
@@ -619,6 +631,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     tray->setContextMenu(notloggedmenu);
     connect(tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayClicked(QSystemTrayIcon::ActivationReason)));
     //p connect(tray, SIGNAL(messageClicked()), this, SLOT(trayMsgClicked()));
+    connect(this, SIGNAL(showLoginSgnl()),this, SLOT(showLogin()));
     connect(this, SIGNAL(changeSyncIcon(QString)), this, SLOT(setTrayIcon(QString)));
     connect(this, SIGNAL(changeOnlineItemsSgnl(bool)), this, SLOT(changeOnlineItems(bool)));
     connect(this, SIGNAL(changeCursor(bool)), this, SLOT(setCursor(bool)));
@@ -648,6 +661,10 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     //for case when upld is called only once
     pstatus_t status;
     status_callback(&status);
+#ifdef Q_OS_WIN
+    shellExtThread = new ShellExtThread(this);
+    shellExtThread->start();
+#endif
     /* p
         else
         othread=new OnlineThread(this);
@@ -671,6 +688,15 @@ PCloudApp::~PCloudApp(){
         delete mthread;
     } p*/
     psync_destroy();
+#ifdef Q_OS_WIN
+    if (shellExtThread)
+    {
+        if(shellExtThread->isRunning())
+            shellExtThread->terminate();
+        //shellExtThread->wait();
+        delete shellExtThread;
+    }
+#endif
     delete settings;
     delete tray;
     if (loggedmenu)
@@ -902,6 +928,11 @@ bool PCloudApp::isMenuorWinActive()
 
 // use public function to change sync icon according to statuses
 //because static vars can't emit signals( signals are protected i qt4)
+void PCloudApp::showLoginPublic()
+{
+    emit this->showLoginSgnl();
+}
+
 void PCloudApp::changeSyncIconPublic(const QString &icon)
 {
     emit this->changeSyncIcon(icon);
@@ -928,6 +959,10 @@ void PCloudApp::updateUserInfoPublic(const char* param)
 {
     emit updateUserInfoSgnl(param);
     emit this->pCloudWin->refreshUserinfo();
+}
+void PCloudApp::addNewSyncPublic()
+{
+    emit addNewSyncSgnl();
 }
 
 void PCloudApp::setErrText(int win, const char *err)
@@ -988,12 +1023,16 @@ void PCloudApp::createSyncFolderActions(QMenu *syncMenu)
 {
     syncMenu->clear();
     psync_folder_list_t *fldrsList = psync_get_sync_list();
+    QList<QString> list;
     if (fldrsList != NULL && fldrsList->foldercnt)
     {
         for (uint i = 0; i< fldrsList->foldercnt; i++)
         {
+            list <<fldrsList->folders[i].localpath;
+            qDebug()<< fldrsList->folders[i].localpath;
             QAction *fldrAction = new QAction(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),fldrsList->folders[i].localname,this);
             fldrAction->setProperty("path", fldrsList->folders[i].localpath);
+
             connect(fldrAction, SIGNAL(triggered()),this, SLOT(openLocalDir()));
             syncMenu->addAction(fldrAction);
         }
@@ -1020,6 +1059,7 @@ void PCloudApp::addNewFolderInMenu(QAction *fldrAction)
 void PCloudApp::addNewSync()
 {
     emit this->pCloudWin->syncPage->addSync(); // to be moved
+
 }
 //updates menu, pcloudwin and tray icon with current sync upld/downld info
 void PCloudApp::updateSyncStatus()

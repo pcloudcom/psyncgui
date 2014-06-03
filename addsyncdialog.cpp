@@ -29,6 +29,8 @@ addSyncDialog::addSyncDialog(PCloudApp *a, PCloudWindow *w, SyncPage *sp,Welcome
     else
         this->setWindowTitle(trUtf8("Add new sync"));
     load();
+    if (app->localpathToSync != "")
+           scrollToLocalFolder(app->localpathToSync);
 }
 
 addSyncDialog::~addSyncDialog()
@@ -162,6 +164,10 @@ void addSyncDialog::load()
         }
     }
 
+}
+void addSyncDialog::scrollToLocalFolder(QString localpath)
+{
+    ui->treeSyncLocal->setCurrentIndex(model->index(localpath));
 }
 
 void addSyncDialog::addSync()

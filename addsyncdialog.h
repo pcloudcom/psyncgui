@@ -22,8 +22,8 @@ class addSyncDialog : public QDialog
 public:
     friend class WelcomeScreen;
     explicit addSyncDialog(PCloudApp *a,PCloudWindow *w,SyncPage *sp,WelcomeScreen *wlcm, QWidget *parent = 0);
+     void scrollToLocalFolder(QString localpath);
     ~addSyncDialog();
-
 private:
     Ui::addSyncDialog *ui;
     PCloudApp *app;

@@ -9,6 +9,7 @@
 //#include "monitoringthread.h"
 //#include "onlinethread.h"
 //#include "revnotifythread.h"
+#include "shellextthread.h"
 #include "welcomescreen.h"
 #include "pcloudwindow.h"
 #include "ui_pcloudwindow.h" //temp
@@ -51,14 +52,15 @@ private:
     LoginWindow *logwin;
     //p ShareFolderWindow *sharefolderwin;
     //MonitoringThread *mthread;
-   // QListWidget *syncStatusListWidget; to del
-    bool isFirstLaunch; //hardcoded for tests
+   // QListWidget *syncStatusListWidget; to del  
+    bool isFirstLaunch;
     QNetworkConfigurationManager manager;
     QNetworkConfiguration cfg;
     QNetworkSession *session;
     void getQuota();
     void getUserInfo();
 #ifdef Q_OS_WIN
+     ShellExtThread *shellExtThread;
     //pRevNotifyThread *notifythread;
 #endif
     // OnlineThread *othread;
@@ -69,9 +71,10 @@ private:
 public:
     static PCloudApp *appStatic;
     PCloudWindow *pCloudWin;
-    WelcomeScreen *welcomeWin;
+    WelcomeScreen *welcomeWin;    
     QString username, authentication;
     QString downldInfo, uplodInfo;
+    QString localpathToSync;
     bool rememberMe;
     bool isPremium;
     bool isVerified;
@@ -96,12 +99,14 @@ public:
     void showOnClick();
     bool isLogedIn();    
     void setLogWinError(const char *msg); // sets err in logwin; called from static function status_callback
+    void showLoginPublic();
     void changeSyncIconPublic(const QString &icon); //called from static function status_callbac;  signals are protected and can't be accessed by static vars
     void changeCursorPublic(bool change);
     void updateSyncStatusPublic();
     void updateUserInfoPublic(const char* param);
     void changeOnlineItemsPublic(bool logged);
     void setTextErrPublic(int win , const char *err);
+    void addNewSyncPublic();
     void createSyncFolderActions(QMenu *syncMenu);
     QMenu* getSyncMenu();
     void addNewFolderInMenu(QAction *fldrAction); // refresh menu when add new sync
@@ -111,12 +116,14 @@ public:
     void setFirstLaunch(bool b); // case after unlink - to display suggestions
      void check_error();
 signals:
+    void showLoginSgnl();
     void changeSyncIcon(const QString &icon);
     void changeCursor(bool change);
     void sendErrText(int win, const char *err);
     void updateSyncStatusSgnl();
     void updateUserInfoSgnl(const char* &param);
     void changeOnlineItemsSgnl(bool logged);
+    void addNewSyncSgnl();
 public slots:
     // void showTrayMessage(QString title, QString msg);
     void trayClicked(QSystemTrayIcon::ActivationReason reason);
