@@ -33,7 +33,6 @@ SOURCES += main.cpp\
     welcomescreen.cpp\
     mylogger.cpp \
     shellextthread.cpp\
-    welcomescreen.cpp \
     settingspage.cpp
 
 HEADERS  += loginwindow.h \
@@ -48,8 +47,7 @@ HEADERS  += loginwindow.h \
     welcomescreen.h \
     common.h\
     mylogger.h \
-    shellextthread.h
-    common.h \
+    shellextthread.h \
     settingspage.h
 
 FORMS    += loginwindow.ui \
@@ -63,13 +61,12 @@ win32:RC_FILE= pCloud.rc
 RESOURCES += \
     Resources.qrc
 
-LIBS += -lssl -lcrypto -lsqlite3 -lfuse -liphlpapi
-LIBS += -L$$PWD/.. -lpsync
-#LIBS += -L$$PWD/../../git/sync/pclsync -lpsync
+LIBS += -lssl -lcrypto -lsqlite3 -lfuse
+LIBS += -L$$PWD/../../sync/pclsync -lpsync
 #LIBS += $$PWD/../pclsync/psynclib.a
 
+INCLUDEPATH += $$PWD/../../sync/pclsync
+#INCLUDEPATH += $$PWD/../pclsync
 
-#INCLUDEPATH += $$PWD/../../git/sync/pclsync
-INCLUDEPATH += $$PWD/.. $$PWD/../pclsync
 QMAKE_CXXFLAGS += -g
 

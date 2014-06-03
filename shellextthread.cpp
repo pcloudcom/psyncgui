@@ -3,7 +3,7 @@
 
 #ifdef Q_OS_WIN
 #include <Shlobj.h>
-#endif
+
 
 #include "QMessageBox"
 
@@ -250,3 +250,5 @@ void ShellExtThread::killPipe()
         hPipe = INVALID_HANDLE_VALUE;
     }
 }
+
+#endif

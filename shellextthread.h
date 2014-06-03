@@ -5,7 +5,7 @@
 #ifdef Q_OS_WIN
 #include <windows.h>
 #include <aclapi.h>
-#endif
+
 class PCloudApp;
 
 class ShellExtThread: public QThread
@@ -22,5 +22,5 @@ private:
 protected:
     void run();
 };
-
+#endif
 #endif // SHELLEXTTHREAD_H

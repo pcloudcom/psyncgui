@@ -2,10 +2,11 @@
 #include <QFile>
 #include <QTextStream>
 #include <QDateTime>
-#include <QtMessageHandler>
 #include <QDebug>
 #include <QDir>
 
+#ifdef Q_OS_WIN
+#include <QtMessageHandler>
 //QFile file("c:/tmp/psyncguilog.txt");
 QFile file(QDir::tempPath()+ "/psyncguilog.txt");
 QTextStream out(&file);
@@ -48,3 +49,5 @@ MyLogger::MyLogger(QObject *parent) :
     qInstallMessageHandler(SimpleLoggingHandler);
     qDebug()<<"from file";
 }
+
+#endif
