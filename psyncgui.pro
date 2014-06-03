@@ -30,9 +30,14 @@ SOURCES += main.cpp\
     pcloudwindow.cpp \
     psettings.cpp \
     syncpage.cpp \
+<<<<<<< HEAD
     welcomescreen.cpp\
     mylogger.cpp \
     shellextthread.cpp
+=======
+    welcomescreen.cpp \
+    settingspage.cpp
+>>>>>>> f274c3b1d391b06d15e3288f3d864d00454a6b5d
 
 HEADERS  += loginwindow.h \
     registerwindow.h \
@@ -44,9 +49,14 @@ HEADERS  += loginwindow.h \
     psettings.h \
     syncpage.h \
     welcomescreen.h \
+<<<<<<< HEAD
     common.h\
     mylogger.h \
     shellextthread.h
+=======
+    common.h \
+    settingspage.h
+>>>>>>> f274c3b1d391b06d15e3288f3d864d00454a6b5d
 
 FORMS    += loginwindow.ui \
     registerwindow.ui \
@@ -59,6 +69,7 @@ win32:RC_FILE= pCloud.rc
 RESOURCES += \
     Resources.qrc
 
+<<<<<<< HEAD
 #LIBS += -lssl -lcrypto -lsqlite3
 #LIBS += -L$$PWD/../../git/sync/pclsync -lpsync
 LIBS += -L$$PWD/.. -lpsync
@@ -66,3 +77,13 @@ LIBS += -lssl -lcrypto -lsqlite -liphlpapi
 
 #INCLUDEPATH += $$PWD/../../git/sync/pclsync
 INCLUDEPATH += $$PWD/.. $$PWD/../pclsync
+=======
+LIBS += -lssl -lcrypto -lsqlite3 -lfuse
+#LIBS += -L$$PWD/../../git/sync/pclsync -lpsync
+LIBS += $$PWD/../pclsync/psynclib.a
+
+
+#INCLUDEPATH += $$PWD/../../git/sync/pclsync
+INCLUDEPATH += $$PWD/../pclsync
+QMAKE_CXXFLAGS += -g
+>>>>>>> f274c3b1d391b06d15e3288f3d864d00454a6b5d
