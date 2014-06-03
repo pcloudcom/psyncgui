@@ -43,7 +43,7 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
 
     fillAcountNotLoggedPage();
     fillAboutPage();    
-    //p settngsPage = new SettingsPage(this, app);
+    settngsPage = new SettingsPage(this, app);
      syncPage = new SyncPage(this, app);
     // indexes of Items in listWidget and their coresponding pages in StackWidget are the same
     connect(ui->listButtonsWidget,
@@ -164,7 +164,7 @@ void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when
         //p ui->listButtonsWidget->setRowHidden(2,false); //Shares
         ui->listButtonsWidget->setRowHidden(2,true); //Shares - false for fs = visible
         ui->listButtonsWidget->setRowHidden(3,false); //Sync
-        ui->listButtonsWidget->setRowHidden(4, true); // pcloud Settings;  for fs -> false
+        //ui->listButtonsWidget->setRowHidden(4, false); // pcloud Settings;
     }
     else
     {
@@ -172,7 +172,7 @@ void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when
         ui->listButtonsWidget->setRowHidden(1,true);
         ui->listButtonsWidget->setRowHidden(2,true);
         ui->listButtonsWidget->setRowHidden(3,true);
-        ui->listButtonsWidget->setRowHidden(4, true); // for fs -> false
+        //ui->listButtonsWidget->setRowHidden(4, false); // for fs -> false
     }
 }
 
@@ -370,7 +370,8 @@ void PCloudWindow::openOnlineTutorial(){
 
 void PCloudWindow::openOnlineHelp()
 {
-    QUrl url ("https://my.pcloud.com/#page=faq"); //to check
+    //QUrl url ("https://my.pcloud.com/#page=faq"); //to check
+    QUrl url("https://www.pcloud.com/support.html#p=8");
     QDesktopServices::openUrl(url);
 }
 

@@ -63,14 +63,10 @@ void PCloudApp::showSync()
     pCloudWin->showpcloudWindow(3);
 }
 
-/*pvoid PCloudApp::showSettings(){
-    hideAllWindows();
-    // if (!settingswin)
-    // settingswin=new SettingsWindow(this);
-    //showWindow(settingswin);
+void PCloudApp::showSettings(){
+    hideAllWindows();   
     pCloudWin->showpcloudWindow(4);
-
-}*/
+}
 
 void PCloudApp::showpcloudHelp()
 {
@@ -184,8 +180,8 @@ void PCloudApp::createMenus(){
     connect(registerAction, SIGNAL(triggered()), this, SLOT(showRegister()));
     loginAction=new QAction(QIcon(":/menu/images/menu 48x48/login.png"),trUtf8("&Login"), this);
     connect(loginAction, SIGNAL(triggered()), this, SLOT(showLogin()));
-    //p settingsAction=new QAction(trUtf8("Se&ttings"), this);
-    //p connect(settingsAction, SIGNAL(triggered()), this, SLOT(showSettings()));
+    settingsAction=new QAction(trUtf8("pDrive Settings"), this);
+    connect(settingsAction, SIGNAL(triggered()), this, SLOT(showSettings()));
     helpAction = new QAction(QIcon(":/menu/images/menu 48x48/help.png"),trUtf8("&Help"),this);
     connect(helpAction, SIGNAL(triggered()), this, SLOT(showpcloudHelp()));
     aboutPCloudAction = new QAction(QIcon(":/menu/images/menu 48x48/info.png"),trUtf8("&About"), this);
@@ -195,7 +191,7 @@ void PCloudApp::createMenus(){
 
     notloggedmenu->addAction(registerAction);
     notloggedmenu->addAction(loginAction);
-    //p notloggedmenu->addAction(settingsAction);
+    notloggedmenu->addAction(settingsAction);
     notloggedmenu->addAction(helpAction);
     notloggedmenu->addAction(aboutPCloudAction);
     notloggedmenu->addSeparator();
@@ -226,6 +222,7 @@ void PCloudApp::createMenus(){
     //p loggedmenu->addAction(openAction);
     loggedmenu->addAction(accountAction);
     loggedmenu->addAction(syncAction);
+    loggedmenu->addAction(settingsAction);
     loggedmenu->addSeparator();
     loggedmenu->addAction(addSyncAction);
     //p loggedmenu->addAction(sharesAction);
@@ -248,8 +245,7 @@ void PCloudApp::createMenus(){
     syncDownldAction = new QAction(QIcon(":/menu/images/menu 48x48/download.png"),trUtf8("Everything downloaded"),this);
     syncUpldAction = new QAction(QIcon(":/menu/images/menu 48x48/upload.png"),trUtf8("Everything uploaded"),this);
     loggedmenu->addAction(syncDownldAction);
-    loggedmenu->addAction(syncUpldAction);
-    //p loggedmenu->addAction(settingsAction);
+    loggedmenu->addAction(syncUpldAction);   
     loggedmenu->addSeparator();
     loggedmenu->addAction(helpAction);
     loggedmenu->addAction(aboutPCloudAction);
@@ -595,9 +591,8 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     unlinkFlag = false;
     isCursorChanged = false;
     tray=new QSystemTrayIcon(QIcon(OFFLINE_ICON),this);
-#ifdef Q_OS_LINUX    
-    if(QT_VERSION < QT_VERSION_CHECK(5,0,0))
-        QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8")); // for non-latin strings
+#if defined(Q_OS_LINUX) && QT_VERSION<QT_VERSION_CHECK(5,0,0)
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8")); // for non-latin strings
 #endif
     tray->setToolTip("pCloud");
     tray->show();
@@ -1074,7 +1069,7 @@ void PCloudApp::updateSyncStatus()
 }
 void PCloudApp::updateUserInfo(const char* &param)
 {    
-    if (param == "quota")
+    if (!strcmp(param, "quota"))
         this->getQuota();
     else
         this->getUserInfo();
