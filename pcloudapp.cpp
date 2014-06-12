@@ -64,7 +64,7 @@ void PCloudApp::showSync()
 }
 
 void PCloudApp::showSettings(){
-    hideAllWindows();   
+    hideAllWindows();
     pCloudWin->showpcloudWindow(4);
 }
 
@@ -245,7 +245,7 @@ void PCloudApp::createMenus(){
     syncDownldAction = new QAction(QIcon(":/menu/images/menu 48x48/download.png"),trUtf8("Everything downloaded"),this);
     syncUpldAction = new QAction(QIcon(":/menu/images/menu 48x48/upload.png"),trUtf8("Everything uploaded"),this);
     loggedmenu->addAction(syncDownldAction);
-    loggedmenu->addAction(syncUpldAction);   
+    loggedmenu->addAction(syncUpldAction);
     loggedmenu->addSeparator();
     loggedmenu->addAction(helpAction);
     loggedmenu->addAction(aboutPCloudAction);
@@ -412,7 +412,8 @@ void status_callback(pstatus_t *status)
 
     case PSTATUS_LOGIN_REQUIRED:            //4
         qDebug()<<"PSTATUS_LOGIN_REQUIRED";
-        PCloudApp::appStatic->changeSyncIconPublic(OFFLINE_ICON);
+        if(PCloudApp::appStatic->isLogedIn())
+            PCloudApp::appStatic->logoutPublic();
         break;
 
     case PSTATUS_BAD_LOGIN_DATA:            //5
@@ -581,7 +582,8 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     //p mthread=NULL;
     loggedin=false;
     lastMessageType=-1;
-    settings=new PSettings(this);
+    //settings=new PSettings(this);
+    settings=new QSettings("pCloud","pCloud");
     upldFlag = 0;
     downldFlag = 0;
     bytestoDwnld = 0;
@@ -619,21 +621,22 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
             break;
     }
     QApplication::restoreOverrideCursor();
+    check_version(); // call before pcldwin to be created because of about page content
     pCloudWin = new PCloudWindow(this);  //needs settings to be created
     pCloudWin->layout()->setSizeConstraint(QLayout::SetFixedSize); //for auto resize
     pCloudWin->setOnlineItems(false);
     createMenus(); //needs sync to be started
     tray->setContextMenu(notloggedmenu);
     connect(tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayClicked(QSystemTrayIcon::ActivationReason)));
-    //p connect(tray, SIGNAL(messageClicked()), this, SLOT(trayMsgClicked()));
+    connect(tray, SIGNAL(messageClicked()), this, SLOT(trayMsgClicked()));
     connect(this, SIGNAL(showLoginSgnl()),this, SLOT(showLogin()));
+    connect(this, SIGNAL(logoutSignl()), this, SLOT(logOut()));
     connect(this, SIGNAL(changeSyncIcon(QString)), this, SLOT(setTrayIcon(QString)));
     connect(this, SIGNAL(changeOnlineItemsSgnl(bool)), this, SLOT(changeOnlineItems(bool)));
     connect(this, SIGNAL(changeCursor(bool)), this, SLOT(setCursor(bool)));
     connect(this, SIGNAL(sendErrText(int, const char*)), this, SLOT(setErrText(int,const char*)));
     connect(this, SIGNAL(updateSyncStatusSgnl()), this, SLOT(updateSyncStatus()));
     connect(this,SIGNAL(updateUserInfoSgnl(const char* &)), this, SLOT(updateUserInfo(const char* &)));
-
     bool savedauth = psync_get_bool_value("saveauth"); //works when syns is paused also
     if (!savedauth)
     {
@@ -648,7 +651,6 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     }
     else
         logIn(psync_get_username(),true);
-
     cfg = manager.defaultConfiguration();
     session = new QNetworkSession(cfg);
     session->open();
@@ -665,7 +667,6 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
         othread=new OnlineThread(this);
         othread->start();
     }p */
-
 
 }
 
@@ -688,10 +689,17 @@ PCloudApp::~PCloudApp(){
     {
         if(shellExtThread->isRunning())
             shellExtThread->terminate();
-        //shellExtThread->wait();
+        shellExtThread->wait();
         delete shellExtThread;
     }
 #endif
+    if(versnThread)
+    {
+        if(versnThread->isRunning())
+            versnThread->terminate();
+        versnThread->wait();
+        delete versnThread;
+    }
     delete settings;
     delete tray;
     if (loggedmenu)
@@ -796,11 +804,11 @@ void PCloudApp::check_error()
 void PCloudApp::showError(QString &err){
     tray->showMessage("Error", err, QSystemTrayIcon::Warning);
 }
-/*
+
 void PCloudApp::showTrayMessage(QString title, QString msg)
 {
     tray->showMessage(title, msg, QSystemTrayIcon::Information);
-}*/
+}
 
 void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
 {
@@ -841,8 +849,6 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
         welcomeWin = new WelcomeScreen(this);
         this->showWindow(welcomeWin);
     }
-    else
-        showAccount();
 
 }
 void PCloudApp::getUserInfo()
@@ -872,18 +878,20 @@ void PCloudApp::getQuota()
     }
 }
 
-/*p
+
 void PCloudApp::trayMsgClicked()
 {
-    if (lastMessageType == 0 || lastMessageType == 1 )
+    if (lastMessageType == 3)
+        emit showpCloudAbout();
+    /* if (lastMessageType == 0 || lastMessageType == 1 )
     {
         emit showShares();
         pCloudWin->ui->tabWidgetShares->setCurrentIndex(lastMessageType);
         pCloudWin->sharesPage->load(lastMessageType);
 
-    }
+    }*/
 }
-
+/*p
 // mth oth
 void PCloudApp::setOnlineStatus(bool online)
 {
@@ -912,6 +920,137 @@ bool PCloudApp::isLogedIn()
     return loggedin;
 }
 
+void PCloudApp::check_version()
+{
+    const char* OSStr;
+#ifdef Q_OS_LINUX
+    OSStr = "LINUX";
+#else
+    OSStr = "WIN"; // WIN_XP to add
+#endif
+
+    psync_new_version_t* version = psync_check_new_version_str(OSStr, APP_VERSION);
+    if(version != NULL)
+    {
+        lastMessageType = 3;
+        newVersionFlag = true;
+        newVersion.notes = version->notes;
+        newVersion.url = version->url;
+        newVersion.versionstr = version->versionstr;
+        free(version);
+
+        //the version reminder has been set to "Never" for the current version
+        if(settings->contains("vrsnNotfyDtTime") &&
+                (settings->value("vrsnNotfyDtTime").toDateTime().isNull() && (settings->value("lastAppNotifiedVrsn").toString() == APP_VERSION)))
+        {
+            qDebug()<<QDateTime::currentDateTime() << "NOTIFICATIONS (check_version: case 1): the version reminder has been set to Never for the current version ";
+            versnThread = NULL;
+            return;
+        }
+        else // show notifications
+        {
+            //notifications settings for the current version are already has set, start timer with the time from settings
+            if(settings->contains("vrsnNotfyDtTime") && !(settings->value("vrsnNotfyDtTime").toDateTime().isNull())) //if Reminder is already set (and is not "Never")
+            {
+                qDebug()<<QDateTime::currentDateTime() <<"NOTIFICATIONS (check_version: case 2):notifications settings for the current version are already has set";
+                versnThread = new VersionTimerThread(this, settings->value("vrsnNotfyDtTime").toDateTime());
+                versnThread->start();
+            }
+            else // notify for the new version for the first time (no notification settings set)
+            {
+                qDebug()<<QDateTime::currentDateTime() <<"NOTIFICATIONS (check_version: case 3) notify for the new version for the first time (no notification settings set)";
+                tray->showMessage("New Version", "A new version of pCloud Sync is available!\nClick here for more details");
+                //QDateTime timeForNotify = QDateTime::currentDateTime().addSecs(216000); //6h is the default
+                QDateTime timeForNotify = QDateTime::currentDateTime().addSecs(30); //TEST
+                settings->setValue("vrsnNotfyDtTime",timeForNotify);
+                versnThread = new VersionTimerThread(this,timeForNotify);
+                versnThread->start();
+            }
+        }
+    }
+    else
+    {
+        qDebug()<< QDateTime::currentDateTime() <<"NOTIFICATIONS (check_version: case 4): no new version";
+        newVersionFlag = false;
+        versnThread = NULL;
+        // clear notifications settings from before if exists
+        if(QFile::exists(settings->fileName()))
+        {
+            if(settings->contains("vrsnNotfyDtTime"))
+                settings->remove("vrsnNotfyDtTime");
+            if(settings->contains("lastAppNotifiedVrsn"))
+                settings->remove("lastAppNotifiedVrsn");
+            if(settings->contains("vrsnNotifyComboCurrIndx"))
+                settings->remove("vrsnNotifyComboCurrIndx");
+        }
+        QTimer::singleShot(86400000, this, SLOT(check_version())); //check again after 24h
+    }
+}
+bool PCloudApp::new_version()
+{
+    return this->newVersionFlag;
+}
+
+//a slot called when user chooses Remind me later for new version from about page
+void PCloudApp::setTimer(int index)
+{
+    settings->setValue("vrsnNotifyComboCurrIndx", index); //sets the current index for the combo in About page
+    QDateTime now = QDateTime::currentDateTime(), NewDateTimeForNotify;
+    switch(index)
+    {
+    case 0: //1 hour
+        //NewDateTimeForNotify = now.addSecs(3600); // for tests
+        NewDateTimeForNotify = now.addSecs(30);
+        qDebug()<< QDateTime::currentDateTime() <<"NOTIFICATIONS (setTimer case 0 - 30 secs): new time for notify is set for: " << NewDateTimeForNotify;
+        break;
+    case 1: //6 hours
+        //NewDateTimeForNotify = now.addSecs(21600);
+        NewDateTimeForNotify = now.addSecs(60);
+        qDebug()<<QDateTime::currentDateTime() << "NOTIFICATIONS (setTimer case 1 - 60 secs): new time for notify is set for: " << NewDateTimeForNotify;
+        break;
+    case 2: //24 hours
+        //NewDateTimeForNotify = now.addSecs(86400);
+        NewDateTimeForNotify = now.addSecs(90);
+        qDebug()<<QDateTime::currentDateTime() << "NOTIFICATIONS (setTimer case 2 - 120 secs): new time for notify is set for: " << NewDateTimeForNotify;
+        break;
+    case 3: //after a week
+        //NewDateTimeForNotify = now.addSecs(604800);
+        NewDateTimeForNotify = now.addSecs(120);
+        qDebug()<<QDateTime::currentDateTime() << "NOTIFICATIONS (setTimer case 3 - 180 secs): new time for notify is set for: " << NewDateTimeForNotify;
+        break;
+    case 4:
+        settings->setValue("lastAppNotifiedVrsn", APP_VERSION);
+        settings->setValue("vrsnNotfyDtTime", NewDateTimeForNotify); // null
+        if(versnThread != NULL) //if timer has already working for some time interval //1
+        {
+            if(versnThread->isRunning())
+                versnThread->terminate();
+            versnThread->wait();
+        }
+        qDebug()<<QDateTime::currentDateTime() << "NOTIFICATIONS (setTimer case 4 - Never): stop timer";
+        return;
+    default:
+        return;
+    }
+    settings->setValue("vrsnNotfyDtTime", NewDateTimeForNotify);
+
+    if(versnThread == NULL) // first choose of an interval for Remind me later or "Never" has been selected before //2
+    {
+        qDebug()<<QDateTime::currentDateTime() << "NOTIFICATIONS (setTimer): create and start Timer";
+        versnThread = new VersionTimerThread(this, NewDateTimeForNotify);
+        versnThread->start();
+    }
+    else
+    {
+        qDebug()<<QDateTime::currentDateTime() <<"NOTIFICATIONS (setTimer): set new time for the Timer ";
+        versnThread->setNewDateTimeForNotify(NewDateTimeForNotify); // timer is working, just reset it's new time //3
+        if(!versnThread->isRunning()) // if it has been started, after that "never" selected, and now a new time interval //4
+        {
+            versnThread->start();
+        }
+    }
+}
+
 bool PCloudApp::isMenuorWinActive()
 {
     if(this->loggedmenu)
@@ -926,6 +1065,10 @@ bool PCloudApp::isMenuorWinActive()
 void PCloudApp::showLoginPublic()
 {
     emit this->showLoginSgnl();
+}
+void PCloudApp::logoutPublic()
+{
+    emit this->logoutSignl();
 }
 
 void PCloudApp::changeSyncIconPublic(const QString &icon)

@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     welcomescreen.cpp\
     mylogger.cpp \
     shellextthread.cpp\
-    settingspage.cpp
+    settingspage.cpp \
+    versiontimerthread.cpp
 
 HEADERS  += loginwindow.h \
     registerwindow.h \
@@ -48,7 +49,8 @@ HEADERS  += loginwindow.h \
     common.h\
     mylogger.h \
     shellextthread.h \
-    settingspage.h
+    settingspage.h \
+    versiontimerthread.h
 
 FORMS    += loginwindow.ui \
     registerwindow.ui \

@@ -10,17 +10,21 @@
 //#include "onlinethread.h"
 //#include "revnotifythread.h"
 #include "shellextthread.h"
+#include "versiontimerthread.h"
 #include "welcomescreen.h"
 #include "pcloudwindow.h"
 #include "ui_pcloudwindow.h" //temp
 #include "psynclib.h"
 #include <QApplication>
 #include <QAction>
+#include <QSettings>
 #include <QSystemTrayIcon>
 #include <QtNetwork/QNetworkSession>
 #include <QtNetwork/QNetworkConfiguration>
 #include <QtNetwork/QNetworkConfigurationManager>
-
+#include <QDateTime>
+#include <QFile>
+#include<QTimer>
 
 class WelcomeScreen;
 
@@ -52,8 +56,8 @@ private:
     LoginWindow *logwin;
     //p ShareFolderWindow *sharefolderwin;
     //MonitoringThread *mthread;
-   // QListWidget *syncStatusListWidget; to del  
-    bool isFirstLaunch;
+    VersionTimerThread *versnThread;
+    bool isFirstLaunch, newVersionFlag;
     QNetworkConfigurationManager manager;
     QNetworkConfiguration cfg;
     QNetworkSession *session;
@@ -82,11 +86,12 @@ public:
     QString planStr;
     quint64 freeSpacePercentage;
     qreal usedSpace;
-    PSettings *settings;
+   // PSettings *settings;
+    QSettings *settings;
     bool upldFlag,downldFlag;
     quint64 bytestoDwnld;
     quint64 bytestoUpld;
-    uint32_t lastMessageType; // for Shares; online status
+    uint32_t lastMessageType; // 0 and 1 for Shares;2 for online status; 3 for newversion
     bool isCursorChanged;
     explicit PCloudApp(int &argc, char **argv);
     ~PCloudApp();
@@ -107,6 +112,7 @@ public:
     void changeOnlineItemsPublic(bool logged);
     void setTextErrPublic(int win , const char *err);
     void addNewSyncPublic();
+    void logoutPublic();
     void createSyncFolderActions(QMenu *syncMenu);
     QMenu* getSyncMenu();
     void addNewFolderInMenu(QAction *fldrAction); // refresh menu when add new sync
@@ -114,7 +120,13 @@ public:
     QString timeConvert(quint64 seconds);
     bool isMenuorWinActive();
     void setFirstLaunch(bool b); // case after unlink - to display suggestions
-     void check_error();
+    void check_error();
+    bool new_version();
+    struct {
+        QString url;
+        QString notes;
+        QString versionstr;
+    } newVersion;
 signals:
     void showLoginSgnl();
     void changeSyncIcon(const QString &icon);
@@ -124,8 +136,9 @@ signals:
     void updateUserInfoSgnl(const char* &param);
     void changeOnlineItemsSgnl(bool logged);
     void addNewSyncSgnl();
+    void logoutSignl();
 public slots:
-    // void showTrayMessage(QString title, QString msg);
+    void showTrayMessage(QString title, QString msg);
     void trayClicked(QSystemTrayIcon::ActivationReason reason);
     void showRegister();
     void showLogin();
@@ -139,7 +152,7 @@ public slots:
     //p void shareFolder();
     void logOut();
     void doExit();    
-    //p void trayMsgClicked(); //show shares
+    void trayMsgClicked(); //show shares and new version
     //p void setOnlineStatus(bool online);
     void setTrayIcon(const QString &icon);
     void setCursor(bool change);
@@ -151,6 +164,8 @@ public slots:
     void updateSyncStatus();
     void updateUserInfo(const char* &param);
     void changeOnlineItems(bool logged);
+    void check_version();
+    void setTimer(int index);
     void networkConnectionChanged(QNetworkSession::State state);
 };
 

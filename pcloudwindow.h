@@ -59,6 +59,7 @@ public slots:
     void openOnlineHelp();
     void sendFeedback();
     void contactUs();
+    void updateVersion();
     void changePass();
     void forgotPass();
     void upgradePlan();

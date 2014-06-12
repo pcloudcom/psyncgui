@@ -30,7 +30,7 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     //temp
     ui->listButtonsWidget->setMinimumWidth(360);
     ui->listButtonsWidget->setMaximumHeight(85);
-    ui->listButtonsWidget->setMinimumHeight(84); // precakva mi layouta    
+    ui->listButtonsWidget->setMinimumHeight(84); // precakva mi layouta
 
     //create Items for QListWidget
     new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 0
@@ -42,14 +42,14 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     new QListWidgetItem(QIcon(":/128x128/images/128x128/info.png"),trUtf8("About"),ui->listButtonsWidget); //index 6
 
     fillAcountNotLoggedPage();
-    fillAboutPage();    
+    fillAboutPage();
     settngsPage = new SettingsPage(this, app);
-     syncPage = new SyncPage(this, app);
+    syncPage = new SyncPage(this, app);
     // indexes of Items in listWidget and their coresponding pages in StackWidget are the same
     connect(ui->listButtonsWidget,
             SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
             this, SLOT(changePage(QListWidgetItem*,QListWidgetItem*)));
-     connect(ui->btnVerify, SIGNAL(clicked()), this, SLOT(verifyEmail()));
+    connect(ui->btnVerify, SIGNAL(clicked()), this, SLOT(verifyEmail()));
     //p connect(ui->btnShareFolder,SIGNAL(clicked()), app, SLOT(shareFolder()));
 
     //for resize
@@ -70,9 +70,11 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     connect(ui->toolBtnOpenWeb, SIGNAL(clicked()), this, SLOT(openWebPage()));
     connect(ui->tbtnMyPcloud, SIGNAL(clicked()), this, SLOT(openMyPcloud()));
     connect(ui->label, SIGNAL(linkActivated(QString)), this, SLOT(upgradePlan()));
+    connect(ui->comboBox_versionReminder, SIGNAL(currentIndexChanged(int)), app, SLOT(setTimer(int)));
+    connect(ui->btnUpdtVersn, SIGNAL(clicked()), this, SLOT(updateVersion()));
     //p connect(ui->tbtnOpenFolder, SIGNAL(clicked()),app,SLOT(openCloudDir()));
     connect(ui->tBtnExit, SIGNAL(clicked()), app, SLOT(doExit()));
-    connect(ui->btnLgout, SIGNAL(clicked()), app, SLOT(logOut()));    
+    connect(ui->btnLgout, SIGNAL(clicked()), app, SLOT(logOut()));
     connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(unlinkSync()));
 
     QMenu *menuAccnt = new QMenu(this);
@@ -187,7 +189,25 @@ void PCloudWindow::fillAcountNotLoggedPage()
 
 void PCloudWindow::fillAboutPage()
 {
-    ui->label_versionVal->setText(APP_VERSION);
+
+    if(!app->new_version())
+    {
+        ui->label_versionVal->setText(QString("Version ") + APP_VERSION + QString("\n\nEverything up to date"));
+        ui->label_versionVal->setAlignment(Qt::AlignHCenter);
+        ui->widget_newVersion->setVisible(false);
+    }
+    else
+    {
+        ui->label_versionVal->setText(QString ("Version ") + APP_VERSION);
+        ui->label_newVersion->setText(QString("New version "  + app->newVersion.versionstr + " has already been released"));
+        ui->label_notes->setText(QString("Notes:\n "+ app->newVersion.notes));
+        if(app->settings->contains("vrsnNotifyComboCurrIndx")) // the reminder is already set
+        {
+            ui->comboBox_versionReminder->setCurrentIndex(app->settings->value("vrsnNotifyComboCurrIndx").toInt());
+        }
+        else
+            app->settings->setValue("vrsnNotifyComboCurrIndx",1);
+    }
 }
 
 void PCloudWindow::fillAccountLoggedPage()
@@ -203,7 +223,7 @@ void PCloudWindow::fillAccountLoggedPage()
     else
     {
         ui->checkBoxVerified->setVisible(false);
-        ui->btnVerify->setVisible(true);       
+        ui->btnVerify->setVisible(true);
     }
     ui->label_space->setText(QString::number(app->usedSpace, 'f', 1) + "GB (" + QString::number(app->freeSpacePercentage) + "% free)");
     ui->label_planVal->setText(app->planStr);
@@ -222,10 +242,10 @@ void PCloudWindow::fillAccountLoggedPage()
     }
 
     //for sync hide some widgets till start use new fs
-   // ui->tBtnExit->setVisible(false); ?
+    // ui->tBtnExit->setVisible(false); ?
 
     ui->tbtnOpenFolder->setVisible(false);
-    ui->tBtnExit->setVisible(false);    
+    ui->tBtnExit->setVisible(false);
 
 }
 void PCloudWindow::refreshUserinfo()
@@ -302,7 +322,7 @@ void PCloudWindow::unlinkSync()
     {
         psync_unlink();
         emit app->logOut(); //sets offlineimtes too
-        emit setOnlineItems(false);        
+        emit setOnlineItems(false);
         app->setFirstLaunch(true);
 
     }
@@ -337,6 +357,11 @@ void PCloudWindow::checkVerify() // has the user verified after had clicked "Ver
         ui->btnVerify->setVisible(false);
         verifyClicked = false;
     }
+}
+void PCloudWindow::updateVersion()
+{
+    QUrl url(app->newVersion.url);
+    QDesktopServices::openUrl(url);
 }
 
 void PCloudWindow::openWebPage()
