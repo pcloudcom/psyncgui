@@ -1,13 +1,11 @@
-pclsync (0.102+nmu22) UNRELEASED; urgency=low
+pclsync (0.102+nmu25) UNRELEASED; urgency=low
 
+  [ Damyanka Miteva ]
   * 
-  * 
-  * 
-  * 
-  * 
-  * 
+  * rel 25
 
- -- Damyanka Miteva <damyanka@iain.office.mobileinno.com>  Thu, 12 Jun 2014 18:31:33 +0300
+
+ -- Damyanka Miteva <damyanka@iain.office.mobileinno.com>  Thu, 12 Jun 2014 15:36:47 +0000
 
 pclsync (0.102+nmu25) unstable; urgency=low
 
