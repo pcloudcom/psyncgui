@@ -1,13 +1,16 @@
-pclsync (0.102+nmu25) UNRELEASED; urgency=low
+pclsync (0.102+nmu27) UNRELEASED; urgency=low
 
   [ Damyanka Miteva ]
   * 
-  * rel 25
+  * rel 26
 
+  * debian/
+  * debian/changelog
+  * debian/changelog
 
- -- Damyanka Miteva <damyanka@iain.office.mobileinno.com>  Thu, 12 Jun 2014 15:36:47 +0000
+ -- Damyanka Miteva <damyanka@iain.office.mobileinno.com>  Fri, 01 Aug 2014 13:18:06 +0300
 
-pclsync (0.102+nmu25) unstable; urgency=low
+pclsync (0.102+nmu26) unstable; urgency=low
 
   [ Damyanka Miteva ]
   * Initial
