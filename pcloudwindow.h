@@ -4,6 +4,7 @@
 //p #include "sharefolderwindow.h"
 #include "syncpage.h"
 #include "psynclib.h"
+#include "versiondwnldthread.h"
 #include <QMainWindow>
 #include <QCloseEvent>
 #include <QListWidgetItem>
@@ -34,6 +35,7 @@ public:
 private:
     Ui::PCloudWindow *ui;
     PCloudApp *app;
+    VersionDwnldThread *vrsnDwnldThread;
      SettingsPage *settngsPage;
     //p SharesPage *sharesPage;
     SyncPage *syncPage;
@@ -46,14 +48,13 @@ private:
     void fillAboutPage();
     void refreshPages();
 protected:
-    void showEvent(QShowEvent *);
+    void showEvent(QShowEvent *);    
 public slots:
     void changePage(QListWidgetItem *current, QListWidgetItem *previous);
     void showpcloudWindow(int index);
     void setOnlineItems(bool online);
     void setOnlinePages();  //when the user logs in
-    void refreshUserinfo();
-    void openWebPage();
+    void refreshUserinfo();    
     void openMyPcloud();
     void openOnlineTutorial();
     void openOnlineHelp();

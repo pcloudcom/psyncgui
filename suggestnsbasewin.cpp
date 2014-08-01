@@ -1,33 +1,35 @@
-#include "welcomescreen.h"
-#include "ui_welcomescreen.h"
-#include "pcloudapp.h"
+#include "suggestnsbasewin.h"
+#include "ui_suggestnsbasewin.h"
 #include "addsyncdialog.h"
 #include "modifysyncdialog.h"
 #include "ui_modifysyncdialog.h"
 #include "psynclib.h"
 #include "common.h"
 
-#include <QDesktopServices>
 #include <QDebug>
 #include <QComboBox>
 #include <QStandardItemModel>
 
+//this class is used from windows context menu for adding many folders at the same time for sync
+
 const char* typeStr[3]={"Donwload only", "Upload only", "Download and Upload"};
 
-WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
+SuggestnsBaseWin::SuggestnsBaseWin(PCloudApp *a, QStringList *fldrs, QWidget *parent):
     QMainWindow(parent),
-    ui(new Ui::WelcomeScreen)
+    ui(new Ui::SuggestnsBaseWin)
 {
     app = a;
     ui->setupUi(this);
     isChangingItem = false;
+    localFldrsLst = fldrs;
+
     connect(ui->btnAdd, SIGNAL(clicked()),this, SLOT(addSync()));
     connect(ui->btnFinish, SIGNAL(clicked()), this, SLOT(finish()));
     connect(ui->treeWidget, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(changeCurrItem(QModelIndex)));
     connect(ui->btnModify, SIGNAL(clicked()), this, SLOT(modifyType()));
     ui->statusbar->setVisible(false);
 
-    this->setWindowTitle(trUtf8("Welcome to pCloud Sync"));
+    this->setWindowTitle(trUtf8("pCloud Sync"));
     this->setWindowIcon(QIcon(WINDOW_ICON));
 
     //default synced fldrs
@@ -37,6 +39,8 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
     for (uint i = 0; i < remoteRootChildFldrs->entrycnt; i++)
         remoteFldrsNamesLst.append(remoteRootChildFldrs->entries[i].name);
     qDebug()<<"Remote init folders list form lib"<<remoteFldrsNamesLst;
+
+    /*
     QString defaultRemoteFldr = "/pCloudSync";
 
     QTreeWidgetItem *defaultItem = new QTreeWidgetItem(ui->treeWidget); // the default sync; the first item in the view; uneditable
@@ -81,7 +85,7 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
              << (QStringList() << music.absolutePath() << "/My Music")
              << (QStringList() << photos.absolutePath() << "/My Pictures")
              << (QStringList() << movies.absolutePath() << "/My Videos");
-#endif    
+#endif
     if(!pcloudDir.exists())
     {
         QDir::home().mkdir("pCloudSync");
@@ -97,28 +101,8 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
     defaultItem->setData(3,Qt::UserRole,defaultRemoteFldr);
     ui->treeWidget->insertTopLevelItem(0,defaultItem);
 
-    /*  psuggested_folders_t *suggestedFldrs = psync_get_sync_suggestions();
-    for (int i = 0; i < suggestedFldrs->entrycnt; i++)
-    {
-        QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
-
-        item->setCheckState(0,Qt::Unchecked);
-        item->setData(0,Qt::UserRole,false);
-        item->setText(1,suggestedFldrs->entries[i].localpath);
-        item->setData(1,Qt::UserRole,suggestedFldrs->entries[i].localpath);
-        QString rootName = checkRemoteName(suggestedFldrs->entries[i].name);
-        remoteFldrsNamesLst.append(rootName);
-        newRemoteFldrsLst.append(rootName);
-        rootName.insert(0,"/");
-        item->setText(3,rootName);
-        item->setData(3,Qt::UserRole,rootName);
-        item->setText(2,typeStr[2]);
-        item->setData(2,Qt::UserRole,PSYNC_FULL -1 );
-    }
-    */
-
-    remoteFldrsNamesLst.append("My Documents");
-    newRemoteFldrsLst.append("My Documents");
+    //remoteFldrsNamesLst.append("My Documents");
+    //newRemoteFldrsLst.append("My Documents");
 
     for(int i = 0; i < itemsLst.length(); i++)
     {
@@ -132,38 +116,62 @@ WelcomeScreen::WelcomeScreen(PCloudApp *a, QWidget *parent) :
         item->setText(2, typeStr[2]);
         item->setData(2, Qt::UserRole, PSYNC_FULL - 1);
     }
-
-    ui->treeWidget->resizeColumnToContents(0);
+*/
+    //ui->treeWidget->resizeColumnToContents(0);
+    ui->treeWidget->setColumnWidth(0,40);
     ui->treeWidget->setColumnWidth(1,200);
-    ui->treeWidget->resizeColumnToContents(2);
+    ui->treeWidget->setColumnWidth(2,140);
     ui->treeWidget->resizeColumnToContents(3);
     ui->treeWidget->setMinimumWidth(400);
     //ui->tableWidget->setItemDelegate(new SyncItemsDelegate());
     // this->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
+
+    //if(localFldrsLst->size())
+    if(localFldrsLst != NULL)
+    {
+        addLocalFldrs(localFldrsLst);
+    }
 }
 
-void WelcomeScreen::testPrintTree(QTreeWidgetItem* itm,int col)
-{
-    qDebug()<< ui->treeWidget->currentItem()<< " "<< ui->treeWidget->currentColumn() << " " <<itm << " "<<col;
+void SuggestnsBaseWin::addLocalFldrs(QStringList *itemsLst)
+{           
+    if(ui->treeWidget->topLevelItemCount())
+        ui->treeWidget->clear();
+    for(int i = 0; i < itemsLst->size(); i++)
+    {
+        qDebug()<<"Qt: fill suggestions tree"<<i<<itemsLst->at(i);
 
+        QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
+        item->setCheckState(0,Qt::Checked);
+        item->setData(0,Qt::UserRole,true);
+        item->setText(1,itemsLst->at(i)); //localpath
+        item->setData(1, Qt::UserRole,itemsLst->at(i));
+        item->setText(2, typeStr[2]); //synctype
+        item->setData(2, Qt::UserRole, PSYNC_FULL - 1);
+#ifdef Q_OS_WIN
+        QString name = itemsLst->at(i).section("\\",-1);
+#else
+        QString name = itemsLst->at(i).section("/",-1);
+#endif
+        QString remoteFldrName = checkRemoteName(name); // rename if remote folder with the same name exists
+        newRemoteFldrsLst.append(remoteFldrName);
+        remoteFldrsNamesLst.append(remoteFldrName);
+        remoteFldrName.insert(0,"/");        
+        item->setText(3,remoteFldrName); //remotepath
+        item->setData(3,Qt::UserRole,remoteFldrName);
+    }
 }
 
-void WelcomeScreen::testPrint(QModelIndex index)
-{
-    qDebug()<<index;
-    //qDebug()<<ui->tableWidget->currentIndex();
-}
-
-WelcomeScreen::~WelcomeScreen()
+SuggestnsBaseWin::~SuggestnsBaseWin()
 {
     delete ui;
 }
-void WelcomeScreen::closeEvent(QCloseEvent *event)
-{    
-    this->finish();
+void SuggestnsBaseWin::closeEvent(QCloseEvent *event)
+{  
+    this->hide();
     event->ignore();
 }
-void WelcomeScreen::addSync()
+void SuggestnsBaseWin::addSync()
 {
     addSyncDialog *addDialog = new addSyncDialog(app,app->pCloudWin, app->pCloudWin->get_sync_page(),this);
     if (this->isChangingItem)
@@ -176,24 +184,20 @@ void WelcomeScreen::addSync()
 
 }
 //when user double-clicks on an item
-void WelcomeScreen::changeCurrItem(QModelIndex index)
+void SuggestnsBaseWin::changeCurrItem(QModelIndex index)
 {
-    if(index.row()) // the first item in the treeview is default and shoudn't be modified
-    {
-        this->isChangingItem = true;
-        emit this->addSync();
-    }
+    // if(index.row()) // the first item in the treeview is default and shoudn't be modified
+
+    this->isChangingItem = true;
+    emit this->addSync();
+
 }
-bool WelcomeScreen::getChangeItem()
+bool SuggestnsBaseWin::getChangeItem()
 {
     return this->isChangingItem;
 }
 
-void WelcomeScreen::load()
-{
-
-}
-void WelcomeScreen::addNewItem(QString &localpath, QString &remotepath, int type)
+void SuggestnsBaseWin::addNewItem(QString &localpath, QString &remotepath, int type)
 {
     QTreeWidgetItem *item;
     if(isChangingItem)
@@ -214,7 +218,7 @@ void WelcomeScreen::addNewItem(QString &localpath, QString &remotepath, int type
     item->setData(2,Qt::UserRole,type);
 }
 
-void WelcomeScreen::modifyType()
+void SuggestnsBaseWin::modifyType()
 {
     QTreeWidgetItem *current = ui->treeWidget->currentItem();
     if(!current)
@@ -230,30 +234,38 @@ void WelcomeScreen::modifyType()
             int newType = dialog.returnNewType();
             current->setData(2,Qt::UserRole, newType);
             dialog.hide();
-            //this->load();
             current->setText(2,typeStr[newType]);
             // ++ modify sync type // type++
         }
     }
 }
-void WelcomeScreen::finish()
+void SuggestnsBaseWin::finish()
 {
     QStringList fldrActionsLst;
     QTreeWidgetItemIterator it(ui->treeWidget);
     while (*it)
     {
+        qDebug()<<"SuggestnsBaseWin::finish";
         if ((*it)->checkState(0) == Qt::Checked)
         {
-            QString localpath = (*it)->data(1,Qt::UserRole).toString();
-            qDebug()<<"ADDING item delayed (from suggestions) " << (*it)->data(1,Qt::UserRole).toString().toUtf8() << (*it)->data(3,Qt::UserRole).toString().toUtf8() <<((*it)->data(2,Qt::UserRole).toInt() +1);
-            psync_add_sync_by_path_delayed(localpath.toUtf8(),
-                                           (*it)->data(3,Qt::UserRole).toString().toUtf8(),
-                                           ((*it)->data(2,Qt::UserRole).toInt()) +1) ;
+            QString localpath = (*it)->data(1,Qt::UserRole).toString(); //to del
+            qDebug()<<"ADDING item (from suggestionswin) " << (*it)->data(1,Qt::UserRole).toString().toUtf8() << (*it)->data(3,Qt::UserRole).toString().toUtf8() <<((*it)->data(2,Qt::UserRole).toInt() +1);
 
+            //welcome win case and contex menu case, because it's possible remote folder not to exists
+            psync_add_sync_by_path_delayed(//localpath.toUtf8(),
+                                           (*it)->data(1,Qt::UserRole).toString().toUtf8(),
+                                           (*it)->data(3,Qt::UserRole).toString().toUtf8(),
+                                           ((*it)->data(2,Qt::UserRole).toInt()) +1);
+
+#ifdef Q_OS_WIN
+            QString name = localpath.section("\\", -1);
+#else
             QString name = localpath.section("/", -1);
+#endif
+            qDebug() << name;
             if (!fldrActionsLst.contains(name))
             {
-                QAction * fldrAction = new QAction(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),name, app);
+                QAction *fldrAction = new QAction(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),name, app);
                 fldrAction->setProperty("path", localpath);
                 connect(fldrAction, SIGNAL(triggered()), app, SLOT(openLocalDir()));
                 app->addNewFolderInMenu(fldrAction);
@@ -265,9 +277,10 @@ void WelcomeScreen::finish()
     app->pCloudWin->get_sync_page()->load();
     //refresh menu
     this->hide();
-    app->showAccount();
+    if(app->isFirstLaunch)
+        app->showSync(); // if first launch
 }
-QString WelcomeScreen::checkRemoteName(QString &entryName)
+QString SuggestnsBaseWin::checkRemoteName(QString &entryName)
 {
     if (remoteFldrsNamesLst.contains(entryName))
     {
@@ -282,28 +295,28 @@ QString WelcomeScreen::checkRemoteName(QString &entryName)
     else
         return entryName;
 }
-void WelcomeScreen::addNewRemoteFldr(QString &name)
+void SuggestnsBaseWin::addNewRemoteFldr(QString &name)
 {
     this->remoteFldrsNamesLst.append(name);
 }
 
-QString WelcomeScreen::getCurrLocalPath()
+QString SuggestnsBaseWin::getCurrLocalPath()
 {
     return this->currentLocal;
 }
-QString WelcomeScreen::getCurrRemotePath()
+QString SuggestnsBaseWin::getCurrRemotePath()
 {
     return this->currentRemote;
 }
-int WelcomeScreen::getCurrType()
+int SuggestnsBaseWin::getCurrType()
 {
     return this->currentType;
 }
-QTreeWidgetItem* WelcomeScreen::getCurrItem()
+QTreeWidgetItem* SuggestnsBaseWin::getCurrItem()
 {
     return ui->treeWidget->currentItem();
 }
-void WelcomeScreen::setChangeItem(bool b)
+void SuggestnsBaseWin::setChangeItem(bool b)
 {
     this->isChangingItem = b;
 }

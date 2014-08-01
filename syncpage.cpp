@@ -1,5 +1,7 @@
 #include "syncpage.h"
 #include "psynclib.h"
+#include "pcloudwindow.h"
+#include "ui_pcloudwindow.h"
 #include "addsyncdialog.h"
 #include "ui_addsyncdialog.h"
 #include "modifysyncdialog.h"
@@ -8,12 +10,13 @@
 #include<QDesktopServices>
 #include <QUrl>
 #include <QDir>
+#include <unistd.h>
 #include <QDebug> //temp
 
 
 SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
     QWidget(parent)
-{
+{    
     win = w;
     app = a;
 
@@ -40,35 +43,25 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
 
     connect(win->ui->btnSyncSttngsSave, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(win->ui->btnSyncSttngCancel, SIGNAL(clicked()), this, SLOT(cancelSettings()));
-    connect(win->ui->edit_DwnldSpeed, SIGNAL(textChanged(QString)), this, SLOT(enableSaveBtn()));
-    connect(win->ui->edit_UpldSpeed, SIGNAL(textChanged(QString)), this, SLOT(enableSaveBtn()));
     connect(win->ui->edit_minLocalSpace, SIGNAL(textEdited(QString)), this, SLOT(enableSaveBtn()));
     connect(win->ui->checkBoxSyncSSL, SIGNAL(stateChanged(int)), this, SLOT(enableSaveBtn()));
     connect(win->ui->checkBoxp2p, SIGNAL(stateChanged(int)), this, SLOT(enableSaveBtn()));
     connect(win->ui->text_patterns, SIGNAL(textChanged()), this, SLOT(enableSaveBtn()));
-    connect(win->ui->rbtnSyncDwnlChoose, SIGNAL(clicked()), this, SLOT(enableSaveBtn()));
-    connect(win->ui->rBtnSyncDwldAuto, SIGNAL(clicked()), this, SLOT(enableSaveBtn()));
-    connect(win->ui->rBtnSyncDwldUnlimit, SIGNAL(clicked()), this, SLOT(enableSaveBtn()));
-    connect(win->ui->rbtnSyncupldChoose, SIGNAL(clicked()), this, SLOT(enableSaveBtn()));
-    connect(win->ui->rBtnSyncUpldAuto, SIGNAL(clicked()), this, SLOT(enableSaveBtn()));
-    connect(win->ui->rBtnSyncUpldUnlimit, SIGNAL(clicked()), this, SLOT(enableSaveBtn()));
-
     connect(win->ui->rBtnSyncDwldAuto, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
     connect(win->ui->rBtnSyncDwldUnlimit, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
     connect(win->ui->rbtnSyncDwnlChoose, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
-    connect(win->ui->edit_DwnldSpeed, SIGNAL(textChanged(QString)), SLOT(setNewSpeedFromEditline()));
     connect(win->ui->rBtnSyncUpldAuto, SIGNAL(clicked()),this, SLOT(setNewUpldSpeed()));
     connect(win->ui->rBtnSyncUpldUnlimit, SIGNAL(clicked()),this, SLOT(setNewUpldSpeed()));
     connect(win->ui->rbtnSyncupldChoose, SIGNAL(clicked()),this, SLOT(setNewUpldSpeed()));
-    connect(win->ui->edit_UpldSpeed, SIGNAL(textChanged(QString)), this, SLOT(setNewSpeedFromEditline()));
-    connect(win->ui->edit_DwnldSpeed, SIGNAL(textEdited(QString)), this, SLOT(setNewSpeedFromEditline()));
+    connect(win->ui->edit_DwnldSpeed, SIGNAL(textEdited(QString)), this, SLOT(setNewSpeedFromEditline())); //textedited signal will not emit when the text is changed programmatically
     connect(win->ui->edit_UpldSpeed, SIGNAL(textEdited(QString)), this, SLOT(setNewSpeedFromEditline()));
 
 }
 void SyncPage::refreshTab(int index)
 {
     if (index)
-    {qDebug() << "refresh settngs";
+    {
+        qDebug() << "load sync settngs";
         loadSettings();
     }
     else
@@ -98,6 +91,9 @@ static QString get_sync_type(int synctype)
 void SyncPage::load()
 {    
     win->ui->treeSyncList->clear();
+    //there is a delay with the result from lib after add_sync_delay
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+    sleep(2);
     psync_folder_list_t *fldrsList = psync_get_sync_list();
     if (fldrsList != NULL && fldrsList->foldercnt)
     {
@@ -108,7 +104,6 @@ void SyncPage::load()
                   << " "<<fldrsList->folders[i].remotepath<< " sync id="<<fldrsList->folders[i].syncid<< "sync type "<<fldrsList->folders[i].synctype;
 
             QStringList row;
-            // row << fldrsList->folders[i].localpath << QString::number(fldrsList->folders[i].synctype) << fldrsList->folders[i].remotepath;
             row << fldrsList->folders[i].localpath <<get_sync_type(fldrsList->folders[i].synctype) << fldrsList->folders[i].remotepath;
             QTreeWidgetItem *item = new QTreeWidgetItem(row);
             item->setData(0, Qt::UserRole,fldrsList->folders[i].localpath);
@@ -124,6 +119,7 @@ void SyncPage::load()
         }
         free(fldrsList);
     }
+    QApplication::restoreOverrideCursor();
 }
 
 
@@ -150,7 +146,6 @@ void SyncPage::syncDoubleClicked(QTreeWidgetItem *item, int col)
     {
         quint64 fldrid = item->data(4,Qt::UserRole).toLongLong();
         QString urlstr = "https://my.pcloud.com/#folder=";
-        qDebug()<< " open remote folder, auth = "<< app->authentication;
         urlstr.append(QString::number(fldrid) + "&page=filemanager&authtoken=" + app->authentication);
         QUrl url(urlstr);
         QDesktopServices::openUrl(url);
@@ -181,8 +176,11 @@ void SyncPage::modifySync()
             quint32 type = modifyDialog.ui->combo_Directions->currentIndex()+1;
             quint32 syncid = current->data(3, Qt::UserRole).toInt();
             int res = psync_change_synctype(syncid,type);
-            if(res  ==-1)
-                showError();
+            if(res  == -1)
+            {
+                qDebug()<<"change sync type error:";
+                app->check_error();
+            }
             modifyDialog.hide();
             load();
         }
@@ -206,11 +204,14 @@ void SyncPage::stopSync()
             psync_syncid_t syncid = current->data(3,Qt::UserRole).toInt();
             qDebug()<<"Stop sync with id " <<syncid;
             if (psync_delete_sync(syncid)) //0 -ok, -1 err
-                showError();
+            {
+                qDebug()<<"delete sync type error:";
+                app->check_error();
+            }
             else
             {
                 load();
-                app->createSyncFolderActions(app->getSyncMenu());
+                app->createSyncFolderActions();
             }
         }
         else
@@ -221,7 +222,7 @@ void SyncPage::stopSync()
 void SyncPage::addSync()
 {       
     addSyncDialog *addSync = new addSyncDialog(app,win,this, NULL);
-    addSync->exec(); //or show
+    addSync->exec();
 }
 
 // Settings tab
@@ -291,70 +292,101 @@ void SyncPage::loadSettings()
 
 }
 void SyncPage::setNewDwnldSpeed()
-{
+{    
     QObject *obj = this->sender();
-    //qDebug()<< "object: "<< obj->objectName();
     QString objname = obj->objectName();
     if (objname == "rBtnSyncDwldAuto")
     {
         dwnldSpeedNew = 0;
         win->ui->edit_DwnldSpeed->setEnabled(false);
-        qDebug()<< dwnldSpeedNew;
+        emit enableSaveBtn();
         return;
     }
     if (objname == "rBtnSyncDwldUnlimit")
     {
         dwnldSpeedNew = -1;
         win->ui->edit_DwnldSpeed->setEnabled(false);
-        qDebug()<< dwnldSpeedNew;
+        emit enableSaveBtn();
         return;
     }
     if (objname == "rbtnSyncDwnlChoose")
     {
         win->ui->edit_DwnldSpeed->setEnabled(true);
-        return;
+
+        //already entered new value but changed after that without save
+        if(!win->ui->edit_DwnldSpeed->text().isEmpty())
+        {
+            if(dwnldSpeedNew != win->ui->edit_DwnldSpeed->text().toInt()*1000)
+                dwnldSpeedNew = win->ui->edit_DwnldSpeed->text().toInt()*1000;
+        }
+        else
+            dwnldSpeedNew = -2; //flag for empty line
+        emit enableSaveBtn();
     }
 }
 
 void SyncPage::setNewUpldSpeed()
 {
     QObject *obj = this->sender();
-    qDebug()<< "object: "<< obj->objectName();
     QString objname = obj->objectName();
     if (objname == "rBtnSyncUpldAuto")
     {
         upldSpeedNew = 0;
         win->ui->edit_UpldSpeed->setEnabled(false);
-        qDebug()<< upldSpeedNew;
+        emit enableSaveBtn();
         return;
     }
     if (objname == "rBtnSyncUpldUnlimit")
     {
         upldSpeedNew = -1;
         win->ui->edit_UpldSpeed->setEnabled(false);
-        qDebug()<< upldSpeedNew;
+        emit enableSaveBtn();
         return;
     }
     if (objname == "rbtnSyncupldChoose")
     {
         win->ui->edit_UpldSpeed->setEnabled(true);
-        return;
+
+        //already entered new value but changed after that without save
+        if(!win->ui->edit_UpldSpeed->text().isEmpty())
+        {
+            if(upldSpeedNew != win->ui->edit_UpldSpeed->text().toInt()*1000)
+                upldSpeedNew = win->ui->edit_UpldSpeed->text().toInt()*1000;
+        }
+        else
+            upldSpeedNew = -2; //flag for empty line
+        emit enableSaveBtn();
     }
 }
 
 void SyncPage::setNewSpeedFromEditline()
-{
+{   
     QObject *obj = this->sender();
-    //  qDebug()<< "object: "<< obj->objectName();
     QString objname = obj->objectName();
     if (objname == "edit_UpldSpeed")
-        upldSpeedNew = (win->ui->edit_UpldSpeed->text().toInt()) *1000 ;
+    {
+        if(!win->ui->edit_UpldSpeed->text().isEmpty())
+            upldSpeedNew = win->ui->edit_UpldSpeed->text().toInt()*1000;
+        else
+            upldSpeedNew = -2; //flag for empty line
+    }
     else
-        dwnldSpeedNew = win->ui->edit_DwnldSpeed->text().toInt()*1000;
+    {
+        if(!win->ui->edit_DwnldSpeed->text().isEmpty())
+            dwnldSpeedNew = win->ui->edit_DwnldSpeed->text().toInt()*1000;
+        else
+            dwnldSpeedNew = -2; //flag for empty line
+    }
+    emit enableSaveBtn();
 }
 
 void SyncPage::enableSaveBtn()
-{
+{    
+    if (dwnldSpeedNew == -2 || upldSpeedNew == -2) // if one of speeds is choosen to be custom value but the value is not entered
+    {
+        win->ui->btnSyncSttngsSave->setEnabled(false);
+        return;
+    }
     if (SSL != win->ui->checkBoxSyncSSL->isChecked()
             || p2p != win->ui->checkBoxp2p->isChecked()
             || minLocalSpace != win->ui->edit_minLocalSpace->text()
@@ -377,7 +409,6 @@ void SyncPage::saveSettings()
     {
         SSL = !SSL;
         psync_set_bool_setting("usessl", SSL);
-        qDebug()<<SSL;
     }
     if (p2p != win->ui->checkBoxp2p->isChecked())
     {
@@ -408,61 +439,27 @@ void SyncPage::saveSettings()
     {
         patterns = win->ui->text_patterns->toPlainText();
         psync_set_string_setting("ignorepatterns",patterns.toUtf8());
-        // qDebug()<< win->ui->text_patterns->toPlainText();
     }
-    qDebug()<<"Settings Saved btn pressed: " <<patterns << " " << SSL << " "<< minLocalSpace;
-    qDebug()<< "lib vals "<<(psync_get_uint_setting("minlocalfreespace"))/1024/1024 << " "
-            << (psync_get_int_setting("maxdownloadspeed"))/1000 << " "
-            << (psync_get_int_setting("maxuploadspeed"))/1000 << " " <<psync_get_bool_setting("usessl");
+    qDebug()<<"Sync New Settings Saved: patterns= " <<patterns << " ssl=" << SSL << " minspace="<< minLocalSpace;
+    qDebug()<< "lib vals space="<<(psync_get_uint_setting("minlocalfreespace"))/1024/1024 << " dwnldspeed="
+            << (psync_get_int_setting("maxdownloadspeed"))/1000 << " upldspeed="
+            << (psync_get_int_setting("maxuploadspeed"))/1000 << " ssl=" <<psync_get_bool_setting("usessl");
     win->ui->btnSyncSttngsSave->setEnabled(false);
     win->ui->btnSyncSttngCancel->setEnabled(false);
-
+    clearSpeedEditLines();
 }
 void SyncPage::cancelSettings()
 {
     loadSettings();
+    clearSpeedEditLines();
+    win->ui->btnCancelSttngs->setEnabled(false);
+    win->ui->btnSaveSttngs->setEnabled(false);
+
 }
-
-
-void SyncPage::showError()
+void SyncPage::clearSpeedEditLines()
 {
-    int err = psync_get_last_error();
-    switch(err)
-    {
-    case 1: // for us
-        qDebug()<< " ERROR : Local folder not found. ";
-        break;
-    case 2:
-        qDebug()<< "ERROR : Remote folder not found. ";
-        break;
-    case 3:
-        qDebug()<< "ERROR :Error opening database. ";
-        break;
-    case 4:
-        qDebug()<< "ERROR :No home directory found. ";
-        break;
-    case 5:
-        qDebug()<< "ERROR :SSL initialization failed. ";
-        break;
-    case 6:
-        qDebug()<< "ERROR :Database error. ";
-        break;
-    case 7:
-        qDebug()<< "ERROR :Local folder access denied. ";
-        break;
-    case 8:
-        qDebug()<< "ERROR :Remote folder access denied. ";
-        break;
-    case 9:
-        qDebug()<< "ERROR :Folder already syncing. ";
-        break;
-    case 10:
-        qDebug()<< "ERROR : Invalid synctype. ";
-        break;
-    case 11:
-        qDebug()<< "ERROR :Sync disconnected. ";
-        break;
-    default:
-        break;
-    }
+    if((dwnldSpeedNew == 0 || dwnldSpeedNew == 1) && !win->ui->edit_DwnldSpeed->text().isNull())
+        win->ui->edit_DwnldSpeed->clear();
+    if((upldSpeedNew == 0 || upldSpeedNew == 1)  && !win->ui->edit_UpldSpeed->text().isNull())
+        win->ui->edit_UpldSpeed->clear();
 }

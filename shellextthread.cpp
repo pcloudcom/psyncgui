@@ -3,8 +3,6 @@
 
 #ifdef Q_OS_WIN
 #include <Shlobj.h>
-
-
 #include "QMessageBox"
 
 
@@ -90,146 +88,153 @@ void ShellExtThread::run()
             return;
         }
 
-        qDebug() << "Qt: before read";
         char buffer[BUFSIZE];
         DWORD numBytesRead = 0;
 
-        bool resread = ReadFile(hPipe, buffer, BUFSIZE, &numBytesRead, NULL);
+        bool resread = ReadFile(hPipe, buffer, BUFSIZE, &numBytesRead, NULL); // in cycle while read for long msgs
         qDebug() << "Qt: after read";
         if (resread)
         {
             QString bufferStr = buffer;
-            qDebug()<<"Qt: read file not zero";
+            qDebug()<<"Qt: read file not zero, received buffer ="<<bufferStr;      
+
+            //NOT LOGGED
+            if (bufferStr.startsWith("login"))
+                app->showLoginPublic();
 
             //SyncLIST
-            if (bufferStr.startsWith("synclist"))
+            else if (bufferStr.startsWith("synclist"))
             {
-                qDebug() << "Qt: read pipe: synclist case";
+                char* msgCopyFldrs;
+                qDebug() << "Qt: read pipe: request the synclist case";
                 //send synclist to the client
-                psync_folder_list_t *fldrsList = psync_get_sync_list();
-                qDebug() << "Qt: read pipe: synclist case after getsynclist from the lib";
-                if (fldrsList != NULL && fldrsList->foldercnt)
-                {
-                    char msgCopyFldrs[512* fldrsList->foldercnt],msgDwnldFldrs[512*fldrsList->foldercnt];
-                    strcpy(msgCopyFldrs, "synclist");
-                    strcpy(msgDwnldFldrs,"");
-                    qDebug()<< "Qt: synlict write before fill list"<< strlen(msgCopyFldrs);
-                    for (uint i = 0; i< fldrsList->foldercnt; i++)
-                    {
-                        if(fldrsList->folders[i].synctype != PSYNC_DOWNLOAD_ONLY)
-                        {
-                            strcat(msgCopyFldrs,fldrsList->folders[i].localpath);
-                            strcat(msgCopyFldrs,"|");
-                            qDebug()<<"Qt: write in pipe - synced folder"<< fldrsList->folders[i].localpath<< "sync type: "<<fldrsList->folders[i].synctype;
-                        }
-                        else
-                        {
-                            strcat(msgDwnldFldrs,fldrsList->folders[i].localpath);
-                            strcat(msgDwnldFldrs,"*");
-                            qDebug()<<"Qt: write in pipe - synced donwload only folder"<< fldrsList->folders[i].localpath<< "sync type: "<<fldrsList->folders[i].synctype;
-                        }
-                    }
-
-                    strcat(msgCopyFldrs, msgDwnldFldrs);
-                    qDebug() << "Qt: whole sync list:" << msgCopyFldrs;
-                    DWORD numBytesWritten = 0;
-                    wchar_t wtext[strlen(msgCopyFldrs)];
-                    mbstowcs(wtext, msgCopyFldrs,strlen(msgCopyFldrs)+1);//Plus null
-
-                    //send both lists, after every copy folders there is  '|', after every donwload  only folder  there is '*'
-                    bool result = WriteFile(
-                                hPipe, // handle to our outbound pipe
-                                msgCopyFldrs, // data to send
-                                strlen(msgCopyFldrs)*sizeof(char),// length of data to send (bytes)
-                                &numBytesWritten, // will store actual amount of data sent
-                                NULL); // not using overlapped IO
-
-                    if (result)
-                        qDebug()<<"Qt: write copy synced list successful";
-                    else
-                        qDebug()<<"Qt: write copy synced list UNsuccessful";
-                }
-            }
-            //ADD NEW SYNC
-            else if(bufferStr.startsWith("addsync"))
-            {
-                qDebug() << "Qt:read pipe addnew sync case";
-                bufferStr.remove(0,7); // removes "addsync"
-                qDebug()<<bufferStr << "the path only";
-                app->localpathToSync = bufferStr;
                 if (app->isLogedIn())
-                    app->addNewSyncPublic();
-                else
-                    app->showLoginPublic();
-            }
-            //REMOVE FROM SYNC
-            else if(bufferStr.startsWith("remove "))
-            {
-                bufferStr.remove(0,7);
-                qDebug()<< "Qt: remove from sync folder:"<< bufferStr;
-                if(app->isLogedIn())
                 {
                     psync_folder_list_t *fldrsList = psync_get_sync_list();
-                    psync_syncid_t id;
-                    for (size_t i = 0; i < fldrsList->foldercnt; i++)
+                    if (fldrsList != NULL && fldrsList->foldercnt)
                     {
-                        if(bufferStr == fldrsList->folders[i].localpath)
+                        char msgDwnldOnlyFldrs[512*fldrsList->foldercnt];
+                        strcpy(msgCopyFldrs, "synclist");
+                        strcpy(msgDwnldOnlyFldrs,"");
+                        for (uint i = 0; i< fldrsList->foldercnt; i++)
                         {
-                            id = fldrsList->folders[i].syncid;
+                            if(fldrsList->folders[i].synctype != PSYNC_DOWNLOAD_ONLY)
+                            {
+                                strcat(msgCopyFldrs,fldrsList->folders[i].localpath);
+                                strcat(msgCopyFldrs,"|");
+                            }
+                            else
+                            {
+                                strcat(msgDwnldOnlyFldrs,fldrsList->folders[i].localpath);
+                                strcat(msgDwnldOnlyFldrs,"*");
+                            }
+                        }
+                        free(fldrsList);
+                        strcat(msgCopyFldrs, msgDwnldOnlyFldrs); //concatenate folders lists
+                        qDebug() << "Qt: whole sync list for send   :" << msgCopyFldrs;
+                    }
+                }
+                else
+                    strcpy(msgCopyFldrs,"notlogged");
+
+                DWORD numBytesWritten = 0;
+                wchar_t wtext[strlen(msgCopyFldrs)];
+                mbstowcs(wtext, msgCopyFldrs,strlen(msgCopyFldrs)+1);//Plus null
+
+                //send both lists, after every copy folders there is  '|', after every donwload  only folder  there is '*'
+                bool result = WriteFile(
+                            hPipe, // handle to our outbound pipe
+                            msgCopyFldrs, // data to send
+                            strlen(msgCopyFldrs)*sizeof(char),// length of data to send (bytes)
+                            &numBytesWritten, // will store actual amount of data sent
+                            NULL); // not using overlapped IO
+
+                if (result)
+                    qDebug()<<"Qt: write in pipe(send synclist) successful";
+                else
+                    qDebug()<<"Qt: write in pipe(send synclist) NOT successful";
+            }
+        //ADD NEW SYNC
+        else if(bufferStr.startsWith("addsync"))
+        {
+            qDebug() << "Qt:read pipe addnew sync case" <<bufferStr;
+            bufferStr.remove(0,7); // removes "addsync"
+            if (app->isLogedIn())
+            {
+                QStringList fldrToSyncLst = bufferStr.split("|", QString::SkipEmptyParts);                
+                if(fldrToSyncLst.size()) //to del
+                {
+                    app->setsyncSuggstLst(fldrToSyncLst);
+                    app->addNewSyncLstPublic();
+                }
+                app->refreshSyncUIitemsPublic();
+            }
+            else
+                app->showLoginPublic();
+        }
+        //REMOVE FROM SYNC
+        else if(bufferStr.startsWith("remove "))
+        {
+            bufferStr.remove(0,7);
+            qDebug()<< "Qt: remove from sync folders:"<< bufferStr;
+            if(app->isLogedIn())
+            {
+                QStringList fldrsToRemoveLst = bufferStr.split("|",QString::SkipEmptyParts);
+                psync_folder_list_t *fldrsList = psync_get_sync_list();
+                for (int i = 0; i < fldrsToRemoveLst.size(); i++)
+                {
+                    QString fldr = fldrsToRemoveLst.at(i);
+                    for(int j = 0; j < fldrsList->foldercnt; j++) //search syncid of the synced folder
+                    {
+                        if(fldr == fldrsList->folders[j].localpath)
+                        {
+                            psync_syncid_t id = fldrsList->folders[j].syncid;
+                            psync_delete_sync(id);
                             break;
                         }
                     }
-                    psync_delete_sync(id);
-                    qDebug() << "Qt: Delete Sync with id = " << id;
                 }
-                else
-                    app->showLoginPublic();
+                free(fldrsList);
+                app->refreshSyncUIitemsPublic(); //refresh synced folders list in syncmenu
             }
+            else
+                app->showLoginPublic();
+        }
+
+    }
+    else
+    {
+        qDebug()<< "qt read failed gle=" <<GetLastError();
+        if (numBytesRead == 0 && (GetLastError() == ERROR_BROKEN_PIPE))
+        {
+            qDebug()<<"qt InstanceThread: server disconnected.\n " << GetLastError();
         }
         else
         {
-            qDebug()<< "qt read failed gle=" <<GetLastError();
-            if (numBytesRead == 0 && (GetLastError() == ERROR_BROKEN_PIPE))
-            {
-                qDebug()<<"qt InstanceThread: server disconnected.\n " << GetLastError();
-            }
-            else
-            {
-                qDebug() << "qt InstanceThread ReadFile failed, GLE=%d.\n "<<GetLastError();
-            }
+            qDebug() << "qt InstanceThread ReadFile failed, GLE=%d.\n "<<GetLastError();
         }
-        FlushFileBuffers(hPipe);
-        DisconnectNamedPipe(hPipe);
-
     }
+    FlushFileBuffers(hPipe);
+    DisconnectNamedPipe(hPipe);
 
-    if (hPipe != INVALID_HANDLE_VALUE){
-        qDebug()<< "qt after while: flush and disconnect handle";
-        FlushFileBuffers(hPipe);
-        DisconnectNamedPipe(hPipe);
-    }
+}
 
-    /*  if (hPipe != INVALID_HANDLE_VALUE){
-        qDebug()<< "qt after while: flush and disconnect handle";
-        FlushFileBuffers(hPipe);
-        DisconnectNamedPipe(hPipe);
-        CloseHandle(hPipe);
-    }
-    */
-
-
+if (hPipe != INVALID_HANDLE_VALUE){
+    qDebug()<< "qt after while: flush and disconnect handle";
+    FlushFileBuffers(hPipe);
+    DisconnectNamedPipe(hPipe);
+}
 }
 
 ShellExtThread::~ShellExtThread()
 {
     qDebug()<< "qt destructing pipe";
-    if (hPipe != INVALID_HANDLE_VALUE){
+    if (hPipe != INVALID_HANDLE_VALUE)
+    {
         closePipe();
         CloseHandle(hPipe);
-        qDebug() << " pipe closed";
         hPipe = INVALID_HANDLE_VALUE;
     }
-    qDebug()<<" pipe destroyed";
 }
 
 bool ShellExtThread::closePipe()
@@ -247,6 +252,7 @@ void ShellExtThread::killPipe()
     if(closePipe() && hPipe != INVALID_HANDLE_VALUE)
     {
         CloseHandle(hPipe);
+        qDebug()<<"killpipe: handle closed";
         hPipe = INVALID_HANDLE_VALUE;
     }
 }

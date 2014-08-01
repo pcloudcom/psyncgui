@@ -19,37 +19,12 @@ RegisterWindow::RegisterWindow(PCloudApp *a, QWidget *parent) :
     connect(ui->password, SIGNAL(returnPressed()), this, SLOT(focusConfirm()));
     connect(ui->confirmpassword, SIGNAL(returnPressed()), this, SLOT(focusTOS()));
     connect(ui->loginButton, SIGNAL(clicked()), app, SLOT(showLogin()));
+    this->setFixedSize(this->width(),this->height()); //makes the win not resizable
 }
 
 RegisterWindow::~RegisterWindow()
 {
     delete ui;
-}
-void RegisterWindow::showEvent(QShowEvent *event)
-{
-    QString user = psync_get_username();
-    if (user != "")
-    {
-        QMessageBox msgBox;
-        msgBox.setWindowTitle("pCloud Sync");
-        msgBox.setText(trUtf8 ("User %1 has already linked in.").arg(user));
-        msgBox.setInformativeText(trUtf8 ("Do you want to unlink %1 and to continue").arg(user));
-        msgBox.setStandardButtons(QMessageBox::Cancel);
-        msgBox.setDefaultButton(QMessageBox::Cancel);
-        QAbstractButton *btnUnlink = msgBox.addButton(trUtf8("Unlink"), QMessageBox::YesRole);
-        msgBox.exec();
-        if (msgBox.clickedButton() == btnUnlink)
-        {
-            psync_unlink();
-            app->setFirstLaunch(true); // to show suggestions list
-            event->accept();
-        }
-        else
-        {
-            event->ignore();
-            this->hide();
-        }
-    }
 }
 
 void RegisterWindow::closeEvent(QCloseEvent *event){

@@ -1,51 +1,55 @@
 #ifndef WELCOMESCREEN_H
-#define WELCOMESCREEN_H
+#define WELCOMESCREEN_H  /// to CHANGE !!!!!!
 
-#include "addsyncdialog.h"
+//#include "addsyncdialog.h"
 #include <QMainWindow>
 #include <QCloseEvent>
+#include <QStringList>
 #include <QItemDelegate>
 #include <QTableWidget>
 #include <QTreeWidgetItem>
 
-namespace Ui {
-class WelcomeScreen;
-}
+
 class PCloudApp;
 
-class WelcomeScreen : public QMainWindow
+namespace Ui {
+class SuggestnsBaseWin;
+}
+
+class SuggestnsBaseWin : public QMainWindow
 {
     Q_OBJECT
 
 public:
     friend class addSyncDialog;
     friend class SyncItemsDelegate;
-    explicit WelcomeScreen(PCloudApp *a,QWidget *parent = 0);
-    ~WelcomeScreen();
+    explicit SuggestnsBaseWin(PCloudApp *a, QStringList *fldrs, QWidget *parent = 0);
+    ~SuggestnsBaseWin();
     QStringList remoteFldrsNamesLst, newRemoteFldrsLst;
     QString getCurrLocalPath();
     QString getCurrRemotePath();
     int getCurrType();
     QTreeWidgetItem* getCurrItem();
-    void load();
     void addNewItem(QString &localpath, QString &remotepath, int type);
+    void addLocalFldrs(QStringList *itemsLst);
     bool getChangeItem();
     void setChangeItem(bool);
     QString checkRemoteName(QString &entryName);
     void addNewRemoteFldr(QString &name);
 private:
-    Ui::WelcomeScreen *ui;
+    QStringList *localFldrsLst;
+    //indicates if user adds a new sync or changes a suggested one
+protected:    
+    //Ui::
+    Ui::SuggestnsBaseWin *ui;
+    void closeEvent(QCloseEvent *event);
     PCloudApp *app;
     QString currentLocal, currentRemote;
     int currentType;
-    bool isChangingItem; //indicates if user adds a new sync or changes a suggested one  
-protected:
-    void closeEvent(QCloseEvent *event);
+    bool isChangingItem;    
 public slots:
     void addSync();
     void changeCurrItem(QModelIndex index);
-    void testPrint(QModelIndex index);
-    void testPrintTree(QTreeWidgetItem*itm,int col); 
     void modifyType();
     void finish();
 };

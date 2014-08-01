@@ -1,6 +1,8 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+//const char* typeStr[3]={"Donwload only", "Upload only", "Download and Upload"};
+
 #define WINDOW_ICON ":/images/images/logo.png"
 #define ONLINE_ICON ":/24x24/images/24x24/online.png"
 #define OFFLINE_ICON ":/24x24/images/24x24/offline.png"

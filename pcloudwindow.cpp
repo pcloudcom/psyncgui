@@ -17,6 +17,7 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     app=a;
     ui->setupUi(this);
     this->verifyClicked = false;
+    vrsnDwnldThread = NULL;
 
     // the window consists of QListWidget(for icon-buttons) and
     //QStackedWidget which loads different page according to selected item in the listWidget (and hides other pages)
@@ -24,10 +25,8 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     ui->listButtonsWidget->setViewMode(QListView::IconMode);
     ui->listButtonsWidget->setFlow(QListWidget::LeftToRight); //orientation
     ui->listButtonsWidget->setSpacing(12);
-
     ui->listButtonsWidget->setStyleSheet("background-color:transparent");
     ui->listButtonsWidget->setMovement(QListView::Static); //not to move items with the mouse
-    //temp
     ui->listButtonsWidget->setMinimumWidth(360);
     ui->listButtonsWidget->setMaximumHeight(85);
     ui->listButtonsWidget->setMinimumHeight(84); // precakva mi layouta
@@ -37,7 +36,7 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 1
     new QListWidgetItem(QIcon(":/images/images/shares.png"),trUtf8("Shares"),ui->listButtonsWidget); //index 2
     new QListWidgetItem(QIcon(":/128x128/images/128x128/sync.png"),trUtf8("Sync"),ui->listButtonsWidget); //Sync Page index 3
-    new QListWidgetItem(QIcon(":/images/images/settings.png"),trUtf8("Settings"),ui->listButtonsWidget); //index 4
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/settings.png"),trUtf8("Settings"),ui->listButtonsWidget); //index 4
     new QListWidgetItem(QIcon(":/128x128/images/128x128//help.png"),trUtf8("Help"),ui->listButtonsWidget); //index 5
     new QListWidgetItem(QIcon(":/128x128/images/128x128/info.png"),trUtf8("About"),ui->listButtonsWidget); //index 6
 
@@ -67,10 +66,9 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     connect(ui->tBtnOnlineHelp, SIGNAL(clicked()), this, SLOT(openOnlineHelp()));
     connect(ui->tBtnOnlineTutorial, SIGNAL(clicked()), this, SLOT(openOnlineTutorial()));
     connect(ui->tBtnFeedback, SIGNAL(clicked()), this, SLOT(sendFeedback()));
-    connect(ui->toolBtnOpenWeb, SIGNAL(clicked()), this, SLOT(openWebPage()));
+    connect(ui->tbtnGetMoreSpace, SIGNAL(clicked()), this, SLOT(upgradePlan()));
     connect(ui->tbtnMyPcloud, SIGNAL(clicked()), this, SLOT(openMyPcloud()));
-    connect(ui->label, SIGNAL(linkActivated(QString)), this, SLOT(upgradePlan()));
-    connect(ui->comboBox_versionReminder, SIGNAL(currentIndexChanged(int)), app, SLOT(setTimer(int)));
+    connect(ui->comboBox_versionReminder, SIGNAL(currentIndexChanged(int)), app, SLOT(setTimerInterval(int)));
     connect(ui->btnUpdtVersn, SIGNAL(clicked()), this, SLOT(updateVersion()));
     //p connect(ui->tbtnOpenFolder, SIGNAL(clicked()),app,SLOT(openCloudDir()));
     connect(ui->tBtnExit, SIGNAL(clicked()), app, SLOT(doExit()));
@@ -82,15 +80,26 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     connect(actionChangePass, SIGNAL(triggered()), this, SLOT(changePass()));
     QAction *forgotPassAction = new QAction(trUtf8("Forgot Password"), this);
     connect(forgotPassAction, SIGNAL(triggered()), this, SLOT(forgotPass()));
-
     menuAccnt->addAction(actionChangePass);
     menuAccnt->addAction(forgotPassAction);
     ui->btnAccntMenu->setMenu(menuAccnt);
 
+
+#ifdef Q_OS_LINUX
+    ui->listButtonsWidget->item(4)->setHidden(true); //TEMP
+#endif
+
 }
 
 PCloudWindow::~PCloudWindow()
-{
+{    
+    if(vrsnDwnldThread)
+    {
+        if(vrsnDwnldThread->isRunning())
+            vrsnDwnldThread->terminate();
+        vrsnDwnldThread->wait();
+        delete vrsnDwnldThread;
+    }
     delete ui;
 }
 
@@ -127,11 +136,20 @@ void PCloudWindow::showEvent(QShowEvent *)
 void PCloudWindow::refreshPages()
 {
     int currentIndex = ui->listButtonsWidget->currentRow();
-    if (currentIndex == 1 && verifyClicked) // Account page, case when user just has clicked Verify Email
+    switch(currentIndex)
     {
-        checkVerify();
-        return;
+    case 1:
+        if(verifyClicked)      // Account page, case when user just has clicked Verify Email
+            checkVerify();
+        break;
+    case 6:                    //About page, when have a new version
+        if(app->new_version())
+            fillAboutPage();
+        break;
+    default:
+        break;
     }
+
     /*fs+sync if (currentIndex == 2) //shares page
     {
         sharesPage->load(0);
@@ -189,7 +207,6 @@ void PCloudWindow::fillAcountNotLoggedPage()
 
 void PCloudWindow::fillAboutPage()
 {
-
     if(!app->new_version())
     {
         ui->label_versionVal->setText(QString("Version ") + APP_VERSION + QString("\n\nEverything up to date"));
@@ -201,17 +218,12 @@ void PCloudWindow::fillAboutPage()
         ui->label_versionVal->setText(QString ("Version ") + APP_VERSION);
         ui->label_newVersion->setText(QString("New version "  + app->newVersion.versionstr + " has already been released"));
         ui->label_notes->setText(QString("Notes:\n "+ app->newVersion.notes));
-        if(app->settings->contains("vrsnNotifyComboCurrIndx")) // the reminder is already set
-        {
-            ui->comboBox_versionReminder->setCurrentIndex(app->settings->value("vrsnNotifyComboCurrIndx").toInt());
-        }
-        else
-            app->settings->setValue("vrsnNotifyComboCurrIndx",1);
+        ui->comboBox_versionReminder->setCurrentIndex(app->settings->value("vrsnNotifyInvervalIndx").toInt());
     }
 }
 
 void PCloudWindow::fillAccountLoggedPage()
-{
+{        
     ui->label_email->setText(app->username);
     if (app->isVerified)
     {
@@ -313,19 +325,12 @@ void PCloudWindow::forgotPass()
 }
 
 void PCloudWindow::unlinkSync()
-{
-    app->unlinkFlag = true;
+{   
     QMessageBox::StandardButton reply;
     reply = QMessageBox::warning(this,trUtf8("Unlink"), trUtf8("If You unlink your account from this computer any data about your synced folders will be lost. Do you still want to unlink?"),
                                  QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::Yes)
-    {
-        psync_unlink();
-        emit app->logOut(); //sets offlineimtes too
-        emit setOnlineItems(false);
-        app->setFirstLaunch(true);
-
-    }
+        app->unlink();
 }
 
 void PCloudWindow::verifyEmail(){    // not implemented
@@ -338,7 +343,7 @@ void PCloudWindow::verifyEmail(){    // not implemented
     }
     else
     {
-        if(res == -1 )
+        if(res == -1)
             QMessageBox::information(this,trUtf8("Verify e-mail"), trUtf8("No internet connection"));
         else
             QMessageBox::information(this,trUtf8("Verify e-mail"), trUtf8(err));
@@ -359,16 +364,14 @@ void PCloudWindow::checkVerify() // has the user verified after had clicked "Ver
     }
 }
 void PCloudWindow::updateVersion()
-{
-    QUrl url(app->newVersion.url);
-    QDesktopServices::openUrl(url);
+{        
+    app->stopTimer();
+    QMessageBox::information(this,"pCloud Sync",trUtf8( "The new version of pCloud starts downloading and prepearing to install.\n Please wait."));
+    if(!vrsnDwnldThread)
+        vrsnDwnldThread = new VersionDwnldThread(app->OSStr);
+    vrsnDwnldThread->start();
 }
 
-void PCloudWindow::openWebPage()
-{
-    QUrl url("https://www.pcloud.com/");
-    QDesktopServices::openUrl(url);
-}
 void PCloudWindow::openMyPcloud()
 {
     QUrl url("https://my.pcloud.com/#page=filemanager&authtoken="+app->authentication);

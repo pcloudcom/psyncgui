@@ -19,6 +19,7 @@ VERSION = 1.1.3
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += DEBUG_LEVEL=D_NOTICE
 DEFINES += P_OS_WINDOWS
+DEFINES += _FILE_OFFSET_BITS=64
 
 SOURCES += main.cpp\
         loginwindow.cpp \
@@ -30,11 +31,13 @@ SOURCES += main.cpp\
     pcloudwindow.cpp \
     psettings.cpp \
     syncpage.cpp \
-    welcomescreen.cpp\
     mylogger.cpp \
     shellextthread.cpp\
     settingspage.cpp \
-    versiontimerthread.cpp
+    versiontimerthread.cpp \
+    suggestnsbasewin.cpp \
+    welcomewin.cpp \
+    versiondwnldthread.cpp
 
 HEADERS  += loginwindow.h \
     registerwindow.h \
@@ -45,12 +48,14 @@ HEADERS  += loginwindow.h \
     pcloudwindow.h \
     psettings.h \
     syncpage.h \
-    welcomescreen.h \
     common.h\
     mylogger.h \
     shellextthread.h \
     settingspage.h \
-    versiontimerthread.h
+    versiontimerthread.h \
+    suggestnsbasewin.h \
+    welcomewin.h \
+    versiondwnldthread.h
 
 FORMS    += loginwindow.ui \
     registerwindow.ui \
@@ -58,17 +63,24 @@ FORMS    += loginwindow.ui \
     changepassdialog.ui \
     modifysyncdialog.ui \
     pcloudwindow.ui \
-    welcomescreen.ui
+    suggestnsbasewin.ui
 win32:RC_FILE= pCloud.rc
 RESOURCES += \
     Resources.qrc
+win32{
+LIBS += -L$$PWD/.. -lpsync
+LIBS += -lssl -lcrypto -lsqlite -liphlpapi
 
+INCLUDEPATH += $$PWD/.. $$PWD/../pclsync
+}
+
+unix{
 LIBS += -lssl -lcrypto -lsqlite3 -lfuse
 LIBS += -L$$PWD/../../sync/pclsync -lpsync
 #LIBS += $$PWD/../pclsync/psynclib.a
 
 INCLUDEPATH += $$PWD/../../sync/pclsync
 #INCLUDEPATH += $$PWD/../pclsync
-
+}
 QMAKE_CXXFLAGS += -g
 

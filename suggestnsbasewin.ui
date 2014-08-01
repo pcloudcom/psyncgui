@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>WelcomeScreen</class>
- <widget class="QMainWindow" name="WelcomeScreen">
+ <class>SuggestnsBaseWin</class>
+ <widget class="QMainWindow" name="SuggestnsBaseWin">
   <property name="geometry">
    <rect>
     <x>0</x>

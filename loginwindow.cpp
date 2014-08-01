@@ -25,6 +25,7 @@ LoginWindow::LoginWindow(PCloudApp *a, QWidget *parent) :
     connect(ui->forgotPassBtn,SIGNAL(clicked()), this,SLOT(forgotPassword()));
     connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(unlinkSync()));
 
+    this->setFixedSize(this->width(),this->height()); //makes the win not resizable
 }
 
 LoginWindow::~LoginWindow()
@@ -167,8 +168,7 @@ void LoginWindow::forgotPassword()
     setError("");
 }
 void LoginWindow::unlinkSync() // to be moved in sync class
-{
-    app->unlinkFlag = true;
+{    
     QMessageBox::StandardButton reply;
     reply = QMessageBox::warning(this,trUtf8("Unlink"), trUtf8("If You unlink your account from this computer any data about your synced folders will be lost. Do you still want to unlink?"),
                                  QMessageBox::Yes|QMessageBox::No);
@@ -177,8 +177,7 @@ void LoginWindow::unlinkSync() // to be moved in sync class
         ui->email->setText("");
         ui->email->setEnabled(true);
         ui->email->setFocus();
-        ui->btnUnlink->setVisible(false);
-        app->setFirstLaunch(true);
-        psync_unlink();
+        ui->btnUnlink->setVisible(false); 
+        app->unlink();
     }
 }

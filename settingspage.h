@@ -5,6 +5,8 @@
 
 #include <QObject>
 #include <QString>
+#include <QSettings>
+#include <QProcess>
 
 class PCloudWindow;
 
@@ -20,11 +22,12 @@ private:
     QString dir;
     QString initFlrd;
     QString initCache;
-    bool initSSL;
+    quint32 cacheSize;
+    bool contextMenu;
     void initSettingsPage();
-public slots:
-    void startFS(int n);
-    void dirChange();
+    qint32 getCacheSize();
+public slots:    
+    void dirChange();       
     void saveSettings();
     void setSaveBtnEnable();
     void cancelSettings();

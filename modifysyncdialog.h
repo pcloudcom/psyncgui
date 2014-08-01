@@ -3,14 +3,14 @@
 
 #include <QDialog>
 #include "syncpage.h"
-#include "welcomescreen.h"
+#include "suggestnsbasewin.h"
 
 namespace Ui {
 class ModifySyncDialog;
 }
 
 class SyncPage;
-class WelcomeScreen;
+class SuggestnsBaseWin;
 
 class ModifySyncDialog : public QDialog
 {

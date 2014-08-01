@@ -14,9 +14,9 @@ class ShellExtThread: public QThread
 public:
     ShellExtThread(PCloudApp *a);
     ~ShellExtThread();
+    void killPipe();
 private:
     bool closePipe();
-    void killPipe();
     PCloudApp *app;
     HANDLE hPipe;
 protected:

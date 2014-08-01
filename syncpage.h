@@ -1,13 +1,16 @@
 #ifndef SYNCPAGE_H
 #define SYNCPAGE_H
-#include "pcloudapp.h"
-#include "pcloudwindow.h"
+//#include "pcloudapp.h"
+//#include "pcloudwindow.h"
 #include "psynclib.h"
 #include "addsyncdialog.h"
 #include "settingspage.h"
 
 #include <QWidget>
 #include <QTreeWidgetItem>
+
+class PCloudApp;
+class PCloudWindow;
 
 class SyncPage : public QWidget // or qmainwin
 {
@@ -26,8 +29,8 @@ private:
     int upldSpeed, upldSpeedNew;
     int dwnldSpeed, dwnldSpeedNew;
     QString patterns;
-    void initSyncPage();    
-    void showError();
+    void initSyncPage();        
+    void clearSpeedEditLines();
 public slots:
     void refreshTab(int index);
     void syncDoubleClicked(QTreeWidgetItem *item,int col);

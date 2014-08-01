@@ -7,8 +7,8 @@
 
 #ifdef Q_OS_WIN
 #include <QtMessageHandler>
-//QFile file("c:/tmp/psyncguilog.txt");
-QFile file(QDir::tempPath()+ "/psyncguilog.txt");
+QFile file("c:/tmp/psyncguilog.txt");
+//QFile file(QDir::tempPath()+ "/psyncguilog.txt");
 QTextStream out(&file);
 
 
@@ -40,6 +40,7 @@ static void SimpleLoggingHandler(QtMsgType type, const QMessageLogContext &conte
         out.flush();
         file.close();
         abort();
+
     }
 }
 
