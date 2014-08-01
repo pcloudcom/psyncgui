@@ -1144,21 +1144,19 @@ void PCloudApp::setTimerInterval(int index)
     switch(index)
     {
     case 0: //1 hour
-        notifyTimeInterval = 30; //temp for test
-        notifyTimeInterval = 5;
+        notifyTimeInterval = 30; //temp for test        
         //notifyTimeInterval = 3600;
         qDebug()<< QDateTime::currentDateTime() <<"NOTIFICATIONS (setTimerInterval case 0 - 30 secs): new time for notify is set for: " << QDateTime::currentDateTime().addSecs(notifyTimeInterval);
         break;
     case 1: //6 hours
         //notifyTimeInterval = 21600;
-        //notifyTimeInterval = 60; //for qa
-        notifyTimeInterval = 10;
+        notifyTimeInterval = 60; //for qa
         qDebug()<<QDateTime::currentDateTime() << "NOTIFICATIONS (setTimerInterval case 1 - 60 secs): new time for notify is set for: " << QDateTime::currentDateTime().addSecs(notifyTimeInterval);
         break;
     case 2: //24 hours
         //notifyTimeInterval = 86400;
-        //notifyTimeInterval = 90; //qa
-        notifyTimeInterval = 15;
+        notifyTimeInterval = 90; //qa
+        //notifyTimeInterval = 15; //my test
         qDebug()<<QDateTime::currentDateTime() << "NOTIFICATIONS (setTimerInterval case 2 - 90 secs): new time for notify is set for: " << QDateTime::currentDateTime().addSecs(notifyTimeInterval);
         break;
     case 3: //after a week

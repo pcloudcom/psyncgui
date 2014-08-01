@@ -75,7 +75,7 @@ void SettingsPage::initSettingsPage()
     win->ui->btnCancelSttngs->setEnabled(false);
 }
 qint32 SettingsPage::getCacheSize(){
-
+/*
 #ifdef Q_OS_WIN
     MEMORYSTATUSEX status;
     status.dwLength = sizeof(status);
@@ -91,6 +91,7 @@ qint32 SettingsPage::getCacheSize(){
 
     quint64 totalRAM = (totalPhysRAM < totalAvailRAM)? totalPhysRAM:totalAvailRAM ;
     // return totalRAM;
+    */
     return 10; //temp
 }
 
@@ -156,6 +157,7 @@ void SettingsPage::saveSettings()
 // slots
 void SettingsPage::setSaveBtnEnable()
 {
+#ifdef Q_OS_WIN
     if(app->registrySttng->contains("pSync") != win->ui->checkBox_autorun->isChecked() ||
             //  cacheSize != win->ui->edit_cache->text().toInt() ||
             //  app->settings->value("startfs").toBool() != win->ui->checkBox_onoffFs->isChecked() ||
@@ -165,6 +167,7 @@ void SettingsPage::setSaveBtnEnable()
         win->ui->btnCancelSttngs->setEnabled(true);
     }
     else
+#endif
     {
         win->ui->btnSaveSttngs->setEnabled(false);
         win->ui->btnCancelSttngs->setEnabled(false);
