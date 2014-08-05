@@ -1885,7 +1885,7 @@
           <item>
            <widget class="QLabel" name="label_pp">
             <property name="text">
-             <string>&lt;a href=&quot;https://www.pcloud.com/privacy_policy.html&quot;&gt;Privacy policy&lt;/a&gt;</string>
+             <string>&lt;a href=&quot;https://www.pcloud.com/privacy_policy.html&quot;&gt;Privacy Policy&lt;/a&gt;</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
