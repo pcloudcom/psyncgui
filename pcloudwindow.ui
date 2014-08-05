@@ -20,16 +20,7 @@
       <property name="spacing">
        <number>0</number>
       </property>
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
+      <property name="margin">
        <number>0</number>
       </property>
       <item>
@@ -49,7 +40,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>6</number>
       </property>
       <widget class="QWidget" name="pageAccntNotLogged">
        <property name="maximumSize">
@@ -1807,22 +1798,22 @@
                    </property>
                    <item>
                     <property name="text">
-                     <string>After 30 secs</string>
+                     <string>After 1 hour</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>After 60 secs</string>
+                     <string>After 6 hours</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>After 90 secs</string>
+                     <string>After 24 hours</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>After 120 secs</string>
+                     <string>After a week</string>
                     </property>
                    </item>
                    <item>
@@ -1947,7 +1938,7 @@
      <x>0</x>
      <y>0</y>
      <width>924</width>
-     <height>21</height>
+     <height>27</height>
     </rect>
    </property>
   </widget>

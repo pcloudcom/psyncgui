@@ -1022,7 +1022,7 @@ bool PCloudApp::isLogedIn()
     return loggedin;
 }
 /*
-void PCloudApp::check_version()
+void PCloudApp::check_version() // old specification
 {
 #ifdef Q_OS_LINUX
     (__WORDSIZE == 64)? OSStr = "LINUX64" : OSStr = "LINUX32";
@@ -1127,8 +1127,8 @@ void PCloudApp::check_version()
     {
         qDebug()<< QDateTime::currentDateTime() <<"NOTIFICATIONS (check_version): no new version - check again after 24h if app is still launced";
         newVersionFlag = false;
-        // clear notifications settings from before if exists
-        if(QFile::exists(settings->fileName()))
+
+        if(QFile::exists(settings->fileName())) // clear notifications settings from before if exists
             clearUpdtNotifctnSettngs();
         QTimer::singleShot(86400000, this, SLOT(check_version())); //check again after 24h
     }
@@ -1146,25 +1146,21 @@ void PCloudApp::setTimerInterval(int index)
     switch(index)
     {
     case 0: //1 hour
-        notifyTimeInterval = 30; //temp for test        
-        //notifyTimeInterval = 3600;
-        qDebug()<< QDateTime::currentDateTime() <<"NOTIFICATIONS (setTimerInterval case 0 - 30 secs): new time for notify is set for: " << QDateTime::currentDateTime().addSecs(notifyTimeInterval);
+       // notifyTimeInterval = 30; //temp for qa
+        notifyTimeInterval = 3600;
+        qDebug()<< QDateTime::currentDateTime() <<"NOTIFICATIONS (setTimerInterval case 0 - 1h): new time for notify is set for: " << QDateTime::currentDateTime().addSecs(notifyTimeInterval);
         break;
     case 1: //6 hours
-        //notifyTimeInterval = 21600;
-        notifyTimeInterval = 60; //for qa
-        qDebug()<<QDateTime::currentDateTime() << "NOTIFICATIONS (setTimerInterval case 1 - 60 secs): new time for notify is set for: " << QDateTime::currentDateTime().addSecs(notifyTimeInterval);
+        notifyTimeInterval = 21600;
+        qDebug()<<QDateTime::currentDateTime() << "NOTIFICATIONS (setTimerInterval case 1 - 6h): new time for notify is set for: " << QDateTime::currentDateTime().addSecs(notifyTimeInterval);
         break;
     case 2: //24 hours
-        //notifyTimeInterval = 86400;
-        notifyTimeInterval = 90; //qa
-        //notifyTimeInterval = 15; //my test
-        qDebug()<<QDateTime::currentDateTime() << "NOTIFICATIONS (setTimerInterval case 2 - 90 secs): new time for notify is set for: " << QDateTime::currentDateTime().addSecs(notifyTimeInterval);
+        notifyTimeInterval = 86400;
+        qDebug()<<QDateTime::currentDateTime() << "NOTIFICATIONS (setTimerInterval case 2 - 24h): new time for notify is set for: " << QDateTime::currentDateTime().addSecs(notifyTimeInterval);
         break;
     case 3: //after a week
-        //notifyTimeInterval = 604800;
-        notifyTimeInterval = 120;
-        qDebug()<<QDateTime::currentDateTime() << "NOTIFICATIONS (setTimerInterval case 3 - 120 secs): new time for notify is set for: " << QDateTime::currentDateTime().addSecs(notifyTimeInterval);
+        notifyTimeInterval = 604800;
+        qDebug()<<QDateTime::currentDateTime() << "NOTIFICATIONS (setTimerInterval case 3 - a week): new time for notify is set for: " << QDateTime::currentDateTime().addSecs(notifyTimeInterval);
         break;
     case 4:
         notifyTimeInterval = 0;
@@ -1176,8 +1172,8 @@ void PCloudApp::setTimerInterval(int index)
         return;
     }
 
-    updateNtfctnTimer->setInterval(notifyTimeInterval*1000); //refresh timer when another interval is selected
-    qDebug()<<"update interval case: "<<updateNtfctnTimer->interval()/1000<<updateNtfctnTimer->isSingleShot()<<updateNtfctnTimer->isActive();
+    updateNtfctnTimer->setInterval(notifyTimeInterval*1000); //refresh timer when another interval is selected    
+    qDebug()<<"update interval case: "<<updateNtfctnTimer->interval()/1000<<updateNtfctnTimer->isSingleShot()<<updateNtfctnTimer->isActive(); //to del after qa
     if(!updateNtfctnTimer->isActive()) //came from Never case
         updateNtfctnTimer->start();
 
@@ -1192,7 +1188,7 @@ void PCloudApp::stopTimer()
     if(updateNtfctnTimer->isActive())
         updateNtfctnTimer->stop();
 }
-/*
+/* OLD SPECIFICATION
 //a slot called when user chooses Remind me later for new version from about page
 void PCloudApp::setTimerInterval(int index)
 {
