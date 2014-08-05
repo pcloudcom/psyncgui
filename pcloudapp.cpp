@@ -281,7 +281,9 @@ void PCloudApp::createMenus(){
     //p loggedmenu->addAction(openAction);
     loggedmenu->addAction(accountAction);
     loggedmenu->addAction(syncAction);
+#ifdef Q_OS_WIN
     loggedmenu->addAction(settingsAction);
+#endif
     loggedmenu->addSeparator();
     loggedmenu->addAction(addSyncAction);
     //p loggedmenu->addAction(sharesAction);
