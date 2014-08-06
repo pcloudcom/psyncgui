@@ -48,6 +48,7 @@ void PCloudApp::showRegister(){
         if(msgBox.exec() != QMessageBox::Cancel)
         {
             this->unlink();
+            hideAllWindows();
             if (!regwin)
                 regwin=new RegisterWindow(this);
             showWindow(regwin);
@@ -93,6 +94,7 @@ void PCloudApp::showSettings()
 
 void PCloudApp::showpcloudHelp()
 {
+    hideAllWindows();
     pCloudWin->showpcloudWindow(5);
 }
 
@@ -170,8 +172,8 @@ void PCloudApp::unlink()
     if(isLogedIn()) // when unlink come from the pcloudwin and the user was logged
         emit this->logOut(); //sets offline gui items also
     setFirstLaunch(true);   // to show suggestions
-    if(diskFullMsgShownFlag)
-        diskFullMsgShownFlag = false;
+    if(noFreeSpaceMsgShownFlag)
+        noFreeSpaceMsgShownFlag = false;
     //clearAllSettings();
     //stopfs
 }
@@ -348,8 +350,8 @@ void status_callback(pstatus_t *status)
             if (PCloudApp::appStatic->isMenuorWinActive())
                 PCloudApp::appStatic->updateSyncStatusPublic();
 
-            if(PCloudApp::appStatic->diskFullMsgShownFlag)
-                PCloudApp::appStatic->diskFullMsgShownFlag = false;
+            if(PCloudApp::appStatic->noFreeSpaceMsgShownFlag)
+                PCloudApp::appStatic->noFreeSpaceMsgShownFlag = false;
 
             PCloudApp::appStatic->lastStatus = PSTATUS_READY;
         }
@@ -670,7 +672,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     lastMessageType=-1;
     //settings=new PSettings(this);
     settings=new QSettings("pCloud","pCloud");
-    diskFullMsgShownFlag = false;
+    noFreeSpaceMsgShownFlag = false;
     bytestoDwnld = 0;
     bytestoUpld = 0;
     downldInfo = QObject::trUtf8("Everything downloaded");
@@ -1146,7 +1148,7 @@ void PCloudApp::setTimerInterval(int index)
     switch(index)
     {
     case 0: //1 hour
-       // notifyTimeInterval = 30; //temp for qa
+        // notifyTimeInterval = 30; //temp for qa
         notifyTimeInterval = 3600;
         qDebug()<< QDateTime::currentDateTime() <<"NOTIFICATIONS (setTimerInterval case 0 - 1h): new time for notify is set for: " << QDateTime::currentDateTime().addSecs(notifyTimeInterval);
         break;
@@ -1172,7 +1174,7 @@ void PCloudApp::setTimerInterval(int index)
         return;
     }
 
-    updateNtfctnTimer->setInterval(notifyTimeInterval*1000); //refresh timer when another interval is selected    
+    updateNtfctnTimer->setInterval(notifyTimeInterval*1000); //refresh timer when another interval is selected
     qDebug()<<"update interval case: "<<updateNtfctnTimer->interval()/1000<<updateNtfctnTimer->isSingleShot()<<updateNtfctnTimer->isActive(); //to del after qa
     if(!updateNtfctnTimer->isActive()) //came from Never case
         updateNtfctnTimer->start();
@@ -1272,10 +1274,13 @@ void PCloudApp::logoutPublic()
 void PCloudApp::changeSyncIconPublic(const QString &icon)
 {
     emit this->changeSyncIcon(icon);
-    if(icon == SYNC_FULL_ICON && !diskFullMsgShownFlag)
+    if(icon == SYNC_FULL_ICON && !noFreeSpaceMsgShownFlag)
     {
-        diskFullMsgShownFlag = true;
-        emit this->showMsgBoxSgnl(trUtf8("Account full"),trUtf8("You don't have enought disc space!"), 2);
+        noFreeSpaceMsgShownFlag = true;
+        if(this->lastStatus == PSTATUS_DISK_FULL)    // no local disk space (according to settings)
+            emit this->showMsgBoxSgnl(trUtf8("Account full"),trUtf8("You don't have enough disc space!"), 2);
+        else // pcloud account is full
+            emit this->showMsgBoxSgnl(trUtf8("Account full"),trUtf8("Your pCloud account is out of free space!"), 2); //++ get more space suggestion
     }
 }
 void PCloudApp::changeOnlineItemsPublic(bool logged)

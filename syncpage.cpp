@@ -458,8 +458,8 @@ void SyncPage::cancelSettings()
 }
 void SyncPage::clearSpeedEditLines()
 {
-    if((dwnldSpeedNew == 0 || dwnldSpeedNew == 1) && !win->ui->edit_DwnldSpeed->text().isNull())
+    if((dwnldSpeedNew == 0 || dwnldSpeedNew == -1) && !win->ui->edit_DwnldSpeed->text().isNull())
         win->ui->edit_DwnldSpeed->clear();
-    if((upldSpeedNew == 0 || upldSpeedNew == 1)  && !win->ui->edit_UpldSpeed->text().isNull())
+    if((upldSpeedNew == 0 || upldSpeedNew == -1)  && !win->ui->edit_UpldSpeed->text().isNull())
         win->ui->edit_UpldSpeed->clear();
 }

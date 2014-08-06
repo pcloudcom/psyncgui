@@ -12,7 +12,7 @@
 
 //this class is used from windows context menu for adding many folders at the same time for sync
 
-const char* typeStr[3]={"Donwload only", "Upload only", "Download and Upload"};
+const char* typeStr[3]={"Download only", "Upload only", "Download and Upload"};
 
 SuggestnsBaseWin::SuggestnsBaseWin(PCloudApp *a, QStringList *fldrs, QWidget *parent):
     QMainWindow(parent),
@@ -147,7 +147,7 @@ void SuggestnsBaseWin::addLocalFldrs(QStringList *itemsLst)
         item->setText(1,itemsLst->at(i)); //localpath
         item->setData(1, Qt::UserRole,itemsLst->at(i));
         item->setText(2, typeStr[2]); //synctype
-        item->setData(2, Qt::UserRole, PSYNC_FULL - 1);
+        item->setData(2, Qt::UserRole, PSYNC_FULL);
 #ifdef Q_OS_WIN
         QString name = itemsLst->at(i).section("\\",-1);
 #else
@@ -232,10 +232,9 @@ void SuggestnsBaseWin::modifyType()
         if (dialog.exec() == QDialog::Accepted)
         {
             int newType = dialog.returnNewType();
-            current->setData(2,Qt::UserRole, newType);
+            current->setData(2,Qt::UserRole, newType + 1);
             dialog.hide();
             current->setText(2,typeStr[newType]);
-            // ++ modify sync type // type++
         }
     }
 }
