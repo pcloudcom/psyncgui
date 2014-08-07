@@ -314,11 +314,10 @@ void PCloudApp::createMenus(){
     loggedmenu->addSeparator();
     loggedmenu->addAction(exitAction);
 
-    //syncMenu->addAction(addSyncAction);
-    this->createSyncFolderActions();
-
+    this->createSyncFolderActions(); //loads sub menu with local synced folders
 
     connect(loggedmenu, SIGNAL(aboutToShow()), this, SLOT(updateSyncStatus()));
+    connect(syncMenu, SIGNAL(aboutToShow()),this,SLOT(createSyncFolderActions())); //delete old if exist, adds new
     syncDownldAction->setEnabled(false);
     syncUpldAction->setEnabled(false);
 
@@ -1390,7 +1389,7 @@ void PCloudApp::resumeSync()
     pCloudWin->ui->btnResumeSync->setVisible(false);
 }
 
-void PCloudApp::createSyncFolderActions()
+void PCloudApp::createSyncFolderActions() //refreshes menu when user rename/delete local root sync folder, add new folder through context menu..
 {
     this->syncMenu->clear(); //Actions owned by the menu and not shown in any other widget are deleted by this func
     psync_folder_list_t *fldrsList = psync_get_sync_list();
@@ -1399,10 +1398,14 @@ void PCloudApp::createSyncFolderActions()
     {
         for (uint i = 0; i < fldrsList->foldercnt; i++)
         {
-            QAction *fldrAction = new QAction(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),fldrsList->folders[i].localname,this);
-            fldrAction->setProperty("path", fldrsList->folders[i].localpath);
-            connect(fldrAction, SIGNAL(triggered()),this, SLOT(openLocalDir()));
-            this->syncMenu->addAction(fldrAction);
+            QDir localDir(fldrsList->folders[i].localpath);
+            if (localDir.exists())
+            {
+                QAction *fldrAction = new QAction(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),fldrsList->folders[i].localname,this);
+                fldrAction->setProperty("path", fldrsList->folders[i].localpath);
+                connect(fldrAction, SIGNAL(triggered()),this, SLOT(openLocalDir()));
+                this->syncMenu->addAction(fldrAction);
+            }
         }
         free(fldrsList);
     }

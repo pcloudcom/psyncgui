@@ -62,7 +62,7 @@ WelcomeWin::WelcomeWin(PCloudApp *a,QWidget *parent) :
     defaultItem->setText(1,nativepath);
     defaultItem->setData(1,Qt::UserRole, nativepath);
     defaultItem->setText(2,trUtf8("Download and Upload"));
-    defaultItem->setData(2,Qt::UserRole, PSYNC_FULL -1); //for combos and typestr[] indexes
+    defaultItem->setData(2,Qt::UserRole, PSYNC_FULL); //for combos and typestr[] indexes
     defaultItem->setText(3,defaultRemoteFldr);
     defaultItem->setData(3,Qt::UserRole,defaultRemoteFldr);
     ui->treeWidget->insertTopLevelItem(0,defaultItem);
