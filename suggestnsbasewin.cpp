@@ -197,7 +197,7 @@ bool SuggestnsBaseWin::getChangeItem()
     return this->isChangingItem;
 }
 
-void SuggestnsBaseWin::addNewItem(QString &localpath, QString &remotepath, int type)
+void SuggestnsBaseWin::addNewItem(QString &localpath, QString &remotepath, int type) //type is the current combo index
 {
     QTreeWidgetItem *item;
     if(isChangingItem)
@@ -215,7 +215,7 @@ void SuggestnsBaseWin::addNewItem(QString &localpath, QString &remotepath, int t
     item->setText(3,remotepath);
     item->setData(3,Qt::UserRole,remotepath); //da e remote path
     item->setText(2,typeStr[type]);
-    item->setData(2,Qt::UserRole,type);
+    item->setData(2,Qt::UserRole,type + 1);
 }
 
 void SuggestnsBaseWin::modifyType()
@@ -248,7 +248,7 @@ void SuggestnsBaseWin::finish()
         if ((*it)->checkState(0) == Qt::Checked)
         {
             QString localpath = (*it)->data(1,Qt::UserRole).toString(); //to del
-            qDebug()<<"ADDING item (from suggestionswin) " << (*it)->data(1,Qt::UserRole).toString().toUtf8() << (*it)->data(3,Qt::UserRole).toString().toUtf8() <<((*it)->data(2,Qt::UserRole).toInt() +1);
+            qDebug()<<"ADDING item (from suggestionswin) " << (*it)->data(1,Qt::UserRole).toString().toUtf8() << (*it)->data(3,Qt::UserRole).toString().toUtf8() <<((*it)->data(2,Qt::UserRole).toInt());
 
             //welcome win case and contex menu case, because it's possible remote folder not to exists
             psync_add_sync_by_path_delayed(//localpath.toUtf8(),
