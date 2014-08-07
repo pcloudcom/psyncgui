@@ -254,7 +254,7 @@ void SuggestnsBaseWin::finish()
             psync_add_sync_by_path_delayed(//localpath.toUtf8(),
                                            (*it)->data(1,Qt::UserRole).toString().toUtf8(),
                                            (*it)->data(3,Qt::UserRole).toString().toUtf8(),
-                                           ((*it)->data(2,Qt::UserRole).toInt()) +1);
+                                           ((*it)->data(2,Qt::UserRole).toInt()));
 
 #ifdef Q_OS_WIN
             QString name = localpath.section("\\", -1);
