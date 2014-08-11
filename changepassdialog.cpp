@@ -25,7 +25,7 @@ void ChangePassDialog::checkPasses()
     }
     if(ui->line_newpass->text().length() < 6)
     {
-        QMessageBox::warning(this,trUtf8("New password"), trUtf8("New passwors should consists of at least six symbols"));
+        QMessageBox::warning(this,trUtf8("New password"), trUtf8("New passwords should consist of at least six symbols"));
         ui->line_newpass->setFocus();
         return;
     }
