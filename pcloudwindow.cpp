@@ -237,7 +237,7 @@ void PCloudWindow::fillAccountLoggedPage()
         ui->checkBoxVerified->setVisible(false);
         ui->btnVerify->setVisible(true);
     }
-    ui->label_space->setText(QString::number(app->usedSpace, 'f', 1) + "GB (" + QString::number(app->freeSpacePercentage) + "% free)");
+    ui->label_space->setText(QString::number(app->usedSpace, 'f', 2) + "GB (" + QString::number(app->freeSpacePercentage) + "% free)");
     ui->label_planVal->setText(app->planStr);
 
     if (app->isPremium)

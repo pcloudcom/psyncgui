@@ -36,8 +36,7 @@ SettingsPage::SettingsPage(PCloudWindow *w, PCloudApp *a, QObject* parent):
     //temp - VFS settings
     win->ui->groupBox_cache->setVisible(false);
     win->ui->groupBox_fldr->setVisible(false);
-    win->ui->groupBox_startStop->setVisible(false);
-    qDebug()<<app->settings->fileName();
+    win->ui->groupBox_startStop->setVisible(false);    
 }
 
 void SettingsPage::initSettingsPage()

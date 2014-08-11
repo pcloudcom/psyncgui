@@ -968,17 +968,27 @@ void PCloudApp::getQuota()
     if (quota){
         this->planStr =  QString::number(quota >> 30 ) + " GB";
         quint64 usedquota =  psync_get_uint_value("usedquota");
-        if (!usedquota)
+        if (!usedquota) // sometimes  synclib doesn't return quaota immediately
         {
-            while (!usedquota)
+            int cnt = 0; //for empty account
+            while (!usedquota && cnt < 5)
             {
                 usedquota =  psync_get_uint_value("usedquota");
+                cnt++;
                 sleep(1);
             }
         }
         qDebug() << quota<< "used quota " << usedquota;
-        this->usedSpace = static_cast<double>(usedquota) / (1<<30);
-        this->freeSpacePercentage = (100*(quota - usedquota))/quota;
+        if (usedquota)
+        {
+            this->usedSpace = static_cast<double>(usedquota) / (1<<30);
+            this->freeSpacePercentage = (100*(quota - usedquota))/quota;
+        }
+        else
+        {
+            this->usedSpace = 0;
+            this->freeSpacePercentage = 100;
+        }
     }
 }
 
@@ -1102,6 +1112,7 @@ void PCloudApp::check_version()
     OSStr = "WIN_XP";
 #endif
     psync_new_version_t* version = psync_check_new_version_str(OSStr, APP_VERSION);
+
     if(version != NULL) // a new version is available
     {
         lastMessageType = 3;
