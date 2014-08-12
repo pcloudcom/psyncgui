@@ -1,8 +1,8 @@
-pclsync (0.102+nmu31) UNRELEASED; urgency=low
+pclsync (0.102+nmu32) UNRELEASED; urgency=low
 
   [ Damyanka Miteva ]
   * 
-  * rel 31
+  * rel 32
 
   * debian/
   * debian/changelog
@@ -11,10 +11,11 @@ pclsync (0.102+nmu31) UNRELEASED; urgency=low
   * debian/changelog
   * debian/changelog
   * debian/changelog
+  * debian/changelog
 
- -- Damyanka Miteva <damyanka@iain.office.mobileinno.com>  Tue, 12 Aug 2014 12:13:06 +0300
+ -- Damyanka Miteva <damyanka@iain.office.mobileinno.com>  Tue, 12 Aug 2014 18:30:50 +0300
 
-pclsync (0.102+nmu31) unstable; urgency=low
+pclsync (0.102+nmu32) unstable; urgency=low
 
   [ Damyanka Miteva ]
   * Initial
