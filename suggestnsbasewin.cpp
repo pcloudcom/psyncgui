@@ -156,7 +156,7 @@ void SuggestnsBaseWin::addLocalFldrs(QStringList *itemsLst)
         QString remoteFldrName = checkRemoteName(name); // rename if remote folder with the same name exists
         newRemoteFldrsLst.append(remoteFldrName);
         remoteFldrsNamesLst.append(remoteFldrName);
-        remoteFldrName.insert(0,"/");        
+        remoteFldrName.insert(0,"/");
         item->setText(3,remoteFldrName); //remotepath
         item->setData(3,Qt::UserRole,remoteFldrName);
     }
@@ -186,10 +186,11 @@ void SuggestnsBaseWin::addSync()
 //when user double-clicks on an item
 void SuggestnsBaseWin::changeCurrItem(QModelIndex index)
 {
-    // if(index.row()) // the first item in the treeview is default and shoudn't be modified
-
-    this->isChangingItem = true;
-    emit this->addSync();
+    if(index.row()) // the first item in the treeview is default and shoudn't be modified
+    {
+        this->isChangingItem = true;
+        emit this->addSync();
+    }
 
 }
 bool SuggestnsBaseWin::getChangeItem()
