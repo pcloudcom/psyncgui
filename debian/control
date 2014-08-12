@@ -10,6 +10,6 @@ Homepage: http://pcloud.com
 
 Package: pclsync
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: gdebi | qapt-deb-installer, ${shlibs:Depends}, ${misc:Depends}
 Description: pCloud syncer
  A QT-based pcloud sync client
