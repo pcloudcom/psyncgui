@@ -981,8 +981,12 @@ void PCloudApp::getQuota()
         qDebug() << quota<< "used quota " << usedquota;
         if (usedquota)
         {
+            if(usedquota > quota ) // bug at lib
+                this->freeSpacePercentage = 0;
+            else
+                this->freeSpacePercentage = (100*(quota - usedquota))/quota; // should be only this line when bug is fixed
+
             this->usedSpace = static_cast<double>(usedquota) / (1<<30);
-            this->freeSpacePercentage = (100*(quota - usedquota))/quota;
         }
         else
         {
