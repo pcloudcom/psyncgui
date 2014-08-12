@@ -35,7 +35,7 @@
               <item>
                <widget class="QLabel" name="label_suggst">
                 <property name="text">
-                 <string>We suggest You to sync the following folders:</string>
+                 <string>We suggest you to sync the following folders:</string>
                 </property>
                </widget>
               </item>
