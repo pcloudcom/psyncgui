@@ -1,7 +1,7 @@
 pclsync (0.102+nmu34) UNRELEASED; urgency=low
 
   [ Damyanka Miteva ]
-  * 
+  * Build without FS
   * rel 34
 
   * debian/
