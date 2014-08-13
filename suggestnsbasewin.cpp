@@ -172,26 +172,23 @@ void SuggestnsBaseWin::closeEvent(QCloseEvent *event)
     event->ignore();
 }
 void SuggestnsBaseWin::addSync()
-{
-    addSyncDialog *addDialog = new addSyncDialog(app,app->pCloudWin, app->pCloudWin->get_sync_page(),this);
+{    
     if (this->isChangingItem)
     {
         currentLocal = ui->treeWidget->currentItem()->data(1,Qt::UserRole).toString();
         currentType = ui->treeWidget->currentItem()->data(2,Qt::UserRole).toInt();
         currentRemote = ui->treeWidget->currentItem()->data(3,Qt::UserRole).toString();
     }
+    addSyncDialog *addDialog = new addSyncDialog(app,app->pCloudWin, app->pCloudWin->get_sync_page(),this);
     addDialog->exec();
 
 }
 //when user double-clicks on an item
 void SuggestnsBaseWin::changeCurrItem(QModelIndex index)
 {
-    if(index.row()) // the first item in the treeview is default and shoudn't be modified
-    {
+    //if(index.row()) // the first item in the treeview is default and shoudn't be modified
         this->isChangingItem = true;
         emit this->addSync();
-    }
-
 }
 bool SuggestnsBaseWin::getChangeItem()
 {

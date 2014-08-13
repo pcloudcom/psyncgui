@@ -112,7 +112,7 @@ void addSyncDialog::load()
         {
             ui->treeSyncLocal->setCurrentIndex(model->index(addNewSyncsWin->getCurrLocalPath()));
             //ui->treeSyncLocal->scrollTo(model->index(addNewSyncsWin->getCurrLocalPath()),QAbstractItemView::PositionAtCenter);
-            ui->comboSyncType->setCurrentIndex(addNewSyncsWin->getCurrType()+1);
+            ui->comboSyncType->setCurrentIndex(addNewSyncsWin->getCurrType()-1);
 
 
             // remote tree - add new remote Fodlers from suggestions

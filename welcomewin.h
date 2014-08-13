@@ -22,7 +22,7 @@ protected:
 signals:
     
 public slots:
-      void changeCurrItem(QModelIndex index);
+    virtual void changeCurrItem(QModelIndex index);
 };
 
 #endif // WELCOMEWIN_H

@@ -24,6 +24,8 @@ void PCloudApp::hideAllWindows(){
         pCloudWin->hide();
     if(syncFldrsWin && syncFldrsWin->isVisible())
         syncFldrsWin->hide();
+    if(welcomeWin && welcomeWin->isVisible())
+        welcomeWin->hide();
 }
 
 void PCloudApp::showWindow(QMainWindow *win)
@@ -158,7 +160,7 @@ void PCloudApp::logOut(){
     tray->setToolTip("pCloud");
     pCloudWin->setOnlineItems(false);
     emit changeSyncIcon(OFFLINE_ICON);
-    pCloudWin->hide();
+    this->hideAllWindows();
     this->authentication = "";
     this->setFirstLaunch(false); //after unlink has to be true
     //to show login again
@@ -946,7 +948,7 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     else
         tray->setIcon(QIcon(PAUSED_ICON));
     tray->setContextMenu(loggedmenu);
-    //  isFirstLaunch = true; // for test TEMP
+     //isFirstLaunch = true; // for test TEMP
     if (isFirstLaunch)
     {
         welcomeWin = new WelcomeWin(this, NULL);

@@ -49,7 +49,7 @@ protected:
     bool isChangingItem;    
 public slots:
     void addSync();
-    void changeCurrItem(QModelIndex index);
+    virtual void changeCurrItem(QModelIndex index);
     void modifyType();
     void finish();
 };
