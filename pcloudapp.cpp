@@ -77,11 +77,12 @@ void PCloudApp::showAccount(){
     pCloudWin->showpcloudWindow(1);
 }
 
-/*p void PCloudApp::showShares()
+void PCloudApp::showShares()
 {
     hideAllWindows();
     pCloudWin->showpcloudWindow(2);
-}*/
+}
+
 void PCloudApp::showSync()
 {
     hideAllWindows();
@@ -132,13 +133,7 @@ void PCloudApp::openCloudDir(){
     }
 #endif
 }
-*/
-/*p void PCloudApp::shareFolder(){ // for Shares page btn
-    //  hideAllWindows();
-    if (!sharefolderwin)
-        sharefolderwin=new ShareFolderWindow(this);
-    showWindow(sharefolderwin);
-}*/
+ */
 
 void PCloudApp::logOut(){
     loggedin=false;
@@ -264,10 +259,10 @@ void PCloudApp::createMenus(){
     connect(accountAction, SIGNAL(triggered()),this, SLOT(showAccount()));
     //p openAction=new QAction("&Open pCloud folder", this);
     //p connect(openAction, SIGNAL(triggered()), this, SLOT(openCloudDir()));
-    //p sharesAction = new QAction(trUtf8("Sha&res"),this);
-    //p connect(sharesAction, SIGNAL(triggered()), this, SLOT(showShares()));
-    logoutAction=new QAction("Logout", this); // to del
-    connect(logoutAction, SIGNAL(triggered()), this, SLOT(logOut()));
+    sharesAction = new QAction(QIcon(":/menu/images/menu 48x48/shares.png"),trUtf8("S&hares"),this);
+    connect(sharesAction, SIGNAL(triggered()), this, SLOT(showShares()));
+    shareFolderAction = new QAction(QIcon(":/menu/images/menu 48x48/shares.png"), trUtf8("Add New Share"),this);
+    connect(shareFolderAction,SIGNAL(triggered()), pCloudWin, SLOT(shareFolder()));
 
     //sync menu
     syncAction = new QAction(QIcon(":/menu/images/menu 48x48/sync.png"),trUtf8("&Sync"),this);
@@ -284,13 +279,14 @@ void PCloudApp::createMenus(){
     loggedmenu = new QMenu();
     //p loggedmenu->addAction(openAction);
     loggedmenu->addAction(accountAction);
+    loggedmenu->addAction(sharesAction);
     loggedmenu->addAction(syncAction);
 #ifdef Q_OS_WIN
     loggedmenu->addAction(settingsAction);
 #endif
     loggedmenu->addSeparator();
+    loggedmenu->addAction(shareFolderAction);
     loggedmenu->addAction(addSyncAction);
-    //p loggedmenu->addAction(sharesAction);
     syncMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),trUtf8("Sync &Folders"));
     loggedmenu->addAction(pauseSyncAction);
     loggedmenu->addAction(resumeSyncAction);
@@ -559,6 +555,7 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
 {
     mutex.lock();
     qDebug()<<"Event callback" << event;
+    char title[128], msg[512];
     switch(event)
     {
     case PEVENT_LOCAL_FOLDER_CREATED:
@@ -611,44 +608,73 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
             PCloudApp::appStatic->updateUserInfoPublic("quota");
         break;
     case PEVENT_SHARE_REQUESTIN:
-        qDebug()<<"PEVENT_SHARE_REQUESTIN";
+        qDebug()<<"PEVENT_SHARE_REQUESTIN"; // someone else shares me a folder, can be added from web
+        strcpy(title, "New Share Request received");
+        strcpy(msg,"You received a new Share Request  from");
+        strcat(msg, data.share->email);
+        PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
         break;
     case PEVENT_SHARE_REQUESTOUT:
-        qDebug()<<"PEVENT_SHARE_REQUESTOUT";
+        qDebug()<<"PEVENT_SHARE_REQUESTOUT"; // i share a folder 1.1
         break;
     case PEVENT_SHARE_ACCEPTIN:
-        qDebug()<<"PEVENT_SHARE_ACCEPTIN";
+        qDebug()<<"PEVENT_SHARE_ACCEPTIN"; //2.2 I accept a share - refresh both tables in Shared with me
         break;
-    case PEVENT_SHARE_ACCEPTOUT:
+    case PEVENT_SHARE_ACCEPTOUT: // when someones accept what i've shared to him
         qDebug()<<"PEVENT_SHARE_ACCEPTOUT";
+        strcpy(title, "Your Share Request is accepted");
+        strcpy(msg,data.share->email);
+        strcat(msg, " accepted your Share Request ");
+        strcat(msg, data.share->sharename);
+        PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,0);
         break;
-    case PEVENT_SHARE_DECLINEIN:
+    case PEVENT_SHARE_DECLINEIN: // reject a share request 2,2
         qDebug()<<"PEVENT_SHARE_DECLINEIN";
         break;
     case PEVENT_SHARE_DECLINEOUT:
-        qDebug()<<"PEVENT_SHARE_DECLINEOUT";
+        qDebug()<<"PEVENT_SHARE_DECLINEOUT"; //when someones rejected what i've shared to him
+        strcpy(title, "Share Request declined");
+        strcpy(msg,data.share->email);
+        strcat(msg, " declined your Share Request ");
+        strcat(msg, data.share->sharename);
+         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,0);
         break;
     case PEVENT_SHARE_CANCELIN:
         qDebug()<<"PEVENT_SHARE_CANCELIN";
+        // some one send me a request and HE stopped the request before i choose what to do with it
+        strcpy(title,"Share Request canceled");
+        strcpy(msg,data.share->email);
+        strcat(msg, "cancel his/her Share Request");
+        PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
         break;
     case PEVENT_SHARE_CANCELOUT:
-        qDebug()<<"PEVENT_SHARE_CANCELOUT";
+        qDebug()<<"PEVENT_SHARE_CANCELOUT"; // stop a my request - 1,2
         break;
-    case PEVENT_SHARE_REMOVEIN:
+    case PEVENT_SHARE_REMOVEIN: // stop a shared with me request - my requests 2,1
         qDebug()<<"PEVENT_SHARE_REMOVEIN";
         break;
-    case PEVENT_SHARE_REMOVEOUT:
-        qDebug()<<"PEVENT_SHARE_REMOVEOUT";
+    case PEVENT_SHARE_REMOVEOUT: // stop my share - 1,1
+        qDebug()<<"PEVENT_SHARE_REMOVEOUT"; // someoned has accepted and after that stopped what i've shared to him
+        strcpy(title,"Share Stopped");
+        strcpy(msg,data.share->email);
+        strcat(msg, " stopped his/her Share ");
+        strcat(msg,data.share->sharename);
+        PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,0);
         break;
     case PEVENT_SHARE_MODIFYIN:
-        qDebug()<<"PEVENT_SHARE_MODIFYIN";
+        qDebug()<<"PEVENT_SHARE_MODIFYIN"; // some one shared me smthn and changes the permissions
+        strcpy(title,"Modified Share");
+        strcpy(msg,"The Share ");
+        strcat(msg,data.share->sharename);
+        strcat(msg," has been modified by ");
+        strcat(msg,data.share->email);
+        PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
         break;
     case PEVENT_SHARE_MODIFYOUT:
-        qDebug()<<"PEVENT_SHARE_MODIFYOUT";
+        qDebug()<<"PEVENT_SHARE_MODIFYOUT"; // i change permissions
         break;
     default:
         break;
-
     }
     mutex.unlock();
 }
@@ -729,6 +755,8 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     connect(this, SIGNAL(showLoginSgnl()),this, SLOT(showLogin()));
     connect(this, SIGNAL(logoutSignl()), this, SLOT(logOut()));
     connect(this, SIGNAL(changeSyncIcon(QString)), this, SLOT(setTrayIcon(QString)));
+    connect(this, SIGNAL(sendTrayMsgType(const char*,const char*,int)),
+            this, SLOT(showTrayMsgType(const char*,const char*,int)));
     connect(this, SIGNAL(changeOnlineItemsSgnl(bool)), this, SLOT(changeOnlineItems(bool)));
     connect(this, SIGNAL(changeCursor(bool)), this, SLOT(setCursor(bool)));
     connect(this, SIGNAL(sendErrText(int, const char*)), this, SLOT(setErrText(int,const char*)));
@@ -811,10 +839,10 @@ PCloudApp::~PCloudApp(){
     delete registerAction;
     delete loginAction;
     delete exitAction;
-    delete logoutAction;
     //p delete openAction;
     delete settingsAction;
-    //p delete sharesAction;
+    delete sharesAction;
+    delete shareFolderAction;
     delete syncAction;
     delete helpAction;
     delete aboutPCloudAction;
@@ -948,7 +976,7 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     else
         tray->setIcon(QIcon(PAUSED_ICON));
     tray->setContextMenu(loggedmenu);
-     //isFirstLaunch = true; // for test TEMP
+    //isFirstLaunch = true; // for test TEMP
     if (isFirstLaunch)
     {
         welcomeWin = new WelcomeWin(this, NULL);
@@ -1002,13 +1030,12 @@ void PCloudApp::trayMsgClicked()
 {
     if (lastMessageType == 3)
         emit showpCloudAbout();
-    /* if (lastMessageType == 0 || lastMessageType == 1 )
+     if (lastMessageType == 0 || lastMessageType == 1 )
     {
         emit showShares();
         pCloudWin->ui->tabWidgetShares->setCurrentIndex(lastMessageType);
-        pCloudWin->sharesPage->load(lastMessageType);
-
-    }*/
+        pCloudWin->sharesPage->refreshTab(lastMessageType);
+    }
 }
 /*p
 // mth oth
@@ -1303,6 +1330,10 @@ void PCloudApp::changeOnlineItemsPublic(bool logged)
 {
     emit this->changeOnlineItemsSgnl(logged);
 }
+void PCloudApp::sendTrayMsgTypePublic(const char *title, const char *msg, int msgtype)
+{
+    emit this->sendTrayMsgType(title,msg,msgtype);
+}
 
 void PCloudApp::changeCursorPublic(bool change)
 {
@@ -1362,6 +1393,12 @@ void PCloudApp::setTrayIcon(const QString &icon)
 {
     tray->setIcon(QIcon(icon));
 }
+void PCloudApp::showTrayMsgType(const char *title, const char *msg, int msgtype)
+{
+    this->lastMessageType = msgtype;
+    tray->showMessage(QString::fromStdString(title),QString::fromStdString(msg));
+}
+
 void PCloudApp::showMsgBox(QString title, QString msg, int msgIconVal)
 {
     switch(msgIconVal)

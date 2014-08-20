@@ -3,8 +3,6 @@
 
 #include "registerwindow.h"
 #include "loginwindow.h"
-//p #include "sharefolderwindow.h"
-//p #include "shareswindow.h"
 #include "psettings.h"
 //#include "monitoringthread.h"
 //#include "onlinethread.h"
@@ -32,12 +30,12 @@ class PCloudApp : public QApplication
 private:
     QAction *registerAction;
     QAction *loginAction;
-    QAction *exitAction;
-    QAction *logoutAction;
+    QAction *exitAction;    
     //p  QAction *openAction; //open pcld fldr
     QAction *accountAction;
     QAction *settingsAction;  //Settings page
-    //p QAction *sharesAction; // Shares page(2)
+    QAction *sharesAction; // Shares page(2)
+    QAction *shareFolderAction; //opens share folderwin
     QAction *syncAction; //Sync Tab (3)
     QAction *helpAction; // Help Tab (5)
     QAction *aboutPCloudAction; // About tab(6)
@@ -51,8 +49,7 @@ private:
     QMenu *syncMenu;
     QSystemTrayIcon *tray;
     RegisterWindow *regwin;
-    LoginWindow *logwin;
-    //p ShareFolderWindow *sharefolderwin;
+    LoginWindow *logwin;     
     //MonitoringThread *mthread;
    // VersionTimerThread *versnThread;
     bool newVersionFlag;
@@ -69,8 +66,7 @@ private:
     // OnlineThread *othread;
     bool loggedin;
     void createMenus();
-    void hideAllWindows();
-    void showWindow(QMainWindow *win);
+    void hideAllWindows();    
 public:    
     static PCloudApp *appStatic;
     quint32 lastStatus;
@@ -96,13 +92,14 @@ public:
 #endif    
     quint64 bytestoDwnld;
     quint64 bytestoUpld;
-    uint32_t lastMessageType; // 0 and 1 for Shares;2 for online status; 3 for newversion
+    int lastMessageType; // 0 and 1 for Shares;2 for online status; 3 for newversion, init -1
     bool isCursorChanged;
     explicit PCloudApp(int &argc, char **argv);
     ~PCloudApp();
     //p bool isMounted();
     //p void mount();
     //p void unMount();
+    void showWindow(QMainWindow *win);
     void logIn(const QString &uname, bool remember);
     //p void setSettings();
     void showError(QString &err);
@@ -113,6 +110,7 @@ public:
     //signals are protected and can't be accessed by static vars
     //in case something in gui thread should change it can't be changed directly from another thread - use signals and slots
     void showLoginPublic();
+    void sendTrayMsgTypePublic(const char* title, const char* msg, int msgtype);
     void changeSyncIconPublic(const QString &icon);
     void refreshSyncUIitemsPublic();
     void changeCursorPublic(bool change);
@@ -144,6 +142,7 @@ signals:
     void showLoginSgnl();
     void changeSyncIcon(const QString &icon);
     void showMsgBoxSgnl(QString title, QString msg, int msgIconVal);
+    void sendTrayMsgType(const char* title, const char* msg, int msgtype);
     void changeCursor(bool change);
     void sendErrText(int win, const char *err);
     void updateSyncStatusSgnl();
@@ -156,17 +155,17 @@ signals:
 public slots:
     void showMsgBox(QString title, QString msg, int msgIconVal); //for another threads
     void showTrayMessage(QString title, QString msg);
+    void showTrayMsgType(const char* title, const char* msg, int msgtype);
     void trayClicked(QSystemTrayIcon::ActivationReason reason);
     void showRegister();
     void showLogin();
     void showAccount();
-    //p void showShares();
+    void showShares();
     void showSync();
     void showSettings();
     void showpCloudAbout();
     void showpcloudHelp();
-    //p void openCloudDir();
-    //p void shareFolder();
+    //p void openCloudDir();    
     void logOut();
     void unlink();
     void doExit();

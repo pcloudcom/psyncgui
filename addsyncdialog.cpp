@@ -63,7 +63,6 @@ static QList<QTreeWidgetItem *> listRemoteFldrs(QString parentPath)
             item->setData(0,Qt::UserRole, path);
             item->addChildren(listRemoteFldrs(path));
             items.append(item);
-            // qDebug()<<path<< "name flrd" << name.toUtf8();
         }
     }
     free(res);

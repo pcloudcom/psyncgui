@@ -30,6 +30,7 @@
         <file>images/128x128/sync.png</file>
         <file>images/128x128/user.png</file>
         <file>images/128x128/settings.png</file>
+        <file>images/128x128/shares.png</file>
     </qresource>
     <qresource prefix="/48x48">
         <file>images/48x48/faq-modal.png</file>
@@ -62,6 +63,7 @@
         <file>images/menu 48x48/sync.png</file>
         <file>images/menu 48x48/upload.png</file>
         <file>images/menu 48x48/user.png</file>
+        <file>images/menu 48x48/shares.png</file>
     </qresource>
     <qresource prefix="/debian">
         <file>images/pcloud.xpm</file>

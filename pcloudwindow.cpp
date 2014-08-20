@@ -34,7 +34,7 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     //create Items for QListWidget
     new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 0
     new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 1
-    new QListWidgetItem(QIcon(":/images/images/shares.png"),trUtf8("Shares"),ui->listButtonsWidget); //index 2
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/shares.png"),trUtf8("Shares"),ui->listButtonsWidget); //index 2
     new QListWidgetItem(QIcon(":/128x128/images/128x128/sync.png"),trUtf8("Sync"),ui->listButtonsWidget); //Sync Page index 3
     new QListWidgetItem(QIcon(":/128x128/images/128x128/settings.png"),trUtf8("Settings"),ui->listButtonsWidget); //index 4
     new QListWidgetItem(QIcon(":/128x128/images/128x128//help.png"),trUtf8("Help"),ui->listButtonsWidget); //index 5
@@ -44,12 +44,13 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     fillAboutPage();
     settngsPage = new SettingsPage(this, app);
     syncPage = new SyncPage(this, app);
+    sharesPage = new SharesPage(this, app);
     // indexes of Items in listWidget and their coresponding pages in StackWidget are the same
     connect(ui->listButtonsWidget,
             SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
             this, SLOT(changePage(QListWidgetItem*,QListWidgetItem*)));
     connect(ui->btnVerify, SIGNAL(clicked()), this, SLOT(verifyEmail()));
-    //p connect(ui->btnShareFolder,SIGNAL(clicked()), app, SLOT(shareFolder()));
+    connect(ui->btnShareFolder,SIGNAL(clicked()), this, SLOT(shareFolder()));
 
     //for resize
     for(int i = 0; i < ui->pagesWidget->count(); i++)
@@ -181,8 +182,7 @@ void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when
     {
         ui->listButtonsWidget->setRowHidden(0,true); //Accont - not logged
         ui->listButtonsWidget->setRowHidden(1,false); //Account - logged
-        //p ui->listButtonsWidget->setRowHidden(2,false); //Shares
-        ui->listButtonsWidget->setRowHidden(2,true); //Shares - false for fs = visible
+        ui->listButtonsWidget->setRowHidden(2,false); //Shares        
         ui->listButtonsWidget->setRowHidden(3,false); //Sync
         //ui->listButtonsWidget->setRowHidden(4, false); // pcloud Settings;
     }
@@ -265,12 +265,65 @@ void PCloudWindow::refreshUserinfo()
     this->fillAccountLoggedPage();
 }
 
+static QList<QTreeWidgetItem *> listRemoteFldrs(QString parentPath)
+{
+    QList<QTreeWidgetItem *> items;
+    pfolder_list_t *res = psync_list_remote_folder_by_path(parentPath.toUtf8(),PLIST_FOLDERS);
+
+    if (res != NULL)
+    {
+        for(uint i = 0; i < res->entrycnt; i++)
+        {
+            QString path = parentPath;
+            if (parentPath != "/")
+                path.append("/").append(res->entries[i].name);
+            else
+                path.append(res->entries[i].name);
+
+            QTreeWidgetItem *item = new QTreeWidgetItem((QTreeWidgetItem*)0, QStringList(res->entries[i].name));
+            item->setIcon(0, QIcon(":images/images/folder-p.png"));
+            item->setData(0, Qt::UserRole, path);
+            item->setData(1, Qt::UserRole, (quint64)res->entries[i].folder.folderid);
+            item->addChildren(listRemoteFldrs(path));
+            items.append(item);
+        }
+    }
+
+    free(res);
+    return items;
+}
+
+void PCloudWindow::initRemoteTree(QTreeWidget *table)
+{
+    //pcloud folders
+    QList<QTreeWidgetItem *> items;
+    table->clear();
+    table->setColumnCount(1);
+    table->setHeaderLabels(QStringList("Name"));
+    QString root = "/";
+    QTreeWidgetItem *rootItem = new QTreeWidgetItem(QStringList(root));
+    rootItem->setIcon(0,QIcon(":images/images/folder-p.png"));
+    rootItem->setData(1,Qt::UserRole,0); //id
+    table->insertTopLevelItem(0,rootItem);
+    table->setCurrentItem(rootItem);
+    items = listRemoteFldrs(root);
+    rootItem->addChildren(items);
+    table->expandItem(rootItem);
+    table->setSortingEnabled(true);
+    table->sortByColumn(0, Qt::AscendingOrder);
+}
+
 SyncPage* PCloudWindow::get_sync_page()
 {
     return this->syncPage;
 }
 
 //SLOTS
+void PCloudWindow::shareFolder()
+{
+    emit sharesPage->shareFolder();
+}
+
 void PCloudWindow::changePass()
 {
     ChangePassDialog *dialog = new ChangePassDialog();

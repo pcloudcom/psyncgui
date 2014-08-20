@@ -1,7 +1,6 @@
 #ifndef PCLOUDWINDOW_H
 #define PCLOUDWINDOW_H
-//p #include "sharespage.h"
-//p #include "sharefolderwindow.h"
+#include "sharespage.h"
 #include "syncpage.h"
 #include "psynclib.h"
 #include "versiondwnldthread.h"
@@ -16,7 +15,7 @@ class PCloudWindow;
 
 class PCloudApp;
 class SettingsPage;
-//p class SharesPage;
+class SharesPage;
 class SyncPage;
 
 class PCloudWindow : public QMainWindow
@@ -26,18 +25,19 @@ class PCloudWindow : public QMainWindow
 public:
     friend class PCloudApp;
     friend class SettingsPage; // to access ui
-    //p friend class SharesPage;
-    //p friend class ShareFolderWindow;
-    friend class SyncPage;
+    friend class SharesPage;    
+    friend class SyncPage;    
     explicit PCloudWindow(PCloudApp *a, QWidget *parent = 0);
     ~PCloudWindow();
+   //QList<QTreeWidgetItem *> listRemoteFldrs(QString parentPath);
+    void initRemoteTree(QTreeWidget* table); // fill remote trees in differnt woins/dialogs
     SyncPage* get_sync_page();    
 private:
     Ui::PCloudWindow *ui;
     PCloudApp *app;
     VersionDwnldThread *vrsnDwnldThread;
-     SettingsPage *settngsPage;
-    //p SharesPage *sharesPage;
+    SettingsPage *settngsPage;
+    SharesPage *sharesPage;
     SyncPage *syncPage;
     QByteArray auth; // to del
     bool verifyClicked;
@@ -56,6 +56,7 @@ public slots:
     void setOnlinePages();  //when the user logs in
     void refreshUserinfo();    
     void openMyPcloud();
+    void shareFolder();
     void openOnlineTutorial();
     void openOnlineHelp();
     void sendFeedback();

@@ -40,7 +40,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="pageAccntNotLogged">
        <property name="maximumSize">
@@ -500,7 +500,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidgetShares">
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tabMyShares">
            <attribute name="title">
@@ -554,7 +554,7 @@
                 </column>
                 <column>
                  <property name="text">
-                  <string>Actions</string>
+                  <string>Created</string>
                  </property>
                 </column>
                </widget>
@@ -562,14 +562,14 @@
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_2">
                 <item>
-                 <widget class="QPushButton" name="btnTempModify">
+                 <widget class="QPushButton" name="btnMyShareMofidy">
                   <property name="text">
                    <string>Modify</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="btnTempStop">
+                 <widget class="QPushButton" name="btnMySharesStop">
                   <property name="text">
                    <string>Stop</string>
                   </property>
@@ -649,7 +649,7 @@
                 </column>
                 <column>
                  <property name="text">
-                  <string>Actions</string>
+                  <string>Created</string>
                  </property>
                 </column>
                </widget>
@@ -657,7 +657,7 @@
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_10">
                 <item>
-                 <widget class="QPushButton" name="btnTempCancel">
+                 <widget class="QPushButton" name="btnCancelRqst">
                   <property name="text">
                    <string>Cancel</string>
                   </property>
@@ -722,7 +722,7 @@
                 </column>
                 <column>
                  <property name="text">
-                  <string>Actions</string>
+                  <string>Created</string>
                  </property>
                 </column>
                </widget>
@@ -730,7 +730,7 @@
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_12">
                 <item>
-                 <widget class="QPushButton" name="btnTempStop2">
+                 <widget class="QPushButton" name="btnSharedWithMeStop">
                   <property name="text">
                    <string>Stop</string>
                   </property>
@@ -807,7 +807,7 @@
                 </column>
                 <column>
                  <property name="text">
-                  <string>Actions</string>
+                  <string>Created</string>
                  </property>
                 </column>
                </widget>
@@ -815,14 +815,14 @@
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_11">
                 <item>
-                 <widget class="QPushButton" name="btnTempAccept">
+                 <widget class="QPushButton" name="btnAcceptRqst">
                   <property name="text">
                    <string>Accept</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="btnTempCancel2">
+                 <widget class="QPushButton" name="btnDeclineReqst">
                   <property name="text">
                    <string>Reject</string>
                   </property>

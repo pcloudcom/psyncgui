@@ -37,7 +37,11 @@ SOURCES += main.cpp\
     versiontimerthread.cpp \
     suggestnsbasewin.cpp \
     welcomewin.cpp \
-    versiondwnldthread.cpp
+    versiondwnldthread.cpp \
+    sharespage.cpp \
+    sharefolderwindow.cpp \
+    changepermissionsdialog.cpp \
+    acceptsharedialog.cpp
 
 HEADERS  += loginwindow.h \
     registerwindow.h \
@@ -55,7 +59,11 @@ HEADERS  += loginwindow.h \
     versiontimerthread.h \
     suggestnsbasewin.h \
     welcomewin.h \
-    versiondwnldthread.h
+    versiondwnldthread.h \
+    sharespage.h \
+    sharefolderwindow.h \
+    changepermissionsdialog.h \
+    acceptsharedialog.h
 
 FORMS    += loginwindow.ui \
     registerwindow.ui \
@@ -63,7 +71,10 @@ FORMS    += loginwindow.ui \
     changepassdialog.ui \
     modifysyncdialog.ui \
     pcloudwindow.ui \
-    suggestnsbasewin.ui
+    suggestnsbasewin.ui \
+    sharefolderwindow.ui \
+    changepermissionsdialog.ui \
+    acceptsharedialog.ui
 win32:RC_FILE= pCloud.rc
 RESOURCES += \
     Resources.qrc
