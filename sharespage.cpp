@@ -3,8 +3,10 @@
 #include "pcloudwindow.h"
 #include "ui_pcloudwindow.h"
 
+#include "unistd.h"
+
 SharesPage::SharesPage(PCloudWindow *w, PCloudApp *a,  QObject *parent) :
-QObject(parent)
+    QObject(parent)
 {
     win = w;
     app = a;
@@ -112,8 +114,6 @@ void SharesPage::fillRequestsTable(bool incoming)
 
     if(shares != NULL)
     {
-        win->ui->label_requests->setVisible(false);
-
         QTreeWidget *table;
         if(!incoming) //tab 0
         {
@@ -308,28 +308,23 @@ void SharesPage::acceptRqst()
     }
     else
     {
-        AcceptShareDialog dialog(currentItem->text(1).toUtf8().constData());
+        AcceptShareDialog dialog(currentItem->text(1),win);
         if(dialog.exec() == QDialog::Accepted)
         {
             char* err = NULL;
-            const char* sharename = dialog.getShareName();
+            QString sharename = dialog.getShareName();
             quint64 fldrid = dialog.getFldrid(), rqstid = currentItem->data(4,Qt::UserRole).toULongLong();
             qDebug()<<"shares add request" << currentItem->data(4,Qt::UserRole).toULongLong()<<fldrid<<sharename;
 
-            int res = psync_accept_share_request(rqstid, fldrid, sharename, &err);
+            int res = psync_accept_share_request(rqstid, fldrid, sharename.toUtf8(), &err);
             dialog.hide();
             if(!res)
             {
                 QStringList data;
-                data<< currentItem->text(0);
-                if (sharename != NULL)
-                    data<<sharename;
-                else
-                    data<<currentItem->text(1);
-                data<<currentItem->text(2) << currentItem->text(3);
-
-                // temp commented
-                //this->addSharesRow(win->ui->treeMyRequest,data,currentItem->data(4,Qt::UserRole).toLongLong(),currentItem->data(2,Qt::UserRole).toInt(),win->ui->treeMyRequest->topLevelItemCount());
+                data<< currentItem->text(0) << sharename
+                    <<currentItem->text(2) << currentItem->text(3);
+                sleep(1); //waits shares list to update // to move in events
+                this->fillSharesTable(true); // sharedid is changed
                 win->ui->treeRequestsWithMe->takeTopLevelItem( win->ui->treeRequestsWithMe->indexOfTopLevelItem(currentItem));
                 delete currentItem;
             }
@@ -338,9 +333,6 @@ void SharesPage::acceptRqst()
             free(err);
         }
     }
-
-    this->fillSharesTable(1); //temp for ent errors
-    this->fillRequestsTable(1);
 }
 
 

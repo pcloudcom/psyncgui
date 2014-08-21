@@ -1,30 +1,23 @@
 #ifndef ACCEPTSHAREDIALOG_H
 #define ACCEPTSHAREDIALOG_H
 
-#include "psynclib.h"
-#include "common.h"
+#include "remotetreesdialog.h"
+#include "ui_remotetreesdialog.h"
 #include <QDialog>
 
-namespace Ui {
-class AcceptShareDialog;
-}
 
-class AcceptShareDialog : public QDialog
+class PCloudWindow;
+
+class AcceptShareDialog : public RemoteTreesDialog
 {
     Q_OBJECT
-
-public:
-    explicit AcceptShareDialog(const char* name, QWidget *parent = 0);
-    ~AcceptShareDialog();
-    quint64 getFldrid();
-    const char* getShareName();
+public:    
+    AcceptShareDialog(QString name, PCloudWindow* &w, QWidget *parent = 0);
+    QString getShareName();
 private:
-    Ui::AcceptShareDialog *ui;
-    quint64 fldrid;
-    const char* sharename;
-    void initTree();
+    QString sharename;
 public slots:
-    void addRequest();
+    virtual void setSelectedFolder();
 };
 
 #endif // ACCEPTSHAREDIALOG_H

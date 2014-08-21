@@ -1,7 +1,6 @@
 #ifndef WELCOMESCREEN_H
 #define WELCOMESCREEN_H  /// to CHANGE !!!!!!
 
-//#include "addsyncdialog.h"
 #include <QMainWindow>
 #include <QCloseEvent>
 #include <QStringList>
@@ -39,8 +38,7 @@ public:
 private:
     QStringList *localFldrsLst;
     //indicates if user adds a new sync or changes a suggested one
-protected:    
-    //Ui::
+protected:        
     Ui::SuggestnsBaseWin *ui;
     void closeEvent(QCloseEvent *event);
     PCloudApp *app;
