@@ -610,7 +610,7 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
     case PEVENT_SHARE_REQUESTIN:
         qDebug()<<"PEVENT_SHARE_REQUESTIN"; // someone else shares me a folder, can be added from web
         strcpy(title, "New Share Request received");
-        strcpy(msg,"You received a new Share Request  from");
+        strcpy(msg,"You received a new Share Request  from ");
         strcat(msg, data.share->email);
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
         break;
@@ -644,7 +644,7 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         // some one send me a request and HE stopped the request before i choose what to do with it
         strcpy(title,"Share Request canceled");
         strcpy(msg,data.share->email);
-        strcat(msg, "cancel his/her Share Request");
+        strcat(msg, " cancel his/her Share Request");
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
         break;
     case PEVENT_SHARE_CANCELOUT:
