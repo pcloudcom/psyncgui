@@ -209,7 +209,7 @@ void PCloudWindow::fillAboutPage()
 {
     if(!app->new_version())
     {
-        ui->label_versionVal->setText(QString("Version ") + APP_VERSION + QString("\n\nEverything up to date"));
+        ui->label_versionVal->setText(QString("Version ") + APP_VERSION + QString("\n\nEverything is up to date"));
         ui->label_versionVal->setAlignment(Qt::AlignHCenter);
         ui->widget_newVersion->setVisible(false);
     }

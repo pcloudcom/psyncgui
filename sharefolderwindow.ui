@@ -31,7 +31,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="email"/>
+       <widget class="QLineEdit" name="email">
+        <property name="maxLength">
+         <number>256</number>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QLabel" name="label_6">

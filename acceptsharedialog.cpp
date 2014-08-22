@@ -5,8 +5,7 @@ AcceptShareDialog::AcceptShareDialog(QString name,PCloudWindow* &w,QWidget *pare
 {        
     ui->widget_fldrName->setVisible(true);
     ui->line_folderName->setText(name);
-    ui->btnAccept->setText("Accept");
-    ui->btnReject->setText("Reject");
+    ui->btnAccept->setText("Accept");    
 }
 
 void AcceptShareDialog::setSelectedFolder()

@@ -20,6 +20,7 @@ public:
     ~SharesPage();
     void selectErr();
     void loadAll();
+    void setRequestsVisibility(int incoming, bool visible);
 private:
     PCloudWindow *win;
     PCloudApp *app;

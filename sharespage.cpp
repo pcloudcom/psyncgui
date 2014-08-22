@@ -112,18 +112,18 @@ void SharesPage::fillRequestsTable(bool incoming)
 {
     psync_sharerequest_list_t *shares = psync_list_sharerequests(incoming);
 
-    if(shares != NULL)
+    if(shares != NULL && shares->sharerequestcnt)
     {
         QTreeWidget *table;
         if(!incoming) //tab 0
         {
             table = win->ui->treeMyRequest;
-            win->ui->label_noMyRqsts->setVisible(false);
+            win->ui->widget_myrequests->setVisible(true);
         }
         else //tab 1
         {
             table = win->ui->treeRequestsWithMe;
-            win->ui->label_noRqstsWithMe->setVisible(false);
+            win->ui->widget_requesteswithme->setVisible(true);
         }
         table->clear();
 
@@ -141,18 +141,7 @@ void SharesPage::fillRequestsTable(bool incoming)
         this->setTableProps(table);
     }
     else
-    {
-        if(!incoming)
-        {
-            win->ui->treeMyRequest->setVisible(false);
-            win->ui->label_noMyRqsts->setVisible(true);
-        }
-        else
-        {
-            win->ui->treeRequestsWithMe->setVisible(false);
-            win->ui->label_noRqstsWithMe->setVisible(true);
-        }
-    }
+        this->setRequestsVisibility(incoming, false);
 }
 
 void SharesPage::setTableProps(QTreeWidget *table)
@@ -167,6 +156,20 @@ void SharesPage::setTableProps(QTreeWidget *table)
     table->setSelectionMode(QAbstractItemView::SingleSelection);
     table->setSortingEnabled(true);
     table->sortByColumn(0, Qt::AscendingOrder);
+}
+
+void SharesPage::setRequestsVisibility(int incoming, bool visible)
+{
+    if(!incoming) // tab 0
+    {
+        win->ui->widget_myrequests->setVisible(visible);
+         win->ui->label_noMyRqsts->setVisible(!visible);
+    }
+    else
+    {
+        win->ui->widget_requesteswithme->setVisible(visible);
+        win->ui->label_noRqstsWithMe->setVisible(!visible);
+    }
 }
 
 // slots
@@ -216,7 +219,6 @@ void SharesPage::stopShare() //Stop outgoing shares - My shares tables
 
 void SharesPage::cancelRqst()
 {
-
     QObject* sender = QObject::sender();
     QTreeWidget* table;
 
@@ -249,6 +251,7 @@ void SharesPage::cancelRqst()
             {
                 table->takeTopLevelItem(table->indexOfTopLevelItem(currentItem));
                 delete currentItem;
+                // from callback
             }
             else
                 this->getError(res,err);

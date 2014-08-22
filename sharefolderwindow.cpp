@@ -31,6 +31,10 @@ void ShareFolderWindow::showEvent(QShowEvent *event)
 {   
     ui->editline_sharename->clear();
     ui->btnOpenRemoteDialog->setText(trUtf8("Choose remote folder"));
+    ui->permCreate->setChecked(false);
+    ui->permModify->setChecked(false);
+    ui->permDelete->setChecked(false);
+    ui->text_msg->clear();
     event->accept();
 }
 
@@ -73,7 +77,7 @@ void ShareFolderWindow::shareFolder()
         return;
     }
     remoteFldrsDialog->getFldrPath();
-    QStringList mails = ui->email->text().split(","); //esil_duran_psync@abv.bg
+    QStringList mails = ui->email->text().split(",");
     QByteArray name = ui->editline_sharename->text().toUtf8(), msg = ui->text_msg->toPlainText().toUtf8();
     quint64 perms = (ui->permCreate->isChecked()? PSYNC_PERM_CREATE:0)+
             (ui->permModify->isChecked()? PSYNC_PERM_MODIFY :0)+
