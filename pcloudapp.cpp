@@ -261,7 +261,7 @@ void PCloudApp::createMenus(){
     //p connect(openAction, SIGNAL(triggered()), this, SLOT(openCloudDir()));
     sharesAction = new QAction(QIcon(":/menu/images/menu 48x48/shares.png"),trUtf8("S&hares"),this);
     connect(sharesAction, SIGNAL(triggered()), this, SLOT(showShares()));
-    shareFolderAction = new QAction(QIcon(":/menu/images/menu 48x48/shares.png"), trUtf8("Add New Share"),this);
+    shareFolderAction = new QAction(QIcon(":/menu/images/menu 48x48/newsync.png"), trUtf8("Add New Share"),this);
     connect(shareFolderAction,SIGNAL(triggered()), pCloudWin, SLOT(shareFolder()));
 
     //sync menu
