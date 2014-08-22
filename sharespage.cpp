@@ -98,7 +98,7 @@ void SharesPage::fillSharesTable(bool incoming)
             QStringList data;
             data<< shares->shares[i].email << shares->shares[i].sharename
                 << getPermissions(shares->shares[i].permissions)
-                << QDateTime::fromTime_t(shares->shares[i].created).date().toString();
+                << QDateTime::fromTime_t(shares->shares[i].created).date().toString().remove(0,4);
 
             addSharesRow(table, data, shares->shares[i].shareid, shares->shares[i].permissions, i);
         }
@@ -132,7 +132,7 @@ void SharesPage::fillRequestsTable(bool incoming)
             QStringList data;
             data<< shares->sharerequests[i].email << shares->sharerequests[i].sharename
                 << getPermissions(shares->sharerequests[i].permissions)
-                << QDateTime::fromTime_t(shares->sharerequests[i].created).date().toString();
+                << QDateTime::fromTime_t(shares->sharerequests[i].created).date().toString().remove(0,4);
 
             addSharesRow(table, data, shares->sharerequests[i].sharerequestid, shares->sharerequests[i].permissions, i);
         }
@@ -229,15 +229,14 @@ void SharesPage::cancelRqst()
         incoming = 1;
     }
 
-    QTreeWidgetItem* currentItem = table->currentItem();
-    qDebug()<<"Shares: cancel request id"<< currentItem->data(4,Qt::UserRole).toULongLong();
-    if(!currentItem)
+    if(!table->currentItem())
     {
         QMessageBox::warning(NULL,"pCloud","Please select a share!");
         return;
     }
     else
     {
+        QTreeWidgetItem* currentItem = table->currentItem();
         if(QMessageBox::question(NULL,"pCloud","Do you really want to reject the selected share request?",QMessageBox::Yes|QMessageBox::No) == QMessageBox::Yes)
         {
             char* err= NULL;

@@ -3,10 +3,11 @@
 
 #include "common.h"
 #include "psynclib.h"
+#include "remotetreesdialog.h"
 #include <QMainWindow>
 #include <QTreeWidgetItem>
 #include <QCloseEvent>
-#include <QShowEvent>s
+#include <QShowEvent>
 
 namespace Ui {
 class ShareFolderWindow;
@@ -27,10 +28,12 @@ private:
     Ui::ShareFolderWindow *ui;
     SharesPage* sharePage;
     PCloudWindow* pclwin;
+    RemoteTreesDialog *remoteFldrsDialog;
+    quint64 fldrid;
     void closeEvent(QCloseEvent *event);
     void showEvent(QShowEvent *event);
 public slots:
-    void dirSelected(QTreeWidgetItem *dir);
+    void setFlrd();
     void shareFolder();
     void showError(const char* err);
 };

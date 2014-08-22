@@ -6,27 +6,31 @@
 ShareFolderWindow::ShareFolderWindow(PCloudWindow *w,SharesPage *sp, QWidget *parent) :    
     QMainWindow(parent),
     ui(new Ui::ShareFolderWindow)
-{
+{    
     sharePage = sp;
     pclwin = w;
+    remoteFldrsDialog = new RemoteTreesDialog(pclwin);
     setWindowIcon(QIcon(WINDOW_ICON));
     ui->setupUi(this);
     connect(ui->cancelbutton, SIGNAL(clicked()), this, SLOT(hide()));
     connect(ui->sharebutton, SIGNAL(clicked()), this, SLOT(shareFolder()));
-    connect(ui->dirtree, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)), this, SLOT(dirSelected(QTreeWidgetItem *)));
+    connect(ui->btnOpenRemoteDialog, SIGNAL(clicked()),remoteFldrsDialog,SLOT(exec()));
+    connect(remoteFldrsDialog, SIGNAL(accepted()), this, SLOT(setFlrd()));
+
+    this->setFixedSize(this->width(),this->height()); //makes the win not resizable
 
 }
 
 ShareFolderWindow::~ShareFolderWindow()
 {
     delete ui;
+    delete remoteFldrsDialog;
 }
 
 void ShareFolderWindow::showEvent(QShowEvent *event)
-{
-    pclwin->initRemoteTree(ui->dirtree);
-    ui->dirtree->setCurrentItem(NULL);
-    ui->sharename->clear();
+{   
+    ui->editline_sharename->clear();
+    ui->btnOpenRemoteDialog->setText(trUtf8("Choose remote folder"));
     event->accept();
 }
 
@@ -38,10 +42,20 @@ void ShareFolderWindow::closeEvent(QCloseEvent *event)
 
 
 //slots
-void ShareFolderWindow::dirSelected(QTreeWidgetItem *dir)
+void ShareFolderWindow::setFlrd()
 {
-    if (dir)
-        ui->sharename->setText(dir->text(0));
+    this->fldrid = remoteFldrsDialog->getFldrid();
+    QString path = remoteFldrsDialog->getFldrPath(), fldrname;
+    fldrname = path.section("/",-1);
+    ui->editline_sharename->setText(fldrname);
+
+    if(path.length() < 40)
+        ui->btnOpenRemoteDialog->setText(path);
+    else if(fldrname.length() < 40 )
+        ui->btnOpenRemoteDialog->setText(QString("/.../" + fldrname));
+    else
+        ui->btnOpenRemoteDialog->setText(QString("/.../" + fldrname.right(40)));
+
 }
 
 static bool isValidEmail(const char* email){
@@ -52,22 +66,15 @@ static bool isValidEmail(const char* email){
 }
 
 void ShareFolderWindow::shareFolder()
-{
-    if (!ui->dirtree->currentItem())
-    {
-        showError("No folder is selected.");
-        return;
-    }
-
+{       
     if (ui->email->text().isEmpty())
     {
         showError("No email is specified.");
         return;
     }
-
+    remoteFldrsDialog->getFldrPath();
     QStringList mails = ui->email->text().split(","); //esil_duran_psync@abv.bg
-    QByteArray name = ui->sharename->text().toUtf8(), msg = ui->text_msg->toPlainText().toUtf8();
-    quint64 folderid = ui->dirtree->currentItem()->data(1, Qt::UserRole).toULongLong();
+    QByteArray name = ui->editline_sharename->text().toUtf8(), msg = ui->text_msg->toPlainText().toUtf8();
     quint64 perms = (ui->permCreate->isChecked()? PSYNC_PERM_CREATE:0)+
             (ui->permModify->isChecked()? PSYNC_PERM_MODIFY :0)+
             (ui->permDelete->isChecked()? PSYNC_PERM_DELETE :0);
@@ -85,8 +92,7 @@ void ShareFolderWindow::shareFolder()
             return;
         }
         char* err = NULL;
-        // psync_share_folder(psync_folderid_t folderid, const char *name, const char *mail, const char *message, uint32_t permissions, char **err);
-        int res= psync_share_folder(folderid,name,mail,msg,perms,&err);
+        int res= psync_share_folder(fldrid,name,mail,msg,perms,&err);
         if(!res)
             mails.removeFirst();
         else
@@ -95,7 +101,7 @@ void ShareFolderWindow::shareFolder()
                 this->showError(err);
             else
                 this->showError("No internet connection");
-            break;
+            return;
         }
         free(err);
     }
@@ -105,48 +111,7 @@ void ShareFolderWindow::shareFolder()
     this->hide();
 }
 
-
 void ShareFolderWindow::showError(const char* err)
 {
     QMessageBox::critical(this,trUtf8("pCloud"), trUtf8(err));
 }
-
-/*
-void ShareFolderWindow::showEvent(QShowEvent *)
-{
-    apisock *conn;
-    binresult *res, *result;
-    QByteArray auth=app->authentication.toUtf8();
-    if (!(conn=app->getAPISock())){
-        showError("Could not connect to server. Check your Internet connection.");
-        return;
-    }
-    ui->dirtree->clear();
-    ui->dirtree->setColumnCount(1);
-    ui->dirtree->setHeaderLabels(QStringList("Name"));
-    res=send_command(conn, "listfolder",
-                     P_LSTR("auth", auth.constData(), auth.size()),
-                     P_STR("filtermeta", "contents,folderid,name"),
-                     P_NUM("folderid", 0),
-                     P_BOOL("recursive", 1),
-                     P_BOOL("nofiles", 1),
-                     P_BOOL("noshares", 1));
-    api_close(conn);
-    result=find_res(res, "result");
-    if (!result){
-        showError("Could not connect to server. Check your Internet connection.");
-        free(res);
-        return;
-    }
-    if (result->num!=0){
-        showError(find_res(res, "error")->str);
-        free(res);
-        return;
-    }
-    result=find_res(find_res(res, "metadata"), "contents");
-    ui->dirtree->insertTopLevelItems(0, binresToQList(result));
-
-    free(res);
-}
-
-*/

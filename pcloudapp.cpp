@@ -610,12 +610,18 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
     case PEVENT_SHARE_REQUESTIN:
         qDebug()<<"PEVENT_SHARE_REQUESTIN"; // someone else shares me a folder, can be added from web
         strcpy(title, "New Share Request received");
-        strcpy(msg,"You received a new Share Request  from ");
+        strcpy(msg,"You received a new Share Request from ");
         strcat(msg, data.share->email);
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
         break;
     case PEVENT_SHARE_REQUESTOUT:
         qDebug()<<"PEVENT_SHARE_REQUESTOUT"; // i share a folder 1.1
+        strcpy(title, "  Share Request sent successfully!");
+        strcpy(msg, " You successfully sent a Share Request ");
+        strcat(msg, data.share->sharename);
+        strcat(msg," to ");
+        strcpy(msg,data.share->email);
+        PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,0);
         break;
     case PEVENT_SHARE_ACCEPTIN:
         qDebug()<<"PEVENT_SHARE_ACCEPTIN"; //2.2 I accept a share - refresh both tables in Shared with me
@@ -637,7 +643,7 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcpy(msg,data.share->email);
         strcat(msg, " declined your Share Request ");
         strcat(msg, data.share->sharename);
-         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,0);
+        PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,0);
         break;
     case PEVENT_SHARE_CANCELIN:
         qDebug()<<"PEVENT_SHARE_CANCELIN";
@@ -1036,7 +1042,7 @@ void PCloudApp::trayMsgClicked()
 {
     if (lastMessageType == 3)
         emit showpCloudAbout();
-     if (lastMessageType == 0 || lastMessageType == 1 )
+    if (lastMessageType == 0 || lastMessageType == 1 )
     {
         emit showShares();
         pCloudWin->ui->tabWidgetShares->setCurrentIndex(lastMessageType);

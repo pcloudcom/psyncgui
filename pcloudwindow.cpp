@@ -303,6 +303,7 @@ void PCloudWindow::initRemoteTree(QTreeWidget *table)
     QString root = "/";
     QTreeWidgetItem *rootItem = new QTreeWidgetItem(QStringList(root));
     rootItem->setIcon(0,QIcon(":images/images/folder-p.png"));
+    rootItem->setData(0, Qt::UserRole,root); //set path
     rootItem->setData(1,Qt::UserRole,0); //id
     table->insertTopLevelItem(0,rootItem);
     table->setCurrentItem(rootItem);

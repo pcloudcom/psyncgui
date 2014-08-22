@@ -4,6 +4,9 @@
 #include "psynclib.h"
 #include "common.h"
 #include <QDialog>
+#include <QShowEvent>
+#include <QTreeWidgetItem>
+#include <QMessageBox>
 
 class PCloudWindow;
 
@@ -19,9 +22,14 @@ public:
     explicit RemoteTreesDialog(PCloudWindow* &w,QWidget *parent = 0);
     ~RemoteTreesDialog();
     quint64 getFldrid();       
+    QString getFldrPath();
 protected:
     Ui::RemoteTreesDialog *ui;
     quint64 fldrid;
+    QString fldrPath;
+    void showEvent(QShowEvent *event);
+private:
+    QTreeWidgetItem* root;
 public slots:
     virtual void setSelectedFolder();
 };
