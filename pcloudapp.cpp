@@ -650,8 +650,14 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
     case PEVENT_SHARE_CANCELOUT:
         qDebug()<<"PEVENT_SHARE_CANCELOUT"; // stop a my request - 1,2
         break;
-    case PEVENT_SHARE_REMOVEIN: // stop a shared with me request - my requests 2,1
+    case PEVENT_SHARE_REMOVEIN: // when somenone stops a request he send and i accepted,  - my requests 2,1
         qDebug()<<"PEVENT_SHARE_REMOVEIN";
+        strcpy(title,"Share Stopped");
+        strcpy(msg,data.share->email);
+        strcat(msg, " stopped his/her Share ");
+        strcat(msg,data.share->sharename);
+        PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
+
         break;
     case PEVENT_SHARE_REMOVEOUT: // stop my share - 1,1
         qDebug()<<"PEVENT_SHARE_REMOVEOUT"; // someoned has accepted and after that stopped what i've shared to him
