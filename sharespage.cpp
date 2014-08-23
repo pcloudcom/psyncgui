@@ -15,6 +15,10 @@ SharesPage::SharesPage(PCloudWindow *w, PCloudApp *a,  QObject *parent) :
     //win->ui->tabWidgetShares->setTabIcon(0, QIcon(":/images/images/myshares.png"));
     win->ui->tabWidgetShares->setTabText(1, tr("Shared with me"));
     win->ui->tabWidgetShares->setCurrentIndex(0);
+    this->setTableProps(win->ui->treeMyShares);
+    this->setTableProps(win->ui->treeMyRequest);
+    this->setTableProps(win->ui->treeSharedWithMe);
+    this->setTableProps(win->ui->treeRequestsWithMe);
 
     connect(win->ui->btnMySharesStop, SIGNAL(clicked()), this, SLOT(stopShare()));
     connect(win->ui->btnSharedWithMeStop, SIGNAL(clicked()), this, SLOT(stopShare()));
@@ -23,7 +27,10 @@ SharesPage::SharesPage(PCloudWindow *w, PCloudApp *a,  QObject *parent) :
     connect(win->ui->btnDeclineReqst, SIGNAL(clicked()), this, SLOT(cancelRqst()));
     connect(win->ui->btnAcceptRqst, SIGNAL(clicked()), this, SLOT(acceptRqst()));
     connect(win->ui->btnShareFolder, SIGNAL(clicked()), this, SLOT(shareFolder()));
-    connect(win->ui->tabWidgetShares, SIGNAL(currentChanged(int)), this, SLOT(refreshTab(int)));
+    connect(win->ui->tabWidgetShares, SIGNAL(currentChanged(int)), this, SLOT(refreshTab(int))); // to del
+    connect(win->ui->treeMyShares, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
+            this,SLOT(modifyShare()));
+    connect(win->ui->treeRequestsWithMe, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(acceptRqst()));
 
     loadAll();
 }
@@ -98,13 +105,12 @@ void SharesPage::fillSharesTable(bool incoming)
             QStringList data;
             data<< shares->shares[i].email << shares->shares[i].sharename
                 << getPermissions(shares->shares[i].permissions)
-                << QDateTime::fromTime_t(shares->shares[i].created).date().toString().remove(0,4);
+                << QDateTime::fromTime_t(shares->shares[i].created).date().toString("dd/MM/yy");
 
             addSharesRow(table, data, shares->shares[i].shareid, shares->shares[i].permissions, i);
         }
 
         free(shares);
-        this->setTableProps(table);
     }
 }
 
@@ -114,6 +120,8 @@ void SharesPage::fillRequestsTable(bool incoming)
 
     if(shares != NULL && shares->sharerequestcnt)
     {
+        this->setRequestsVisibility(incoming, true);
+
         QTreeWidget *table;
         if(!incoming) //tab 0
         {
@@ -132,13 +140,12 @@ void SharesPage::fillRequestsTable(bool incoming)
             QStringList data;
             data<< shares->sharerequests[i].email << shares->sharerequests[i].sharename
                 << getPermissions(shares->sharerequests[i].permissions)
-                << QDateTime::fromTime_t(shares->sharerequests[i].created).date().toString().remove(0,4);
+                << QDateTime::fromTime_t(shares->sharerequests[i].created).date().toString("dd/MM/yy");
 
             addSharesRow(table, data, shares->sharerequests[i].sharerequestid, shares->sharerequests[i].permissions, i);
         }
 
         free(shares);
-        this->setTableProps(table);
     }
     else
         this->setRequestsVisibility(incoming, false);
@@ -156,6 +163,7 @@ void SharesPage::setTableProps(QTreeWidget *table)
     table->setSelectionMode(QAbstractItemView::SingleSelection);
     table->setSortingEnabled(true);
     table->sortByColumn(0, Qt::AscendingOrder);
+    table->setAlternatingRowColors(true);
 }
 
 void SharesPage::setRequestsVisibility(int incoming, bool visible)
@@ -163,7 +171,7 @@ void SharesPage::setRequestsVisibility(int incoming, bool visible)
     if(!incoming) // tab 0
     {
         win->ui->widget_myrequests->setVisible(visible);
-         win->ui->label_noMyRqsts->setVisible(!visible);
+        win->ui->label_noMyRqsts->setVisible(!visible);
     }
     else
     {
@@ -184,6 +192,7 @@ void SharesPage::stopShare() //Stop outgoing shares - My shares tables
 {
     QObject* sender = QObject::sender();
     QTreeWidget* table;
+    win->flagCurrentUserEmitsShareEvent = true;
 
     if(sender->objectName() == "btnMySharesStop")
         table = win->ui->treeMyShares;
@@ -192,7 +201,6 @@ void SharesPage::stopShare() //Stop outgoing shares - My shares tables
 
     if(!table->currentItem())
     {
-        //QMessageBox::warning(this,"pCloud","Please select a share!");
         QMessageBox::warning(NULL,"pCloud","Please select a share!");
         return;
     }
@@ -210,6 +218,7 @@ void SharesPage::stopShare() //Stop outgoing shares - My shares tables
             }
             else
                 this->getError(res, err);
+
             free(err);
         }
         else
@@ -247,14 +256,12 @@ void SharesPage::cancelRqst()
                 res= psync_cancel_share_request(currentItem->data(4,Qt::UserRole).toULongLong() ,&err);
             else
                 res= psync_decline_share_request(currentItem->data(4,Qt::UserRole).toULongLong() ,&err);
-            if(!res)
-            {
-                table->takeTopLevelItem(table->indexOfTopLevelItem(currentItem));
-                delete currentItem;
-                // from callback
-            }
-            else
+            if(res)
                 this->getError(res,err);
+            //   table->takeTopLevelItem(table->indexOfTopLevelItem(currentItem));
+            // delete currentItem;
+            // from callback
+
             free(err);
         }
         else
@@ -327,8 +334,8 @@ void SharesPage::acceptRqst()
                     <<currentItem->text(2) << currentItem->text(3);
                 sleep(1); //waits shares list to update // to move in events
                 this->fillSharesTable(true); // sharedid is changed
-                win->ui->treeRequestsWithMe->takeTopLevelItem( win->ui->treeRequestsWithMe->indexOfTopLevelItem(currentItem));
-                delete currentItem;
+                //    win->ui->treeRequestsWithMe->takeTopLevelItem( win->ui->treeRequestsWithMe->indexOfTopLevelItem(currentItem));
+                //  delete currentItem;
             }
             else
                 this->getError(res,err);
@@ -336,50 +343,3 @@ void SharesPage::acceptRqst()
         }
     }
 }
-
-
-
-/*
-
-void SharesPage::acceptRequest()
-{
-    this->type = 1;
-    if (!win->ui->treeRequestsWithMe->currentItem())
-        return selectErr();
-    quint64 sharerequestid = win->ui->treeRequestsWithMe->currentItem()->data(0, Qt::UserRole).toULongLong();
-    DirectoryPickerDialog dir(app, win);
-    dir.onlyMine=true;
-    dir.showRoot=true;
-    dir.setWindowTitle("Select a directory to accept share to...");
-    if (dir.exec()==QDialog::Rejected || !dir.ui->dirtree->currentItem())
-        return;
-    quint64 folderid=dir.ui->dirtree->currentItem()->data(1, Qt::UserRole).toULongLong();
-    apisock *conn;
-    binresult *res, *result;
-    QByteArray auth=app->authentication.toUtf8();
-    if (!(conn=app->getAPISock())){
-        showError(1,"Could not connect to server. Check your Internet connection.");
-        return;
-    }
-    res=send_command(conn, "acceptshare",
-                     P_LSTR("auth", auth.constData(), auth.size()),
-                     P_NUM("sharerequestid", sharerequestid),
-                     P_NUM("folderid", folderid));
-    api_close(conn);
-    result=find_res(res, "result");
-    if (!result){
-        showError(1,"Could not connect to server. Check your Internet connection.");
-        free(res);
-        return;
-    }
-    if (result->num!=0){
-        showError(1,find_res(res, "error")->str);
-        free(res);
-        return;
-    }
-    free(res);
-    load(1);
-}
-
-
-*/

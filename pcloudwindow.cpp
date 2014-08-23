@@ -45,12 +45,14 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     settngsPage = new SettingsPage(this, app);
     syncPage = new SyncPage(this, app);
     sharesPage = new SharesPage(this, app);
+    flagCurrentUserEmitsShareEvent = false;
     // indexes of Items in listWidget and their coresponding pages in StackWidget are the same
     connect(ui->listButtonsWidget,
             SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
             this, SLOT(changePage(QListWidgetItem*,QListWidgetItem*)));
     connect(ui->btnVerify, SIGNAL(clicked()), this, SLOT(verifyEmail()));
     connect(ui->btnShareFolder,SIGNAL(clicked()), this, SLOT(shareFolder()));
+    connect(this, SIGNAL(refreshPageSgnl(int,int)), this, SLOT(refreshPageSlot(int,int)));
 
     //for resize
     for(int i = 0; i < ui->pagesWidget->count(); i++)
@@ -126,22 +128,27 @@ void PCloudWindow::changePage(QListWidgetItem *current, QListWidgetItem *previou
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     updateGeometry();
     ui->pagesWidget->setCurrentIndex(currentIndex); // sets page
-    refreshPages();
+    refreshPage(currentIndex);
 
 }
 void PCloudWindow::showEvent(QShowEvent *)
 {
-    refreshPages();
+    qDebug()<<"pclwin showevent"<<ui->listButtonsWidget->currentRow();
+    refreshPage(ui->listButtonsWidget->currentRow());
 }
 
-void PCloudWindow::refreshPages()
-{
-    int currentIndex = ui->listButtonsWidget->currentRow();
+void PCloudWindow::refreshPage(int currentIndex)
+{    
+   // int currentIndex = ui->listButtonsWidget->currentRow();
+    qDebug()<<"pclwin refresh page"<<currentIndex;
     switch(currentIndex)
     {
     case 1:
         if(verifyClicked)      // Account page, case when user just has clicked Verify Email
             checkVerify();
+        break;
+    case 2:
+        sharesPage->loadAll(); //Shares page
         break;
     case 6:                    //About page, when have a new version
         if(app->new_version())
@@ -150,12 +157,7 @@ void PCloudWindow::refreshPages()
     default:
         break;
     }
-
-    /*fs+sync if (currentIndex == 2) //shares page
-    {
-        sharesPage->load(0);
-        return;
-    }
+    /*fs+sync
     if (currentIndex == 4) //settings page, if user has changed smthng but hasn't save it
     {
         settngsPage->initSettingsPage();
@@ -314,9 +316,19 @@ void PCloudWindow::initRemoteTree(QTreeWidget *table)
     table->sortByColumn(0, Qt::AscendingOrder);
 }
 
+int PCloudWindow::getCurrentPage()
+{
+    return this->ui->listButtonsWidget->currentRow();
+}
+
 SyncPage* PCloudWindow::get_sync_page()
 {
     return this->syncPage;
+}
+
+void PCloudWindow::refreshPagePulbic(int pageindex, int param)
+{
+    emit this->refreshPageSgnl(pageindex, param);
 }
 
 //SLOTS
@@ -424,6 +436,16 @@ void PCloudWindow::updateVersion()
     if(!vrsnDwnldThread)
         vrsnDwnldThread = new VersionDwnldThread(app->OSStr);
     vrsnDwnldThread->start();
+}
+
+void PCloudWindow::refreshPageSlot(int pageindex, int param)
+{
+    qDebug()<<"pclwin refresh page slot"<< param;
+    switch(pageindex)
+    {
+    case 2:  // sharespage
+        this->sharesPage->refreshTab(param);
+    }
 }
 
 void PCloudWindow::openMyPcloud()

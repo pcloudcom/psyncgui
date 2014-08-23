@@ -79,7 +79,7 @@ void ShareFolderWindow::shareFolder()
     remoteFldrsDialog->getFldrPath();
     QStringList mails = ui->email->text().split(",");
     QByteArray name = ui->editline_sharename->text().toUtf8(), msg = ui->text_msg->toPlainText().toUtf8();
-    quint64 perms = (ui->permCreate->isChecked()? PSYNC_PERM_CREATE:0)+
+    quint64 perms = 1 + (ui->permCreate->isChecked()? PSYNC_PERM_CREATE:0)+
             (ui->permModify->isChecked()? PSYNC_PERM_MODIFY :0)+
             (ui->permDelete->isChecked()? PSYNC_PERM_DELETE :0);
 

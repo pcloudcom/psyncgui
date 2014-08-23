@@ -126,6 +126,7 @@ public:
     QString bytesConvert(quint64 bytes);
     QString timeConvert(quint64 seconds);
     bool isMenuorWinActive();
+    bool isMainWinPageActive(int index);
     void setFirstLaunch(bool b); // case after unlink - to display suggestions
     void check_error();
     bool new_version();
