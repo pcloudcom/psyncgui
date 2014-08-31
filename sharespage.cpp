@@ -230,14 +230,20 @@ void SharesPage::cancelRqst()
 {
     QObject* sender = QObject::sender();
     QTreeWidget* table;
+    QString msg;
 
     int incoming = 0;
     if(sender->objectName() == "btnCancelRqst")
+    {
         table = win->ui->treeMyRequest;
+        msg = "Do you really want to cancel the selected share request?";
+    }
+
     else
     {
         table = win->ui->treeRequestsWithMe;
         incoming = 1;
+        msg = "Do you really want to reject the selected share request?";
     }
 
     if(!table->currentItem())
@@ -248,7 +254,7 @@ void SharesPage::cancelRqst()
     else
     {
         QTreeWidgetItem* currentItem = table->currentItem();
-        if(QMessageBox::question(NULL,"pCloud","Do you really want to reject the selected share request?",QMessageBox::Yes|QMessageBox::No) == QMessageBox::Yes)
+        if(QMessageBox::question(NULL,"pCloud",msg,QMessageBox::Yes|QMessageBox::No) == QMessageBox::Yes)
         {
             char* err= NULL;
             int res;

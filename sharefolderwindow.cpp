@@ -89,7 +89,7 @@ void ShareFolderWindow::shareFolder()
         ui->email->setText(mails.join(","));
         if (!isValidEmail(mail))
         {
-            char errmsg[256];
+            char errmsg[512];
             strcpy(errmsg,mail);
             strcat(errmsg," is not a valid e-mail address.");
             this->showError(errmsg);

@@ -174,7 +174,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Message to Recepient:</string>
+         <string>Message to Recipient:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
