@@ -4,6 +4,7 @@
 #include "changepassdialog.h"
 #include "ui_changepassdialog.h"
 #include "common.h"
+#include <QInputDialog>
 #include <QDesktopServices>
 #include <QUrl>
 #include <QDateTime>
@@ -34,9 +35,9 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     //create Items for QListWidget
     new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 0
     new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 1
-    new QListWidgetItem(QIcon(":/128x128/images/128x128/shares.png"),trUtf8("Shares"),ui->listButtonsWidget); //index 2
-    new QListWidgetItem(QIcon(":/128x128/images/128x128/sync.png"),trUtf8("Sync"),ui->listButtonsWidget); //Sync Page index 3
-    new QListWidgetItem(QIcon(":/128x128/images/128x128/settings.png"),trUtf8("Settings"),ui->listButtonsWidget); //index 4
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/sync.png"),trUtf8("Sync"),ui->listButtonsWidget); //Sync Page index 2
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/settings.png"),trUtf8("Settings"),ui->listButtonsWidget); //index 3
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/shares.png"),trUtf8("Shares"),ui->listButtonsWidget); //index 4
     new QListWidgetItem(QIcon(":/128x128/images/128x128//help.png"),trUtf8("Help"),ui->listButtonsWidget); //index 5
     new QListWidgetItem(QIcon(":/128x128/images/128x128/info.png"),trUtf8("About"),ui->listButtonsWidget); //index 6
 
@@ -45,7 +46,6 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     settngsPage = new SettingsPage(this, app);
     syncPage = new SyncPage(this, app);
     sharesPage = new SharesPage(this, app);
-    flagCurrentUserEmitsShareEvent = false;
     // indexes of Items in listWidget and their coresponding pages in StackWidget are the same
     connect(ui->listButtonsWidget,
             SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
@@ -86,7 +86,6 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     menuAccnt->addAction(actionChangePass);
     menuAccnt->addAction(forgotPassAction);
     ui->btnAccntMenu->setMenu(menuAccnt);
-
 
 #ifdef Q_OS_LINUX
     ui->listButtonsWidget->item(4)->setHidden(true); //TEMP
@@ -138,16 +137,14 @@ void PCloudWindow::showEvent(QShowEvent *)
 }
 
 void PCloudWindow::refreshPage(int currentIndex)
-{    
-   // int currentIndex = ui->listButtonsWidget->currentRow();
-    qDebug()<<"pclwin refresh page"<<currentIndex;
+{            
     switch(currentIndex)
     {
     case 1:
         if(verifyClicked)      // Account page, case when user just has clicked Verify Email
             checkVerify();
         break;
-    case 2:
+    case 4:
         sharesPage->loadAll(); //Shares page
         break;
     case 6:                    //About page, when have a new version
@@ -184,9 +181,9 @@ void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when
     {
         ui->listButtonsWidget->setRowHidden(0,true); //Accont - not logged
         ui->listButtonsWidget->setRowHidden(1,false); //Account - logged
-        ui->listButtonsWidget->setRowHidden(2,false); //Shares        
-        ui->listButtonsWidget->setRowHidden(3,false); //Sync
-        //ui->listButtonsWidget->setRowHidden(4, false); // pcloud Settings;
+        ui->listButtonsWidget->setRowHidden(2,false); //Sync
+        //ui->listButtonsWidget->setRowHidden(3,false); //Drive settings
+        ui->listButtonsWidget->setRowHidden(4,false); //Shares
     }
     else
     {
@@ -194,7 +191,7 @@ void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when
         ui->listButtonsWidget->setRowHidden(1,true);
         ui->listButtonsWidget->setRowHidden(2,true);
         ui->listButtonsWidget->setRowHidden(3,true);
-        //ui->listButtonsWidget->setRowHidden(4, false); // for fs -> false
+        ui->listButtonsWidget->setRowHidden(4,true);
     }
 }
 
@@ -316,6 +313,37 @@ void PCloudWindow::initRemoteTree(QTreeWidget *table)
     table->sortByColumn(0, Qt::AscendingOrder);
 }
 
+QString PCloudWindow::newRemoteFldr(QTreeWidget *table)
+{
+    QString dirname = QInputDialog::getText(this,
+                                            tr("Create Directory"),
+                                            tr("Directory name"));
+    if(dirname.isEmpty())
+        return "";
+    QString parentpath = table->currentItem()->data(0, Qt::UserRole).toString();
+    if(parentpath != "/")
+        parentpath.append("/");
+    parentpath.append(dirname);
+
+    char *err = NULL;
+    psync_create_remote_folder_by_path(parentpath.toUtf8(),&err);
+    if (err)
+    {
+        QMessageBox::critical(this,"pCloud",trUtf8(err));
+        return "";
+    }
+    free(err);
+
+    QTreeWidgetItem *item = new QTreeWidgetItem((QTreeWidgetItem*)0,QStringList(dirname));
+    item->setIcon(0,QIcon(":images/images/folder-p.png"));
+    item->setData(0,Qt::UserRole, parentpath);
+    table->currentItem()->insertChild(0,item);
+    table->setCurrentItem(item);
+    table->scrollToItem(item);
+
+    return dirname;
+}
+
 int PCloudWindow::getCurrentPage()
 {
     return this->ui->listButtonsWidget->currentRow();
@@ -335,6 +363,13 @@ void PCloudWindow::refreshPagePulbic(int pageindex, int param)
 void PCloudWindow::shareFolder()
 {
     emit sharesPage->shareFolder();
+}
+
+void PCloudWindow::hide()
+{
+    if (this->sharesPage->sharefolderwin && this->sharesPage->sharefolderwin->isVisible())
+        this->sharesPage->sharefolderwin->hide();
+    QMainWindow::hide();
 }
 
 void PCloudWindow::changePass()
@@ -439,11 +474,10 @@ void PCloudWindow::updateVersion()
 }
 
 void PCloudWindow::refreshPageSlot(int pageindex, int param)
-{
-    qDebug()<<"pclwin refresh page slot"<< param;
+{    
     switch(pageindex)
     {
-    case 2:  // sharespage
+    case 4:  // sharespage
         this->sharesPage->refreshTab(param);
     }
 }

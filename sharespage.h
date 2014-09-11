@@ -28,10 +28,9 @@ private:
     QString getPermissions(quint8 perm);
     void fillSharesTable(bool incoming);
     void fillRequestsTable(bool incoming);
-    void addSharesRow(QTreeWidget *table,QStringList data, quint64 id, quint8 perms, int index);
+    void addSharesRow(QTreeWidget *table,QStringList data, quint64 id, quint64 fldrid,quint8 perms, int index);
     void setTableProps(QTreeWidget* table);
     void getError(int res, char* err);
-
 public slots:
     void refreshTab(int i);
     void stopShare();
@@ -39,6 +38,7 @@ public slots:
     void cancelRqst(); //cancel requests
     void acceptRqst(); //incoming shares
     void shareFolder();   
+    void openSharedFldr(QTreeWidgetItem* item,int index);
 };
 
 

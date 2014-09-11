@@ -2,8 +2,9 @@
 #include "psynclib.h"
 #include "pcloudwindow.h"
 #include "ui_pcloudwindow.h"
-
 #include "unistd.h"
+#include <QDesktopServices>
+#include <QUrl>
 
 SharesPage::SharesPage(PCloudWindow *w, PCloudApp *a,  QObject *parent) :
     QObject(parent)
@@ -28,8 +29,9 @@ SharesPage::SharesPage(PCloudWindow *w, PCloudApp *a,  QObject *parent) :
     connect(win->ui->btnAcceptRqst, SIGNAL(clicked()), this, SLOT(acceptRqst()));
     connect(win->ui->btnShareFolder, SIGNAL(clicked()), this, SLOT(shareFolder()));
     connect(win->ui->tabWidgetShares, SIGNAL(currentChanged(int)), this, SLOT(refreshTab(int))); // to del
-    connect(win->ui->treeMyShares, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
-            this,SLOT(modifyShare()));
+    connect(win->ui->treeMyShares, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(openSharedFldr(QTreeWidgetItem*,int)));
+    connect(win->ui->treeMyRequest, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(openSharedFldr(QTreeWidgetItem*,int)));
+    connect(win->ui->treeSharedWithMe, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(openSharedFldr(QTreeWidgetItem*,int)));
     connect(win->ui->treeRequestsWithMe, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(acceptRqst()));
 
     loadAll();
@@ -78,10 +80,10 @@ QString SharesPage::getPermissions(quint8 perm)
     return res;
 }
 
-
-void SharesPage::addSharesRow(QTreeWidget *table, QStringList data, quint64 id, quint8 perms, int index)
+void SharesPage::addSharesRow(QTreeWidget *table, QStringList data, quint64 id, quint64 fldrid, quint8 perms, int index)
 {
     QTreeWidgetItem* sharedItem = new QTreeWidgetItem((QTreeWidgetItem*)0,data);
+    sharedItem->setData(1,Qt::UserRole,fldrid);
     sharedItem->setData(2,Qt::UserRole,perms);
     sharedItem->setData(4,Qt::UserRole,id);
     table->insertTopLevelItem(index,sharedItem);
@@ -107,7 +109,7 @@ void SharesPage::fillSharesTable(bool incoming)
                 << getPermissions(shares->shares[i].permissions)
                 << QDateTime::fromTime_t(shares->shares[i].created).date().toString("dd/MM/yy");
 
-            addSharesRow(table, data, shares->shares[i].shareid, shares->shares[i].permissions, i);
+            addSharesRow(table, data, shares->shares[i].shareid, shares->shares[i].folderid, shares->shares[i].permissions, i);
         }
 
         free(shares);
@@ -141,8 +143,7 @@ void SharesPage::fillRequestsTable(bool incoming)
             data<< shares->sharerequests[i].email << shares->sharerequests[i].sharename
                 << getPermissions(shares->sharerequests[i].permissions)
                 << QDateTime::fromTime_t(shares->sharerequests[i].created).date().toString("dd/MM/yy");
-
-            addSharesRow(table, data, shares->sharerequests[i].sharerequestid, shares->sharerequests[i].permissions, i);
+            addSharesRow(table, data, shares->sharerequests[i].sharerequestid, shares->sharerequests[i].folderid, shares->sharerequests[i].permissions, i);
         }
 
         free(shares);
@@ -188,11 +189,19 @@ void SharesPage::shareFolder()
     app->showWindow(sharefolderwin);
 }
 
+void SharesPage::openSharedFldr(QTreeWidgetItem* item, int)
+{
+    quint64 fldrid = item->treeWidget()->currentItem()->data(1,Qt::UserRole).toLongLong();
+    QString urlstr = ("https://my.pcloud.com/#folder=" +
+                      QString::number(fldrid) + "&page=filemanager&authtoken=" + psync_get_auth_string());
+    QDesktopServices::openUrl(QUrl(urlstr, QUrl::TolerantMode));
+}
+
 void SharesPage::stopShare() //Stop outgoing shares - My shares tables
 {
     QObject* sender = QObject::sender();
     QTreeWidget* table;
-    win->flagCurrentUserEmitsShareEvent = true;
+    app->noEventCallbackFlag = true;
 
     if(sender->objectName() == "btnMySharesStop")
         table = win->ui->treeMyShares;

@@ -29,6 +29,7 @@ ShareFolderWindow::~ShareFolderWindow()
 
 void ShareFolderWindow::showEvent(QShowEvent *event)
 {   
+    ui->email->clear();
     ui->editline_sharename->clear();
     ui->btnOpenRemoteDialog->setText(trUtf8("Choose remote folder"));
     ui->permCreate->setChecked(false);
@@ -43,7 +44,6 @@ void ShareFolderWindow::closeEvent(QCloseEvent *event)
     hide();
     event->ignore();
 }
-
 
 //slots
 void ShareFolderWindow::setFlrd()

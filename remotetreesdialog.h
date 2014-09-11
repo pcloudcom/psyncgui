@@ -25,12 +25,14 @@ public:
     QString getFldrPath();
 protected:
     Ui::RemoteTreesDialog *ui;
+    PCloudWindow* win;
     quint64 fldrid;
     QString fldrPath;
-    void showEvent(QShowEvent *event);
+    void showEvent(QShowEvent *event); 
 private:
     QTreeWidgetItem* root;
 public slots:
+    void newRemoteFldr();
     virtual void setSelectedFolder();
 };
 

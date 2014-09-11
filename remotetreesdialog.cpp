@@ -7,13 +7,14 @@ RemoteTreesDialog::RemoteTreesDialog(PCloudWindow* &w,QWidget *parent) :
     ui(new Ui::RemoteTreesDialog)
 {
     ui->setupUi(this);
+    this->win = w;
     ui->widget_fldrName->setVisible(false); /// for acceptshare - to edin fldr name
     w->initRemoteTree(ui->treeRemoteFldrs);
     root = ui->treeRemoteFldrs->currentItem();
 
     connect(ui->btnAccept, SIGNAL(clicked()), this,SLOT(setSelectedFolder()));
     connect(ui->btnReject, SIGNAL(clicked()),this,SLOT(hide()));
-
+    connect(ui->btnNewFolder, SIGNAL(clicked()), this, SLOT(newRemoteFldr()));
     this->setWindowIcon(QIcon(WINDOW_ICON));
     this->setWindowTitle("pCloud");
 
@@ -28,6 +29,11 @@ void RemoteTreesDialog::showEvent(QShowEvent *event)
 {
     ui->treeRemoteFldrs->setCurrentItem(this->root);
     event->accept();
+}
+
+void RemoteTreesDialog::newRemoteFldr()
+{
+    this->win->newRemoteFldr(ui->treeRemoteFldrs);
 }
 
 void RemoteTreesDialog::setSelectedFolder()

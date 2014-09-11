@@ -80,6 +80,7 @@ public:
     bool isVerified;
     bool unlinkFlag; //clears gui for login after unlink
     bool noFreeSpaceMsgShownFlag; // when come from download or upload thre is a mix of discfull and downlad/upld returned statutes
+    bool noEventCallbackFlag; // indicates if event is raised by current user
     QString planStr;
     quint64 freeSpacePercentage;
     qreal usedSpace;

@@ -43,48 +43,10 @@ void addSyncDialog::hideDialog()
     this->hide();
 }
 
-
-static QList<QTreeWidgetItem *> listRemoteFldrs(QString parentPath)
-{
-    QList<QTreeWidgetItem *> items;
-    pfolder_list_t *res = psync_list_remote_folder_by_path(parentPath.toUtf8(),PLIST_FOLDERS);
-
-    if (res != NULL)
-    {
-        for(uint i = 0; i < res->entrycnt; i++)
-        {
-            QString path = parentPath;
-            if (parentPath != "/")
-                path.append("/").append(res->entries[i].name);
-            else
-                path.append(res->entries[i].name);
-            QTreeWidgetItem *item = new QTreeWidgetItem((QTreeWidgetItem*)0, QStringList(res->entries[i].name));
-            item->setIcon(0,QIcon(":images/images/folder-p.png"));
-            item->setData(0,Qt::UserRole, path);
-            item->addChildren(listRemoteFldrs(path));
-            items.append(item);
-        }
-    }
-    free(res);
-    return items;
-}
-
 void addSyncDialog::load()
 {    
     //remote tree
-    QList<QTreeWidgetItem *> items;
-    ui->treeSyncRemote->clear();
-    QString root = "/";
-    QTreeWidgetItem *rootItem = new QTreeWidgetItem(QStringList(root));
-    rootItem->setIcon(0,QIcon(":images/images/folder-p.png"));
-    ui->treeSyncRemote->insertTopLevelItem(0,rootItem);
-    ui->treeSyncRemote->setCurrentItem(rootItem);
-    items = listRemoteFldrs(root);
-    rootItem->addChildren(items);
-    ui->treeSyncRemote->expandItem(rootItem);
-    ui->treeSyncRemote->setSortingEnabled(true);
-    ui->treeSyncRemote->sortByColumn(0, Qt::AscendingOrder);
-
+    win->initRemoteTree(ui->treeSyncRemote);
 
     //local tree
     model = new QFileSystemModel;
@@ -113,7 +75,6 @@ void addSyncDialog::load()
             //ui->treeSyncLocal->scrollTo(model->index(addNewSyncsWin->getCurrLocalPath()),QAbstractItemView::PositionAtCenter);
             ui->comboSyncType->setCurrentIndex(addNewSyncsWin->getCurrType()-1);
 
-
             // remote tree - add new remote Fodlers from suggestions
             if (addNewSyncsWin->newRemoteFldrsLst.length() > 0)
             {
@@ -125,11 +86,12 @@ void addSyncDialog::load()
                     QString rootName = addNewSyncsWin->newRemoteFldrsLst.at(i);
                     rootName.insert(0,"/");
                     newitem->setData(0, Qt::UserRole, rootName);
-                    items.append(newitem);
+                    QTreeWidgetItem* rootItem = ui->treeSyncRemote->topLevelItem(0);
                     rootItem->addChild(newitem);
                 }
                 ui->treeSyncRemote->sortByColumn(0, Qt::AscendingOrder);
             }
+
             //scroll to selected item
             QString remotePath = addNewSyncsWin->getCurrRemotePath();
             QString localName = addNewSyncsWin->getCurrRemotePath().section("/", -1, 1);
@@ -219,39 +181,10 @@ void addSyncDialog::newLocalFldr()
 
 void addSyncDialog::newRemoteFldr()
 {
-    //to check for existing name - in welcomescreen.checkRemoteName
-    // add it in the list
-    char *err = NULL;
-    QString dirname = QInputDialog::getText(this,
-                                            tr("Create Directory"),
-                                            tr("Directory name"));
-    if(dirname.isEmpty())
-        return;
-    QString parentpath = ui->treeSyncRemote->currentItem()->data(0, Qt::UserRole).toString();
-    parentpath.append("/").append(dirname);
-    psync_create_remote_folder_by_path(parentpath.toUtf8(),&err);
-    if (err)
-    {
-        QMessageBox::critical(this,"pCloud",trUtf8(err));
-        return;
-    }
-    free(err);
-    if (this->addNewSyncsWin)
+    QString dirname = this->win->newRemoteFldr(ui->treeSyncRemote);
+    if (this->addNewSyncsWin && dirname != "")
     {
         addNewSyncsWin->addNewRemoteFldr(dirname);
     }
-    QTreeWidgetItem *item = new QTreeWidgetItem((QTreeWidgetItem*)0,QStringList(dirname));
-    item->setIcon(0,QIcon(":images/images/folder-p.png"));
-    item->setData(0,Qt::UserRole, parentpath);
-    ui->treeSyncRemote->currentItem()->insertChild(0,item);
-    ui->treeSyncRemote->setCurrentItem(item);
-    ui->treeSyncRemote->scrollToItem(item);
 }
-
-
-
-
-
-
-
 

@@ -31,10 +31,10 @@ public:
     ~PCloudWindow();
    //QList<QTreeWidgetItem *> listRemoteFldrs(QString parentPath);
     void initRemoteTree(QTreeWidget* table); // fill remote trees in differnt woins/dialogs
+    QString newRemoteFldr(QTreeWidget* table);
     int getCurrentPage();
     SyncPage* get_sync_page();
-    void refreshPagePulbic(int pageindex, int param);
-    bool flagCurrentUserEmitsShareEvent;
+    void refreshPagePulbic(int pageindex, int param);    
 private:
     Ui::PCloudWindow *ui;
     PCloudApp *app;
@@ -57,6 +57,7 @@ signals:
 public slots:
     void changePage(QListWidgetItem *current, QListWidgetItem *previous);
     void showpcloudWindow(int index);
+    void hide();
     void setOnlineItems(bool online);
     void setOnlinePages();  //when the user logs in
     void refreshUserinfo();    
@@ -71,7 +72,7 @@ public slots:
     void forgotPass();
     void upgradePlan();
     void verifyEmail();
-    void unlinkSync(); // to move in sync.h
+    void unlinkSync();
     void refreshPageSlot(int pageindex, int param);
 };
 

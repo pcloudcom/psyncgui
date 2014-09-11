@@ -133,7 +133,7 @@ SuggestnsBaseWin::SuggestnsBaseWin(PCloudApp *a, QStringList *fldrs, QWidget *pa
     }
 }
 
-void SuggestnsBaseWin::addLocalFldrs(QStringList *itemsLst)
+void SuggestnsBaseWin::addLocalFldrs(QStringList *itemsLst) //received from context menu
 {           
     if(ui->treeWidget->topLevelItemCount())
         ui->treeWidget->clear();
