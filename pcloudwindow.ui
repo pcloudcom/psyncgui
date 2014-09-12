@@ -1185,7 +1185,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidgetShares">
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tabMyShares">
            <attribute name="title">
@@ -1267,7 +1267,14 @@
              </layout>
             </item>
             <item>
-             <spacer name="verticalSpacer">
+             <widget class="Line" name="line_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_2">
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
@@ -1278,13 +1285,6 @@
                </size>
               </property>
              </spacer>
-            </item>
-            <item>
-             <widget class="Line" name="line_4">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-             </widget>
             </item>
             <item>
              <widget class="QLabel" name="label_noMyRqsts">
