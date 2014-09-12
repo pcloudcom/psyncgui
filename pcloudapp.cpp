@@ -620,7 +620,7 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcpy(msg,"You received a new Share Request from ");
         strcat(msg, data.share->email);
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
-        if(PCloudApp::appStatic->isMainWinPageActive(2)) //if shraes page is visible
+        if(PCloudApp::appStatic->isMainWinPageActive(4)) //if shraes page is visible
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,1);
         break;
     case PEVENT_SHARE_REQUESTOUT:
@@ -631,12 +631,12 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcat(msg," to ");
         strcpy(msg,data.share->email);
         // PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,0);  data comes later
-        if(PCloudApp::appStatic->isMainWinPageActive(2))
+        if(PCloudApp::appStatic->isMainWinPageActive(4))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,0);
         break;
     case PEVENT_SHARE_ACCEPTIN:
         qDebug()<<"PEVENT_SHARE_ACCEPTIN"; //2.2 I accept a share - refresh both tables in Shared with me
-        if(PCloudApp::appStatic->isMainWinPageActive(2))
+        if(PCloudApp::appStatic->isMainWinPageActive(4))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,1);
         break;
     case PEVENT_SHARE_ACCEPTOUT: // when someones accept what i've shared to him
@@ -646,12 +646,12 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcat(msg, " accepted your Share Request ");
         strcat(msg, data.share->sharename);
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,0);
-        if(PCloudApp::appStatic->isMainWinPageActive(2))
+        if(PCloudApp::appStatic->isMainWinPageActive(4))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,0);
         break;
     case PEVENT_SHARE_DECLINEIN: // reject a share request 2,2
         qDebug()<<"PEVENT_SHARE_DECLINEIN";
-        if(PCloudApp::appStatic->isMainWinPageActive(2))
+        if(PCloudApp::appStatic->isMainWinPageActive(4))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,1);
         break;
     case PEVENT_SHARE_DECLINEOUT:
@@ -661,7 +661,7 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcat(msg, " declined your Share Request ");
         strcat(msg, data.share->sharename);
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,0);
-        if(PCloudApp::appStatic->isMainWinPageActive(2))
+        if(PCloudApp::appStatic->isMainWinPageActive(4))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,0);
         break;
     case PEVENT_SHARE_CANCELIN:
@@ -671,12 +671,12 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcpy(msg,data.share->email);
         strcat(msg, " cancel his/her Share Request");
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
-        if(PCloudApp::appStatic->isMainWinPageActive(2))
+        if(PCloudApp::appStatic->isMainWinPageActive(4))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,1);
         break;
     case PEVENT_SHARE_CANCELOUT:
         qDebug()<<"PEVENT_SHARE_CANCELOUT"; // stop a my request - 1,2
-        if(PCloudApp::appStatic->isMainWinPageActive(2))
+        if(PCloudApp::appStatic->isMainWinPageActive(4))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,0);
         break;
     case PEVENT_SHARE_REMOVEIN: // when I stops a request that was send to me and i have been accepted it,  - my requests 2,1
@@ -686,7 +686,7 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcat(msg, " has stopped his/her Share ");
         strcat(msg,data.share->sharename);
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
-        if(PCloudApp::appStatic->isMainWinPageActive(2))
+        if(PCloudApp::appStatic->isMainWinPageActive(4))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,1);
         break;
     case PEVENT_SHARE_REMOVEOUT: // stop my share - 1,1
@@ -698,7 +698,7 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcat(msg, " has stopped your Share ");
         strcat(msg,data.share->sharename);
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
-        if(PCloudApp::appStatic->isMainWinPageActive(2))
+        if(PCloudApp::appStatic->isMainWinPageActive(4))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,0);
         break;
     case PEVENT_SHARE_MODIFYIN:
@@ -709,12 +709,12 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcat(msg," has been modified by ");
         strcat(msg,data.share->email);
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
-        if(PCloudApp::appStatic->isMainWinPageActive(2))
+        if(PCloudApp::appStatic->isMainWinPageActive(4))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,1);
         break;
     case PEVENT_SHARE_MODIFYOUT:
         qDebug()<<"PEVENT_SHARE_MODIFYOUT"; // i change permissions
-        if(PCloudApp::appStatic->isMainWinPageActive(2))
+        if(PCloudApp::appStatic->isMainWinPageActive(4))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,0);
         break;
     default:
