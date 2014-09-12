@@ -1185,7 +1185,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidgetShares">
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tabMyShares">
            <attribute name="title">
@@ -1379,7 +1379,7 @@
             <item>
              <widget class="QLabel" name="label_shared">
               <property name="text">
-               <string>Shared with me:</string>
+               <string>Shares:</string>
               </property>
              </widget>
             </item>
@@ -1473,7 +1473,7 @@
                <item>
                 <widget class="QLabel" name="label_requests">
                  <property name="text">
-                  <string>Pending Requests:</string>
+                  <string>Requests:</string>
                  </property>
                 </widget>
                </item>

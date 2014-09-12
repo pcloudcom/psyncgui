@@ -182,7 +182,9 @@ void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when
         ui->listButtonsWidget->setRowHidden(0,true); //Accont - not logged
         ui->listButtonsWidget->setRowHidden(1,false); //Account - logged
         ui->listButtonsWidget->setRowHidden(2,false); //Sync
-        //ui->listButtonsWidget->setRowHidden(3,false); //Drive settings
+#ifdef Q_OS_WIN
+        ui->listButtonsWidget->setRowHidden(3,false); //Drive settings
+#endif
         ui->listButtonsWidget->setRowHidden(4,false); //Shares
     }
     else
