@@ -625,12 +625,6 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         break;
     case PEVENT_SHARE_REQUESTOUT:
         qDebug()<<"PEVENT_SHARE_REQUESTOUT"; // i share a folder 1.1
-        strcpy(title, "Share Request successfully sent!");
-        strcpy(msg, "You successfully sent a Share Request "); // to del
-        strcat(msg, data.share->sharename);
-        strcat(msg," to ");
-        strcpy(msg,data.share->email);
-        // PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,0);  data comes later
         if(PCloudApp::appStatic->isMainWinPageActive(4))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,0);
         break;
