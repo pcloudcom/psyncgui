@@ -1185,7 +1185,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidgetShares">
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tabMyShares">
            <attribute name="title">
@@ -1303,7 +1303,7 @@
              <widget class="QWidget" name="widget_myrequests" native="true">
               <layout class="QVBoxLayout" name="verticalLayout_7">
                <property name="spacing">
-                <number>0</number>
+                <number>6</number>
                </property>
                <property name="margin">
                 <number>0</number>
@@ -1465,7 +1465,7 @@
              <widget class="QWidget" name="widget_requesteswithme" native="true">
               <layout class="QVBoxLayout" name="verticalLayout_8">
                <property name="spacing">
-                <number>0</number>
+                <number>6</number>
                </property>
                <property name="margin">
                 <number>0</number>
