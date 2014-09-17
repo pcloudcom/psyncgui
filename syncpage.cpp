@@ -408,6 +408,7 @@ void SyncPage::enableSaveBtn()
         win->ui->btnSyncSttngsSave->setEnabled(false);
         win->ui->btnSyncSttngCancel->setEnabled(false);
     }
+    clearSpeedEditLines();
 }
 
 void SyncPage::saveSettings()
@@ -453,12 +454,10 @@ void SyncPage::saveSettings()
             << (psync_get_int_setting("maxuploadspeed"))/1000 << " ssl=" <<psync_get_bool_setting("usessl");
     win->ui->btnSyncSttngsSave->setEnabled(false);
     win->ui->btnSyncSttngCancel->setEnabled(false);
-    clearSpeedEditLines();
 }
 void SyncPage::cancelSettings()
 {
     loadSettings();
-    clearSpeedEditLines();
     win->ui->btnCancelSttngs->setEnabled(false);
     win->ui->btnSaveSttngs->setEnabled(false);
 
