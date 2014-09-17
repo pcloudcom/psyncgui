@@ -616,7 +616,7 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         break;
     case PEVENT_SHARE_REQUESTIN:
         qDebug()<<"PEVENT_SHARE_REQUESTIN"; // someone else shares me a folder, can be added from web
-        strcpy(title, "New Share Request received");
+        strcpy(title, "New Share Request Received!");
         strcpy(msg,"You received a new Share Request from ");
         strcat(msg, data.share->email);
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
@@ -624,7 +624,13 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,1);
         break;
     case PEVENT_SHARE_REQUESTOUT:
-        qDebug()<<"PEVENT_SHARE_REQUESTOUT"; // i share a folder 1.1
+        qDebug()<<"PEVENT_SHARE_REQUESTOUT" <<data.share->email<< data.share->sharename; // i share a folder 1.1
+        strcpy(title, "Share Request Sent Successfully!");
+        strcpy(msg,"You successfully sent a Share Request ");
+        strcat(msg, data.share->sharename);
+        strcat(msg," to ");
+        strcat(msg, data.share->email);
+        PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,0);
         if(PCloudApp::appStatic->isMainWinPageActive(4))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,0);
         break;
@@ -635,7 +641,7 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         break;
     case PEVENT_SHARE_ACCEPTOUT: // when someones accept what i've shared to him
         qDebug()<<"PEVENT_SHARE_ACCEPTOUT";
-        strcpy(title, "Your Share Request is accepted");
+        strcpy(title, "Share Request Accepted!");
         strcpy(msg,data.share->email);
         strcat(msg, " accepted your Share Request ");
         strcat(msg, data.share->sharename);
@@ -650,7 +656,7 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         break;
     case PEVENT_SHARE_DECLINEOUT:
         qDebug()<<"PEVENT_SHARE_DECLINEOUT"; //when someones rejected what i've shared to him
-        strcpy(title, "Share Request declined");
+        strcpy(title, "Share Request Declined!");
         strcpy(msg,data.share->email);
         strcat(msg, " declined your Share Request ");
         strcat(msg, data.share->sharename);
@@ -661,7 +667,7 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
     case PEVENT_SHARE_CANCELIN:
         qDebug()<<"PEVENT_SHARE_CANCELIN";
         // some one send me a request and HE stopped the request before i choose what to do with it
-        strcpy(title,"Share Request canceled");
+        strcpy(title,"Share Request Canceled!");
         strcpy(msg,data.share->email);
         strcat(msg, " cancel his/her Share Request");
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
@@ -674,30 +680,36 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,0);
         break;
     case PEVENT_SHARE_REMOVEIN: // when I stops a request that was send to me and i have been accepted it,  - my requests 2,1
+        // two cases also
         qDebug()<<"PEVENT_SHARE_REMOVEIN";
-        strcpy(title,"Share Stopped");
+       /* temp till get the flag
+        *  strcpy(title,"Share Stopped");
         strcpy(msg,data.share->email);
-        strcat(msg, " has stopped his/her Share ");
+        strcat(msg, " has stopped your access to ");
         strcat(msg,data.share->sharename);
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
         if(PCloudApp::appStatic->isMainWinPageActive(4))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,1);
+            */
+
         break;
     case PEVENT_SHARE_REMOVEOUT: // stop my share - 1,1
         qDebug()<<"PEVENT_SHARE_REMOVEOUT";
+        //TEmp commented till get the flag
         //case1:  someoned has accepted and after that stopped what i've shared to him
         //case2 : i stop my share
-        strcpy(title,"Share Stopped");
+        /*strcpy(title,"Share Stopped");
         strcpy(msg,data.share->email);
-        strcat(msg, " has stopped your Share ");
+        strcat(msg, " has stopped his/her access to ");
         strcat(msg,data.share->sharename);
-        PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
+        PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,0);
         if(PCloudApp::appStatic->isMainWinPageActive(4))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,0);
+            */
         break;
     case PEVENT_SHARE_MODIFYIN:
         qDebug()<<"PEVENT_SHARE_MODIFYIN"; // some one shared me smthn and changes the permissions
-        strcpy(title,"Modified Share");
+        strcpy(title,"Share Modified!");
         strcpy(msg,"The Share ");
         strcat(msg,data.share->sharename);
         strcat(msg," has been modified by ");
