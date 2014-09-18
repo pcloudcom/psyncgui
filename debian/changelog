@@ -1,8 +1,8 @@
-pclsync (0.102+nmu39) UNRELEASED; urgency=low
+pclsync (0.102+nmu40) UNRELEASED; urgency=low
 
   [ Damyanka Miteva ]
   * Build without FS
-  * rel 39
+  * rel 40
 
   * debian/
   * debian/changelog
@@ -19,10 +19,11 @@ pclsync (0.102+nmu39) UNRELEASED; urgency=low
   * debian/changelog
   * debian/changelog
   * debian/changelog
+  * debian/changelog
 
- -- Damyanka Miteva <damyanka@iain.office.mobileinno.com>  Thu, 11 Sep 2014 12:48:47 +0300
+ -- Damyanka Miteva <damyanka@iain.office.mobileinno.com>  Thu, 18 Sep 2014 13:44:28 +0300
 
-pclsync (0.102+nmu39) unstable; urgency=low
+pclsync (0.102+nmu40) unstable; urgency=low
 
   [ Damyanka Miteva ]
   * Initial
