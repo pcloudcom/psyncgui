@@ -23,6 +23,7 @@ public:
     ~RemoteTreesDialog();
     quint64 getFldrid();       
     QString getFldrPath();
+    void init();
 protected:
     Ui::RemoteTreesDialog *ui;
     PCloudWindow* win;

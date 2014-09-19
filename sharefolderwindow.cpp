@@ -36,6 +36,7 @@ void ShareFolderWindow::showEvent(QShowEvent *event)
     ui->permModify->setChecked(false);
     ui->permDelete->setChecked(false);
     ui->text_msg->clear();
+    remoteFldrsDialog->init();
     event->accept();
 }
 
