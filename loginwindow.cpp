@@ -128,7 +128,7 @@ void LoginWindow::logIn()
     QApplication::restoreOverrideCursor();
     ui->password->clear();
     setError("");
-    hide();
+    this->close();
     //p app->openCloudDir();
 
 }
