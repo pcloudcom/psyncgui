@@ -1,5 +1,6 @@
 #include "pcloudapp.h"
 #include "common.h"
+#include <QDesktopWidget>
 #include <QMenu>
 #include <QUrl>
 #include <QDir>
@@ -29,12 +30,18 @@ void PCloudApp::hideAllWindows(){
 }
 
 void PCloudApp::showWindow(QMainWindow *win)
-{
+{   
+    QDesktopWidget *desktop = QApplication::desktop();
+    int x = (desktop->width() - win->width()) / 2;
+    int y = (desktop->height() - win->height()) / 2;
+    win->move(x,y); //center the win
+
     win->raise();
     win->activateWindow();
     win->showNormal();
     win->setWindowState(Qt::WindowActive);
     this->setActiveWindow(win);
+
 }
 
 void PCloudApp::showRegister(){  
@@ -74,36 +81,42 @@ void PCloudApp::showLogin(){
 }
 void PCloudApp::showAccount(){
     hideAllWindows();
-    pCloudWin->showpcloudWindow(1);
+    pCloudWin->setCurrntIndxPclWin(1);
+    this->showWindow(pCloudWin);
 }
 
 void PCloudApp::showSync()
 {
     hideAllWindows();
-    pCloudWin->showpcloudWindow(2);
+    pCloudWin->setCurrntIndxPclWin(2);
+    this->showWindow(pCloudWin);
 }
 
 void PCloudApp::showSettings()
 {
     hideAllWindows();
-    pCloudWin->showpcloudWindow(3);
+    pCloudWin->setCurrntIndxPclWin(3);
+    this->showWindow(pCloudWin);
 }
 
 void PCloudApp::showShares()
 {
     hideAllWindows();
-    pCloudWin->showpcloudWindow(4);
+    pCloudWin->setCurrntIndxPclWin(4);
+    this->showWindow(pCloudWin);
 }
 
 void PCloudApp::showpcloudHelp()
 {
     hideAllWindows();
-    pCloudWin->showpcloudWindow(5);
+    pCloudWin->setCurrntIndxPclWin(5);
+    this->showWindow(pCloudWin);
 }
 
 void PCloudApp::showpCloudAbout(){
     hideAllWindows();
-    pCloudWin->showpcloudWindow(6);
+    pCloudWin->setCurrntIndxPclWin(6);
+    this->showWindow(pCloudWin);
 }
 
 /*p
@@ -682,7 +695,7 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
     case PEVENT_SHARE_REMOVEIN: // when I stops a request that was send to me and i have been accepted it,  - my requests 2,1
         // two cases also
         qDebug()<<"PEVENT_SHARE_REMOVEIN";
-       /* temp till get the flag
+        /* temp till get the flag
         *  strcpy(title,"Share Stopped");
         strcpy(msg,data.share->email);
         strcat(msg, " has stopped your access to ");

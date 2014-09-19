@@ -163,16 +163,11 @@ void PCloudWindow::refreshPage(int currentIndex)
     */
 }
 
-void PCloudWindow::showpcloudWindow(int index)
+void PCloudWindow::setCurrntIndxPclWin(int index)
 {
     ui->listButtonsWidget->setCurrentRow(index);
     ui->pagesWidget->setCurrentIndex(index);
 
-    this->raise();
-    this->activateWindow();
-    this->showNormal();
-    this->setWindowState(Qt::WindowActive);
-    app->setActiveWindow(this);
 }
 
 void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when is loggedin and loggedout

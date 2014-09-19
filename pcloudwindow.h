@@ -56,7 +56,7 @@ signals:
     void refreshPageSgnl(int pageindex, int param);
 public slots:
     void changePage(QListWidgetItem *current, QListWidgetItem *previous);
-    void showpcloudWindow(int index);
+    void setCurrntIndxPclWin(int index);
     void hide();
     void setOnlineItems(bool online);
     void setOnlinePages();  //when the user logs in

@@ -40,7 +40,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="pageAccntNotLogged">
        <property name="maximumSize">
@@ -265,6 +265,12 @@
               </item>
               <item>
                <widget class="QToolButton" name="tbtnMyPcloud">
+                <property name="minimumSize">
+                 <size>
+                  <width>150</width>
+                  <height>0</height>
+                 </size>
+                </property>
                 <property name="text">
                  <string>my.pcloud.com</string>
                 </property>
@@ -279,6 +285,12 @@
               </item>
               <item>
                <widget class="QToolButton" name="tbtnGetMoreSpace">
+                <property name="minimumSize">
+                 <size>
+                  <width>150</width>
+                  <height>0</height>
+                 </size>
+                </property>
                 <property name="text">
                  <string>Get More Space</string>
                 </property>
@@ -705,7 +717,7 @@
               <item row="0" column="1">
                <widget class="QGroupBox" name="groupBoxSyncSpace">
                 <property name="title">
-                 <string>Minimum Disc Space </string>
+                 <string>Minimum Disk Space </string>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_25">
                  <item>
@@ -1585,6 +1597,12 @@
             </item>
             <item>
              <widget class="QToolButton" name="tBtnOnlineTutorial">
+              <property name="minimumSize">
+               <size>
+                <width>115</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="text">
                <string>See Tutorial</string>
               </property>
@@ -1614,7 +1632,7 @@
             <item>
              <widget class="QLabel" name="label_8">
               <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Online Help&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br/&gt;&lt;/span&gt;Our online F.A.Q. covers almost all aspects of pCloud&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Online Help&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br/&gt;&lt;/span&gt;Our online FAQ cover almost all aspects of pCloud&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
              </widget>
             </item>
@@ -1633,6 +1651,12 @@
             </item>
             <item>
              <widget class="QToolButton" name="tBtnOnlineHelp">
+              <property name="minimumSize">
+               <size>
+                <width>115</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="text">
                <string>Get Help</string>
               </property>
@@ -1681,6 +1705,12 @@
             </item>
             <item>
              <widget class="QToolButton" name="tBtnFeedback">
+              <property name="minimumSize">
+               <size>
+                <width>115</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="text">
                <string>Send Feedback</string>
               </property>
