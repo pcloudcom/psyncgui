@@ -32,6 +32,7 @@ private:
     void initSyncPage();        
     void clearSpeedEditLines();
 public slots:
+    void openTab(int index);
     void refreshTab(int index);
     void syncDoubleClicked(QTreeWidgetItem *item,int col);
     void modifySync();

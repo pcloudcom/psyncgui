@@ -57,6 +57,12 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
     connect(win->ui->edit_UpldSpeed, SIGNAL(textEdited(QString)), this, SLOT(setNewSpeedFromEditline()));
 
 }
+
+void SyncPage::openTab(int index)
+{
+    win->ui->tabWidgetSync->setCurrentIndex(index);
+}
+
 void SyncPage::refreshTab(int index)
 {
     if (index)

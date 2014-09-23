@@ -36,7 +36,7 @@ private:
     QAction *settingsAction;  //Settings page
     QAction *sharesAction; // Shares page(2)
     QAction *shareFolderAction; //opens share folderwin
-    QAction *syncAction; //Sync Tab (3)
+    QAction *syncAction, *syncSttngsAction; //Sync Tab (3)
     QAction *helpAction; // Help Tab (5)
     QAction *aboutPCloudAction; // About tab(6)
     QAction *pauseSyncAction;
@@ -46,7 +46,7 @@ private:
     QAction *syncUpldAction;
     QMenu *notloggedmenu;
     QMenu *loggedmenu;
-    QMenu *syncMenu;
+    QMenu * syncMenu, *syncedFldrsMenu;
     QSystemTrayIcon *tray;
     RegisterWindow *regwin;
     LoginWindow *logwin;     
@@ -164,6 +164,7 @@ public slots:
     void showAccount();
     void showShares();
     void showSync();
+    void showSyncSttngs();
     void showSettings();
     void showpCloudAbout();
     void showpcloudHelp();
