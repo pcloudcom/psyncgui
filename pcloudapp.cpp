@@ -260,9 +260,9 @@ void PCloudApp::createMenus(){
     connect(loginAction, SIGNAL(triggered()), this, SLOT(showLogin()));
     settingsAction=new QAction(QIcon(":/menu/images/menu 48x48/settings.png"),trUtf8("Settings"), this);
     connect(settingsAction, SIGNAL(triggered()), this, SLOT(showSettings()));
-    helpAction = new QAction(QIcon(":/menu/images/menu 32x32/help.png"),trUtf8("Help"),this);
+    helpAction = new QAction(QIcon(":/menu/images/menu16x16/help.png"),trUtf8("Help"),this);
     connect(helpAction, SIGNAL(triggered()), this, SLOT(showpcloudHelp()));
-    aboutPCloudAction = new QAction(QIcon(":/menu/images/menu 32x32/info.png"),trUtf8("About"), this);
+    aboutPCloudAction = new QAction(QIcon(":/menu/images/menu16x16/info.png"),trUtf8("About"), this);
     connect(aboutPCloudAction, SIGNAL(triggered()), this, SLOT(showpCloudAbout()));
     exitAction=new QAction(QIcon(":/menu/images/menu 48x48/exit.png"),trUtf8("Exit"), this); // to be hidden in account tab
     connect(exitAction, SIGNAL(triggered()), this, SLOT(doExit()));
@@ -278,17 +278,17 @@ void PCloudApp::createMenus(){
     notloggedmenu->addSeparator();
     notloggedmenu->addAction(exitAction); // to be hidden in account tab or settings
 
-    accountAction = new QAction(QIcon(":/menu/images/menu 32x32/user.png"),trUtf8("Account"), this); // Account tab
+    accountAction = new QAction(QIcon(":/menu/images/menu16x16/user.png"),trUtf8("Account"), this); // Account tab
     connect(accountAction, SIGNAL(triggered()),this, SLOT(showAccount()));
     //p openAction=new QAction("&Open pCloud folder", this);
     //p connect(openAction, SIGNAL(triggered()), this, SLOT(openCloudDir()));
-    sharesAction = new QAction(QIcon(":/menu/images/menu 32x32/share.png"),trUtf8("Shares"),this);
+    sharesAction = new QAction(QIcon(":/menu/images/menu16x16/share.png"),trUtf8("Shares"),this);
     connect(sharesAction, SIGNAL(triggered()), this, SLOT(showShares()));
    // shareFolderAction = new QAction(QIcon(":/menu/images/menu 48x48/newsync.png"), trUtf8("Add New Share"),this);
     //connect(shareFolderAction,SIGNAL(triggered()), pCloudWin, SLOT(shareFolder()));
 
     //sync menu
-    syncAction = new QAction(QIcon(":/menu/images/menu 32x32/sync.png"),trUtf8("Manage Syncs"),this);
+    syncAction = new QAction(QIcon(":/menu/images/menu16x16/sync.png"),trUtf8("Manage Syncs"),this);
     connect(syncAction, SIGNAL(triggered()), this, SLOT(showSync()));
     pauseSyncAction = new QAction(QIcon(":/menu/images/menu 48x48/pause.png"),trUtf8("Pause Sync"),this);
     connect(pauseSyncAction, SIGNAL(triggered()),this,SLOT(pauseSync()));
@@ -969,7 +969,7 @@ PCloudApp::~PCloudApp(){
     //p delete openAction;
     delete settingsAction;
     delete sharesAction;
-    delete shareFolderAction;
+    //delete shareFolderAction;
     delete syncAction;
     delete helpAction;
     delete aboutPCloudAction;
