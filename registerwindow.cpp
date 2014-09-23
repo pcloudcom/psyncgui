@@ -32,6 +32,14 @@ void RegisterWindow::closeEvent(QCloseEvent *event){
     event->ignore();
 }
 
+void RegisterWindow::showEvent(QShowEvent *)
+{
+    ui->accepttos->setCheckState(Qt::Unchecked);
+    ui->email->clear();
+    ui->confirmpassword->clear();
+    ui->password->clear();
+}
+
 void RegisterWindow::setError(const char *err){
     ui->error->setText(trUtf8(err));
 }

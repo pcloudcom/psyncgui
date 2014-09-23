@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QCloseEvent>
-
+#include <QShowEvent>
 
 namespace Ui {
 class RegisterWindow;
@@ -23,6 +23,8 @@ private:
     Ui::RegisterWindow *ui;
     void setError(const char *err);
     void closeEvent(QCloseEvent *event);
+protected:
+    void showEvent(QShowEvent *event);
 public slots:
     void focusPass();
     void focusConfirm();
