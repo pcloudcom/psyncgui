@@ -60,12 +60,12 @@
         <file>images/menu 48x48/resume.png</file>
         <file>images/menu 48x48/settings.png</file>
         <file>images/menu 48x48/upload.png</file>
-        <file>images/menu 32x32/drive.png</file>
-        <file>images/menu 32x32/account.png</file>
-        <file>images/menu 32x32/help.png</file>
-        <file>images/menu 32x32/info.png</file>
-        <file>images/menu 32x32/share.png</file>
-        <file>images/menu 32x32/sync.png</file>
+        <file>images/menu16x16/info.png</file>
+        <file>images/menu16x16/help.png</file>
+        <file>images/menu16x16/drive.png</file>
+        <file>images/menu16x16/share.png</file>
+        <file>images/menu16x16/sync.png</file>
+        <file>images/menu16x16/account.png</file>
     </qresource>
     <qresource prefix="/debian">
         <file>images/pcloud.xpm</file>
