@@ -31,6 +31,7 @@
         <file>images/128x128/user.png</file>
         <file>images/128x128/settings.png</file>
         <file>images/128x128/shares.png</file>
+        <file>images/128x128/drive.png</file>
     </qresource>
     <qresource prefix="/48x48">
         <file>images/48x48/faq-modal.png</file>
@@ -52,18 +53,19 @@
         <file>images/menu 48x48/download.png</file>
         <file>images/menu 48x48/emptyfolder.png</file>
         <file>images/menu 48x48/exit.png</file>
-        <file>images/menu 48x48/help.png</file>
-        <file>images/menu 48x48/info.png</file>
         <file>images/menu 48x48/login.png</file>
         <file>images/menu 48x48/newsync.png</file>
         <file>images/menu 48x48/pause.png</file>
         <file>images/menu 48x48/register.png</file>
         <file>images/menu 48x48/resume.png</file>
         <file>images/menu 48x48/settings.png</file>
-        <file>images/menu 48x48/sync.png</file>
         <file>images/menu 48x48/upload.png</file>
-        <file>images/menu 48x48/user.png</file>
-        <file>images/menu 48x48/shares.png</file>
+        <file>images/menu 32x32/drive.png</file>
+        <file>images/menu 32x32/account.png</file>
+        <file>images/menu 32x32/help.png</file>
+        <file>images/menu 32x32/info.png</file>
+        <file>images/menu 32x32/share.png</file>
+        <file>images/menu 32x32/sync.png</file>
     </qresource>
     <qresource prefix="/debian">
         <file>images/pcloud.xpm</file>
