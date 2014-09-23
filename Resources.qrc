@@ -65,7 +65,7 @@
         <file>images/menu16x16/drive.png</file>
         <file>images/menu16x16/share.png</file>
         <file>images/menu16x16/sync.png</file>
-        <file>images/menu16x16/account.png</file>
+        <file>images/menu16x16/user.png</file>
     </qresource>
     <qresource prefix="/debian">
         <file>images/pcloud.xpm</file>
