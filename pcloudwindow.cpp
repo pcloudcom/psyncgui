@@ -28,18 +28,19 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     ui->listButtonsWidget->setSpacing(12);
     ui->listButtonsWidget->setStyleSheet("background-color:transparent");
     ui->listButtonsWidget->setMovement(QListView::Static); //not to move items with the mouse
-    ui->listButtonsWidget->setMinimumWidth(360);
+    ui->listButtonsWidget->setMinimumWidth(450);
     ui->listButtonsWidget->setMaximumHeight(85);
     ui->listButtonsWidget->setMinimumHeight(84); // precakva mi layouta
 
     //create Items for QListWidget
     new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 0
     new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 1
-    new QListWidgetItem(QIcon(":/128x128/images/128x128/sync.png"),trUtf8("Sync"),ui->listButtonsWidget); //Sync Page index 2
-    new QListWidgetItem(QIcon(":/128x128/images/128x128/settings.png"),trUtf8("Settings"),ui->listButtonsWidget); //index 3
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/drive.png"),trUtf8("Drive"),ui->listButtonsWidget); //index 2
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/sync.png"),trUtf8("Sync"),ui->listButtonsWidget); //Sync Page index 3
     new QListWidgetItem(QIcon(":/128x128/images/128x128/shares.png"),trUtf8("Shares"),ui->listButtonsWidget); //index 4
-    new QListWidgetItem(QIcon(":/128x128/images/128x128//help.png"),trUtf8("Help"),ui->listButtonsWidget); //index 5
-    new QListWidgetItem(QIcon(":/128x128/images/128x128/info.png"),trUtf8("About"),ui->listButtonsWidget); //index 6
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/settings.png"),trUtf8("Settings"),ui->listButtonsWidget); //index 5
+    new QListWidgetItem(QIcon(":/128x128/images/128x128//help.png"),trUtf8("Help"),ui->listButtonsWidget); //index 6
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/info.png"),trUtf8("About"),ui->listButtonsWidget); //index 7
 
     fillAcountNotLoggedPage();
     fillAboutPage();
@@ -86,10 +87,6 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     menuAccnt->addAction(actionChangePass);
     menuAccnt->addAction(forgotPassAction);
     ui->btnAccntMenu->setMenu(menuAccnt);
-
-#ifdef Q_OS_LINUX
-    ui->listButtonsWidget->item(4)->setHidden(true); //TEMP
-#endif
 
 }
 
@@ -140,14 +137,14 @@ void PCloudWindow::refreshPage(int currentIndex)
 {            
     switch(currentIndex)
     {
-    case 1:
+    case ACCNT_LOGGED_PAGE_NUM:
         if(verifyClicked)      // Account page, case when user just has clicked Verify Email
             checkVerify();
         break;
-    case 4:
+    case SHARES_PAGE_NUM:
         sharesPage->loadAll(); //Shares page
         break;
-    case 6:                    //About page, when have a new version
+    case ABOUT_PAGE_NUM:                    //About page, when have a new version
         if(app->new_version())
             fillAboutPage();
         break;
@@ -174,21 +171,23 @@ void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when
 {
     if(online)
     {
-        ui->listButtonsWidget->setRowHidden(0,true); //Accont - not logged
-        ui->listButtonsWidget->setRowHidden(1,false); //Account - logged
-        ui->listButtonsWidget->setRowHidden(2,false); //Sync
-#ifdef Q_OS_WIN
-        ui->listButtonsWidget->setRowHidden(3,false); //Drive settings
+        ui->listButtonsWidget->setRowHidden(ACCNT_NOT_LOGGED_PAGE_NUM, true); //Accont - not logged
+        ui->listButtonsWidget->setRowHidden(ACCNT_LOGGED_PAGE_NUM, false); //Account - logged
+#ifdef VFS
+        ui->listButtonsWidget->setRowHidden(DRIVE_PAGE_NUM, false); //drive
 #endif
-        ui->listButtonsWidget->setRowHidden(4,false); //Shares
+        ui->listButtonsWidget->setRowHidden(SYNC_PAGE_NUM, false); //Sync
+        ui->listButtonsWidget->setRowHidden(SHARES_PAGE_NUM, false); //Shares
+        ui->listButtonsWidget->setRowHidden(SETTINGS_PAGE_NUM, false);       //setttings
     }
     else
     {
-        ui->listButtonsWidget->setRowHidden(0,false);
-        ui->listButtonsWidget->setRowHidden(1,true);
-        ui->listButtonsWidget->setRowHidden(2,true);
-        ui->listButtonsWidget->setRowHidden(3,true);
-        ui->listButtonsWidget->setRowHidden(4,true);
+        ui->listButtonsWidget->setRowHidden(ACCNT_NOT_LOGGED_PAGE_NUM, false);
+        ui->listButtonsWidget->setRowHidden(ACCNT_LOGGED_PAGE_NUM, true);
+        ui->listButtonsWidget->setRowHidden(DRIVE_PAGE_NUM, true);
+        ui->listButtonsWidget->setRowHidden(SYNC_PAGE_NUM,true);
+        ui->listButtonsWidget->setRowHidden(SHARES_PAGE_NUM,true);
+        ui->listButtonsWidget->setRowHidden(SETTINGS_PAGE_NUM, true);
     }
 }
 
@@ -474,7 +473,7 @@ void PCloudWindow::refreshPageSlot(int pageindex, int param)
 {    
     switch(pageindex)
     {
-    case 4:  // sharespage
+    case SHARES_PAGE_NUM:  // sharespage
         this->sharesPage->refreshTab(param);
     }
 }

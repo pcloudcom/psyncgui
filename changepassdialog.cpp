@@ -9,6 +9,7 @@ ChangePassDialog::ChangePassDialog(QWidget *parent) :
     connect(ui->btnSave, SIGNAL(clicked()), this, SLOT(checkPasses()));
     connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(reject()));
     this->setWindowTitle("pCloud");
+    this->setFixedSize(this->width(),this->height()); //not resized
 }
 
 ChangePassDialog::~ChangePassDialog()

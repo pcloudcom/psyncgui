@@ -33,12 +33,13 @@ private:
     QAction *exitAction;    
     //p  QAction *openAction; //open pcld fldr
     QAction *accountAction;
-    QAction *settingsAction;  //Settings page
-    QAction *sharesAction; // Shares page(2)
+    QAction *driveAction; // opens Drive page
+    QAction *sharesAction; // Shares page
     QAction *shareFolderAction; //opens share folderwin
-    QAction *syncAction, *syncSttngsAction; //Sync Tab (3)
-    QAction *helpAction; // Help Tab (5)
-    QAction *aboutPCloudAction; // About tab(6)
+    QAction *syncAction, *syncSttngsAction; //Sync Tab
+    QAction *settingsAction;  //Settings page
+    QAction *helpAction; // Help Tab
+    QAction *aboutPCloudAction; // About tab
     QAction *pauseSyncAction;
     QAction *resumeSyncAction;
     QAction *addSyncAction;
@@ -46,7 +47,7 @@ private:
     QAction *syncUpldAction;
     QMenu *notloggedmenu;
     QMenu *loggedmenu;
-    QMenu * syncMenu, *syncedFldrsMenu;
+    QMenu * syncMenu, *syncedFldrsMenu, *sharesMenu; //submenus in the tray menu
     QSystemTrayIcon *tray;
     RegisterWindow *regwin;
     LoginWindow *logwin;     
@@ -72,7 +73,7 @@ public:
     quint32 lastStatus;
     PCloudWindow *pCloudWin;
     WelcomeWin *welcomeWin;
-    SuggestnsBaseWin *syncFldrsWin;
+    SuggestnsBaseWin *syncFldrsWin; // for context menu
     QString username, authentication;
     QString downldInfo, uplodInfo;
     bool rememberMe,isFirstLaunch;
@@ -162,9 +163,10 @@ public slots:
     void showRegister();
     void showLogin();
     void showAccount();
+    void showDrive();
     void showShares();
     void showSync();
-    void showSyncSttngs();
+    void showSyncSttngs(); // sync page, second tab
     void showSettings();
     void showpCloudAbout();
     void showpcloudHelp();

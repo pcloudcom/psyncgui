@@ -18,6 +18,7 @@ LoginWindow::LoginWindow(PCloudApp *a, QWidget *parent) :
     palette.setColor(QPalette::WindowText, Qt::red);
     ui->error->setPalette(palette);
     ui->forgotPassBtn->setStyleSheet("QToolButton{background-color:transparent;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");
+    ui->loginButton->setDefault(true);
     connect(ui->loginButton, SIGNAL(clicked()), this, SLOT(logIn()));
     connect(ui->password, SIGNAL(returnPressed()), this, SLOT(logIn()));
     connect(ui->email, SIGNAL(returnPressed()), this, SLOT(focusPass()));

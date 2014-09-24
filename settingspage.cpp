@@ -33,10 +33,11 @@ SettingsPage::SettingsPage(PCloudWindow *w, PCloudApp *a, QObject* parent):
     connect(win->ui->btnSaveSttngs, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(win->ui->btnCancelSttngs, SIGNAL(clicked()), this, SLOT(cancelSettings()));
 
-    //temp - VFS settings
+#ifndef VFS
     win->ui->groupBox_cache->setVisible(false);
     win->ui->groupBox_fldr->setVisible(false);
-    win->ui->groupBox_startStop->setVisible(false);    
+    win->ui->groupBox_startStop->setVisible(false);
+#endif
 }
 
 void SettingsPage::initSettingsPage()

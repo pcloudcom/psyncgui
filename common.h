@@ -16,5 +16,16 @@
 #define USER_ICON ":/128x128/images/128x128/user.png"
 #define SYNC_TAB_ICON ":/128x128/images/128x128/sync.png"
 
+
+//eachs page num according to index in pcloudwin
+#define ACCNT_NOT_LOGGED_PAGE_NUM 0
+#define ACCNT_LOGGED_PAGE_NUM 1
+#define DRIVE_PAGE_NUM 2
+#define SYNC_PAGE_NUM 3
+#define SHARES_PAGE_NUM 4
+#define SETTINGS_PAGE_NUM 5
+#define HELP_PAGE_NUM 6
+#define ABOUT_PAGE_NUM 7
+
 #endif
 

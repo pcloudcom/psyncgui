@@ -41,7 +41,6 @@ void PCloudApp::showWindow(QMainWindow *win)
     win->showNormal();
     win->setWindowState(Qt::WindowActive);
     this->setActiveWindow(win);
-
 }
 
 void PCloudApp::showRegister(){  
@@ -79,53 +78,64 @@ void PCloudApp::showLogin(){
         logwin=new LoginWindow(this);
     showWindow(logwin);
 }
-void PCloudApp::showAccount(){
+
+void PCloudApp::showAccount()
+{
+    if (welcomeWin && welcomeWin->isVisible())
+        return;
+
     hideAllWindows();
-    pCloudWin->setCurrntIndxPclWin(1);
+    pCloudWin->setCurrntIndxPclWin(ACCNT_LOGGED_PAGE_NUM);
+    this->showWindow(pCloudWin);
+}
+
+void PCloudApp::showDrive()
+{
+    hideAllWindows();
+    pCloudWin->setCurrntIndxPclWin(DRIVE_PAGE_NUM);
     this->showWindow(pCloudWin);
 }
 
 void PCloudApp::showSync()
 {
     hideAllWindows();
-    pCloudWin->setCurrntIndxPclWin(2);
+    pCloudWin->setCurrntIndxPclWin(SYNC_PAGE_NUM);
     pCloudWin->get_sync_page()->openTab(0);
     this->showWindow(pCloudWin);
 }
 
 void PCloudApp::showSyncSttngs()
 {
-
     hideAllWindows();
-    pCloudWin->setCurrntIndxPclWin(2);
+    pCloudWin->setCurrntIndxPclWin(SYNC_PAGE_NUM);
     pCloudWin->get_sync_page()->openTab(1);
-    this->showWindow(pCloudWin);
-}
-
-void PCloudApp::showSettings()
-{
-    hideAllWindows();
-    pCloudWin->setCurrntIndxPclWin(3);
     this->showWindow(pCloudWin);
 }
 
 void PCloudApp::showShares()
 {
     hideAllWindows();
-    pCloudWin->setCurrntIndxPclWin(4);
+    pCloudWin->setCurrntIndxPclWin(SHARES_PAGE_NUM);
+    this->showWindow(pCloudWin);
+}
+
+void PCloudApp::showSettings()
+{
+    hideAllWindows();
+    pCloudWin->setCurrntIndxPclWin(SETTINGS_PAGE_NUM);
     this->showWindow(pCloudWin);
 }
 
 void PCloudApp::showpcloudHelp()
 {
     hideAllWindows();
-    pCloudWin->setCurrntIndxPclWin(5);
+    pCloudWin->setCurrntIndxPclWin(HELP_PAGE_NUM);
     this->showWindow(pCloudWin);
 }
 
 void PCloudApp::showpCloudAbout(){
     hideAllWindows();
-    pCloudWin->setCurrntIndxPclWin(6);
+    pCloudWin->setCurrntIndxPclWin(ABOUT_PAGE_NUM);
     this->showWindow(pCloudWin);
 }
 
@@ -239,7 +249,6 @@ void PCloudApp::showOnClick(){
     if(!loggedin)
         showLogin();
     else
-        //showSync();
         showAccount();
 }
 
@@ -251,15 +260,14 @@ void PCloudApp::trayClicked(QSystemTrayIcon::ActivationReason reason){
     }
 }
 
-void PCloudApp::createMenus(){
+void PCloudApp::createMenus()
+{
+    //NOTLOGGED MENU
     notloggedmenu=new QMenu();
-
     registerAction=new QAction(QIcon(":/menu/images/menu 48x48/register.png"),trUtf8 ("Register"), this);
     connect(registerAction, SIGNAL(triggered()), this, SLOT(showRegister()));
     loginAction=new QAction(QIcon(":/menu/images/menu 48x48/login.png"),trUtf8("Login"), this);
     connect(loginAction, SIGNAL(triggered()), this, SLOT(showLogin()));
-    settingsAction=new QAction(QIcon(":/menu/images/menu 48x48/settings.png"),trUtf8("Settings"), this);
-    connect(settingsAction, SIGNAL(triggered()), this, SLOT(showSettings()));
     helpAction = new QAction(QIcon(":/menu/images/menu16x16/help.png"),trUtf8("Help"),this);
     connect(helpAction, SIGNAL(triggered()), this, SLOT(showpcloudHelp()));
     aboutPCloudAction = new QAction(QIcon(":/menu/images/menu16x16/info.png"),trUtf8("About"), this);
@@ -270,55 +278,76 @@ void PCloudApp::createMenus(){
     notloggedmenu->addAction(registerAction);
     notloggedmenu->addAction(loginAction);
     notloggedmenu->addSeparator();
-#ifdef Q_OS_WIN
-    notloggedmenu->addAction(settingsAction); //TEMP till make fs settings
-#endif
     notloggedmenu->addAction(helpAction);
     notloggedmenu->addAction(aboutPCloudAction);
     notloggedmenu->addSeparator();
-    notloggedmenu->addAction(exitAction); // to be hidden in account tab or settings
+    notloggedmenu->addAction(exitAction);
 
+    //LOGGED MENU
+    //main menu actions
     accountAction = new QAction(QIcon(":/menu/images/menu16x16/user.png"),trUtf8("Account"), this); // Account tab
     connect(accountAction, SIGNAL(triggered()),this, SLOT(showAccount()));
+    driveAction = new QAction(QIcon(":/menu/images/menu16x16/drive.png"),trUtf8("pCloudDrive"), this); //pDrive tab
+    connect(driveAction, SIGNAL(triggered()), this, SLOT(showDrive()));
     //p openAction=new QAction("&Open pCloud folder", this);
     //p connect(openAction, SIGNAL(triggered()), this, SLOT(openCloudDir()));
-    sharesAction = new QAction(QIcon(":/menu/images/menu16x16/share.png"),trUtf8("Shares"),this);
-    connect(sharesAction, SIGNAL(triggered()), this, SLOT(showShares()));
-   // shareFolderAction = new QAction(QIcon(":/menu/images/menu 48x48/newsync.png"), trUtf8("Add New Share"),this);
-    //connect(shareFolderAction,SIGNAL(triggered()), pCloudWin, SLOT(shareFolder()));
-
-    //sync menu
-    syncAction = new QAction(QIcon(":/menu/images/menu16x16/sync.png"),trUtf8("Manage Syncs"),this);
-    connect(syncAction, SIGNAL(triggered()), this, SLOT(showSync()));
+    settingsAction=new QAction(QIcon(":/menu/images/menu 48x48/settings.png"),trUtf8("Settings"), this); //Settings tab
+    connect(settingsAction, SIGNAL(triggered()), this, SLOT(showSettings()));
     pauseSyncAction = new QAction(QIcon(":/menu/images/menu 48x48/pause.png"),trUtf8("Pause Sync"),this);
     connect(pauseSyncAction, SIGNAL(triggered()),this,SLOT(pauseSync()));
-    addSyncAction = new QAction(QIcon(":/menu/images/menu 48x48/newsync.png"),trUtf8("Add New Sync"),this);
-    connect(addSyncAction, SIGNAL(triggered()),this, SLOT(addNewSync()));
-    connect(this,SIGNAL(addNewSyncSgnl()), this,SLOT(addNewSync()));
-    connect(this, SIGNAL(addNewSyncLstSgnl()), this, SLOT(addNewSyncLst()));
     resumeSyncAction = new QAction(QIcon(":/menu/images/menu 48x48/resume.png"),trUtf8("Start Sync"), this);
     connect(resumeSyncAction, SIGNAL(triggered()), this, SLOT(resumeSync()));
-    syncSttngsAction = new QAction(QIcon(":/menu/images/menu 48x48/settings.png"),trUtf8("Settings"),this);
+    syncDownldAction = new QAction(QIcon(":/menu/images/menu 48x48/download.png"),trUtf8("Everything downloaded"),this);
+    syncUpldAction = new QAction(QIcon(":/menu/images/menu 48x48/upload.png"),trUtf8("Everything uploaded"),this);
+
+    //sync actions
+    syncAction = new QAction(QIcon(":/menu/images/menu16x16/sync.png"),trUtf8("Manage Syncs"),this);
+    connect(syncAction, SIGNAL(triggered()), this, SLOT(showSync()));
+    addSyncAction = new QAction(QIcon(":/menu/images/menu 48x48/newsync.png"),trUtf8("Add New Sync"),this);
+    connect(addSyncAction, SIGNAL(triggered()),this, SLOT(addNewSync()));
+    connect(this, SIGNAL(addNewSyncSgnl()), this, SLOT(addNewSync()));
+    connect(this, SIGNAL(addNewSyncLstSgnl()), this, SLOT(addNewSyncLst()));   //for creating syncs from OS file browser Contextmenu
+    syncSttngsAction = new QAction(QIcon(":/menu/images/menu 48x48/settings.png"),trUtf8("Settings"),this); // may be to del
     connect(syncSttngsAction, SIGNAL(triggered()), this, SLOT(showSyncSttngs()));
 
+    //shares actions
+    sharesAction = new QAction(QIcon(":/menu/images/menu16x16/share.png"),trUtf8("Manage Shares"),this);
+    connect(sharesAction, SIGNAL(triggered()), this, SLOT(showShares()));
+    shareFolderAction = new QAction(QIcon(":/menu/images/menu 48x48/newsync.png"), trUtf8("Add New Share"),this);
+    connect(shareFolderAction, SIGNAL(triggered()), pCloudWin, SLOT(shareFolder()));
+
+    //create tray menu and it's submenus and add actions
     loggedmenu = new QMenu();
     //p loggedmenu->addAction(openAction);
     loggedmenu->addAction(accountAction);
     loggedmenu->addSeparator();
-    syncMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),trUtf8("Sync Folders"));
-
-#ifdef Q_OS_WIN
-    loggedmenu->addAction(settingsAction);
+#ifdef VFS
+    loggedmenu->addAction(driveAction);
 #endif
-    loggedmenu->addAction(sharesAction);
-    loggedmenu->addSeparator();
+    syncMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),trUtf8("Sync"));
 
-    syncedFldrsMenu = syncMenu->addMenu(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),trUtf8("Sync Folders"));
+    syncedFldrsMenu = syncMenu->addMenu(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),trUtf8("Synced Folders"));
     syncMenu->addSeparator();
     syncMenu->addAction(syncAction);
     syncMenu->addAction(addSyncAction);
-    syncMenu->addAction(pauseSyncAction);
-    syncMenu->addAction(resumeSyncAction);
+    //syncMenu->addAction(syncSttngsAction); may be temp
+
+    sharesMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),trUtf8("Shares"));
+    sharesMenu->addAction(sharesAction);
+    sharesMenu->addAction(shareFolderAction);
+
+    loggedmenu->addSeparator();
+    loggedmenu->addAction(settingsAction);
+    loggedmenu->addAction(helpAction);
+    loggedmenu->addAction(aboutPCloudAction);
+    loggedmenu->addSeparator();
+    loggedmenu->addAction(exitAction);
+    loggedmenu->addSeparator();
+    loggedmenu->addAction(pauseSyncAction);
+    loggedmenu->addAction(resumeSyncAction);
+    loggedmenu->addAction(syncDownldAction);
+    loggedmenu->addAction(syncUpldAction);
+
     pstatus_t status;
     psync_get_status(&status);
     if (status.status != PSTATUS_PAUSED)
@@ -331,19 +360,6 @@ void PCloudApp::createMenus(){
         pauseSyncAction->setVisible(false);
         pCloudWin->ui->btnPauseSync->setVisible(false);
     }
-    syncMenu->addAction(syncSttngsAction);
-
-    syncDownldAction = new QAction(QIcon(":/menu/images/menu 48x48/download.png"),trUtf8("Everything downloaded"),this);
-    syncUpldAction = new QAction(QIcon(":/menu/images/menu 48x48/upload.png"),trUtf8("Everything uploaded"),this);
-
-    loggedmenu->addSeparator();
-    loggedmenu->addAction(helpAction);
-    loggedmenu->addAction(aboutPCloudAction);
-    loggedmenu->addSeparator();
-    loggedmenu->addAction(exitAction);
-    loggedmenu->addSeparator();
-    loggedmenu->addAction(syncDownldAction);
-    loggedmenu->addAction(syncUpldAction);
 
     this->createSyncFolderActions(); //loads sub menu with local synced folders
 
@@ -696,8 +712,8 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcpy(msg,"You received a new Share Request from ");
         strcat(msg, data.share->email);
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
-        if(PCloudApp::appStatic->isMainWinPageActive(4)) //if shraes page is visible
-            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,1);
+        if(PCloudApp::appStatic->isMainWinPageActive(SHARES_PAGE_NUM)) //if shraes page is visible
+            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(SHARES_PAGE_NUM,1);
         break;
     case PEVENT_SHARE_REQUESTOUT:
         qDebug()<<"PEVENT_SHARE_REQUESTOUT" <<data.share->email<< data.share->sharename; // i share a folder 1.1
@@ -707,13 +723,13 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcat(msg," to ");
         strcat(msg, data.share->email);
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,0);
-        if(PCloudApp::appStatic->isMainWinPageActive(4))
-            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,0);
+        if(PCloudApp::appStatic->isMainWinPageActive(SHARES_PAGE_NUM))
+            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(SHARES_PAGE_NUM,0);
         break;
     case PEVENT_SHARE_ACCEPTIN:
         qDebug()<<"PEVENT_SHARE_ACCEPTIN"; //2.2 I accept a share - refresh both tables in Shared with me
-        if(PCloudApp::appStatic->isMainWinPageActive(4))
-            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,1);
+        if(PCloudApp::appStatic->isMainWinPageActive(SHARES_PAGE_NUM))
+            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(SHARES_PAGE_NUM,1);
         break;
     case PEVENT_SHARE_ACCEPTOUT: // when someones accept what i've shared to him
         qDebug()<<"PEVENT_SHARE_ACCEPTOUT";
@@ -722,13 +738,13 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcat(msg, " accepted your Share Request ");
         strcat(msg, data.share->sharename);
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,0);
-        if(PCloudApp::appStatic->isMainWinPageActive(4))
-            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,0);
+        if(PCloudApp::appStatic->isMainWinPageActive(SHARES_PAGE_NUM))
+            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(SHARES_PAGE_NUM,0);
         break;
     case PEVENT_SHARE_DECLINEIN: // reject a share request 2,2
         qDebug()<<"PEVENT_SHARE_DECLINEIN";
-        if(PCloudApp::appStatic->isMainWinPageActive(4))
-            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,1);
+        if(PCloudApp::appStatic->isMainWinPageActive(SHARES_PAGE_NUM))
+            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(SHARES_PAGE_NUM,1);
         break;
     case PEVENT_SHARE_DECLINEOUT:
         qDebug()<<"PEVENT_SHARE_DECLINEOUT"; //when someones rejected what i've shared to him
@@ -737,8 +753,8 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcat(msg, " declined your Share Request ");
         strcat(msg, data.share->sharename);
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,0);
-        if(PCloudApp::appStatic->isMainWinPageActive(4))
-            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,0);
+        if(PCloudApp::appStatic->isMainWinPageActive(SHARES_PAGE_NUM))
+            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(SHARES_PAGE_NUM,0);
         break;
     case PEVENT_SHARE_CANCELIN:
         qDebug()<<"PEVENT_SHARE_CANCELIN";
@@ -747,13 +763,13 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcpy(msg,data.share->email);
         strcat(msg, " cancel his/her Share Request");
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
-        if(PCloudApp::appStatic->isMainWinPageActive(4))
-            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,1);
+        if(PCloudApp::appStatic->isMainWinPageActive(SHARES_PAGE_NUM))
+            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(SHARES_PAGE_NUM,1);
         break;
     case PEVENT_SHARE_CANCELOUT:
         qDebug()<<"PEVENT_SHARE_CANCELOUT"; // stop a my request - 1,2
-        if(PCloudApp::appStatic->isMainWinPageActive(4))
-            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,0);
+        if(PCloudApp::appStatic->isMainWinPageActive(SHARES_PAGE_NUM))
+            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(SHARES_PAGE_NUM,0);
         break;
     case PEVENT_SHARE_REMOVEIN: // when I stops a request that was send to me and i have been accepted it,  - my requests 2,1
         // two cases also
@@ -764,8 +780,8 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcat(msg, " has stopped your access to ");
         strcat(msg,data.share->sharename);
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
-        if(PCloudApp::appStatic->isMainWinPageActive(4))
-            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,1);
+        if(PCloudApp::appStatic->isMainWinPageActive(SHARES_PAGE_NUM))
+            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(SHARES_PAGE_NUM,1);
             */
 
         break;
@@ -779,8 +795,8 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcat(msg, " has stopped his/her access to ");
         strcat(msg,data.share->sharename);
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,0);
-        if(PCloudApp::appStatic->isMainWinPageActive(4))
-            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,0);
+        if(PCloudApp::appStatic->isMainWinPageActive(SHARES_PAGE_NUM))
+            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(SHARES_PAGE_NUM,0);
             */
         break;
     case PEVENT_SHARE_MODIFYIN:
@@ -791,13 +807,13 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcat(msg," has been modified by ");
         strcat(msg,data.share->email);
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
-        if(PCloudApp::appStatic->isMainWinPageActive(4))
-            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,1);
+        if(PCloudApp::appStatic->isMainWinPageActive(SHARES_PAGE_NUM))
+            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(SHARES_PAGE_NUM,1);
         break;
     case PEVENT_SHARE_MODIFYOUT:
         qDebug()<<"PEVENT_SHARE_MODIFYOUT"; // i change permissions
-        if(PCloudApp::appStatic->isMainWinPageActive(4))
-            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(4,0);
+        if(PCloudApp::appStatic->isMainWinPageActive(SHARES_PAGE_NUM))
+            PCloudApp::appStatic->pCloudWin->refreshPagePulbic(SHARES_PAGE_NUM,0);
         break;
     default:
         break;

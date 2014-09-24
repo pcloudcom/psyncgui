@@ -14,6 +14,7 @@ RegisterWindow::RegisterWindow(PCloudApp *a, QWidget *parent) :
     QPalette palette;
     palette.setColor(QPalette::WindowText, Qt::red);
     ui->error->setPalette(palette);
+    ui->registerButton->setDefault(true);
     connect(ui->registerButton, SIGNAL(clicked()), this, SLOT(doRegister()));
     connect(ui->email, SIGNAL(returnPressed()), this, SLOT(focusPass()));
     connect(ui->password, SIGNAL(returnPressed()), this, SLOT(focusConfirm()));
