@@ -14,14 +14,14 @@
 
 const char* typeStr[3]={"Download only", "Upload only", "Download and Upload"};
 
-SuggestnsBaseWin::SuggestnsBaseWin(PCloudApp *a, QStringList *fldrs, QWidget *parent):
+SuggestnsBaseWin::SuggestnsBaseWin(PCloudApp *a, bool addlocal, QStringList *fldrs, QWidget *parent):
     QMainWindow(parent),
     ui(new Ui::SuggestnsBaseWin)
 {
     app = a;
     ui->setupUi(this);
     isChangingItem = false;
-    localFldrsLst = fldrs;
+    addFldrsLst = fldrs;
 
     connect(ui->btnAdd, SIGNAL(clicked()),this, SLOT(addSync()));
     connect(ui->btnFinish, SIGNAL(clicked()), this, SLOT(finish()));
@@ -126,20 +126,24 @@ SuggestnsBaseWin::SuggestnsBaseWin(PCloudApp *a, QStringList *fldrs, QWidget *pa
     //ui->tableWidget->setItemDelegate(new SyncItemsDelegate());
     // this->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
 
-    //if(localFldrsLst->size())
-    if(localFldrsLst != NULL)
+    if(addFldrsLst != NULL)
     {
-        addLocalFldrs(localFldrsLst);
+        if(addlocal)
+            addLocalFldrs(addFldrsLst);
+        else
+            addRemoteFldrs(addFldrsLst);
     }
 }
 
-void SuggestnsBaseWin::addLocalFldrs(QStringList *itemsLst) //received from context menu
-{           
+void SuggestnsBaseWin::addLocalFldrs(QStringList *itemsLst) //received from context menu - local FS, not drive
+{
+    addLocalFldrsFlag = true;
+    qDebug()<<"SuggestnsBaseWin::addLocalFldrs";
     if(ui->treeWidget->topLevelItemCount())
         ui->treeWidget->clear();
     for(int i = 0; i < itemsLst->size(); i++)
     {
-        qDebug()<<"Qt: fill suggestions tree"<<i<<itemsLst->at(i);
+        qDebug()<<"Qt: fill suggestions tree local folders"<<i<<itemsLst->at(i);
 
         QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
         item->setCheckState(0,Qt::Checked);
@@ -162,15 +166,48 @@ void SuggestnsBaseWin::addLocalFldrs(QStringList *itemsLst) //received from cont
     }
 }
 
+void SuggestnsBaseWin::addRemoteFldrs(QStringList *itemsLst)
+{
+    addLocalFldrsFlag = false;
+    qDebug()<<"SuggestnsBaseWin::addRemoteFldrs";
+    if(ui->treeWidget->topLevelItemCount())
+        ui->treeWidget->clear();
+
+    for(int i = 0; i < itemsLst->size(); i++)
+    {
+        qDebug()<<"fill suggestions remote folders" << itemsLst->at(i);
+        QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
+        item->setCheckState(0,Qt::Checked);
+        item->setData(0, Qt::UserRole, true);
+        QString remotepath = itemsLst->at(i);
+        QString localpath, remoteFldrName = remotepath.section("/",1);
+        if(!QDir::home().exists(remoteFldrName))
+            localpath = QDir::homePath().append("/" + remoteFldrName);
+        else
+            localpath = getLocalName(remoteFldrName, QDir::home());
+#ifdef Q_OS_WIN
+        localpath.replace("/","\\");
+#endif
+        item->setText(1, localpath);
+        item->setData(1, Qt::UserRole, localpath);
+        item->setText(2, typeStr[2]);
+        item->setData(2, Qt::UserRole, PSYNC_FULL);
+        item->setText(3, remotepath);
+        item->setData(3, Qt::UserRole, remotepath);
+    }
+}
+
 SuggestnsBaseWin::~SuggestnsBaseWin()
 {
     delete ui;
 }
+
 void SuggestnsBaseWin::closeEvent(QCloseEvent *event)
 {  
     this->hide();
     event->ignore();
 }
+
 void SuggestnsBaseWin::addSync()
 {    
     if (this->isChangingItem)
@@ -181,15 +218,17 @@ void SuggestnsBaseWin::addSync()
     }
     addSyncDialog *addDialog = new addSyncDialog(app,app->pCloudWin, app->pCloudWin->get_sync_page(),this);
     addDialog->exec();
-
+    delete addDialog;
 }
+
 //when user double-clicks on an item
 void SuggestnsBaseWin::changeCurrItem(QModelIndex index)
 {
     //if(index.row()) // the first item in the treeview is default and shoudn't be modified
-        this->isChangingItem = true;
-        emit this->addSync();
+    this->isChangingItem = true;
+    emit this->addSync();
 }
+
 bool SuggestnsBaseWin::getChangeItem()
 {
     return this->isChangingItem;
@@ -236,29 +275,52 @@ void SuggestnsBaseWin::modifyType()
         }
     }
 }
+
 void SuggestnsBaseWin::finish()
-{
-    QStringList fldrActionsLst;
+{    
     QTreeWidgetItemIterator it(ui->treeWidget);
     while (*it)
     {
         qDebug()<<"SuggestnsBaseWin::finish";
         if ((*it)->checkState(0) == Qt::Checked)
         {
-            QString localpath = (*it)->data(1,Qt::UserRole).toString(); //to del
+            QString localpath = (*it)->data(1,Qt::UserRole).toString(), remotepath = (*it)->data(3,Qt::UserRole).toString();
             qDebug()<<"ADDING item (from suggestionswin) " << (*it)->data(1,Qt::UserRole).toString().toUtf8() << (*it)->data(3,Qt::UserRole).toString().toUtf8() <<((*it)->data(2,Qt::UserRole).toInt());
 
+            if(!addLocalFldrsFlag && !QDir(localpath).exists() // when add remote folders from drive to sync => create local if don't exist
+                    && QDir().mkdir(localpath));           
+            //if add local fs folders from context menu and the suggested remove doesn't exist
+            else if(addLocalFldrsFlag && psync_fs_isstarted() &&
+                    !QDir(QString(psync_fs_getmountpoint() + remotepath)).exists())
+            {              
+                char* err = NULL;
+                psync_create_remote_folder_by_path(remotepath.toUtf8(),&err);
+                if(err)
+                    qDebug()<<"SuggestnsBaseWin::finish() Create new remote fldr ERR"<<err;
+            }
+            /*
             //welcome win case and contex menu case, because it's possible remote folder not to exists
-            psync_add_sync_by_path_delayed(//localpath.toUtf8(),
-                                           (*it)->data(1,Qt::UserRole).toString().toUtf8(),
+            psync_add_sync_by_path_delayed(localpath.toUtf8(), // works only for Status CONNECTING
+                                           //(*it)->data(1,Qt::UserRole).toString().toUtf8(),
                                            (*it)->data(3,Qt::UserRole).toString().toUtf8(),
-                                           ((*it)->data(2,Qt::UserRole).toInt()));
+                                           (*it)->data(2,Qt::UserRole).toInt());
+
+*/
+            psync_syncid_t id = psync_add_sync_by_path(localpath.toUtf8(),
+                                                       (*it)->data(3,Qt::UserRole).toString().toUtf8(),
+                                                       (*it)->data(2,Qt::UserRole).toInt());
+            if (id == -1)
+            {
+                app->check_error();
+                return;
+            }
 
 #ifdef Q_OS_WIN
             QString name = localpath.section("\\", -1);
 #else
             QString name = localpath.section("/", -1);
 #endif
+            QStringList fldrActionsLst;
             qDebug() << name;
             if (!fldrActionsLst.contains(name))
             {
@@ -273,10 +335,10 @@ void SuggestnsBaseWin::finish()
     }
     app->pCloudWin->get_sync_page()->load();
     //refresh menu
-    this->hide();
-    if(app->isFirstLaunch)
-        app->showSync(); // if first launch
+    this->hide();    
+    app->showSync();
 }
+
 QString SuggestnsBaseWin::checkRemoteName(QString &entryName)
 {
     if (remoteFldrsNamesLst.contains(entryName))
@@ -292,6 +354,19 @@ QString SuggestnsBaseWin::checkRemoteName(QString &entryName)
     else
         return entryName;
 }
+
+QString SuggestnsBaseWin::getLocalName(QString &entryName, QDir usrDir)
+{
+    int i = 0;
+    QString newName = entryName;
+    while(usrDir.exists(newName))
+    {
+        i++;
+        newName = entryName.append("(" + QString::number(i) + ")");
+    }
+    return QDir::homePath().append("/" + newName);
+}
+
 void SuggestnsBaseWin::addNewRemoteFldr(QString &name)
 {
     this->remoteFldrsNamesLst.append(name);
@@ -301,18 +376,22 @@ QString SuggestnsBaseWin::getCurrLocalPath()
 {
     return this->currentLocal;
 }
+
 QString SuggestnsBaseWin::getCurrRemotePath()
 {
     return this->currentRemote;
 }
+
 int SuggestnsBaseWin::getCurrType()
 {
     return this->currentType;
 }
+
 QTreeWidgetItem* SuggestnsBaseWin::getCurrItem()
 {
     return ui->treeWidget->currentItem();
 }
+
 void SuggestnsBaseWin::setChangeItem(bool b)
 {
     this->isChangingItem = b;

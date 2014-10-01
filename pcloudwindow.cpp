@@ -52,7 +52,7 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
             SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
             this, SLOT(changePage(QListWidgetItem*,QListWidgetItem*)));
     connect(ui->btnVerify, SIGNAL(clicked()), this, SLOT(verifyEmail()));
-    connect(ui->btnShareFolder,SIGNAL(clicked()), this, SLOT(shareFolder()));
+    connect(ui->btnShareFolder, SIGNAL(clicked()), app, SLOT(addNewShare()));
     connect(this, SIGNAL(refreshPageSgnl(int,int)), this, SLOT(refreshPageSlot(int,int)));
 
     //for resize
@@ -87,6 +87,8 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     menuAccnt->addAction(actionChangePass);
     menuAccnt->addAction(forgotPassAction);
     ui->btnAccntMenu->setMenu(menuAccnt);
+    //this->setMinimumHeight(560);
+    this->setMinimumWidth(1024);
 
 }
 
@@ -118,10 +120,13 @@ void PCloudWindow::changePage(QListWidgetItem *current, QListWidgetItem *previou
     for(int i = 0; i < ui->pagesWidget->count(); i++)
     {
         if ( i != currentIndex)
-            ui->pagesWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+           // ui->pagesWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+             ui->pagesWidget->widget(i)->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Ignored);
     }
-    ui->pagesWidget->widget(currentIndex)->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    //ui->pagesWidget->widget(currentIndex)->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    ui->pagesWidget->widget(currentIndex)->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+    //setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
     updateGeometry();
     ui->pagesWidget->setCurrentIndex(currentIndex); // sets page
     refreshPage(currentIndex);
@@ -356,18 +361,6 @@ void PCloudWindow::refreshPagePulbic(int pageindex, int param)
 }
 
 //SLOTS
-void PCloudWindow::shareFolder()
-{
-    emit sharesPage->shareFolder();
-}
-
-void PCloudWindow::hide()
-{
-    if (this->sharesPage->sharefolderwin && this->sharesPage->sharefolderwin->isVisible())
-        this->sharesPage->sharefolderwin->hide();
-    QMainWindow::hide();
-}
-
 void PCloudWindow::changePass()
 {
     ChangePassDialog *dialog = new ChangePassDialog();

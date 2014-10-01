@@ -13,27 +13,29 @@ namespace Ui {
 class ShareFolderWindow;
 }
 
-class SharesPage;
 class PCloudWindow;
 
 class ShareFolderWindow : public QMainWindow
 {
     Q_OBJECT
     
-public:
-    //friend class SharesPage; //
-    explicit ShareFolderWindow(PCloudWindow *w,SharesPage *sp, QWidget *parent = 0);
+public:    
+    explicit ShareFolderWindow(PCloudWindow *w, QString path, QWidget *parent = 0);
     ~ShareFolderWindow();
+    void setContextMenuFlag(bool flag);   
+    void setFldrbyMenu(QString path); // for contex menu only
 private:
     Ui::ShareFolderWindow *ui;
-    SharesPage* sharePage;
+    bool contxMenuFlag;
+    QString fldrPath;
+    quint64 fldrid;
     PCloudWindow* pclwin;
     RemoteTreesDialog *remoteFldrsDialog;
-    quint64 fldrid;
+    void displayShareName();
     void closeEvent(QCloseEvent *event);
     void showEvent(QShowEvent *event);
 public slots:
-    void setFlrd();
+    void setFlrd();    
     void shareFolder();
     void showError(const char* err);
 };

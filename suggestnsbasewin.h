@@ -7,7 +7,7 @@
 #include <QItemDelegate>
 #include <QTableWidget>
 #include <QTreeWidgetItem>
-
+#include <QDir>
 
 class PCloudApp;
 
@@ -22,22 +22,24 @@ class SuggestnsBaseWin : public QMainWindow
 public:
     friend class addSyncDialog;
     friend class SyncItemsDelegate;
-    explicit SuggestnsBaseWin(PCloudApp *a, QStringList *fldrs, QWidget *parent = 0);
+    explicit SuggestnsBaseWin(PCloudApp *a, bool addlocal, QStringList *fldrs, QWidget *parent = 0);
     ~SuggestnsBaseWin();
     QStringList remoteFldrsNamesLst, newRemoteFldrsLst;
     QString getCurrLocalPath();
     QString getCurrRemotePath();
     int getCurrType();
     QTreeWidgetItem* getCurrItem();
-    void addNewItem(QString &localpath, QString &remotepath, int type);
+    void addNewItem(QString &localpath, QString &remotepath, int type);    
     void addLocalFldrs(QStringList *itemsLst);
+    void addRemoteFldrs(QStringList *itemsLst);
     bool getChangeItem();
     void setChangeItem(bool);
-    QString checkRemoteName(QString &entryName);
+    QString checkRemoteName(QString &entryName);    
     void addNewRemoteFldr(QString &name);
 private:
-    QStringList *localFldrsLst;
-    //indicates if user adds a new sync or changes a suggested one
+    bool addLocalFldrsFlag;
+    QStringList *addFldrsLst;  //indicates if user adds a new sync or changes a suggested one
+    QString getLocalName(QString &entryName, QDir usrDir);
 protected:        
     Ui::SuggestnsBaseWin *ui;
     void closeEvent(QCloseEvent *event);

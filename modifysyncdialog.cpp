@@ -17,6 +17,7 @@ ModifySyncDialog::ModifySyncDialog(QString local, QString remote,int type, QWidg
     connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(hide()));
     this->setWindowTitle("pCloud Sync");
     this->setWindowIcon(QIcon(WINDOW_ICON));
+    this->setFixedSize(this->width(),this->height()); //makes the win not resizable
 }
 
 ModifySyncDialog::~ModifySyncDialog()

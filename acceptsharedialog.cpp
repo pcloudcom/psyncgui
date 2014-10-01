@@ -10,6 +10,11 @@ AcceptShareDialog::AcceptShareDialog(QString name,PCloudWindow* &w,QWidget *pare
 
 void AcceptShareDialog::setSelectedFolder()
 {
+    if(!ui->treeRemoteFldrs->currentItem())
+    {
+        QMessageBox::warning(this,"pCloud",trUtf8("No remote folder is selected. Please click on a folder to select"));
+        return;
+    }
     fldrid = ui->treeRemoteFldrs->currentItem()->data(1,Qt::UserRole).toULongLong();
     sharename = ui->line_folderName->text();
     this->accept();

@@ -10,8 +10,7 @@ SharesPage::SharesPage(PCloudWindow *w, PCloudApp *a,  QObject *parent) :
     QObject(parent)
 {
     win = w;
-    app = a;
-    sharefolderwin = NULL;
+    app = a;    
     win->ui->tabWidgetShares->setTabText(0, tr("My Shares"));
     //win->ui->tabWidgetShares->setTabIcon(0, QIcon(":/images/images/myshares.png"));
     win->ui->tabWidgetShares->setTabText(1, tr("Shared with me"));
@@ -27,7 +26,7 @@ SharesPage::SharesPage(PCloudWindow *w, PCloudApp *a,  QObject *parent) :
     connect(win->ui->btnCancelRqst, SIGNAL(clicked()), this, SLOT(cancelRqst()));
     connect(win->ui->btnDeclineReqst, SIGNAL(clicked()), this, SLOT(cancelRqst()));
     connect(win->ui->btnAcceptRqst, SIGNAL(clicked()), this, SLOT(acceptRqst()));
-    connect(win->ui->btnShareFolder, SIGNAL(clicked()), this, SLOT(shareFolder()));
+    connect(win->ui->btnShareFolder, SIGNAL(clicked()), app, SLOT(addNewShare()));
     connect(win->ui->tabWidgetShares, SIGNAL(currentChanged(int)), this, SLOT(refreshTab(int))); // to del
     connect(win->ui->treeMyShares, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(openSharedFldr(QTreeWidgetItem*,int)));
     connect(win->ui->treeMyRequest, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(openSharedFldr(QTreeWidgetItem*,int)));
@@ -38,9 +37,7 @@ SharesPage::SharesPage(PCloudWindow *w, PCloudApp *a,  QObject *parent) :
 }
 
 SharesPage::~SharesPage()
-{
-    if(sharefolderwin)
-        delete sharefolderwin;
+{  
 }
 
 void SharesPage::refreshTab(int i)
@@ -182,13 +179,6 @@ void SharesPage::setRequestsVisibility(int incoming, bool visible)
 }
 
 // slots
-void SharesPage::shareFolder()
-{
-    if (!sharefolderwin)
-        sharefolderwin = new ShareFolderWindow(win,this);
-    app->showWindow(sharefolderwin);
-}
-
 void SharesPage::openSharedFldr(QTreeWidgetItem* item, int)
 {
     quint64 fldrid = item->treeWidget()->currentItem()->data(1,Qt::UserRole).toLongLong();

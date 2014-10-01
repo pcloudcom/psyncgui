@@ -3,22 +3,28 @@
 #include "ui_sharefolderwindow.h"
 #include "pcloudwindow.h"
 
-ShareFolderWindow::ShareFolderWindow(PCloudWindow *w,SharesPage *sp, QWidget *parent) :    
+ShareFolderWindow::ShareFolderWindow(PCloudWindow *w,QString path, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ShareFolderWindow)
-{    
-    sharePage = sp;
+{
+    ui->setupUi(this);
     pclwin = w;
     remoteFldrsDialog = new RemoteTreesDialog(pclwin);
+    if(path == NULL)
+        this->contxMenuFlag = false;
+    else
+    {
+        qDebug()<<"ShareFolderWindow "<<path;
+        this->contxMenuFlag = true;
+        this->fldrPath = path;
+    }
     setWindowIcon(QIcon(WINDOW_ICON));
-    ui->setupUi(this);
+    connect(ui->btnOpenRemoteDialog, SIGNAL(clicked()),remoteFldrsDialog, SLOT(exec()));
+    connect(remoteFldrsDialog, SIGNAL(accepted()), this, SLOT(setFlrd()));
     connect(ui->cancelbutton, SIGNAL(clicked()), this, SLOT(hide()));
     connect(ui->sharebutton, SIGNAL(clicked()), this, SLOT(shareFolder()));
-    connect(ui->btnOpenRemoteDialog, SIGNAL(clicked()),remoteFldrsDialog,SLOT(exec()));
-    connect(remoteFldrsDialog, SIGNAL(accepted()), this, SLOT(setFlrd()));
 
     this->setFixedSize(this->width(),this->height()); //makes the win not resizable
-
 }
 
 ShareFolderWindow::~ShareFolderWindow()
@@ -28,40 +34,74 @@ ShareFolderWindow::~ShareFolderWindow()
 }
 
 void ShareFolderWindow::showEvent(QShowEvent *event)
-{   
+{
+    qDebug()<<"ShareFolderWindow::showEvent";
     ui->email->clear();
-    ui->editline_sharename->clear();
-    ui->btnOpenRemoteDialog->setText(trUtf8("Choose remote folder"));
+    if(!contxMenuFlag)
+    {
+        ui->editline_sharename->clear();
+        ui->btnOpenRemoteDialog->setVisible(true);
+        ui->btnOpenRemoteDialog->setText(trUtf8("Choose remote folder"));
+        remoteFldrsDialog->init();
+    }
+    else
+    {
+        this->displayShareName();
+        ui->btnOpenRemoteDialog->setVisible(false);
+    }
+
     ui->permCreate->setChecked(false);
     ui->permModify->setChecked(false);
     ui->permDelete->setChecked(false);
     ui->text_msg->clear();
-    remoteFldrsDialog->init();
+
     event->accept();
 }
 
 void ShareFolderWindow::closeEvent(QCloseEvent *event)
-{        
+{
     hide();
     event->ignore();
+}
+
+void ShareFolderWindow::setContextMenuFlag(bool flag)
+{
+    this->contxMenuFlag = flag;
+}
+
+void ShareFolderWindow::setFldrbyMenu(QString path)
+{
+    this->fldrPath = path;
+}
+
+void ShareFolderWindow::displayShareName()
+{
+    qDebug() <<"ShareFolderWindow::displayShareName"<<this->fldrPath;
+    QString fldrname =  this->fldrPath.section("/",-1);
+    if(fldrname.length() < 40)
+        ui->editline_sharename->setText(fldrname);
+    else
+        ui->editline_sharename->setText(QString(fldrname.left(40) + "..."));
+
+    pentry_t *pfldr = psync_stat_path(this->fldrPath.toUtf8());    
+    fldrid = pfldr->folder.folderid;
 }
 
 //slots
 void ShareFolderWindow::setFlrd()
 {
     this->fldrid = remoteFldrsDialog->getFldrid();
-    QString path = remoteFldrsDialog->getFldrPath(), fldrname;
+    QString  path = remoteFldrsDialog->getFldrPath(), fldrname;
     fldrname = path.section("/",-1);
     ui->editline_sharename->setText(fldrname);
-
     if(path.length() < 40)
         ui->btnOpenRemoteDialog->setText(path);
     else if(fldrname.length() < 40 )
         ui->btnOpenRemoteDialog->setText(QString("/.../" + fldrname));
     else
-        ui->btnOpenRemoteDialog->setText(QString("/.../" + fldrname.right(40)));
-
+        ui->btnOpenRemoteDialog->setText(QString("/.../" + fldrname.left(40) + "..."));
 }
+
 
 static bool isValidEmail(const char* email){
     QRegExp mailREX("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b");
@@ -77,7 +117,6 @@ void ShareFolderWindow::shareFolder()
         showError("No email is specified.");
         return;
     }
-    remoteFldrsDialog->getFldrPath();
     QStringList mails = ui->email->text().split(",");
     QByteArray name = ui->editline_sharename->text().toUtf8(), msg = ui->text_msg->toPlainText().toUtf8();
     quint64 perms = 1 + (ui->permCreate->isChecked()? PSYNC_PERM_CREATE:0)+
@@ -97,7 +136,7 @@ void ShareFolderWindow::shareFolder()
             return;
         }
         char* err = NULL;
-        int res= psync_share_folder(fldrid,name,mail,msg,perms,&err);
+        int res = psync_share_folder(fldrid,name,mail,msg,perms,&err);
         if(!res)
             mails.removeFirst();
         else
@@ -112,7 +151,7 @@ void ShareFolderWindow::shareFolder()
     }
 
     ui->email->clear();
-    sharePage->refreshTab(0);
+    emit this->pclwin->refreshPageSlot(SHARES_PAGE_NUM,0);
     this->hide();
 }
 

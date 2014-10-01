@@ -19,6 +19,7 @@ private:
     bool closePipe();
     PCloudApp *app;
     HANDLE hPipe;
+    bool localFldrsFlag; //flag identifying are local fodlers are seected or in pdrive
 protected:
     void run();
 };

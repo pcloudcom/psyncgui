@@ -12,6 +12,7 @@
 #include <QWidgetAction> //temp maybe
 #include <QMutex>
 #include "ui_pcloudwindow.h"
+#include <windows.h> //TEMP
 
 PCloudApp* PCloudApp::appStatic = NULL;
 QMutex mutex(QMutex::Recursive);
@@ -306,7 +307,7 @@ void PCloudApp::createMenus()
     addSyncAction = new QAction(QIcon(":/menu/images/menu 48x48/newsync.png"),trUtf8("Add New Sync"),this);
     connect(addSyncAction, SIGNAL(triggered()),this, SLOT(addNewSync()));
     connect(this, SIGNAL(addNewSyncSgnl()), this, SLOT(addNewSync()));
-    connect(this, SIGNAL(addNewSyncLstSgnl()), this, SLOT(addNewSyncLst()));   //for creating syncs from OS file browser Contextmenu
+    connect(this, SIGNAL(addNewSyncLstSgnl(bool)), this, SLOT(addNewSyncLst(bool)));  //for creating syncs from OS file browser Contextmenu
     syncSttngsAction = new QAction(QIcon(":/menu/images/menu 48x48/settings.png"),trUtf8("Settings"),this); // may be to del
     connect(syncSttngsAction, SIGNAL(triggered()), this, SLOT(showSyncSttngs()));
 
@@ -314,7 +315,7 @@ void PCloudApp::createMenus()
     sharesAction = new QAction(QIcon(":/menu/images/menu16x16/share.png"),trUtf8("Manage Shares"),this);
     connect(sharesAction, SIGNAL(triggered()), this, SLOT(showShares()));
     shareFolderAction = new QAction(QIcon(":/menu/images/menu 48x48/newsync.png"), trUtf8("Add New Share"),this);
-    connect(shareFolderAction, SIGNAL(triggered()), pCloudWin, SLOT(shareFolder()));
+    connect(shareFolderAction, SIGNAL(triggered()), this, SLOT(addNewShare()));
 
     //create tray menu and it's submenus and add actions
     loggedmenu = new QMenu();
@@ -412,7 +413,64 @@ void PCloudApp::createMenus()
     syncDownldAction->setEnabled(false);
     syncUpldAction->setEnabled(false);
 */
+
+   // dbgPipeHlprActn = new QAction("Debug Pipe",this); //TEMP
+    connect(dbgPipeHlprActn, SIGNAL(triggered()), this, SLOT(dbgPipeHlprSLot()));
+    loggedmenu->addAction(dbgPipeHlprActn);
+
 }
+#ifdef Q_OS_WIN
+#define  PIPE_NAME L"\\\\.\\pipe\\shellextnpipe2"
+
+void PCloudApp::dbgPipeHlprSLot()
+{
+    HANDLE hPipedbg;
+
+    //open & create
+    hPipedbg = CreateFile(
+                PIPE_NAME,
+                GENERIC_WRITE | GENERIC_READ, // read and write access
+                0,              // no sharing
+                NULL,           // default security attributes
+                OPEN_EXISTING,  // opens existing pipe
+                FILE_ATTRIBUTE_NORMAL, // default attributes
+                NULL);
+
+
+    if (hPipedbg == INVALID_HANDLE_VALUE)
+    {
+        if(GetLastError() == ERROR_PIPE_BUSY)
+        {
+            if (!WaitNamedPipe(PIPE_NAME, 10000))
+            {
+                OutputDebugString(L"Qt dbgpipe: ERR_PIPE_BUSY - Could not open pipe: 10 second wait timed out.");
+                return;
+            }
+        }
+    }
+    //write
+    char buffer[100];
+    //strcpy(buffer, "sharefrP:\\shareFolder2");
+    strcpy(buffer, "addsyncD:\\newwww|");
+    //strcpy(buffer,"synclistl");
+    DWORD size = (strlen(buffer))*sizeof(char);
+
+    bool result = WriteFile(
+                hPipedbg,
+                buffer, // the data to be sent
+                (strlen(buffer)+1)*sizeof(char), //length of data to send
+                &size, //actual amount of sent data
+                NULL); // not using overlapped IO
+    FlushFileBuffers(hPipedbg);
+
+    if(!result)
+        qDebug()<<"Qt: dbgpipe write failed "<<GetLastError();
+
+    // read
+
+
+}
+#endif
 
 void status_callback(pstatus_t *status)
 {
@@ -646,7 +704,7 @@ void status_callback(pstatus_t *status)
 }
 
 static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
-{        
+{
     mutex.lock();
     qDebug()<<"Event callback" << event;
     if(PCloudApp::appStatic->noEventCallbackFlag)
@@ -832,6 +890,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     regwin=NULL;
     logwin=NULL;
     loggedmenu=NULL;
+    sharefolderwin = NULL;
     welcomeWin = NULL;
     syncFldrsWin = NULL;
     isFirstLaunch = false;
@@ -903,8 +962,9 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     connect(this, SIGNAL(changeCursor(bool)), this, SLOT(setCursor(bool)));
     connect(this, SIGNAL(sendErrText(int, const char*)), this, SLOT(setErrText(int,const char*)));
     connect(this, SIGNAL(updateSyncStatusSgnl()), this, SLOT(updateSyncStatus()));
-    connect(this,SIGNAL(refreshSyncUIitemsSgnl()), this, SLOT(refreshSyncUIitems()));
-    connect(this,SIGNAL(updateUserInfoSgnl(const char* &)), this, SLOT(updateUserInfo(const char* &)));
+    connect(this, SIGNAL(refreshSyncUIitemsSgnl()), this, SLOT(refreshSyncUIitems()));
+    connect(this, SIGNAL(updateUserInfoSgnl(const char* &)), this, SLOT(updateUserInfo(const char* &)));
+    connect(this, SIGNAL(addNewShareSgnl(QString)), this, SLOT(addNewShare(QString)));
     bool savedauth = psync_get_bool_value("saveauth"); //works when syns is paused also
     if (!savedauth)
     {
@@ -1212,7 +1272,7 @@ void PCloudApp::check_version() // old specification
 #ifdef Q_OS_LINUX
     (__WORDSIZE == 64)? OSStr = "LINUX64" : OSStr = "LINUX32";
 #else
-    /*  if(QSysInfo::windowsVersion() != QSysInfo::WV_XP)
+      if(QSysInfo::windowsVersion() != QSysInfo::WV_XP)
         OSStr = "WIN"; // downloads danny's installer
     else
     // end of comment
@@ -1475,7 +1535,7 @@ void PCloudApp::changeOnlineItemsPublic(bool logged)
     emit this->changeOnlineItemsSgnl(logged);
 }
 void PCloudApp::sendTrayMsgTypePublic(const char *title, const char *msg, int msgtype)
-{    
+{
     emit this->sendTrayMsgType(title,msg,msgtype);
 }
 
@@ -1483,32 +1543,42 @@ void PCloudApp::changeCursorPublic(bool change)
 {
     emit this->changeCursor(change);
 }
+
 void PCloudApp::setTextErrPublic(int win, const char *err)
 {
     emit this->sendErrText(win,err);
 }
+
 void PCloudApp::updateSyncStatusPublic()
 {
     emit this->updateSyncStatusSgnl();
-
 }
+
 void PCloudApp::updateUserInfoPublic(const char* param)
 {
     emit updateUserInfoSgnl(param);
     emit this->pCloudWin->refreshUserinfo();
 }
+
+void PCloudApp::addNewSharePublic(QString fldrPath)
+{
+    emit addNewShareSgnl(fldrPath);
+}
+
 void PCloudApp::addNewSyncPublic()
 {
     emit addNewSyncSgnl();
 }
-void PCloudApp::addNewSyncLstPublic()
+
+void PCloudApp::addNewSyncLstPublic(bool addLocalFldrs)
 {
-    emit addNewSyncLstSgnl();
+    emit addNewSyncLstSgnl(addLocalFldrs);
 }
+
 void PCloudApp::setsyncSuggstLst(QStringList lst)
 {
     this->syncSuggstLst = lst;
-    qDebug()<<"setsyncSuggstLst"<<this->syncSuggstLst;
+    qDebug()<<"PCloudApp:setsyncSuggstLst"<<this->syncSuggstLst;
 }
 void PCloudApp::refreshSyncUIitemsPublic()
 {
@@ -1620,24 +1690,52 @@ void PCloudApp::addNewFolderInMenu(QAction *fldrAction) //for add new sync case
 {
     this->syncedFldrsMenu->addAction(fldrAction);
 }
+
+void PCloudApp::addNewShare()
+{
+    if (!sharefolderwin)
+        sharefolderwin = new ShareFolderWindow(pCloudWin,NULL);
+    else
+        sharefolderwin->setContextMenuFlag(false);
+    showWindow(sharefolderwin);
+}
+
+void PCloudApp::addNewShare(QString fldrPath) // from context menu
+{
+    qDebug()<<"addNewShare path"<<fldrPath;
+    this->hideAllWindows();
+    if (!sharefolderwin)
+        sharefolderwin = new ShareFolderWindow(pCloudWin,fldrPath);
+    else
+    {
+        sharefolderwin->setFldrbyMenu(fldrPath);
+        sharefolderwin->setContextMenuFlag(true);
+    }
+    showWindow(sharefolderwin);
+}
+
 void PCloudApp::addNewSync()
 {
     emit this->pCloudWin->syncPage->addSync(); // to be moved
 }
-void PCloudApp::addNewSyncLst()
-{
-    qDebug()<<"addNewSyncLst"<<syncSuggstLst.size()<<syncSuggstLst.at(0); //TEMP
+void PCloudApp::addNewSyncLst(bool addLocalFldrs)
+{    
     hideAllWindows();
     if(syncFldrsWin == NULL)
-        syncFldrsWin = new  SuggestnsBaseWin(this,&syncSuggstLst);
+        syncFldrsWin = new  SuggestnsBaseWin(this, addLocalFldrs, &syncSuggstLst);
     else
-        syncFldrsWin->addLocalFldrs(&syncSuggstLst);
+    {
+        if(addLocalFldrs)
+            syncFldrsWin->addLocalFldrs(&syncSuggstLst);
+        else
+            syncFldrsWin->addRemoteFldrs(&syncSuggstLst);
+    }
     this->showWindow(syncFldrsWin);
 }
 
 //updates menu, pcloudwin and tray icon with current sync upld/downld info
 void PCloudApp::updateSyncStatus()
-{   
+{
     QString traymsg = this->downldInfo + "\n" + this->uplodInfo;
     syncDownldAction->setText(downldInfo);
     syncUpldAction->setText(uplodInfo);

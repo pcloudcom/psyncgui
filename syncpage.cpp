@@ -236,6 +236,7 @@ void SyncPage::addSync()
 {       
     addSyncDialog *addSync = new addSyncDialog(app,win,this, NULL);
     addSync->exec();
+    delete addSync;
 }
 
 // Settings tab

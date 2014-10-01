@@ -3,7 +3,6 @@
 
 #include "changepermissionsdialog.h"
 #include "acceptsharedialog.h"
-#include "sharefolderwindow.h"
 #include <QObject>
 #include <QTreeWidgetItem>
 #include <QMessageBox>
@@ -23,8 +22,7 @@ public:
     void setRequestsVisibility(int incoming, bool visible);
 private:
     PCloudWindow *win;
-    PCloudApp *app;
-    ShareFolderWindow *sharefolderwin;
+    PCloudApp *app;    
     QString getPermissions(quint8 perm);
     void fillSharesTable(bool incoming);
     void fillRequestsTable(bool incoming);
@@ -36,8 +34,7 @@ public slots:
     void stopShare();
     void modifyShare();
     void cancelRqst(); //cancel requests
-    void acceptRqst(); //incoming shares
-    void shareFolder();   
+    void acceptRqst(); //incoming shares    
     void openSharedFldr(QTreeWidgetItem* item,int index);
 };
 

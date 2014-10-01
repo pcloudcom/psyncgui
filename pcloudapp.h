@@ -10,6 +10,7 @@
 #include "shellextthread.h"
 #include "versiontimerthread.h"
 #include "pcloudwindow.h"
+#include "sharefolderwindow.h"
 #include "welcomewin.h"
 #include "suggestnsbasewin.h"
 #include "psynclib.h"
@@ -45,12 +46,14 @@ private:
     QAction *addSyncAction;
     QAction *syncDownldAction;
     QAction *syncUpldAction;
+    QAction *dbgPipeHlprActn; //TEMP
     QMenu *notloggedmenu;
     QMenu *loggedmenu;
     QMenu * syncMenu, *syncedFldrsMenu, *sharesMenu; //submenus in the tray menu
     QSystemTrayIcon *tray;
     RegisterWindow *regwin;
     LoginWindow *logwin;     
+    ShareFolderWindow *sharefolderwin;
     //MonitoringThread *mthread;
    // VersionTimerThread *versnThread;
     bool newVersionFlag;
@@ -120,8 +123,9 @@ public:
     void updateUserInfoPublic(const char* param);
     void changeOnlineItemsPublic(bool logged);
     void setTextErrPublic(int win, const char *err);
+    void addNewSharePublic(QString fldrPath); // from context menu
     void addNewSyncPublic();
-    void addNewSyncLstPublic();
+    void addNewSyncLstPublic(bool addLocalFldrs); //are local or remote folders are selected
     void setsyncSuggstLst(QStringList lst);
     void logoutPublic();
     void addNewFolderInMenu(QAction *fldrAction); // refresh menu when add new sync
@@ -151,8 +155,9 @@ signals:
     void updateSyncStatusSgnl();
     void updateUserInfoSgnl(const char* &param);
     void changeOnlineItemsSgnl(bool logged);
+    void addNewShareSgnl(QString fldrPath); //    void addNewShareSgnl(const char* fldrPath);
     void addNewSyncSgnl();
-    void addNewSyncLstSgnl();
+    void addNewSyncLstSgnl(bool addLocalFldrs);
     void refreshSyncUIitemsSgnl();
     void logoutSignl();
 public slots:
@@ -182,8 +187,10 @@ public slots:
     void pauseSync();
     void resumeSync();
     void openLocalDir(); // for local sync folder
+    void addNewShare();
+    void addNewShare(QString fldrPath); //void addNewShare(const char* fldrPath); //from context menu
     void addNewSync();
-    void addNewSyncLst();
+    void addNewSyncLst(bool addLocalFldrs);
     void updateSyncStatus();
     void refreshSyncUIitems();
     void createSyncFolderActions();
@@ -193,6 +200,7 @@ public slots:
     void showPopupNewVersion();
     void setTimerInterval(int index);
     void networkConnectionChanged(QNetworkSession::State state);
+    void dbgPipeHlprSLot();
 };
 
 #endif // PCLOUDAPP_H
