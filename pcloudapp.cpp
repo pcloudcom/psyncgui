@@ -12,7 +12,10 @@
 #include <QWidgetAction> //temp maybe
 #include <QMutex>
 #include "ui_pcloudwindow.h"
+
+#ifdef Q_OS_WIN
 #include <windows.h> //TEMP
+#endif
 
 PCloudApp* PCloudApp::appStatic = NULL;
 QMutex mutex(QMutex::Recursive);
@@ -413,10 +416,11 @@ void PCloudApp::createMenus()
     syncDownldAction->setEnabled(false);
     syncUpldAction->setEnabled(false);
 */
-
-   // dbgPipeHlprActn = new QAction("Debug Pipe",this); //TEMP
-    connect(dbgPipeHlprActn, SIGNAL(triggered()), this, SLOT(dbgPipeHlprSLot()));
+#ifdef Q_OS_WIM
+    dbgPipeHlprActn = new QAction("Debug Pipe",this); //TEMP
+    connect(dbgPipeHlprActn, SIGNAL(triggered()), this, SLOT(dbgPipeHlprSLot()));    
     loggedmenu->addAction(dbgPipeHlprActn);
+#endif
 
 }
 #ifdef Q_OS_WIN

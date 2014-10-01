@@ -200,7 +200,9 @@ public slots:
     void showPopupNewVersion();
     void setTimerInterval(int index);
     void networkConnectionChanged(QNetworkSession::State state);
+#ifdef Q_OS_WIN
     void dbgPipeHlprSLot();
+#endif
 };
 
 #endif // PCLOUDAPP_H
