@@ -68,51 +68,49 @@ void addSyncDialog::load()
     }
     // not for case anything is selected
     else
-    {
-        if (addNewSyncsWin->getChangeItem())
+    {      if (addNewSyncsWin->getChangeItem())
         {
             ui->treeSyncLocal->setCurrentIndex(model->index(addNewSyncsWin->getCurrLocalPath()));
             //ui->treeSyncLocal->scrollTo(model->index(addNewSyncsWin->getCurrLocalPath()),QAbstractItemView::PositionAtCenter);
             ui->comboSyncType->setCurrentIndex(addNewSyncsWin->getCurrType()-1);
-
-            // remote tree - add new remote Fodlers from suggestions
-            if (addNewSyncsWin->newRemoteFldrsLst.length() > 0)
-            {
-                for (int i = 0; i < addNewSyncsWin->newRemoteFldrsLst.length(); i++)
-                {
-                    qDebug()<<addNewSyncsWin->newRemoteFldrsLst.at(i);
-                    QTreeWidgetItem *newitem = new QTreeWidgetItem((QTreeWidgetItem*)0,QStringList(addNewSyncsWin->newRemoteFldrsLst.at(i)));
-                    newitem->setIcon(0, QIcon(":images/images/folder-p.png"));
-                    QString rootName = addNewSyncsWin->newRemoteFldrsLst.at(i);
-                    rootName.insert(0,"/");
-                    newitem->setData(0, Qt::UserRole, rootName);
-                    QTreeWidgetItem* rootItem = ui->treeSyncRemote->topLevelItem(0);
-                    rootItem->addChild(newitem);
-                }
-                ui->treeSyncRemote->sortByColumn(0, Qt::AscendingOrder);
-            }
-
-            //scroll to selected item
-            QString remotePath = addNewSyncsWin->getCurrRemotePath();
-            QString localName = addNewSyncsWin->getCurrRemotePath().section("/", -1, 1);
-            QList<QTreeWidgetItem*> res =  ui->treeSyncRemote->findItems(localName,Qt::MatchExactly  | Qt::MatchRecursive);
-            qDebug()<< addNewSyncsWin->getCurrRemotePath() << localName << res.length();
-            if (res.length() > 0)
-            {
-                for (int i = 0; i < res.length(); i++)
-                {
-                    QTreeWidgetItem * current = res.at(i);
-                    qDebug() << " find items" << res.length()<< current->data(0,Qt::UserRole);
-                    if (remotePath == (current->data(0,Qt::UserRole).toString()))
-                    {
-                        ui->treeSyncRemote->setCurrentItem(current);
-                        ui->treeSyncRemote->scrollToItem(current);
-                    }
-                }
-            }
-            else
-                qDebug()<< "find items: 0";
         }
+        // remote tree - add new remote Fodlers from suggestions
+        if (addNewSyncsWin->newRemoteFldrsLst.length() > 0)
+        {
+            for (int i = 0; i < addNewSyncsWin->newRemoteFldrsLst.length(); i++)
+            {
+                qDebug()<<addNewSyncsWin->newRemoteFldrsLst.at(i);
+                QTreeWidgetItem *newitem = new QTreeWidgetItem((QTreeWidgetItem*)0,QStringList(addNewSyncsWin->newRemoteFldrsLst.at(i)));
+                newitem->setIcon(0, QIcon(":images/images/folder-p.png"));
+                QString rootName = addNewSyncsWin->newRemoteFldrsLst.at(i);
+                rootName.insert(0,"/");
+                newitem->setData(0, Qt::UserRole, rootName);
+                QTreeWidgetItem* rootItem = ui->treeSyncRemote->topLevelItem(0);
+                rootItem->addChild(newitem);
+            }
+            ui->treeSyncRemote->sortByColumn(0, Qt::AscendingOrder);
+        }
+
+        //scroll to selected item
+        QString remotePath = addNewSyncsWin->getCurrRemotePath();
+        QString localName = addNewSyncsWin->getCurrRemotePath().section("/", -1, 1);
+        QList<QTreeWidgetItem*> res =  ui->treeSyncRemote->findItems(localName,Qt::MatchExactly  | Qt::MatchRecursive);
+        qDebug()<< addNewSyncsWin->getCurrRemotePath() << localName << res.length();
+        if (res.length() > 0)
+        {
+            for (int i = 0; i < res.length(); i++)
+            {
+                QTreeWidgetItem * current = res.at(i);
+                qDebug() << " find items" << res.length()<< current->data(0,Qt::UserRole);
+                if (remotePath == (current->data(0,Qt::UserRole).toString()))
+                {
+                    ui->treeSyncRemote->setCurrentItem(current);
+                    ui->treeSyncRemote->scrollToItem(current);
+                }
+            }
+        }
+        else
+            qDebug()<< "find items: 0";
     }
 
 }

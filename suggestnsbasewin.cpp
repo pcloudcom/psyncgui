@@ -141,6 +141,8 @@ void SuggestnsBaseWin::addLocalFldrs(QStringList *itemsLst) //received from cont
     qDebug()<<"SuggestnsBaseWin::addLocalFldrs";
     if(ui->treeWidget->topLevelItemCount())
         ui->treeWidget->clear();
+    if(!newRemoteFldrsLst.empty())
+        newRemoteFldrsLst.clear();
     for(int i = 0; i < itemsLst->size(); i++)
     {
         qDebug()<<"Qt: fill suggestions tree local folders"<<i<<itemsLst->at(i);
@@ -159,7 +161,7 @@ void SuggestnsBaseWin::addLocalFldrs(QStringList *itemsLst) //received from cont
 #endif
         QString remoteFldrName = checkRemoteName(name); // rename if remote folder with the same name exists
         newRemoteFldrsLst.append(remoteFldrName);
-        remoteFldrsNamesLst.append(remoteFldrName);
+        // remoteFldrsNamesLst.append(remoteFldrName);
         remoteFldrName.insert(0,"/");
         item->setText(3,remoteFldrName); //remotepath
         item->setData(3,Qt::UserRole,remoteFldrName);
@@ -288,11 +290,11 @@ void SuggestnsBaseWin::finish()
             qDebug()<<"ADDING item (from suggestionswin) " << (*it)->data(1,Qt::UserRole).toString().toUtf8() << (*it)->data(3,Qt::UserRole).toString().toUtf8() <<((*it)->data(2,Qt::UserRole).toInt());
 
             if(!addLocalFldrsFlag && !QDir(localpath).exists() // when add remote folders from drive to sync => create local if don't exist
-                    && QDir().mkdir(localpath));           
+                    && QDir().mkdir(localpath));
             //if add local fs folders from context menu and the suggested remove doesn't exist
             else if(addLocalFldrsFlag && psync_fs_isstarted() &&
                     !QDir(QString(psync_fs_getmountpoint() + remotepath)).exists())
-            {              
+            {
                 char* err = NULL;
                 psync_create_remote_folder_by_path(remotepath.toUtf8(),&err);
                 if(err)
@@ -335,17 +337,18 @@ void SuggestnsBaseWin::finish()
     }
     app->pCloudWin->get_sync_page()->load();
     //refresh menu
-    this->hide();    
+    this->hide();
     app->showSync();
 }
 
 QString SuggestnsBaseWin::checkRemoteName(QString &entryName)
 {
-    if (remoteFldrsNamesLst.contains(entryName))
+    if (remoteFldrsNamesLst.contains(entryName) || newRemoteFldrsLst.contains(entryName))
     {
         int i = 1;
         QString newName = entryName;
-        while (remoteFldrsNamesLst.contains(newName)) {
+        while (remoteFldrsNamesLst.contains(newName)|| newRemoteFldrsLst.contains(entryName))
+        {
             newName = entryName + "(" + QString::number(i) + ")";
             i++;
         }

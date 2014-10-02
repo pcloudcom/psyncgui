@@ -349,8 +349,8 @@ void PCloudApp::createMenus()
     loggedmenu->addSeparator();
     loggedmenu->addAction(pauseSyncAction);
     loggedmenu->addAction(resumeSyncAction);
-    loggedmenu->addAction(syncDownldAction);
     loggedmenu->addAction(syncUpldAction);
+    loggedmenu->addAction(syncDownldAction);
 
     pstatus_t status;
     psync_get_status(&status);
