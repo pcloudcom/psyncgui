@@ -295,7 +295,7 @@ void PCloudApp::createMenus()
     connect(driveAction, SIGNAL(triggered()), this, SLOT(showDrive()));
     //p openAction=new QAction("&Open pCloud folder", this);
     //p connect(openAction, SIGNAL(triggered()), this, SLOT(openCloudDir()));
-    settingsAction=new QAction(QIcon(":/menu/images/menu 48x48/settings.png"),trUtf8("Settings"), this); //Settings tab
+    settingsAction=new QAction(QIcon(":/menu/images/menu 16x16/settings.png"),trUtf8("Settings"), this); //Settings tab
     connect(settingsAction, SIGNAL(triggered()), this, SLOT(showSettings()));
     pauseSyncAction = new QAction(QIcon(":/menu/images/menu 48x48/pause.png"),trUtf8("Pause Sync"),this);
     connect(pauseSyncAction, SIGNAL(triggered()),this,SLOT(pauseSync()));
@@ -305,7 +305,7 @@ void PCloudApp::createMenus()
     syncUpldAction = new QAction(QIcon(":/menu/images/menu 48x48/upload.png"),trUtf8("Everything uploaded"),this);
 
     //sync actions
-    syncAction = new QAction(QIcon(":/menu/images/menu16x16/sync.png"),trUtf8("Manage Syncs"),this);
+    syncAction = new QAction(QIcon(":/menu/images/menu16x16/manage.png"),trUtf8("Manage Syncs"),this);
     connect(syncAction, SIGNAL(triggered()), this, SLOT(showSync()));
     addSyncAction = new QAction(QIcon(":/menu/images/menu 48x48/newsync.png"),trUtf8("Add New Sync"),this);
     connect(addSyncAction, SIGNAL(triggered()),this, SLOT(addNewSync()));
@@ -315,7 +315,7 @@ void PCloudApp::createMenus()
     connect(syncSttngsAction, SIGNAL(triggered()), this, SLOT(showSyncSttngs()));
 
     //shares actions
-    sharesAction = new QAction(QIcon(":/menu/images/menu16x16/share.png"),trUtf8("Manage Shares"),this);
+    sharesAction = new QAction(QIcon(":/menu/images/menu16x16/manage.png"),trUtf8("Manage Shares"),this);
     connect(sharesAction, SIGNAL(triggered()), this, SLOT(showShares()));
     shareFolderAction = new QAction(QIcon(":/menu/images/menu 48x48/newsync.png"), trUtf8("Add New Share"),this);
     connect(shareFolderAction, SIGNAL(triggered()), this, SLOT(addNewShare()));
@@ -328,7 +328,7 @@ void PCloudApp::createMenus()
 #ifdef VFS
     loggedmenu->addAction(driveAction);
 #endif
-    syncMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),trUtf8("Sync"));
+    syncMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu 16x16/sync.png"),trUtf8("Sync"));
 
     syncedFldrsMenu = syncMenu->addMenu(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),trUtf8("Synced Folders"));
     syncMenu->addSeparator();
@@ -336,7 +336,7 @@ void PCloudApp::createMenus()
     syncMenu->addAction(addSyncAction);
     //syncMenu->addAction(syncSttngsAction); may be temp
 
-    sharesMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),trUtf8("Shares"));
+    sharesMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu 16x16/share.png"),trUtf8("Shares"));
     sharesMenu->addAction(sharesAction);
     sharesMenu->addAction(shareFolderAction);
 
