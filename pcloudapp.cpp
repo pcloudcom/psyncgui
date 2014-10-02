@@ -295,7 +295,7 @@ void PCloudApp::createMenus()
     connect(driveAction, SIGNAL(triggered()), this, SLOT(showDrive()));
     //p openAction=new QAction("&Open pCloud folder", this);
     //p connect(openAction, SIGNAL(triggered()), this, SLOT(openCloudDir()));
-    settingsAction=new QAction(QIcon(":/menu/images/menu 16x16/settings.png"),trUtf8("Settings"), this); //Settings tab
+    settingsAction=new QAction(QIcon(":/menu/images/menu16x16/settings.png"),trUtf8("Settings"), this); //Settings tab
     connect(settingsAction, SIGNAL(triggered()), this, SLOT(showSettings()));
     pauseSyncAction = new QAction(QIcon(":/menu/images/menu 48x48/pause.png"),trUtf8("Pause Sync"),this);
     connect(pauseSyncAction, SIGNAL(triggered()),this,SLOT(pauseSync()));
