@@ -66,9 +66,9 @@
         <file>images/menu16x16/sync.png</file>
         <file>images/menu16x16/user.png</file>
         <file>images/menu16x16/manage.png</file>
+        <file>images/menu16x16/settings.png</file>
     </qresource>
     <qresource prefix="/debian">
         <file>images/pcloud.xpm</file>
-        <file>images/menu16x16/settings.png</file>
     </qresource>
 </RCC>
