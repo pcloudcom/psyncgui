@@ -17,51 +17,70 @@ SettingsPage::SettingsPage(PCloudWindow *w, PCloudApp *a, QObject* parent):
 {
     win = w;
     app = a;
+    win->ui->tabWidgetSttngs->setTabText(0,trUtf8("General"));
+    win->ui->tabWidgetSttngs->setTabText(1,trUtf8("Speed"));
+    win->ui->tabWidgetSttngs->setTabText(2,trUtf8("Disk Usage"));
 
-    initSettingsPage();
+    QRegExp regExp("[1-9][0-9]{0,4}");
+    QRegExpValidator* regExpValidator = new QRegExpValidator(regExp, this);
+    win->ui->edit_cache->setValidator(regExpValidator);
+    win->ui->edit_DwnldSpeed->setValidator(regExpValidator);
+    win->ui->edit_UpldSpeed->setValidator(regExpValidator);
 
-    //if win make visible context menu groupbox
-    QRegExp regExp("[1-9][0-9]{0,6}");
-    win->ui->edit_cache->setValidator(new QRegExpValidator(regExp, this));
+    QRegExp regExpSpace("[1-9][0-9]{0,4}");
+    win->ui->edit_minLocalSpace->setValidator(new QRegExpValidator(regExpSpace, this));
 
+    connect(win->ui->checkBoxp2p, SIGNAL(clicked()), this, SLOT(setSaveBtnEnable()));
+    connect(win->ui->rBtnSyncDwldAuto, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
+    connect(win->ui->rBtnSyncDwldUnlimit, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
+    connect(win->ui->edit_DwnldSpeed, SIGNAL(textEdited(QString)), this, SLOT(setNewDwnldSpeed()));
+    connect(win->ui->rBtnSyncUpldAuto, SIGNAL(clicked()),this, SLOT(setNewUpldSpeed()));
+    connect(win->ui->rBtnSyncUpldUnlimit, SIGNAL(clicked()),this, SLOT(setNewUpldSpeed()));
+    connect(win->ui->edit_UpldSpeed, SIGNAL(textEdited(QString)),this, SLOT(setNewUpldSpeed()));
     connect(win->ui->edit_cache, SIGNAL(textEdited(QString)), this, SLOT(setSaveBtnEnable()));
-    connect(win->ui->checkBox_onoffFs, SIGNAL(stateChanged(int)), this, SLOT(setSaveBtnEnable()));
+    connect(win->ui->edit_minLocalSpace, SIGNAL(textEdited(QString)), this, SLOT(setSaveBtnEnable()));
     connect(win->ui->checkBox_autorun, SIGNAL(stateChanged(int)), this, SLOT(setSaveBtnEnable()));
+
 #ifdef Q_OS_WIN
     connect(win->ui->checkBox_contxtMenu, SIGNAL(stateChanged(int)), this, SLOT(setSaveBtnEnable()));
+#else
+    win->ui->tabWidgetSttngs->removeTab(0);
 #endif
     connect(win->ui->btnSaveSttngs, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(win->ui->btnCancelSttngs, SIGNAL(clicked()), this, SLOT(cancelSettings()));
 
-#ifndef VFS
-    win->ui->groupBox_cache->setVisible(false);
-    win->ui->groupBox_fldr->setVisible(false);
-    win->ui->groupBox_startStop->setVisible(false);
-#endif
+    initSettingsPage();
+}
+
+void SettingsPage::showEvent()
+{
+    win->ui->tabWidgetSttngs->setCurrentIndex(0);
+    if (win->ui->btnSaveSttngs->isEnabled())
+    {
+        win->ui->btnSaveSttngs->setEnabled(false);
+        win->ui->btnCancelSttngs->setEnabled(false);
+        this->initSettingsPage();
+    }
 }
 
 void SettingsPage::initSettingsPage()
+{    
+    initMain();
+    initSpeed();
+    initSpace();
+    clearSpeedEditLines();
+
+    win->ui->btnSaveSttngs->setEnabled(false);
+    win->ui->btnCancelSttngs->setEnabled(false);
+}
+
+void SettingsPage::initMain()
 {
-    if (!app->settings->contains("startfs"))
-    {
-        win->ui->checkBox_onoffFs->setCheckState(Qt::Checked);
-        app->settings->setValue("startfs", true);
-    }
-    else
-        win->ui->checkBox_onoffFs->setChecked(app->settings->value("startfs").toBool());
-
-    if (!app->settings->contains("cachesize"))
-    {
-        cacheSize = getCacheSize();
-        app->settings->setValue("cachesize", cacheSize);
-        win->ui->edit_cache->setText(QString::number(cacheSize));
-    }
-    else
-        win->ui->edit_cache->setText(QString::number(app->settings->value("cachesize").toInt()));
-
-#ifdef Q_OS_WIN    
+#ifdef Q_OS_WIN
+    //autostart app
     win->ui->checkBox_autorun->setChecked(app->registrySttng->contains("pSync"));
 
+    //context menu
     if(app->settings->contains("shellExt"))
         win->ui->checkBox_contxtMenu->setChecked(app->settings->value("shellExt").toBool());
     else
@@ -70,12 +89,134 @@ void SettingsPage::initSettingsPage()
         app->settings->setValue("shellExt", true);
     }
 #endif
-
-    win->ui->btnSaveSttngs->setEnabled(false);
-    win->ui->btnCancelSttngs->setEnabled(false);
 }
-qint32 SettingsPage::getCacheSize(){
-/*
+
+void SettingsPage::initSpeed()
+{
+    //maximum upload speed in bytes per second, 0 for auto-shaper, -1 for no limit
+    //donwload default - unlimitted -1
+    //upload default - auto-shater 0
+
+    dwnldSpeed = psync_get_int_setting("maxdownloadspeed");
+    dwnldSpeedNew = dwnldSpeed;
+    if (!dwnldSpeed)
+    {
+        win->ui->rBtnSyncDwldAuto->setChecked(true);
+        win->ui->rbtnSyncDwnlChoose->setEnabled(false);
+    }
+    else if (dwnldSpeed == -1)
+    {
+        win->ui->rBtnSyncDwldUnlimit->setChecked(true);
+        win->ui->rbtnSyncDwnlChoose->setEnabled(false);
+    }
+    else
+    {
+        win->ui->rbtnSyncDwnlChoose->setChecked(true);
+        win->ui->edit_DwnldSpeed->setText(QString::number(dwnldSpeed/1000));
+    }
+
+    upldSpeed = psync_get_int_setting("maxuploadspeed");
+    upldSpeedNew = upldSpeed;
+    if (!upldSpeed)
+    {
+        win->ui->rBtnSyncUpldAuto->setChecked(true);
+        win->ui->rbtnSyncupldChoose->setEnabled(false);
+    }
+    else if (upldSpeed == -1)
+    {
+        win->ui->rBtnSyncUpldUnlimit->setChecked(true);
+        win->ui->rbtnSyncupldChoose->setEnabled(false);
+    }
+    else
+    {
+        win->ui->rbtnSyncupldChoose->setChecked(true);
+        win->ui->edit_UpldSpeed->setText(QString::number(upldSpeed/1000));
+    }
+
+    p2p = psync_get_bool_setting("p2psync");
+    win->ui->checkBoxp2p->setChecked(p2p);
+
+}
+
+void SettingsPage::initSpace()
+{
+    cacheSize = psync_get_uint_setting("fscachesize") >> 20;
+    win->ui->edit_cache->setText(QString::number(cacheSize));
+
+    minLocalSpace = (psync_get_uint_setting("minlocalfreespace")) >> 20;
+    win->ui->edit_minLocalSpace->setText(QString::number(minLocalSpace));
+}
+
+void SettingsPage::setNewDwnldSpeed()
+{
+    QObject *obj = this->sender();
+    QString objname = obj->objectName();
+
+    if (objname == "rBtnSyncDwldAuto")
+    {
+        dwnldSpeedNew = 0;
+        win->ui->rbtnSyncDwnlChoose->setEnabled(false);
+    }
+    else if (objname == "rBtnSyncDwldUnlimit")
+    {
+        dwnldSpeedNew = -1;
+        win->ui->rbtnSyncDwnlChoose->setEnabled(false);
+    }
+    else if (objname == "edit_DwnldSpeed")
+    {
+        win->ui->rbtnSyncDwnlChoose->setEnabled(true);
+        win->ui->rbtnSyncDwnlChoose->setChecked(true);
+
+        //already entered new value but changed after that without save
+        if(!win->ui->edit_DwnldSpeed->text().isEmpty())
+            dwnldSpeedNew = win->ui->edit_DwnldSpeed->text().toInt()*1000;
+        else
+            dwnldSpeedNew = -2; //flag for empty line
+    }
+    if(dwnldSpeed != dwnldSpeedNew)
+        emit setSaveBtnEnable();
+
+}
+
+void SettingsPage::setNewUpldSpeed()
+{
+
+    QObject *obj = this->sender();
+    QString objname = obj->objectName();
+
+    if (objname == "rBtnSyncUpldAuto")
+    {
+        upldSpeedNew = 0;
+        win->ui->rbtnSyncupldChoose->setEnabled(false);
+    }
+    else if (objname == "rBtnSyncUpldUnlimit")
+    {
+        upldSpeedNew = -1;
+        win->ui->rbtnSyncupldChoose->setEnabled(false);
+    }
+    else if (objname == "edit_UpldSpeed")
+    {
+        win->ui->rbtnSyncupldChoose->setEnabled(true);
+        win->ui->rbtnSyncupldChoose->setChecked(true);
+
+        //already entered new value but changed after that without save
+        if(!win->ui->edit_UpldSpeed->text().isEmpty())
+        {
+            // if(dwnldSpeedNew != win->ui->edit_DwnldSpeed->text().toInt()*1000)
+            upldSpeedNew = win->ui->edit_UpldSpeed->text().toInt()*1000;
+        }
+        else
+        {
+            upldSpeedNew = -2; //flag for empty line
+        }
+    }
+    if(upldSpeed != upldSpeedNew)
+        emit setSaveBtnEnable();
+}
+
+qint32 SettingsPage::getCacheSize()
+{
+    /*
 #ifdef Q_OS_WIN
     MEMORYSTATUSEX status;
     status.dwLength = sizeof(status);
@@ -95,32 +236,39 @@ qint32 SettingsPage::getCacheSize(){
     return 10; //temp
 }
 
-void SettingsPage::dirChange() //NOT for win;  to add choose mount letter for win
-{
-
-}
-
 void SettingsPage::saveSettings()
-{
-    //start/stop fs
-    if(app->settings->value("startfs").toBool() != win->ui->checkBox_onoffFs->isChecked())
+{   
+    if(p2p != win->ui->checkBoxp2p->isChecked())   //p2p
     {
-        bool startfs = win->ui->checkBox_onoffFs->isChecked();
-        app->settings->setValue("startfs",startfs);
-        if (startfs)
-            //psync_fs_start();
-            qDebug()<< "startfs"; //temp
-        else
-            //psync_fs_stop();
-            qDebug()<<"stopfs"; // temp
-        app->settings->setValue("startfs", startfs);
+        p2p = !p2p;
+        psync_set_bool_setting("p2psync", p2p);
     }
-    //cache
-    if(cacheSize != win->ui->edit_cache->text().toInt())
+
+    if(dwnldSpeed != dwnldSpeedNew)
     {
-        cacheSize = win->ui->edit_cache->text().toInt();
-        app->settings->setValue("cachesize", cacheSize);
+        psync_set_int_setting("maxdownloadspeed", dwnldSpeedNew);
+        dwnldSpeed = dwnldSpeedNew;
     }
+
+    if(upldSpeed != upldSpeedNew)
+    {
+        psync_set_int_setting("maxuploadspeed", upldSpeedNew);
+        upldSpeed = upldSpeedNew;
+    }
+
+    if(cacheSize != win->ui->edit_cache->text().toUInt())  //cache
+    {
+        cacheSize = win->ui->edit_cache->text().toUInt() << 20;
+        psync_set_uint_setting("fscachesize",cacheSize);
+    }
+
+    if (minLocalSpace != win->ui->edit_minLocalSpace->text().toUInt()) //min local space
+    {
+        minLocalSpace = win->ui->edit_minLocalSpace->text().toUInt();
+        psync_set_uint_setting("minlocalfreespace", minLocalSpace << 20 );
+    }
+
+
 #ifdef Q_OS_WIN
     //autorun win
     if(app->registrySttng->contains("pSync") != win->ui->checkBox_autorun->isChecked())
@@ -157,21 +305,32 @@ void SettingsPage::saveSettings()
 // slots
 void SettingsPage::setSaveBtnEnable()
 {
+    if (dwnldSpeedNew == -2 || upldSpeedNew == -2) // if one of speeds is choosen to be custom value but the value is not entered
+    {
+        win->ui->btnSaveSttngs->setEnabled(false);
+        win->ui->btnCancelSttngs->setEnabled(true);
+        return;
+    }
+
 #ifdef Q_OS_WIN
     if(app->registrySttng->contains("pSync") != win->ui->checkBox_autorun->isChecked() ||
-            //  cacheSize != win->ui->edit_cache->text().toInt() ||
-            //  app->settings->value("startfs").toBool() != win->ui->checkBox_onoffFs->isChecked() ||
             app->settings->value("shellExt").toBool() != win->ui->checkBox_contxtMenu->isChecked())
     {
         win->ui->btnSaveSttngs->setEnabled(true);
         win->ui->btnCancelSttngs->setEnabled(true);
     }
-    else
-#endif
+
+#endif      
+    if ( upldSpeed != upldSpeedNew || dwnldSpeed != dwnldSpeedNew
+         || p2p != win->ui->checkBoxp2p->isChecked()
+         || minLocalSpace != win->ui->edit_minLocalSpace->text().toUInt()
+         || cacheSize != win->ui->edit_cache->text().toUInt())
     {
-        win->ui->btnSaveSttngs->setEnabled(false);
-        win->ui->btnCancelSttngs->setEnabled(false);
+        win->ui->btnSaveSttngs->setEnabled(true);
+        win->ui->btnCancelSttngs->setEnabled(true);
     }
+
+    clearSpeedEditLines();
 }
 
 void SettingsPage::cancelSettings()
@@ -179,3 +338,10 @@ void SettingsPage::cancelSettings()
     initSettingsPage();
 }
 
+void SettingsPage::clearSpeedEditLines()
+{
+    if((dwnldSpeedNew == 0 || dwnldSpeedNew == -1) && !win->ui->edit_DwnldSpeed->text().isNull())
+        win->ui->edit_DwnldSpeed->clear();
+    if((upldSpeedNew == 0 || upldSpeedNew == -1)  && !win->ui->edit_UpldSpeed->text().isNull())
+        win->ui->edit_UpldSpeed->clear();
+}

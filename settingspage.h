@@ -16,21 +16,28 @@ class SettingsPage: public QObject
 public:
   friend class PCloudWindow;
   explicit SettingsPage(PCloudWindow *w, PCloudApp *a, QObject *parent = 0);
+    void showEvent(); // custom
 private:
     PCloudWindow *win;
     PCloudApp *app;
-    QString dir;
+    bool p2p;
+    int upldSpeed, upldSpeedNew, dwnldSpeed, dwnldSpeedNew;
     QString initFlrd;
     QString initCache;
-    quint32 cacheSize;
-    bool contextMenu;
+    quint32 cacheSize, minLocalSpace;
+    bool contextMenu;  
     void initSettingsPage();
-    qint32 getCacheSize();
-public slots:    
-    void dirChange();       
+    void initMain();
+    void initSpeed();
+    void initSpace();
+    void clearSpeedEditLines();
+    qint32 getCacheSize();        
+public slots:        
     void saveSettings();
     void setSaveBtnEnable();
     void cancelSettings();
+    void setNewDwnldSpeed();
+    void setNewUpldSpeed();
 };
 
 #endif // SETTINGSPAGE_H

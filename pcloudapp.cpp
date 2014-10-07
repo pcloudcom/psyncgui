@@ -95,9 +95,14 @@ void PCloudApp::showAccount()
 
 void PCloudApp::showDrive()
 {
-    hideAllWindows();
-    pCloudWin->setCurrntIndxPclWin(DRIVE_PAGE_NUM);
-    this->showWindow(pCloudWin);
+    if(psync_fs_isstarted())
+        emit this->openCloudDir();
+    else
+    {
+        hideAllWindows();
+        pCloudWin->setCurrntIndxPclWin(DRIVE_PAGE_NUM);
+        this->showWindow(pCloudWin);
+    }
 }
 
 void PCloudApp::showSync()
@@ -143,9 +148,13 @@ void PCloudApp::showpCloudAbout(){
     this->showWindow(pCloudWin);
 }
 
-/*p
-void PCloudApp::openCloudDir(){
-    QString path = settings->get("path");
+
+void PCloudApp::openCloudDir()
+{
+    QDesktopServices::openUrl(QUrl::fromLocalFile(psync_fs_getmountpoint()));
+
+
+    /*p    QString path = settings->get("path");
 
 #ifdef Q_OS_WIN
     int retray = 5;
@@ -169,8 +178,9 @@ void PCloudApp::openCloudDir(){
         QDesktopServices::openUrl(QUrl::fromLocalFile(path));
     }
 #endif
+*/
 }
- */
+
 
 void PCloudApp::logOut(){
     loggedin=false;
@@ -187,7 +197,8 @@ void PCloudApp::logOut(){
 
 #endif
     username="";
-    psync_logout(); //sets auth to ""
+    if(this->lastStatus != PSTATUS_BAD_LOGIN_DATA || this->lastStatus != PSTATUS_LOGIN_REQUIRED)
+        psync_logout();
     tray->setContextMenu(notloggedmenu);
     tray->setToolTip("pCloud");
     pCloudWin->setOnlineItems(false);
@@ -233,14 +244,13 @@ void PCloudApp::clearAllSettings()
         QSettings appDir("HKEY_LOCAL_MACHINE\\SOFTWARE\\PCloud\\pCloud",QSettings::NativeFormat); //take app install ddir
         registrySttng->setValue("pSync",appDir.value("Install_Dir").toString().append("\\pSync.exe"));
     }
-#endif
-    //p  removeSetting("startfs");
-    //p  removeSetting("cachesize");
+#endif    
+
 }
 
 void PCloudApp::doExit(){
     //p unMount();
-    //psync_destroy();
+    // psync_destroy();
     quit();
 }
 
@@ -418,7 +428,7 @@ void PCloudApp::createMenus()
 */
 #ifdef Q_OS_WIM
     dbgPipeHlprActn = new QAction("Debug Pipe",this); //TEMP
-    connect(dbgPipeHlprActn, SIGNAL(triggered()), this, SLOT(dbgPipeHlprSLot()));    
+    connect(dbgPipeHlprActn, SIGNAL(triggered()), this, SLOT(dbgPipeHlprSLot()));
     loggedmenu->addAction(dbgPipeHlprActn);
 #endif
 
@@ -637,7 +647,6 @@ void status_callback(pstatus_t *status)
         qDebug()<<"PSTATUS_BAD_LOGIN_DATA";
         if(previousStatus != PSTATUS_BAD_LOGIN_DATA && PCloudApp::appStatic->isLogedIn())
         {
-            PCloudApp::appStatic->changeSyncIconPublic(OFFLINE_ICON);
             PCloudApp::appStatic->logoutPublic();
             PCloudApp::appStatic->lastStatus = PSTATUS_BAD_LOGIN_DATA;
         }
@@ -677,7 +686,7 @@ void status_callback(pstatus_t *status)
 
     case PSTATUS_OFFLINE:                   //10
         qDebug()<<"PSTATUS_OFFLINE";
-        if(previousStatus != PSTATUS_OFFLINE )
+        if(previousStatus != PSTATUS_OFFLINE)
         {
             PCloudApp::appStatic->changeSyncIconPublic(OFFLINE_ICON);
             PCloudApp::appStatic->changeOnlineItemsPublic(false);
@@ -988,7 +997,9 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     session->open();
     connect(session, SIGNAL(stateChanged(QNetworkSession::State)), this, SLOT(networkConnectionChanged(QNetworkSession::State)));
     //for case when upld is called only once
+
     pstatus_t status;
+    memset(&status, 0, sizeof(status));
     status_callback(&status);
 
     /* p
@@ -1181,7 +1192,7 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     else
         tray->setIcon(QIcon(PAUSED_ICON));
     tray->setContextMenu(loggedmenu);
-    //isFirstLaunch = true; // for test TEMP
+    //isFirstLaunch = false; // for test TEMP
     if (isFirstLaunch)
     {
         welcomeWin = new WelcomeWin(this, NULL);
@@ -1529,9 +1540,9 @@ void PCloudApp::changeSyncIconPublic(const QString &icon)
     {
         noFreeSpaceMsgShownFlag = true;
         if(this->lastStatus == PSTATUS_DISK_FULL)    // no local disk space (according to settings)
-            emit this->showMsgBoxSgnl(trUtf8("Account full"),trUtf8("You don't have enough disc space!"), 2);
+            emit this->showMsgBoxSgnl(trUtf8("Disk is full"),trUtf8("You have reached your minimum free disk space limit!"), 2);
         else // pcloud account is full
-            emit this->showMsgBoxSgnl(trUtf8("Account full"),trUtf8("Your pCloud account is out of free space!"), 2); //++ get more space suggestion
+            emit this->showMsgBoxSgnl(trUtf8("Account is full"),trUtf8("Your pCloud account is out of free space!"), 2); //++ get more space suggestion
     }
 }
 void PCloudApp::changeOnlineItemsPublic(bool logged)

@@ -175,7 +175,7 @@ public slots:
     void showSettings();
     void showpCloudAbout();
     void showpcloudHelp();
-    //p void openCloudDir();    
+    void openCloudDir();
     void logOut();
     void unlink();
     void doExit();

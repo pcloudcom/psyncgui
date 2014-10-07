@@ -44,6 +44,7 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
 
     fillAcountNotLoggedPage();
     fillAboutPage();
+    fillDrivePage();
     settngsPage = new SettingsPage(this, app);
     syncPage = new SyncPage(this, app);
     sharesPage = new SharesPage(this, app);
@@ -66,6 +67,9 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     connect(ui->btnLogin, SIGNAL(clicked()),app, SLOT(showLogin()));
     connect(ui->btnRegstr, SIGNAL(clicked()), app, SLOT(showRegister()));
     connect(ui->btnExit, SIGNAL(clicked()), app, SLOT(doExit()));
+    connect(ui->btnDriveOpenFldr, SIGNAL(clicked()), app, SLOT(openCloudDir()));
+    connect(ui->btnDriveStart, SIGNAL(clicked()), this, SLOT(launchFS()));
+    connect(ui->btnDriveStop, SIGNAL(clicked()), this, SLOT(launchFS()));
     connect(ui->toolBtnContact, SIGNAL(clicked()), this, SLOT(contactUs()));
     connect(ui->tBtnOnlineHelp, SIGNAL(clicked()), this, SLOT(openOnlineHelp()));
     connect(ui->tBtnOnlineTutorial, SIGNAL(clicked()), this, SLOT(openOnlineTutorial()));
@@ -75,7 +79,6 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     connect(ui->comboBox_versionReminder, SIGNAL(currentIndexChanged(int)), app, SLOT(setTimerInterval(int)));
     connect(ui->btnUpdtVersn, SIGNAL(clicked()), this, SLOT(updateVersion()));
     //p connect(ui->tbtnOpenFolder, SIGNAL(clicked()),app,SLOT(openCloudDir()));
-    connect(ui->tBtnExit, SIGNAL(clicked()), app, SLOT(doExit()));
     connect(ui->btnLgout, SIGNAL(clicked()), app, SLOT(logOut()));
     connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(unlinkSync()));
 
@@ -120,8 +123,8 @@ void PCloudWindow::changePage(QListWidgetItem *current, QListWidgetItem *previou
     for(int i = 0; i < ui->pagesWidget->count(); i++)
     {
         if ( i != currentIndex)
-           // ui->pagesWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-             ui->pagesWidget->widget(i)->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Ignored);
+            // ui->pagesWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+            ui->pagesWidget->widget(i)->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Ignored);
     }
     //ui->pagesWidget->widget(currentIndex)->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     ui->pagesWidget->widget(currentIndex)->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
@@ -133,8 +136,7 @@ void PCloudWindow::changePage(QListWidgetItem *current, QListWidgetItem *previou
 
 }
 void PCloudWindow::showEvent(QShowEvent *)
-{
-    qDebug()<<"pclwin showevent"<<ui->listButtonsWidget->currentRow();
+{    
     refreshPage(ui->listButtonsWidget->currentRow());
 }
 
@@ -143,11 +145,14 @@ void PCloudWindow::refreshPage(int currentIndex)
     switch(currentIndex)
     {
     case ACCNT_LOGGED_PAGE_NUM:
-        if(verifyClicked)      // Account page, case when user just has clicked Verify Email
+        if(verifyClicked)                 // Account page, case when user just has clicked Verify Email
             checkVerify();
         break;
     case SHARES_PAGE_NUM:
-        sharesPage->loadAll(); //Shares page
+        sharesPage->loadAll();
+        break;
+    case SETTINGS_PAGE_NUM:
+        settngsPage->showEvent();
         break;
     case ABOUT_PAGE_NUM:                    //About page, when have a new version
         if(app->new_version())
@@ -156,13 +161,6 @@ void PCloudWindow::refreshPage(int currentIndex)
     default:
         break;
     }
-    /*fs+sync
-    if (currentIndex == 4) //settings page, if user has changed smthng but hasn't save it
-    {
-        settngsPage->initSettingsPage();
-        return;
-    }
-    */
 }
 
 void PCloudWindow::setCurrntIndxPclWin(int index)
@@ -203,6 +201,21 @@ void PCloudWindow::setOnlinePages()
 void PCloudWindow::fillAcountNotLoggedPage()
 {
     ui->toolBtnContact->setStyleSheet("QToolButton{background-color:transparent;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");
+}
+
+void PCloudWindow::fillDrivePage()
+{
+    bool isFSStarted = psync_fs_isstarted();
+    qDebug()<< "fill drive page, is fs started:" << isFSStarted << psync_fs_getmountpoint();
+    if(isFSStarted)
+    {
+        ui->btnDriveStart->setVisible(false);
+    }
+    else
+    {
+        ui->btnDriveOpenFldr->setVisible(false);
+        ui->btnDriveStop->setVisible(false);
+    }
 }
 
 void PCloudWindow::fillAboutPage()
@@ -254,10 +267,7 @@ void PCloudWindow::fillAccountLoggedPage()
     }
 
     //for sync hide some widgets till start use new fs
-    // ui->tBtnExit->setVisible(false); ?
-
     ui->tbtnOpenFolder->setVisible(false);
-    ui->tBtnExit->setVisible(false);
 
 }
 void PCloudWindow::refreshUserinfo()
@@ -361,6 +371,26 @@ void PCloudWindow::refreshPagePulbic(int pageindex, int param)
 }
 
 //SLOTS
+void PCloudWindow::launchFS()
+{
+    if(QObject::sender()->objectName() == "btnDriveStart")
+    {
+        qDebug()<<"start fs";
+        psync_fs_start();
+        ui->btnDriveStart->setVisible(false);
+        ui->btnDriveOpenFldr->setVisible(true);
+        ui->btnDriveStop->setVisible(true);
+    }
+    else
+    {
+        qDebug()<<"stop fs";
+        psync_fs_stop();
+        ui->btnDriveStart->setVisible(true);
+        ui->btnDriveOpenFldr->setVisible(false);
+        ui->btnDriveStop->setVisible(false);
+    }
+}
+
 void PCloudWindow::changePass()
 {
     ChangePassDialog *dialog = new ChangePassDialog();
@@ -417,7 +447,9 @@ void PCloudWindow::forgotPass()
 void PCloudWindow::unlinkSync()
 {   
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::warning(this,trUtf8("Unlink"), trUtf8("If you unlink your account from this computer any data about your synced folders will be lost. Do you still want to unlink?"),
+    //reply = QMessageBox::warning(this,trUtf8("Unlink"), trUtf8("If you unlink your account from this computer any data about your synced folders will be lost. Do you still want to unlink?"),
+    reply = QMessageBox::warning(this,trUtf8("Unlink"),
+                                 trUtf8("By unlinking you will lose all pCloud Drive settings for the current account on this computer. Are you sure?"),
                                  QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::Yes)
         app->unlink();

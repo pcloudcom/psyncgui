@@ -171,7 +171,8 @@ void LoginWindow::forgotPassword()
 void LoginWindow::unlinkSync() // to be moved in sync class
 {    
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::warning(this,trUtf8("Unlink"), trUtf8("If you unlink your account from this computer any data about your synced folders will be lost. Do you still want to unlink?"),
+    //reply = QMessageBox::warning(this,trUtf8("Unlink"), trUtf8("If you unlink your account from this computer any data about your synced folders will be lost. Do you still want to unlink?"),
+    reply = QMessageBox::warning(this,trUtf8("Unlink"), trUtf8("By unlinking you will lose all pCloud Drive settings for the current account on this computer. Are you sure?"),
                                  QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::Yes)
     {

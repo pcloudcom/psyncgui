@@ -25,11 +25,6 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
     win->ui->tabWidgetSync->setTabText(1, trUtf8("Sync Settings"));
     win->ui->tabWidgetSync->setCurrentIndex(0);
 
-    QRegExp regExp("[1-9][0-9]{0,4}");
-    win->ui->edit_minLocalSpace->setValidator(new QRegExpValidator(regExp, this));
-    QRegExp regExpSpeed("[1-9][0-9]{0,4}");
-    win->ui->edit_DwnldSpeed->setValidator(new QRegExpValidator(regExpSpeed, this));
-    win->ui->edit_UpldSpeed->setValidator(new QRegExpValidator(regExpSpeed, this));
     win->ui->label_dwnld->setText(app->downldInfo);
     win->ui->label_upld->setText(app->uplodInfo);
 
@@ -43,19 +38,21 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
 
     connect(win->ui->btnSyncSttngsSave, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(win->ui->btnSyncSttngCancel, SIGNAL(clicked()), this, SLOT(cancelSettings()));
-    connect(win->ui->edit_minLocalSpace, SIGNAL(textEdited(QString)), this, SLOT(enableSaveBtn()));
-    connect(win->ui->checkBoxSyncSSL, SIGNAL(stateChanged(int)), this, SLOT(enableSaveBtn()));
-    connect(win->ui->checkBoxp2p, SIGNAL(stateChanged(int)), this, SLOT(enableSaveBtn()));
     connect(win->ui->text_patterns, SIGNAL(textChanged()), this, SLOT(enableSaveBtn()));
-    connect(win->ui->rBtnSyncDwldAuto, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
+
+    win->ui->groupBoxSyncSSL->setVisible(false);
+    /*connect(win->ui->checkBoxSyncSSL, SIGNAL(stateChanged(int)), this, SLOT(enableSaveBtn()));
+    connect(win->ui->checkBoxp2p, SIGNAL(stateChanged(int)), this, SLOT(enableSaveBtn()));
+   connect(win->ui->rBtnSyncDwldAuto, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
     connect(win->ui->rBtnSyncDwldUnlimit, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
     connect(win->ui->rbtnSyncDwnlChoose, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
     connect(win->ui->rBtnSyncUpldAuto, SIGNAL(clicked()),this, SLOT(setNewUpldSpeed()));
     connect(win->ui->rBtnSyncUpldUnlimit, SIGNAL(clicked()),this, SLOT(setNewUpldSpeed()));
-    connect(win->ui->rbtnSyncupldChoose, SIGNAL(clicked()),this, SLOT(setNewUpldSpeed()));
-    connect(win->ui->edit_DwnldSpeed, SIGNAL(textEdited(QString)), this, SLOT(setNewSpeedFromEditline())); //textedited signal will not emit when the text is changed programmatically
-    connect(win->ui->edit_UpldSpeed, SIGNAL(textEdited(QString)), this, SLOT(setNewSpeedFromEditline()));
+    connect(win->ui->rbtnSyncupldChoose, SIGNAL(clicked()),this, SLOT(()));
 
+   connect(win->ui->edit_DwnldSpeed, SIGNAL(textEdited(QString)), this, SLOT(setNewSpeedFromEditline())); //textedited signal will not emit when the text is changed programmatically
+    connect(win->ui->edit_UpldSpeed, SIGNAL(textEdited(QString)), this, SLOT(setNewSpeedFromEditline()));
+*/
 }
 
 void SyncPage::openTab(int index)
@@ -241,15 +238,12 @@ void SyncPage::addSync()
 
 // Settings tab
 void SyncPage::loadSettings()
-{
-    SSL = psync_get_bool_setting("usessl");
+{    
+    /* SSL = psync_get_bool_setting("usessl");
     win->ui->checkBoxSyncSSL->setChecked(SSL);
 
-    p2p = psync_get_bool_setting("p2psync");
-    win->ui->checkBoxp2p->setChecked(p2p);
-
-    minLocalSpace = QString::number((psync_get_uint_setting("minlocalfreespace"))/1024/1024);
-    win->ui->edit_minLocalSpace->setText(minLocalSpace);
+    //p2p = psync_get_bool_setting("p2psync");
+    //win->ui->checkBoxp2p->setChecked(p2p);
 
     //maximum upload speed in bytes per second, 0 for auto-shaper, -1 for no limit
     //donwload default - unlimitted -1
@@ -297,6 +291,7 @@ void SyncPage::loadSettings()
             win->ui->edit_UpldSpeed->setEnabled(true);
         }
     }
+*/
 
     patterns = psync_get_string_setting("ignorepatterns");
     win->ui->text_patterns->setText(patterns);
@@ -305,6 +300,7 @@ void SyncPage::loadSettings()
     win->ui->btnSyncSttngCancel->setEnabled(false);
 
 }
+/*
 void SyncPage::setNewDwnldSpeed()
 {    
     QObject *obj = this->sender();
@@ -393,34 +389,36 @@ void SyncPage::setNewSpeedFromEditline()
     }
     emit enableSaveBtn();
 }
+*/
 
 void SyncPage::enableSaveBtn()
 {    
-    if (dwnldSpeedNew == -2 || upldSpeedNew == -2) // if one of speeds is choosen to be custom value but the value is not entered
+    /*   if (dwnldSpeedNew == -2 || upldSpeedNew == -2) // if one of speeds is choosen to be custom value but the value is not entered
     {
         win->ui->btnSyncSttngsSave->setEnabled(false);
         return;
     }
     if (SSL != win->ui->checkBoxSyncSSL->isChecked()
             || p2p != win->ui->checkBoxp2p->isChecked()
-            || minLocalSpace != win->ui->edit_minLocalSpace->text()
+          //  || minLocalSpace != win->ui->edit_minLocalSpace->text()
             || upldSpeed != upldSpeedNew || dwnldSpeed != dwnldSpeedNew
-            || win->ui->text_patterns->document()->isModified())
+        */
+    if(win->ui->text_patterns->document()->isModified())
     {
         win->ui->btnSyncSttngsSave->setEnabled(true);
         win->ui->btnSyncSttngCancel->setEnabled(true);
     }
+
     else
     {
         win->ui->btnSyncSttngsSave->setEnabled(false);
         win->ui->btnSyncSttngCancel->setEnabled(false);
     }
-    clearSpeedEditLines();
 }
 
 void SyncPage::saveSettings()
 {
-    if (SSL != win->ui->checkBoxSyncSSL->isChecked())
+    /*if (SSL != win->ui->checkBoxSyncSSL->isChecked())
     {
         SSL = !SSL;
         psync_set_bool_setting("usessl", SSL);
@@ -430,13 +428,7 @@ void SyncPage::saveSettings()
         p2p = !p2p;
         psync_set_bool_setting("p2psync", p2p);
     }
-    if (minLocalSpace != win->ui->edit_minLocalSpace->text())
-    {
-        minLocalSpace = win->ui->edit_minLocalSpace->text();
-        // minLocalSpace.toInt()*1024*1024 doesnt returns right result if space = 9999mb
-        quint64 n = 1024*1024;
-        psync_set_uint_setting("minlocalfreespace", minLocalSpace.toInt()*n);
-    }
+
 
     if(upldSpeed != upldSpeedNew)
     {
@@ -449,16 +441,14 @@ void SyncPage::saveSettings()
         psync_set_int_setting("maxdownloadspeed", dwnldSpeedNew);
         dwnldSpeed = dwnldSpeedNew;
     }
+ */
 
     if(patterns != win->ui->text_patterns->toPlainText())
     {
         patterns = win->ui->text_patterns->toPlainText();
         psync_set_string_setting("ignorepatterns",patterns.toUtf8());
     }
-    qDebug()<<"Sync New Settings Saved: patterns= " <<patterns << " ssl=" << SSL << " minspace="<< minLocalSpace;
-    qDebug()<< "lib vals space="<<(psync_get_uint_setting("minlocalfreespace"))/1024/1024 << " dwnldspeed="
-            << (psync_get_int_setting("maxdownloadspeed"))/1000 << " upldspeed="
-            << (psync_get_int_setting("maxuploadspeed"))/1000 << " ssl=" <<psync_get_bool_setting("usessl");
+
     win->ui->btnSyncSttngsSave->setEnabled(false);
     win->ui->btnSyncSttngCancel->setEnabled(false);
 }
@@ -467,12 +457,4 @@ void SyncPage::cancelSettings()
     loadSettings();
     win->ui->btnCancelSttngs->setEnabled(false);
     win->ui->btnSaveSttngs->setEnabled(false);
-
-}
-void SyncPage::clearSpeedEditLines()
-{
-    if((dwnldSpeedNew == 0 || dwnldSpeedNew == -1) && !win->ui->edit_DwnldSpeed->text().isNull())
-        win->ui->edit_DwnldSpeed->clear();
-    if((upldSpeedNew == 0 || upldSpeedNew == -1)  && !win->ui->edit_UpldSpeed->text().isNull())
-        win->ui->edit_UpldSpeed->clear();
 }

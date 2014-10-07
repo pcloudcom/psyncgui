@@ -47,7 +47,8 @@ private:
     void checkVerify();
     void closeEvent(QCloseEvent *event);
     void fillAcountNotLoggedPage();
-    void fillAccountLoggedPage();    
+    void fillAccountLoggedPage();
+    void fillDrivePage();
     void fillAboutPage();
     void refreshPage(int currentIndex);
 protected:
@@ -59,7 +60,8 @@ public slots:
     void setCurrntIndxPclWin(int index);    
     void setOnlineItems(bool online);
     void setOnlinePages();  //when the user logs in
-    void refreshUserinfo();    
+    void refreshUserinfo();
+    void launchFS();
     void openMyPcloud();    
     void openOnlineTutorial();
     void openOnlineHelp();
