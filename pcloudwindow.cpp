@@ -90,8 +90,8 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     menuAccnt->addAction(actionChangePass);
     menuAccnt->addAction(forgotPassAction);
     ui->btnAccntMenu->setMenu(menuAccnt);
-    //this->setMinimumHeight(560);
-    this->setMinimumWidth(1024);
+    this->setMinimumHeight(560);
+    //this->setMinimumWidth(1024);
 
 }
 
