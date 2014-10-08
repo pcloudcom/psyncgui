@@ -26,9 +26,7 @@ void PCloudApp::hideAllWindows(){
     if (logwin && logwin->isVisible())
         logwin->hide();
     if (pCloudWin && pCloudWin->isVisible())
-        pCloudWin->hide();
-    if(syncFldrsWin && syncFldrsWin->isVisible())
-        syncFldrsWin->hide();
+        pCloudWin->hide();    
     if(welcomeWin && welcomeWin->isVisible())
         welcomeWin->hide();
 }
@@ -1086,7 +1084,7 @@ void PCloudApp::check_error()
     switch (err)
     {
     case PERROR_LOCAL_FOLDER_NOT_FOUND: //1
-        qDebug()<< PERROR_LOCAL_FOLDER_NOT_FOUND;
+        qDebug()<<PERROR_LOCAL_FOLDER_NOT_FOUND;
         break;
     case PERROR_REMOTE_FOLDER_NOT_FOUND: //2
         qDebug()<<PERROR_REMOTE_FOLDER_NOT_FOUND;

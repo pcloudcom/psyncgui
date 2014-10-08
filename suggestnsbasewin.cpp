@@ -314,7 +314,7 @@ void SuggestnsBaseWin::finish()
             if (id == -1)
             {
                 app->check_error();
-                return;
+                continue;
             }
 
 #ifdef Q_OS_WIN
