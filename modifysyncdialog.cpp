@@ -2,7 +2,7 @@
 #include "ui_modifysyncdialog.h"
 #include "common.h"
 
-const char* typeNames[3]={"Donwload only", "Upload only", "Download and Upload"};
+const char* typeNames[3]={"Download only", "Upload only", "Download and Upload"};
 
 ModifySyncDialog::ModifySyncDialog(QString local, QString remote,int type, QWidget *parent) :
     QDialog(parent),
