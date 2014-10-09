@@ -23,6 +23,12 @@ SuggestnsBaseWin::SuggestnsBaseWin(PCloudApp *a, bool addlocal, QStringList *fld
     isChangingItem = false;
     addFldrsLst = fldrs;
 
+#ifdef Q_OS_WIN
+    dfltDir = new QDir(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+#else
+    dfltDir = new QDir(QDir::homePath());
+#endif
+
     connect(ui->btnAdd, SIGNAL(clicked()),this, SLOT(addSync()));
     connect(ui->btnFinish, SIGNAL(clicked()), this, SLOT(finish()));
     connect(ui->treeWidget, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(changeCurrItem(QModelIndex)));
@@ -183,10 +189,13 @@ void SuggestnsBaseWin::addRemoteFldrs(QStringList *itemsLst)
         item->setData(0, Qt::UserRole, true);
         QString remotepath = itemsLst->at(i);
         QString localpath, remoteFldrName = remotepath.section("/",1);
-        if(!QDir::home().exists(remoteFldrName))
-            localpath = QDir::homePath().append("/" + remoteFldrName);
+        //if(!QDir::home().exists(remoteFldrName))
+        if(!dfltDir->exists(remoteFldrName))
+            //localpath = QDir::homePath().append("/" + remoteFldrName);
+            localpath = dfltDir->path().append("/" + remoteFldrName);
         else
-            localpath = getLocalName(remoteFldrName, QDir::home());
+           // localpath = getLocalName(remoteFldrName, QDir::home());
+             localpath = getLocalName(remoteFldrName);
 #ifdef Q_OS_WIN
         localpath.replace("/","\\");
 #endif
@@ -358,16 +367,17 @@ QString SuggestnsBaseWin::checkRemoteName(QString &entryName)
         return entryName;
 }
 
-QString SuggestnsBaseWin::getLocalName(QString &entryName, QDir usrDir)
+QString SuggestnsBaseWin::getLocalName(QString &entryName)
 {
     int i = 0;
     QString newName = entryName;
-    while(usrDir.exists(newName))
+    while(dfltDir->exists(newName))
     {
         i++;
         newName = entryName.append("(" + QString::number(i) + ")");
     }
-    return QDir::homePath().append("/" + newName);
+    //return QDir::homePath().append("/" + newName);
+    return dfltDir->path().append("/" + newName);
 }
 
 void SuggestnsBaseWin::addNewRemoteFldr(QString &name)

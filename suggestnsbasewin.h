@@ -39,11 +39,12 @@ public:
 private:
     bool addLocalFldrsFlag;
     QStringList *addFldrsLst;  //indicates if user adds a new sync or changes a suggested one
-    QString getLocalName(QString &entryName, QDir usrDir);
+    QString getLocalName(QString &entryName);//, QDir &usrDir);
 protected:        
     Ui::SuggestnsBaseWin *ui;
     void closeEvent(QCloseEvent *event);
     PCloudApp *app;
+    QDir *dfltDir;
     QString currentLocal, currentRemote;
     int currentType;
     bool isChangingItem;    

@@ -7,13 +7,14 @@
 WelcomeWin::WelcomeWin(PCloudApp *a,QWidget *parent) :
     SuggestnsBaseWin(a,false, NULL,parent)
 {
-//initFldrs = null
+    //initFldrs = null
     QString defaultRemoteFldr = "/pCloudSync";
     QTreeWidgetItem *defaultItem = new QTreeWidgetItem(ui->treeWidget); // the default sync; the first item in the view; uneditable
     defaultItem->setCheckState(0,Qt::Checked);
     defaultItem->setFlags(Qt::NoItemFlags);
 
-    QString path = QDir::home().path().append("/pCloudSync");
+    // QString path = QDir::home().path().append("/pCloudSync");
+    QString path = dfltDir->path().append("/pCloudSync");
     QDir pcloudDir(path);
     QList<QStringList> itemsLst;
 #if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
@@ -54,7 +55,8 @@ WelcomeWin::WelcomeWin(PCloudApp *a,QWidget *parent) :
 #endif
     if(!pcloudDir.exists())
     {
-        QDir::home().mkdir("pCloudSync");
+        //QDir::home().mkdir("pCloudSync");
+        dfltDir->mkdir("pCloudSync");
         remoteFldrsNamesLst.append("pCloudSync");
         newRemoteFldrsLst.append("pCloudSync");
     }
@@ -68,7 +70,7 @@ WelcomeWin::WelcomeWin(PCloudApp *a,QWidget *parent) :
     ui->treeWidget->insertTopLevelItem(0,defaultItem);
 
     remoteFldrsNamesLst.append("My Documents");
-    newRemoteFldrsLst.append("My Documents");    
+    newRemoteFldrsLst.append("My Documents");
 
     // to add them here ++ checkRemoteName !
     /* for(int i = 0; i < itemsLst.size(); i++)
