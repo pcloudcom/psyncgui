@@ -1834,7 +1834,7 @@ QString PCloudApp::timeConvert(quint64 seconds)
 void PCloudApp::networkConnectionChanged(QNetworkSession::State state)
 {
     qDebug()<<"network connection state changed " << state;
-    if (state == QNetworkSession::Roaming || state == QNetworkSession::NotAvailable)// || state == QNetworkSession::Connected)
+    if (state == QNetworkSession::Roaming || state == QNetworkSession::NotAvailable || state == QNetworkSession::Connected)
         psync_network_exception();
     if((state == QNetworkSession::Connected || state == QNetworkSession::Roaming) && this->nointernetFlag)
     {
