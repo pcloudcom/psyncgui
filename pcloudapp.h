@@ -80,11 +80,11 @@ public:
     QString username, authentication;
     QString downldInfo, uplodInfo;
     bool rememberMe,isFirstLaunch;
-    bool isPremium;
-    bool isVerified;
+    bool isPremium,isVerified;
     bool unlinkFlag; //clears gui for login after unlink
     bool noFreeSpaceMsgShownFlag; // when come from download or upload thre is a mix of discfull and downlad/upld returned statutes
     bool noEventCallbackFlag; // indicates if event is raised by current user
+    bool nointernetFlag;
     QString planStr;
     quint64 freeSpacePercentage;
     qreal usedSpace;

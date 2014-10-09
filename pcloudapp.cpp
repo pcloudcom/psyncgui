@@ -26,7 +26,7 @@ void PCloudApp::hideAllWindows(){
     if (logwin && logwin->isVisible())
         logwin->hide();
     if (pCloudWin && pCloudWin->isVisible())
-        pCloudWin->hide();    
+        pCloudWin->hide();
     if(welcomeWin && welcomeWin->isVisible())
         welcomeWin->hide();
 }
@@ -499,7 +499,7 @@ void status_callback(pstatus_t *status)
         qDebug()<<"PSTATUS_READY";
         if (previousStatus != PSTATUS_READY) //
         {
-            if(PCloudApp::appStatic->isLogedIn())
+            if(PCloudApp::appStatic->isLogedIn() && !PCloudApp::appStatic->nointernetFlag)
                 PCloudApp::appStatic->changeSyncIconPublic(SYNCED_ICON);
 
             if(previousStatus == PSTATUS_DOWNLOADING || previousStatus == PSTATUS_DOWNLOADINGANDUPLOADING)
@@ -688,6 +688,7 @@ void status_callback(pstatus_t *status)
         {
             PCloudApp::appStatic->changeSyncIconPublic(OFFLINE_ICON);
             PCloudApp::appStatic->changeOnlineItemsPublic(false);
+            PCloudApp::appStatic->nointernetFlag = true;
             PCloudApp::appStatic->lastStatus = PSTATUS_OFFLINE;
         }
         break;
@@ -977,6 +978,8 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     connect(this, SIGNAL(updateUserInfoSgnl(const char* &)), this, SLOT(updateUserInfo(const char* &)));
     connect(this, SIGNAL(addNewShareSgnl(QString)), this, SLOT(addNewShare(QString)));
     bool savedauth = psync_get_bool_value("saveauth"); //works when syns is paused also
+
+    qDebug()<<"saveauth"<<savedauth << "username" <<psync_get_username()<<"auth"<< psync_get_auth_string();
     if (!savedauth)
     {
         //case not remembered
@@ -988,7 +991,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
             this->isFirstLaunch = false;
         showLogin();
     }
-    else
+    else if(strcmp(psync_get_auth_string(), "")) // not offline
         logIn(psync_get_username(),true);
     cfg = manager.defaultConfiguration();
     session = new QNetworkSession(cfg);
@@ -1158,7 +1161,7 @@ void PCloudApp::showTrayMessage(QString title, QString msg)
 }
 
 void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
-{
+{    
     if (this->unlinkFlag)
     {
         syncedFldrsMenu->clear();
@@ -1831,6 +1834,17 @@ QString PCloudApp::timeConvert(quint64 seconds)
 void PCloudApp::networkConnectionChanged(QNetworkSession::State state)
 {
     qDebug()<<"network connection state changed " << state;
-    if (state == QNetworkSession::NotAvailable || state == QNetworkSession::Connected)
+    if (state == QNetworkSession::Roaming || state == QNetworkSession::NotAvailable)// || state == QNetworkSession::Connected)
         psync_network_exception();
+    if((state == QNetworkSession::Connected || state == QNetworkSession::Roaming) && this->nointernetFlag)
+    {
+        nointernetFlag = false;
+        if(isLogedIn())
+        {
+            changeSyncIconPublic(SYNCED_ICON);
+            changeOnlineItems(true);
+        }
+        else
+            this->showLoginPublic();
+    }
 }
