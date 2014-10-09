@@ -8,7 +8,9 @@
 #include <QTableWidget>
 #include <QTreeWidgetItem>
 #include <QDir>
+#ifdef Q_OS_WIN
 #include <QStandardPaths>
+#endif
 
 class PCloudApp;
 
@@ -40,7 +42,7 @@ public:
 private:
     bool addLocalFldrsFlag;
     QStringList *addFldrsLst;  //indicates if user adds a new sync or changes a suggested one
-    QString getLocalName(QString &entryName);//, QDir &usrDir);
+    QString getLocalName(QString &entryName);
 protected:        
     Ui::SuggestnsBaseWin *ui;
     void closeEvent(QCloseEvent *event);

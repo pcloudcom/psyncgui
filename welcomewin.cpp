@@ -13,7 +13,6 @@ WelcomeWin::WelcomeWin(PCloudApp *a,QWidget *parent) :
     defaultItem->setCheckState(0,Qt::Checked);
     defaultItem->setFlags(Qt::NoItemFlags);
 
-    // QString path = QDir::home().path().append("/pCloudSync");
     QString path = dfltDir->path().append("/pCloudSync");
     QDir pcloudDir(path);
     QList<QStringList> itemsLst;
@@ -55,7 +54,6 @@ WelcomeWin::WelcomeWin(PCloudApp *a,QWidget *parent) :
 #endif
     if(!pcloudDir.exists())
     {
-        //QDir::home().mkdir("pCloudSync");
         dfltDir->mkdir("pCloudSync");
         remoteFldrsNamesLst.append("pCloudSync");
         newRemoteFldrsLst.append("pCloudSync");

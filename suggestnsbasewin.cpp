@@ -188,13 +188,10 @@ void SuggestnsBaseWin::addRemoteFldrs(QStringList *itemsLst)
         item->setCheckState(0,Qt::Checked);
         item->setData(0, Qt::UserRole, true);
         QString remotepath = itemsLst->at(i);
-        QString localpath, remoteFldrName = remotepath.section("/",1);
-        //if(!QDir::home().exists(remoteFldrName))
+        QString localpath, remoteFldrName = remotepath.section("/",1);        
         if(!dfltDir->exists(remoteFldrName))
-            //localpath = QDir::homePath().append("/" + remoteFldrName);
             localpath = dfltDir->path().append("/" + remoteFldrName);
-        else
-           // localpath = getLocalName(remoteFldrName, QDir::home());
+        else           
              localpath = getLocalName(remoteFldrName);
 #ifdef Q_OS_WIN
         localpath.replace("/","\\");
@@ -375,8 +372,7 @@ QString SuggestnsBaseWin::getLocalName(QString &entryName)
     {
         i++;
         newName = entryName.append("(" + QString::number(i) + ")");
-    }
-    //return QDir::homePath().append("/" + newName);
+    }    
     return dfltDir->path().append("/" + newName);
 }
 
