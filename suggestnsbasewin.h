@@ -8,6 +8,7 @@
 #include <QTableWidget>
 #include <QTreeWidgetItem>
 #include <QDir>
+#include <QStandardPaths>
 
 class PCloudApp;
 
