@@ -8,12 +8,12 @@ WelcomeWin::WelcomeWin(PCloudApp *a,QWidget *parent) :
     SuggestnsBaseWin(a,false, NULL,parent)
 {
     //initFldrs = null
-    QString defaultRemoteFldr = "/pCloudSync";
+    QString defaultRemoteFldr = "/pCloud Sync";
     QTreeWidgetItem *defaultItem = new QTreeWidgetItem(ui->treeWidget); // the default sync; the first item in the view; uneditable
     defaultItem->setCheckState(0,Qt::Checked);
     defaultItem->setFlags(Qt::NoItemFlags);
 
-    QString path = dfltDir->path().append("/pCloudSync");
+    QString path = dfltDir->path().append("/pCloud Sync");
     QDir pcloudDir(path);
     QList<QStringList> itemsLst;
 #if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
@@ -54,9 +54,9 @@ WelcomeWin::WelcomeWin(PCloudApp *a,QWidget *parent) :
 #endif
     if(!pcloudDir.exists())
     {
-        dfltDir->mkdir("pCloudSync");
-        remoteFldrsNamesLst.append("pCloudSync");
-        newRemoteFldrsLst.append("pCloudSync");
+        dfltDir->mkdir("pCloud Sync");
+        remoteFldrsNamesLst.append("pCloud Sync");
+        newRemoteFldrsLst.append("pCloud Sync");
     }
 
     defaultItem->setText(1,nativepath);

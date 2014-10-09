@@ -47,13 +47,13 @@ SuggestnsBaseWin::SuggestnsBaseWin(PCloudApp *a, bool addlocal, QStringList *fld
     qDebug()<<"Remote init folders list form lib"<<remoteFldrsNamesLst;
 
     /*
-    QString defaultRemoteFldr = "/pCloudSync";
+    QString defaultRemoteFldr = "/pCloud Sync";
 
     QTreeWidgetItem *defaultItem = new QTreeWidgetItem(ui->treeWidget); // the default sync; the first item in the view; uneditable
     defaultItem->setCheckState(0,Qt::Checked);
     defaultItem->setFlags(Qt::NoItemFlags);
 
-    QString path = QDir::home().path().append("/pCloudSync");
+    QString path = QDir::home().path().append("/pCloud Sync");
     QDir pcloudDir(path);
     QList<QStringList> itemsLst;
 #if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
@@ -94,9 +94,9 @@ SuggestnsBaseWin::SuggestnsBaseWin(PCloudApp *a, bool addlocal, QStringList *fld
 #endif
     if(!pcloudDir.exists())
     {
-        QDir::home().mkdir("pCloudSync");
-        remoteFldrsNamesLst.append("pCloudSync");
-        newRemoteFldrsLst.append("pCloudSync");
+        QDir::home().mkdir("pCloud Sync");
+        remoteFldrsNamesLst.append("pCloud Sync");
+        newRemoteFldrsLst.append("pCloud Sync");
     }
 
     defaultItem->setText(1,nativepath);
@@ -317,6 +317,7 @@ void SuggestnsBaseWin::finish()
             psync_syncid_t id = psync_add_sync_by_path(localpath.toUtf8(),
                                                        (*it)->data(3,Qt::UserRole).toString().toUtf8(),
                                                        (*it)->data(2,Qt::UserRole).toInt());
+             ++it;
             if (id == -1)
             {
                 app->check_error();
@@ -338,8 +339,7 @@ void SuggestnsBaseWin::finish()
                 app->addNewFolderInMenu(fldrAction);
                 fldrActionsLst<<name;
             }
-        }
-        ++it;
+        }       
     }
     app->pCloudWin->get_sync_page()->load();
     //refresh menu

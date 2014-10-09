@@ -258,7 +258,13 @@ void SettingsPage::saveSettings()
 
     if(cacheSize != win->ui->edit_cache->text().toUInt())  //cache
     {
-        cacheSize = win->ui->edit_cache->text().toUInt() << 20;
+        if(win->ui->edit_cache->text().toUInt() > 256)
+            cacheSize = win->ui->edit_cache->text().toUInt() << 20;
+        else
+        {
+            cacheSize = 256 << 20;
+            win->ui->edit_cache->setText(QString::number(256));
+        }
         psync_set_uint_setting("fscachesize",cacheSize);
     }
 

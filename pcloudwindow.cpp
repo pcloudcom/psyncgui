@@ -185,7 +185,7 @@ void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when
     }
     else
     {
-        ui->listButtonsWidget->setRowHidden(ACCNT_NOT_LOGGED_PAGE_NUM, false);
+        ui->listButtonsWidget->setRowHidden(ACCNT_NOT_LOGGED_PAGE_NUM, true);
         ui->listButtonsWidget->setRowHidden(ACCNT_LOGGED_PAGE_NUM, true);
         ui->listButtonsWidget->setRowHidden(DRIVE_PAGE_NUM, true);
         ui->listButtonsWidget->setRowHidden(SYNC_PAGE_NUM,true);

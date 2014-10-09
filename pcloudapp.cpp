@@ -914,6 +914,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     settings=new QSettings("pCloud","pCloud");
     noFreeSpaceMsgShownFlag = false;
     noEventCallbackFlag = false;
+    nointernetFlag = false;
     bytestoDwnld = 0;
     bytestoUpld = 0;
     downldInfo = QObject::trUtf8("Everything downloaded");
