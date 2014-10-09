@@ -90,6 +90,7 @@ void LoginWindow::logIn()
     {
         times++;
         pstatus_t status;
+        memset(&status, 0, sizeof(status));
         psync_get_status(&status);
         qDebug()<<"login btn "<< status.status<< times;
         if (status.status == PSTATUS_CONNECTING || status.status == PSTATUS_SCANNING )

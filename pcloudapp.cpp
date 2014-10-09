@@ -361,6 +361,7 @@ void PCloudApp::createMenus()
     loggedmenu->addAction(syncDownldAction);
 
     pstatus_t status;
+    memset(&status, 0, sizeof(status));
     psync_get_status(&status);
     if (status.status != PSTATUS_PAUSED)
     {
@@ -942,6 +943,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     for(;;)
     {
         pstatus_t status;
+        memset(&status, 0, sizeof(status));
         psync_get_status(&status);
         if (status.status == PSTATUS_CONNECTING || status.status == PSTATUS_SCANNING )
         {
@@ -1187,6 +1189,7 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     pCloudWin->setOnlineItems(true);
     pCloudWin->setOnlinePages();
     pstatus_t status;
+    memset(&status, 0, sizeof(status));
     psync_get_status(&status);
     if (status.status != PSTATUS_PAUSED)
         tray->setIcon(QIcon(SYNCED_ICON));
