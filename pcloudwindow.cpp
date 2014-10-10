@@ -210,9 +210,12 @@ void PCloudWindow::fillDrivePage()
     if(isFSStarted)
     {
         ui->btnDriveStart->setVisible(false);
+        ui->btnDriveStop->setVisible(true);
+        ui->btnDriveOpenFldr->setVisible(true);
     }
     else
     {
+        ui->btnDriveStart->setVisible(true);
         ui->btnDriveOpenFldr->setVisible(false);
         ui->btnDriveStop->setVisible(false);
     }
@@ -498,6 +501,8 @@ void PCloudWindow::refreshPageSlot(int pageindex, int param)
 {    
     switch(pageindex)
     {
+    case DRIVE_PAGE_NUM:
+        this->fillDrivePage();
     case SHARES_PAGE_NUM:  // sharespage
         this->sharesPage->refreshTab(param);
     }

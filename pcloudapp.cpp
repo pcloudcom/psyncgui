@@ -994,7 +994,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
             this->isFirstLaunch = false;
         showLogin();
     }
-    else if(strcmp(psync_get_auth_string(), "")) // not offline
+    else
         logIn(psync_get_username(),true);
     cfg = manager.defaultConfiguration();
     session = new QNetworkSession(cfg);
@@ -1090,10 +1090,10 @@ void PCloudApp::check_error()
     switch (err)
     {
     case PERROR_LOCAL_FOLDER_NOT_FOUND: //1
-        qDebug()<<PERROR_LOCAL_FOLDER_NOT_FOUND;
+        qDebug()<<"PERROR_LOCAL_FOLDER_NOT_FOUND";
         break;
     case PERROR_REMOTE_FOLDER_NOT_FOUND: //2
-        qDebug()<<PERROR_REMOTE_FOLDER_NOT_FOUND;
+        qDebug()<<"PERROR_REMOTE_FOLDER_NOT_FOUND";
         break;
     case PERROR_DATABASE_OPEN: //3
         msgBox.setText(trUtf8("Database open error!"));
@@ -1134,7 +1134,7 @@ void PCloudApp::check_error()
         msgBox.exec();
         break;
     case PERROR_INVALID_SYNCTYPE:  //10
-        qDebug()<< PERROR_INVALID_SYNCTYPE;
+        qDebug()<< "PERROR_INVALID_SYNCTYPE";
         break;
     case PERROR_OFFLINE: //11
         msgBox.setText(trUtf8("Internal error!"));
@@ -1142,7 +1142,7 @@ void PCloudApp::check_error()
         msgBox.exec();
         break;
     case PERROR_INVALID_SYNCID: //12
-        qDebug()<<PERROR_INVALID_SYNCID;
+        qDebug()<<"PERROR_INVALID_SYNCID";
         break;
     case PERROR_PARENT_OR_SUBFOLDER_ALREADY_SYNCING: //13
         msgBox.setText(trUtf8("Can not add new sync: Parent folder or subfolder of it has already synchronized!"));

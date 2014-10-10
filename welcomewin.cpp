@@ -5,7 +5,7 @@
 #include <QDir>
 
 WelcomeWin::WelcomeWin(PCloudApp *a,QWidget *parent) :
-    SuggestnsBaseWin(a,false, NULL,parent)
+    SuggestnsBaseWin(a,true, NULL,parent)
 {
     //initFldrs = null
     QString defaultRemoteFldr = "/pCloud Sync";
