@@ -5,6 +5,7 @@
 #include "ui_modifysyncdialog.h"
 #include "psynclib.h"
 #include "common.h"
+#include "unistd.h"
 
 #include <QDebug>
 #include <QComboBox>
@@ -132,7 +133,7 @@ SuggestnsBaseWin::SuggestnsBaseWin(PCloudApp *a, bool addlocal, QStringList *fld
     //ui->tableWidget->setItemDelegate(new SyncItemsDelegate());
     // this->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
 
-    if(addFldrsLst != NULL)
+    if(addFldrsLst != NULL) //if not creating a default suggestion sync
     {
         if(addlocal)
             addLocalFldrs(addFldrsLst);
@@ -286,6 +287,7 @@ void SuggestnsBaseWin::modifyType()
 
 void SuggestnsBaseWin::finish()
 {    
+    QApplication::setOverrideCursor(Qt::WaitCursor);
     QTreeWidgetItemIterator it(ui->treeWidget);
     while (*it)
     {
@@ -293,7 +295,8 @@ void SuggestnsBaseWin::finish()
         if ((*it)->checkState(0) == Qt::Checked)
         {
             QString localpath = (*it)->data(1,Qt::UserRole).toString(), remotepath = (*it)->data(3,Qt::UserRole).toString();
-            qDebug()<<"ADDING item (from suggestionswin) " << (*it)->data(1,Qt::UserRole).toString().toUtf8() << (*it)->data(3,Qt::UserRole).toString().toUtf8() <<((*it)->data(2,Qt::UserRole).toInt());
+            qDebug()<<"ADDING item (from suggestionswin) " << (*it)->data(1,Qt::UserRole).toString().toUtf8() << (*it)->data(3,Qt::UserRole).toString().toUtf8() <<((*it)->data(2,Qt::UserRole).toInt())
+                      <<addLocalFldrsFlag<< psync_fs_isstarted() ;
 
             if(!addLocalFldrsFlag && !QDir(localpath).exists() // when add remote folders from drive to sync => create local if don't exist
                     && QDir().mkdir(localpath));
@@ -301,10 +304,12 @@ void SuggestnsBaseWin::finish()
             else if(addLocalFldrsFlag && psync_fs_isstarted() &&
                     !QDir(QString(psync_fs_getmountpoint() + remotepath)).exists())
             {
+                qDebug()<<"create remote folder";
                 char* err = NULL;
                 psync_create_remote_folder_by_path(remotepath.toUtf8(),&err);
                 if(err)
                     qDebug()<<"SuggestnsBaseWin::finish() Create new remote fldr ERR"<<err;
+                sleep(2);
             }
             /*
             //welcome win case and contex menu case, because it's possible remote folder not to exists
@@ -341,8 +346,9 @@ void SuggestnsBaseWin::finish()
             }
         }       
     }
-    app->pCloudWin->get_sync_page()->load();
-    //refresh menu
+    QApplication::restoreOverrideCursor();
+
+    app->pCloudWin->get_sync_page()->load();    
     this->hide();
     app->showSync();
 }
