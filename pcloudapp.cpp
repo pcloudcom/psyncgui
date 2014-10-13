@@ -503,9 +503,9 @@ void status_callback(pstatus_t *status)
             if(PCloudApp::appStatic->isLogedIn() && !PCloudApp::appStatic->nointernetFlag)
                 PCloudApp::appStatic->changeSyncIconPublic(SYNCED_ICON);
 
-            if(previousStatus == PSTATUS_DOWNLOADING || previousStatus == PSTATUS_DOWNLOADINGANDUPLOADING)
+            if(previousStatus == PSTATUS_DOWNLOADING || previousStatus == PSTATUS_DOWNLOADINGANDUPLOADING || previousStatus == PSTATUS_PAUSED)
                 PCloudApp::appStatic->downldInfo = QObject::trUtf8("Everything downloaded");
-            if(previousStatus == PSTATUS_UPLOADING || previousStatus == PSTATUS_DOWNLOADINGANDUPLOADING)
+            if(previousStatus == PSTATUS_UPLOADING || previousStatus == PSTATUS_DOWNLOADINGANDUPLOADING || previousStatus == PSTATUS_PAUSED)
                 PCloudApp::appStatic->uplodInfo = QObject::tr("Everything uploaded");
 
             if (PCloudApp::appStatic->isMenuorWinActive())
@@ -530,16 +530,22 @@ void status_callback(pstatus_t *status)
         {
             if (status->bytestodownload)
             {
+                char files[16];
+                if (status->filestodownload > 1)
+                    strcpy(files, " files");
+                else
+                    strcpy(files, " file");
+
                 if(status->downloadspeed)// sometimes lib returns 0
                 {
                     PCloudApp::appStatic->downldInfo = QObject::trUtf8("Download: ") + QString::number(status->downloadspeed/1000) + "kB/s, " +
                             PCloudApp::appStatic->timeConvert(status->bytestodownload/status->downloadspeed) + ", " +
                             PCloudApp::appStatic->bytesConvert(status->bytestodownload - status->bytesdownloaded) + ", " +
-                            QString::number(status->filestodownload) + " files";
+                            QString::number(status->filestodownload) + files; //" files";
                 }
                 else
                     PCloudApp::appStatic->downldInfo = QObject::trUtf8("Download: ")  + PCloudApp::appStatic->bytesConvert(status->bytestodownload - status->bytesdownloaded) +
-                            ", " +    QString::number(status->filestodownload) + " files";
+                            ", " +    QString::number(status->filestodownload) + files;
             }
             else
                 PCloudApp::appStatic->downldInfo = QObject::trUtf8("Everything downloaded");
@@ -563,16 +569,22 @@ void status_callback(pstatus_t *status)
         {
             if (status->bytestoupload)
             {
+                char files[16];
+                if (status->filestoupload > 1)
+                    strcpy(files, " files");
+                else
+                    strcpy(files, " file");
+
                 if(status->uploadspeed)// sometimes is 0
                 {
                     PCloudApp::appStatic->uplodInfo = QObject::trUtf8("Upload: ") + QString::number(status->uploadspeed/1000) + "kB/s, " +
                             PCloudApp::appStatic->timeConvert(status->bytestoupload/status->uploadspeed) + ", " +
                             PCloudApp::appStatic->bytesConvert(status->bytestoupload - status->bytesuploaded) + ", " +
-                            QString::number(status->filestoupload) + " files";
+                            QString::number(status->filestoupload) + files;
                 }
                 else
                     PCloudApp::appStatic->uplodInfo = QObject::trUtf8("Upload: ")  + PCloudApp::appStatic->bytesConvert(status->bytestoupload - status->bytesuploaded) + ", " +
-                            QString::number(status->filestoupload) + " files";
+                            QString::number(status->filestoupload) + files;
             }
             else
                 PCloudApp::appStatic->uplodInfo = QObject::trUtf8("Everything uploaded");
@@ -598,16 +610,22 @@ void status_callback(pstatus_t *status)
                    <<"DOWNLOAD files filesdownloading "<<status->filesdownloading<< " filestodownload="<<status->filestodownload<<"is full: "<< status->localisfull<<status->remoteisfull;
             if(status->bytestodownload)
             {
+                char filesdwnld[16];
+                if (status->filestodownload > 1)
+                    strcpy(filesdwnld, " files");
+                else
+                    strcpy(filesdwnld, " file");
+
                 if(status->downloadspeed)// sometimes is 0
                 {
                     PCloudApp::appStatic->downldInfo = QObject::trUtf8("Download: ") + QString::number(status->downloadspeed/1000) + "kB/s, " +
                             PCloudApp::appStatic->timeConvert(status->bytestodownload/status->downloadspeed) + ", " +
                             PCloudApp::appStatic->bytesConvert(status->bytestodownload - status->bytesdownloaded) + ", " +
-                            QString::number(status->filestodownload) + " files";
+                            QString::number(status->filestodownload) + filesdwnld;
                 }
                 else
                     PCloudApp::appStatic->downldInfo = QObject::trUtf8("Download: ")  + PCloudApp::appStatic->bytesConvert(status->bytestodownload - status->bytesdownloaded) + ", " +
-                            QString::number(status->filestodownload) + " files";
+                            QString::number(status->filestodownload) + filesdwnld;
             }
             else
                 PCloudApp::appStatic->downldInfo = QObject::trUtf8("Everything downloaded");
@@ -617,16 +635,23 @@ void status_callback(pstatus_t *status)
                    <<"UPLOAD filesuploading=  "<<status->filesuploading<< " filestoupload= "<<status->filestoupload;
             if(status->bytestoupload)
             {
+
+                char filesupld[16];
+                if (status->filestoupload > 1)
+                    strcpy(filesupld, " files");
+                else
+                    strcpy(filesupld, " file");
+
                 if(status->uploadspeed)// sometimes is 0
                 {
                     PCloudApp::appStatic->uplodInfo = QObject::trUtf8("Upload: ") + QString::number(status->uploadspeed/1000) + "kB/s, " +
                             PCloudApp::appStatic->timeConvert(status->bytestoupload/status->uploadspeed) + ", " +
                             PCloudApp::appStatic->bytesConvert(status->bytestoupload - status->bytesuploaded) + ", " +
-                            QString::number(status->filestoupload) + " files";
+                            QString::number(status->filestoupload) + filesupld;
                 }
                 else
                     PCloudApp::appStatic->uplodInfo = QObject::trUtf8("Upload: ")  + PCloudApp::appStatic->bytesConvert(status->bytestoupload - status->bytesuploaded) +", " +
-                            QString::number(status->filestoupload) + " files";
+                            QString::number(status->filestoupload) + filesupld;
             }
             else
                 PCloudApp::appStatic->uplodInfo = QObject::trUtf8("Everything uploaded");
