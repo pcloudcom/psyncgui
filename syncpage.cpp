@@ -154,11 +154,25 @@ void SyncPage::syncDoubleClicked(QTreeWidgetItem *item, int col)
     }
     case 2: //opens remote folder
     {
-        quint64 fldrid = item->data(4,Qt::UserRole).toLongLong();
-        QString urlstr = "https://my.pcloud.com/#folder=";
-        urlstr.append(QString::number(fldrid) + "&page=filemanager&authtoken=" + app->authentication);
-        QUrl url(urlstr);
-        QDesktopServices::openUrl(url);
+        if(psync_fs_isstarted()) //open fodler in pDrive
+        {
+            QString remotepath = item->data(2,Qt::UserRole).toString();
+#ifdef Q_OS_LINUX
+            remotepath.insert(0,QString(psync_fs_getmountpoint()).append("/"));
+#else //windows
+            remotepath.insert(0,QString(psync_fs_getmountpoint()).append("\\"));
+            remotepath.replace("/","\\");
+#endif
+            QDesktopServices::openUrl(QUrl::fromLocalFile(remotepath));
+        }
+        else //open folder in web
+        {
+            quint64 fldrid = item->data(4,Qt::UserRole).toLongLong();
+            QString urlstr = "https://my.pcloud.com/#folder=";
+            urlstr.append(QString::number(fldrid) + "&page=filemanager&authtoken=" + app->authentication);
+            QUrl url(urlstr);
+            QDesktopServices::openUrl(url);
+        }
         break;
     }
     default:
