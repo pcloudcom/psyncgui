@@ -55,9 +55,9 @@ WelcomeWin::WelcomeWin(PCloudApp *a,QWidget *parent) :
     if(!pcloudDir.exists())
     {
         dfltDir->mkdir("pCloud Sync");
-        remoteFldrsNamesLst.append("pCloud Sync");
-        newRemoteFldrsLst.append("pCloud Sync");
+       // remoteFldrsNamesLst.append("pCloud Sync");
     }
+    newRemoteFldrsLst.append("pCloud Sync");
 
     defaultItem->setText(1,nativepath);
     defaultItem->setData(1,Qt::UserRole, nativepath);

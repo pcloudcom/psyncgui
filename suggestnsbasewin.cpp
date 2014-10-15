@@ -23,6 +23,7 @@ SuggestnsBaseWin::SuggestnsBaseWin(PCloudApp *a, bool addlocal, QStringList *fld
     ui->setupUi(this);
     isChangingItem = false;
     addFldrsLst = fldrs;
+    addLocalFldrsFlag = addlocal;
 
 #ifdef Q_OS_WIN
     dfltDir = new QDir(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
@@ -189,11 +190,11 @@ void SuggestnsBaseWin::addRemoteFldrs(QStringList *itemsLst)
         item->setCheckState(0,Qt::Checked);
         item->setData(0, Qt::UserRole, true);
         QString remotepath = itemsLst->at(i);
-        QString localpath, remoteFldrName = remotepath.section("/",1);        
+        QString localpath, remoteFldrName = remotepath.section("/",1);
         if(!dfltDir->exists(remoteFldrName))
             localpath = dfltDir->path().append("/" + remoteFldrName);
-        else           
-             localpath = getLocalName(remoteFldrName);
+        else
+            localpath = getLocalName(remoteFldrName);
 #ifdef Q_OS_WIN
         localpath.replace("/","\\");
 #endif
@@ -296,13 +297,15 @@ void SuggestnsBaseWin::finish()
         {
             QString localpath = (*it)->data(1,Qt::UserRole).toString(), remotepath = (*it)->data(3,Qt::UserRole).toString();
             qDebug()<<"ADDING item (from suggestionswin) " << (*it)->data(1,Qt::UserRole).toString().toUtf8() << (*it)->data(3,Qt::UserRole).toString().toUtf8() <<((*it)->data(2,Qt::UserRole).toInt())
-                      <<addLocalFldrsFlag<< psync_fs_isstarted() ;
+                   <<addLocalFldrsFlag<< psync_fs_isstarted() ;
 
             if(!addLocalFldrsFlag && !QDir(localpath).exists() // when add remote folders from drive to sync => create local if don't exist
                     && QDir().mkdir(localpath));
             //if add local fs folders from context menu and the suggested remove doesn't exist
-            else if(addLocalFldrsFlag && psync_fs_isstarted() &&
-                    !QDir(QString(psync_fs_getmountpoint() + remotepath)).exists())
+            //else if(addLocalFldrsFlag && !remoteFldrsNamesLst.contains(remotepath.right(remotepath.size() - 1)))
+            else if(addLocalFldrsFlag && newRemoteFldrsLst.contains(remotepath.right(remotepath.size() - 1)))
+                //&& psync_fs_isstarted() &&
+                // !QDir(QString(psync_fs_getmountpoint() + remotepath)).exists())
             {
                 qDebug()<<"create remote folder";
                 char* err = NULL;
@@ -317,15 +320,15 @@ void SuggestnsBaseWin::finish()
                                            //(*it)->data(1,Qt::UserRole).toString().toUtf8(),
                                            (*it)->data(3,Qt::UserRole).toString().toUtf8(),
                                            (*it)->data(2,Qt::UserRole).toInt());
-
+                   ++it;
 */
             psync_syncid_t id = psync_add_sync_by_path(localpath.toUtf8(),
                                                        (*it)->data(3,Qt::UserRole).toString().toUtf8(),
                                                        (*it)->data(2,Qt::UserRole).toInt());
-             ++it;
             if (id == -1)
             {
                 app->check_error();
+                ++it;
                 continue;
             }
 
@@ -344,11 +347,12 @@ void SuggestnsBaseWin::finish()
                 app->addNewFolderInMenu(fldrAction);
                 fldrActionsLst<<name;
             }
-        }       
+        }
+        ++it;
     }
     QApplication::restoreOverrideCursor();
 
-    app->pCloudWin->get_sync_page()->load();    
+    app->pCloudWin->get_sync_page()->load();
     this->hide();
     app->showSync();
 }
@@ -378,7 +382,7 @@ QString SuggestnsBaseWin::getLocalName(QString &entryName)
     {
         i++;
         newName = entryName.append("(" + QString::number(i) + ")");
-    }    
+    }
     return dfltDir->path().append("/" + newName);
 }
 
