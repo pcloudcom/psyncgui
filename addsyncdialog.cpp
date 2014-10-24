@@ -139,6 +139,7 @@ void addSyncDialog::addSync()
         quint32 id = psync_add_sync_by_path(localpath.toUtf8(), remotepath.toUtf8(),type+1);
         if (id == -1)
         {
+            qDebug()<<"err adding new sync"<<psync_get_last_error();
             app->check_error();
             return;
         }

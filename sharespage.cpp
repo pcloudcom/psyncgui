@@ -10,7 +10,7 @@ SharesPage::SharesPage(PCloudWindow *w, PCloudApp *a,  QObject *parent) :
     QObject(parent)
 {
     win = w;
-    app = a;    
+    app = a;
     win->ui->tabWidgetShares->setTabText(0, tr("My Shares"));
     //win->ui->tabWidgetShares->setTabIcon(0, QIcon(":/images/images/myshares.png"));
     win->ui->tabWidgetShares->setTabText(1, tr("Shared with me"));
@@ -182,9 +182,19 @@ void SharesPage::setRequestsVisibility(int incoming, bool visible)
 void SharesPage::openSharedFldr(QTreeWidgetItem* item, int)
 {
     quint64 fldrid = item->treeWidget()->currentItem()->data(1,Qt::UserRole).toLongLong();
-    QString urlstr = ("https://my.pcloud.com/#folder=" +
-                      QString::number(fldrid) + "&page=filemanager&authtoken=" + psync_get_auth_string());
-    QDesktopServices::openUrl(QUrl(urlstr, QUrl::TolerantMode));
+    char *path = psync_fs_get_path_by_folderid(fldrid);
+    if(path != NULL)
+    {
+        QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+        free(path);
+    }
+    else
+    {    qDebug()<<"openSharedFldr path is empty";
+
+        QString urlstr = ("https://my.pcloud.com/#folder=" +
+                          QString::number(fldrid) + "&page=filemanager&authtoken=" + psync_get_auth_string());
+        QDesktopServices::openUrl(QUrl(urlstr, QUrl::TolerantMode));
+    }
 }
 
 void SharesPage::stopShare() //Stop outgoing shares - My shares tables

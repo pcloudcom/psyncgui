@@ -136,7 +136,7 @@ void PCloudWindow::changePage(QListWidgetItem *current, QListWidgetItem *previou
 
 }
 void PCloudWindow::showEvent(QShowEvent *)
-{    
+{        
     refreshPage(ui->listButtonsWidget->currentRow());
 }
 
@@ -177,7 +177,7 @@ void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when
         ui->listButtonsWidget->setRowHidden(ACCNT_NOT_LOGGED_PAGE_NUM, true); //Accont - not logged
         ui->listButtonsWidget->setRowHidden(ACCNT_LOGGED_PAGE_NUM, false); //Account - logged
 #ifdef VFS
-        ui->listButtonsWidget->setRowHidden(DRIVE_PAGE_NUM, false); //drive
+        ui->listButtonsWidget->setRowHidden(DRIVE_PAGE_NUM, true); // to be removed
 #endif
         ui->listButtonsWidget->setRowHidden(SYNC_PAGE_NUM, false); //Sync
         ui->listButtonsWidget->setRowHidden(SHARES_PAGE_NUM, false); //Shares
@@ -187,7 +187,7 @@ void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when
     {
         ui->listButtonsWidget->setRowHidden(ACCNT_NOT_LOGGED_PAGE_NUM, true);
         ui->listButtonsWidget->setRowHidden(ACCNT_LOGGED_PAGE_NUM, true);
-        ui->listButtonsWidget->setRowHidden(DRIVE_PAGE_NUM, true);
+        ui->listButtonsWidget->setRowHidden(DRIVE_PAGE_NUM, true); // to be removed
         ui->listButtonsWidget->setRowHidden(SYNC_PAGE_NUM,true);
         ui->listButtonsWidget->setRowHidden(SHARES_PAGE_NUM,true);
         ui->listButtonsWidget->setRowHidden(SETTINGS_PAGE_NUM, true);

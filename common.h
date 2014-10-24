@@ -27,5 +27,12 @@
 #define HELP_PAGE_NUM 6
 #define ABOUT_PAGE_NUM 7
 
+//first screens pages
+#define DRIVE_INFO_PAGE_NUM 0
+#define SYNC_INFO_PAGE_NUM 1
+#define SHARES_INFO_PAGE_NUM 2
+#define OTHERS_PLATFORMS_PAGE_NUM 3
+#define FINISH_INFO_PAGE_NUM 4
+
 #endif
 

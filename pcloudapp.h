@@ -13,6 +13,7 @@
 #include "sharefolderwindow.h"
 #include "welcomewin.h"
 #include "suggestnsbasewin.h"
+#include "infoscreenswin.h"
 #include "psynclib.h"
 #include <QApplication>
 #include <QSettings>
@@ -54,6 +55,7 @@ private:
     RegisterWindow *regwin;
     LoginWindow *logwin;     
     ShareFolderWindow *sharefolderwin;
+    InfoScreensWin *introwin;
     //MonitoringThread *mthread;
    // VersionTimerThread *versnThread;
     bool newVersionFlag;
@@ -70,8 +72,8 @@ private:
     // OnlineThread *othread;
     bool loggedin;
     void createMenus();
-    void hideAllWindows();    
-public:    
+    void hideAllWindows();
+public:       
     static PCloudApp *appStatic;
     quint32 lastStatus;
     PCloudWindow *pCloudWin;
