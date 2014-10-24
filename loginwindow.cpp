@@ -83,7 +83,7 @@ void LoginWindow::logIn()
         psync_set_pass(password,ischecked);
 
     QList<quint32> loginStatusLst;
-    loginStatusLst << PSTATUS_BAD_LOGIN_DATA << PSTATUS_LOGIN_REQUIRED <<PSTATUS_USER_MISMATCH << PSTATUS_OFFLINE;
+    loginStatusLst << PSTATUS_BAD_LOGIN_DATA << PSTATUS_LOGIN_REQUIRED<< PSTATUS_BAD_LOGIN_TOKEN <<PSTATUS_USER_MISMATCH << PSTATUS_OFFLINE;
 
     int times = 0;
     for(;;)
