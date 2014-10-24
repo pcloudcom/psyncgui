@@ -43,7 +43,8 @@ SOURCES += main.cpp\
     sharefolderwindow.cpp \
     changepermissionsdialog.cpp \
     remotetreesdialog.cpp \
-    acceptsharedialog.cpp
+    acceptsharedialog.cpp \
+    infoscreenswin.cpp
 
 HEADERS  += loginwindow.h \
     registerwindow.h \
@@ -66,7 +67,8 @@ HEADERS  += loginwindow.h \
     sharefolderwindow.h \
     changepermissionsdialog.h \
     remotetreesdialog.h \
-    acceptsharedialog.h
+    acceptsharedialog.h \
+    infoscreenswin.h
 
 FORMS    += loginwindow.ui \
     registerwindow.ui \
@@ -77,7 +79,8 @@ FORMS    += loginwindow.ui \
     suggestnsbasewin.ui \
     sharefolderwindow.ui \
     changepermissionsdialog.ui \
-    remotetreesdialog.ui
+    remotetreesdialog.ui \
+    infoscreenswin.ui
 win32:RC_FILE= pCloud.rc
 RESOURCES += \
     Resources.qrc
