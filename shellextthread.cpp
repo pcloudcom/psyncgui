@@ -115,10 +115,11 @@ void ShellExtThread::run()
                     else
                         localFldrsFlag = true;
 
+                    strcpy(msgCopyFldrs, "synclist");
+
                     psync_folder_list_t *fldrsList = psync_get_sync_list();
                     if (fldrsList != NULL && fldrsList->foldercnt)
                     {
-                        strcpy(msgCopyFldrs, "synclist");
                         if(localFldrsFlag)
                         {
                             char msgDwnldOnlyFldrs[260*fldrsList->foldercnt];
@@ -171,7 +172,7 @@ void ShellExtThread::run()
                             NULL); // not using overlapped IO
 
                 if (result)
-                    qDebug()<<"Qt: write in pipe(send synclist) successful";
+                    qDebug()<<"Qt: write in pipe(send synclist) successful, synclist = "<<msgCopyFldrs;
                 else
                     qDebug()<<"Qt: write in pipe(send synclist) NOT successful";
             }
