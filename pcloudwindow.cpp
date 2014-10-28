@@ -62,6 +62,8 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
 
     setWindowIcon(QIcon(WINDOW_ICON));
     setWindowTitle("pCloud Sync");
+    this->setWindowFlags((windowFlags() | Qt::CustomizeWindowHint) & ~Qt::WindowMaximizeButtonHint);
+
     // ui notes - set statusbar max size to (0,0)
 
     connect(ui->btnLogin, SIGNAL(clicked()),app, SLOT(showLogin()));
