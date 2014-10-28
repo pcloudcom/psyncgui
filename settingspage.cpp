@@ -258,22 +258,22 @@ void SettingsPage::saveSettings()
 
     if(cacheSize != win->ui->edit_cache->text().toUInt())  //cache
     {
-        if(win->ui->edit_cache->text().toUInt() > 256)
-            cacheSize = win->ui->edit_cache->text().toUInt() << 20;
+        if(win->ui->edit_cache->text().toUInt() > 256)         
+            cacheSize = win->ui->edit_cache->text().toUInt();
         else
-        {
-            cacheSize = 256 << 20;
+        {            
+            cacheSize = 256;
             win->ui->edit_cache->setText(QString::number(256));
-        }
-        psync_set_uint_setting("fscachesize",cacheSize);
+        }       
+
+        psync_set_uint_setting("fscachesize",cacheSize<<20);
     }
 
     if (minLocalSpace != win->ui->edit_minLocalSpace->text().toUInt()) //min local space
     {
         minLocalSpace = win->ui->edit_minLocalSpace->text().toUInt();
         psync_set_uint_setting("minlocalfreespace", minLocalSpace << 20 );
-    }
-
+    }   
 
 #ifdef Q_OS_WIN
     //autorun win

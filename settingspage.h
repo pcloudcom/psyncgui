@@ -24,7 +24,7 @@ private:
     int upldSpeed, upldSpeedNew, dwnldSpeed, dwnldSpeedNew;
     QString initFlrd;
     QString initCache;
-    quint32 cacheSize, minLocalSpace;
+    quint64 cacheSize, minLocalSpace;
     bool contextMenu;  
     void initSettingsPage();
     void initMain();
