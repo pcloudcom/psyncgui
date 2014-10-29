@@ -29,15 +29,6 @@ void PCloudApp::hideAllWindows(){
         pCloudWin->hide();
     if(welcomeWin && welcomeWin->isVisible())
         welcomeWin->hide();
-    if(introwin && introwin->isVisible())
-        introwin->close();
-    if(!loggedin)
-    {
-        if(sharefolderwin && sharefolderwin->isVisible())
-            sharefolderwin->hide();
-        if(syncFldrsWin && syncFldrsWin->isVisible())
-            syncFldrsWin->hide();
-    }
 }
 
 void PCloudApp::showWindow(QMainWindow *win)
@@ -204,7 +195,7 @@ void PCloudApp::logOut(){
 
 #endif
     username="";
-    if(this->lastStatus != PSTATUS_BAD_LOGIN_DATA || this->lastStatus != PSTATUS_LOGIN_REQUIRED || this->lastStatus != PSTATUS_BAD_LOGIN_TOKEN)
+    if(this->lastStatus != PSTATUS_BAD_LOGIN_DATA || this->lastStatus != PSTATUS_LOGIN_REQUIRED)
         psync_logout();
     tray->setContextMenu(notloggedmenu);
     tray->setToolTip("pCloud");
@@ -270,13 +261,15 @@ void PCloudApp::showOnClick(){
     if(!loggedin)
         showLogin();
     else
-        this->openCloudDir();
+        showAccount();
 }
 
-void PCloudApp::trayClicked(QSystemTrayIcon::ActivationReason reason)
-{
-    if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::MiddleClick) //3 = Trigger - left click
+void PCloudApp::trayClicked(QSystemTrayIcon::ActivationReason reason){
+    if (reason == QSystemTrayIcon::Trigger)
+    {
         showOnClick();
+        return;
+    }
 }
 
 void PCloudApp::createMenus()
@@ -337,12 +330,12 @@ void PCloudApp::createMenus()
 
     //create tray menu and it's submenus and add actions
     loggedmenu = new QMenu();
-#ifdef VFS
-    loggedmenu->addAction(driveAction);
-    loggedmenu->addSeparator();
-#endif
     //p loggedmenu->addAction(openAction);
     loggedmenu->addAction(accountAction);
+    loggedmenu->addSeparator();
+#ifdef VFS
+    loggedmenu->addAction(driveAction);
+#endif
     syncMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu16x16/sync.png"),trUtf8("Sync"));
 
     syncedFldrsMenu = syncMenu->addMenu(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),trUtf8("Synced Folders"));
@@ -501,17 +494,21 @@ void status_callback(pstatus_t *status)
 
     // ++ syncing flag
     quint32 previousStatus = PCloudApp::appStatic->lastStatus;
-
     switch(status->status)
     {
     case PSTATUS_READY:                     //0
         qDebug()<<"PSTATUS_READY";
         if (previousStatus != PSTATUS_READY) //
         {
-            // if( PCloudApp::appStatic->session)
-            // qDebug()<< PCloudApp::appStatic->session->state();
-            if(PCloudApp::appStatic->isLogedIn() && !PCloudApp::appStatic->nointernetFlag)
+            if(PCloudApp::appStatic->isLogedIn())
+            {
                 PCloudApp::appStatic->changeSyncIconPublic(SYNCED_ICON);
+                if(!PCloudApp::appStatic->nointernetFlag)
+                {
+                    PCloudApp::appStatic->changeOnlineItemsPublic(true);
+                    PCloudApp::appStatic->nointernetFlag = false; //already connected to net
+                }
+            }
 
             if(previousStatus == PSTATUS_DOWNLOADING || previousStatus == PSTATUS_DOWNLOADINGANDUPLOADING || previousStatus == PSTATUS_PAUSED)
                 PCloudApp::appStatic->downldInfo = QObject::trUtf8("Everything downloaded");
@@ -685,16 +682,8 @@ void status_callback(pstatus_t *status)
             PCloudApp::appStatic->lastStatus = PSTATUS_BAD_LOGIN_DATA;
         }
         break;
-    case PSTATUS_BAD_LOGIN_TOKEN: //6
-        qDebug()<<"PSTATUS_BAD_LOGIN_TOKEN";
-        if(previousStatus != PSTATUS_BAD_LOGIN_TOKEN && PCloudApp::appStatic->isLogedIn())
-        {
-            PCloudApp::appStatic->logoutPublic();
-            PCloudApp::appStatic->lastStatus = PSTATUS_BAD_LOGIN_TOKEN;
-            //++ msg
-        }
-        break;
-    case PSTATUS_ACCOUNT_FULL:
+
+    case PSTATUS_ACCOUNT_FULL:              //6
         qDebug()<<"PSTATUS_ACCOUNT_FULL";
         if(previousStatus != PSTATUS_ACCOUNT_FULL)
         {
@@ -703,7 +692,7 @@ void status_callback(pstatus_t *status)
         }
         break;
 
-    case PSTATUS_DISK_FULL:
+    case PSTATUS_DISK_FULL:                 //7
         qDebug()<<"PSTATUS_DISK_FULL";
         if(previousStatus != PSTATUS_DISK_FULL)
         {
@@ -712,7 +701,7 @@ void status_callback(pstatus_t *status)
         }
         break;
 
-    case PSTATUS_PAUSED:
+    case PSTATUS_PAUSED:                    //8
         qDebug()<<"PSTATUS_PAUSED";
         if (PCloudApp::appStatic->isLogedIn() && previousStatus != PSTATUS_PAUSED)
             PCloudApp::appStatic->changeSyncIconPublic(PAUSED_ICON);
@@ -720,15 +709,14 @@ void status_callback(pstatus_t *status)
         //update menu -> start sync for initial login
         break;
 
-    case PSTATUS_STOPPED:
+    case PSTATUS_STOPPED:                   //9
         qDebug()<<"PSTATUS_STOPPED";
         PCloudApp::appStatic->changeSyncIconPublic(OFFLINE_ICON);
         PCloudApp::appStatic->lastStatus = PSTATUS_STOPPED;
         break;
 
-    case PSTATUS_OFFLINE:
+    case PSTATUS_OFFLINE:                   //10
         qDebug()<<"PSTATUS_OFFLINE";
-        //   qDebug()<< PCloudApp::appStatic->session->state();
         if(previousStatus != PSTATUS_OFFLINE)
         {
             PCloudApp::appStatic->changeSyncIconPublic(OFFLINE_ICON);
@@ -738,17 +726,17 @@ void status_callback(pstatus_t *status)
         }
         break;
 
-    case PSTATUS_CONNECTING:
+    case PSTATUS_CONNECTING:                //11
         qDebug()<<"PSTATUS_CONNECTING";
         PCloudApp::appStatic->lastStatus = PSTATUS_CONNECTING;
         break;
 
-    case PSTATUS_SCANNING:
+    case PSTATUS_SCANNING:                  //12
         qDebug()<<" PSTATUS_SCANNING";
         PCloudApp::appStatic->lastStatus = PSTATUS_SCANNING;
         break;
 
-    case PSTATUS_USER_MISMATCH:
+    case PSTATUS_USER_MISMATCH:             //13
         //case when set wrong user
         qDebug()<<"PSTATUS_USER_MISMATCH";
         PCloudApp::appStatic->lastStatus = PSTATUS_USER_MISMATCH;
@@ -950,7 +938,6 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     sharefolderwin = NULL;
     welcomeWin = NULL;
     syncFldrsWin = NULL;
-    introwin = NULL;
     isFirstLaunch = false;
     //p mthread=NULL;
     loggedin=false;
@@ -1027,7 +1014,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     connect(this, SIGNAL(addNewShareSgnl(QString)), this, SLOT(addNewShare(QString)));
     bool savedauth = psync_get_bool_value("saveauth"); //works when syns is paused also
 
-    qDebug()<<"saveauth"<<savedauth << "username" <<psync_get_username()<<"auth"<< psync_get_auth_string();
+    qDebug()<<"saveauth"<<savedauth << "username" <<psync_get_username();
     if (!savedauth)
     {
         //case not remembered
@@ -1042,15 +1029,9 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     else
         logIn(psync_get_username(),true);
     cfg = manager.defaultConfiguration();
-    qDebug()<<"isvalid cfg"<<cfg.isValid();
     session = new QNetworkSession(cfg);
     session->open();
     connect(session, SIGNAL(stateChanged(QNetworkSession::State)), this, SLOT(networkConnectionChanged(QNetworkSession::State)));
-    //for case when upld is called only once
-
-    pstatus_t status;
-    memset(&status, 0, sizeof(status));
-    status_callback(&status);
 
     /* p
         else
@@ -1176,7 +1157,7 @@ void PCloudApp::check_error()
         msgBox.exec();
         break;
     case PERROR_FOLDER_ALREADY_SYNCING: //9
-        msgBox.setText(trUtf8("Can not add new sync: Folder already syncing!"));
+        msgBox.setText(trUtf8("Can not add new sync: Folder has already synchronized"));
         msgBox.exec();
         break;
     case PERROR_INVALID_SYNCTYPE:  //10
@@ -1193,12 +1174,6 @@ void PCloudApp::check_error()
     case PERROR_PARENT_OR_SUBFOLDER_ALREADY_SYNCING: //13
         msgBox.setText(trUtf8("Can not add new sync: Parent folder or subfolder of it has already synchronized!"));
         msgBox.setInformativeText(trUtf8("Please check your synchronized folders list"));
-        msgBox.exec();
-        break;
-    case PERROR_LOCAL_IS_ON_PDRIVE:
-        qDebug()<<"PERROR_LOCAL_IS_ON_PDRIVE";
-        msgBox.setText(trUtf8("Can not add new sync: The selected local folder is from pDrive!"));
-        msgBox.setInformativeText(trUtf8("Please select correct local folder"));
         msgBox.exec();
         break;
     default:
@@ -1241,13 +1216,20 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     //}
     pCloudWin->setOnlineItems(true);
     pCloudWin->setOnlinePages();
-    pstatus_t status;
-    memset(&status, 0, sizeof(status));
-    psync_get_status(&status);
-    if (status.status != PSTATUS_PAUSED)
-        tray->setIcon(QIcon(SYNCED_ICON));
-    else
+
+    switch (this->lastStatus)
+    {
+    case PSTATUS_ACCOUNT_FULL:
+    case PSTATUS_DISK_FULL:
+        tray->setIcon(QIcon(SYNC_FULL_ICON));
+        break;
+    case PSTATUS_PAUSED:
         tray->setIcon(QIcon(PAUSED_ICON));
+        break;
+    default:
+        tray->setIcon(QIcon(SYNCED_ICON));
+    }
+
     tray->setContextMenu(loggedmenu);
     //isFirstLaunch = false; // for test TEMP
     if (isFirstLaunch)
@@ -1255,16 +1237,6 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
         welcomeWin = new WelcomeWin(this, NULL);
         this->showWindow(welcomeWin);
     }
-
-    /* NEXT VERSION - when screeshots are ready
-    if (isFirstLaunch || (this->settings->contains("showintrowin") && this->settings->value("showintrowin").toBool()))
-        if(introwin == NULL)
-            introwin = new InfoScreensWin(this);
-
-        this->showWindow(introwin);
-
-    */
-
 }
 
 void PCloudApp::getUserInfo()
@@ -1900,13 +1872,9 @@ QString PCloudApp::timeConvert(quint64 seconds)
 void PCloudApp::networkConnectionChanged(QNetworkSession::State state)
 {
     qDebug()<<"network connection state changed " << state;
-    //if (!(state == QNetworkSession::Roaming || state == QNetworkSession::NotAvailable || state == QNetworkSession::Connected))
-    //   return;
-
-    if ((state == QNetworkSession::Roaming || state == QNetworkSession::NotAvailable || state == QNetworkSession::Connected))
+    if (state == QNetworkSession::Roaming || state == QNetworkSession::NotAvailable || state == QNetworkSession::Connected)
         psync_network_exception();
-
-    if((state == QNetworkSession::Connected || state == QNetworkSession::Roaming) && this->nointernetFlag) //just connected
+    if((state == QNetworkSession::Connected || state == QNetworkSession::Roaming) && this->nointernetFlag)
     {
         nointernetFlag = false;
         if(isLogedIn())
@@ -1917,4 +1885,6 @@ void PCloudApp::networkConnectionChanged(QNetworkSession::State state)
         else
             this->showLoginPublic();
     }
+    if((state == QNetworkSession::Disconnected || state == QNetworkSession::NotAvailable) && !this->nointernetFlag)
+        this->nointernetFlag = true;
 }
