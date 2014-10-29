@@ -503,7 +503,7 @@ void status_callback(pstatus_t *status)
             if(PCloudApp::appStatic->isLogedIn())
             {
                 PCloudApp::appStatic->changeSyncIconPublic(SYNCED_ICON);
-                if(!PCloudApp::appStatic->nointernetFlag)
+                if(PCloudApp::appStatic->nointernetFlag)
                 {
                     PCloudApp::appStatic->changeOnlineItemsPublic(true);
                     PCloudApp::appStatic->nointernetFlag = false; //already connected to net
@@ -1214,8 +1214,6 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     //if (loggedmenu){
     //loggedmenu->actions()[0]->setText(username);
     //}
-    pCloudWin->setOnlineItems(true);
-    pCloudWin->setOnlinePages();
 
     switch (this->lastStatus)
     {
@@ -1226,9 +1224,14 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     case PSTATUS_PAUSED:
         tray->setIcon(QIcon(PAUSED_ICON));
         break;
+    case PSTATUS_OFFLINE:
+        return;
     default:
         tray->setIcon(QIcon(SYNCED_ICON));
     }
+
+    pCloudWin->setOnlineItems(true);
+    pCloudWin->setOnlinePages();
 
     tray->setContextMenu(loggedmenu);
     //isFirstLaunch = false; // for test TEMP
