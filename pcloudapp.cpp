@@ -331,11 +331,11 @@ void PCloudApp::createMenus()
     //create tray menu and it's submenus and add actions
     loggedmenu = new QMenu();
     //p loggedmenu->addAction(openAction);
-    loggedmenu->addAction(accountAction);
-    loggedmenu->addSeparator();
 #ifdef VFS
     loggedmenu->addAction(driveAction);
+    loggedmenu->addSeparator();
 #endif
+    loggedmenu->addAction(accountAction);
     syncMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu16x16/sync.png"),trUtf8("Sync"));
 
     syncedFldrsMenu = syncMenu->addMenu(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),trUtf8("Synced Folders"));
