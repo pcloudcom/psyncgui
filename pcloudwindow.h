@@ -58,8 +58,7 @@ signals:
 public slots:
     void changePage(QListWidgetItem *current, QListWidgetItem *previous);
     void setCurrntIndxPclWin(int index);    
-    void setOnlineItems(bool online);
-    void setOnlinePages();  //when the user logs in
+    void setOnlineItems(bool online);   
     void refreshUserinfo();
     void launchFS();
     void openMyPcloud();    

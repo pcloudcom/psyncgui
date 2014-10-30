@@ -42,7 +42,7 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     new QListWidgetItem(QIcon(":/128x128/images/128x128//help.png"),trUtf8("Help"),ui->listButtonsWidget); //index 6
     new QListWidgetItem(QIcon(":/128x128/images/128x128/info.png"),trUtf8("About"),ui->listButtonsWidget); //index 7
 
-    fillAcountNotLoggedPage();
+    fillAccountLoggedPage();
     fillAboutPage();
     fillDrivePage();
     settngsPage = new SettingsPage(this, app);
@@ -196,10 +196,10 @@ void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when
     }
 }
 
-void PCloudWindow::setOnlinePages()
+/*void PCloudWindow::setOnlinePages()
 {    
     fillAccountLoggedPage();
-}
+}*/
 void PCloudWindow::fillAcountNotLoggedPage()
 {
     ui->toolBtnContact->setStyleSheet("QToolButton{background-color:transparent;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");

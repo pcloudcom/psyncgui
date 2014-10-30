@@ -1214,6 +1214,7 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     //if (loggedmenu){
     //loggedmenu->actions()[0]->setText(username);
     //}
+    pCloudWin->fillAccountLoggedPage();
 
     switch (this->lastStatus)
     {
@@ -1231,9 +1232,8 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     }
 
     pCloudWin->setOnlineItems(true);
-    pCloudWin->setOnlinePages();
-
     tray->setContextMenu(loggedmenu);
+
     //isFirstLaunch = false; // for test TEMP
     if (isFirstLaunch)
     {
