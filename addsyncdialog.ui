@@ -123,7 +123,7 @@
      <item row="0" column="1">
       <widget class="QLabel" name="label_choose_remote">
        <property name="text">
-        <string>Choose Remote Folder:</string>
+        <string>Choose pCloud Drive folder:</string>
        </property>
       </widget>
      </item>
