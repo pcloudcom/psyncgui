@@ -300,7 +300,8 @@ void PCloudApp::createMenus()
     accountAction = new QAction(QIcon(":/menu/images/menu16x16/user.png"),trUtf8("Account"), this); // Account tab
     connect(accountAction, SIGNAL(triggered()),this, SLOT(showAccount()));
     driveAction = new QAction(QIcon(":/menu/images/menu16x16/drive.png"),trUtf8("pCloudDrive"), this); //pDrive tab
-    connect(driveAction, SIGNAL(triggered()), this, SLOT(showDrive()));
+    //connect(driveAction, SIGNAL(triggered()), this, SLOT(showDrive()));
+    connect(driveAction, SIGNAL(triggered()), this, SLOT(openCloudDir()));
     //p openAction=new QAction("&Open pCloud folder", this);
     //p connect(openAction, SIGNAL(triggered()), this, SLOT(openCloudDir()));
     settingsAction=new QAction(QIcon(":/menu/images/menu16x16/settings.png"),trUtf8("Settings"), this); //Settings tab
@@ -530,6 +531,9 @@ void status_callback(pstatus_t *status)
                   "bytes downloaded "<<status->bytesdownloaded << "bytestodownload= "<<status->bytestodownload << " current "<<status->bytestodownloadcurrent<< " speed" <<status->downloadspeed
                <<"DOWNLOAD files filesdownloading "<<status->filesdownloading<< " filestodownload="<<status->filestodownload<<"is full: "<< status->localisfull<<status->remoteisfull;
 
+        if(!PCloudApp::appStatic->isLogedIn())
+            break;
+
         if(!(previousStatus == PSTATUS_DOWNLOADING || previousStatus == PSTATUS_DOWNLOADINGANDUPLOADING || previousStatus == PSTATUS_UPLOADING))
             PCloudApp::appStatic->changeSyncIconPublic(SYNCING_ICON);
 
@@ -567,6 +571,9 @@ void status_callback(pstatus_t *status)
 
     case PSTATUS_UPLOADING:                 //2
         qDebug()<<"PSTATUS_UPLOADING";
+        if(!PCloudApp::appStatic->isLogedIn())
+            break;
+
         if(!(previousStatus == PSTATUS_DOWNLOADING || previousStatus == PSTATUS_DOWNLOADINGANDUPLOADING || previousStatus == PSTATUS_UPLOADING))
             PCloudApp::appStatic->changeSyncIconPublic(SYNCING_ICON);
         qDebug()<<"UPLOAD bytes    bytesuploaded=  "<<status->bytesuploaded << " bytestoupload = "<<status->bytestoupload << " current= "<<status->bytestouploadcurrent<<" speed" <<status->uploadspeed
@@ -607,6 +614,10 @@ void status_callback(pstatus_t *status)
 
     case PSTATUS_DOWNLOADINGANDUPLOADING:   //3
         qDebug()<<"PSTATUS_DOWNLOADINGANDUPLOADING";
+
+        if(!PCloudApp::appStatic->isLogedIn())
+            break;
+
         if(!(previousStatus == PSTATUS_DOWNLOADING || previousStatus == PSTATUS_DOWNLOADINGANDUPLOADING
              || previousStatus == PSTATUS_UPLOADING))
             PCloudApp::appStatic->changeSyncIconPublic(SYNCING_ICON);
