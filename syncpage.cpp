@@ -6,6 +6,7 @@
 #include "ui_addsyncdialog.h"
 #include "modifysyncdialog.h"
 #include "ui_modifysyncdialog.h"
+#include "common.h"
 #include <QRegExp>
 #include<QDesktopServices>
 #include <QUrl>
@@ -109,15 +110,19 @@ void SyncPage::load()
             QStringList row;
             row << fldrsList->folders[i].localpath <<get_sync_type(fldrsList->folders[i].synctype) << fldrsList->folders[i].remotepath;
             QTreeWidgetItem *item = new QTreeWidgetItem(row);
-            item->setData(0, Qt::UserRole,fldrsList->folders[i].localpath);
+
             QDir localDir(fldrsList->folders[i].localpath);
             if(localDir.exists())
+            {
                 item->setToolTip(0,fldrsList->folders[i].localpath);
+                item->setData(0, Qt::UserRole,fldrsList->folders[i].localpath);
+            }
             else
             {
                 item->setFlags(Qt::NoItemFlags);
                 item->setToolTip(0,"Local path has changed.");
             }
+
             item->setData(1, Qt::UserRole, fldrsList->folders[i].synctype);
             item->setToolTip(1,get_sync_type(fldrsList->folders[i].synctype));
             item->setData(2, Qt::UserRole, fldrsList->folders[i].remotepath);
@@ -144,7 +149,10 @@ void SyncPage::syncDoubleClicked(QTreeWidgetItem *item, int col)
     case 0:   //opens local folder
     {
         QString localpath = item->data(0,Qt::UserRole).toString();
-        QDesktopServices::openUrl(QUrl::fromLocalFile(localpath));
+        if (!localpath.isEmpty())
+            QDesktopServices::openUrl(QUrl::fromLocalFile(localpath));
+        else
+            QMessageBox::critical(this,trUtf8("Invalid local path"), trUtf8("Local synced folder not found! It could be renamed or deleted."));
         break;
     }
     case 1: //opens modify sync type dialog
@@ -157,12 +165,7 @@ void SyncPage::syncDoubleClicked(QTreeWidgetItem *item, int col)
         if(psync_fs_isstarted()) //open fodler in pDrive
         {
             QString remotepath = item->data(2,Qt::UserRole).toString();
-#ifdef Q_OS_LINUX
-            remotepath.insert(0,QString(psync_fs_getmountpoint()).append("/"));
-#else //windows
-            remotepath.insert(0,QString(psync_fs_getmountpoint()).append("\\"));
-            remotepath.replace("/","\\");
-#endif
+            remotepath.insert(0, QString(psync_fs_getmountpoint()).append(OSPathSeparator));
             QDesktopServices::openUrl(QUrl::fromLocalFile(remotepath));
         }
         else //open folder in web
@@ -178,7 +181,6 @@ void SyncPage::syncDoubleClicked(QTreeWidgetItem *item, int col)
     default:
         break;
     }
-
 }
 
 void SyncPage::modifySync()

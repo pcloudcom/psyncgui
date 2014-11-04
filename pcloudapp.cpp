@@ -965,6 +965,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     sharefolderwin = NULL;
     welcomeWin = NULL;
     syncFldrsWin = NULL;
+    introwin = NULL;
     isFirstLaunch = false;
     //p mthread=NULL;
     loggedin=false;

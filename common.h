@@ -34,5 +34,13 @@
 #define OTHERS_PLATFORMS_PAGE_NUM 3
 #define FINISH_INFO_PAGE_NUM 4
 
+
+#ifdef Q_OS_WIN
+#define OSPathSeparator "\\"
+#else
+#define OSPathSeparator "/"
+#endif
+
+
 #endif
 
