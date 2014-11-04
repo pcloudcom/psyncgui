@@ -29,6 +29,15 @@ void PCloudApp::hideAllWindows(){
         pCloudWin->hide();
     if(welcomeWin && welcomeWin->isVisible())
         welcomeWin->hide();
+    if(introwin && introwin->isVisible())
+        introwin->close();
+    if(!loggedin)
+    {
+        if(sharefolderwin && sharefolderwin->isVisible())
+            sharefolderwin->hide();
+        if(syncFldrsWin && syncFldrsWin->isVisible())
+            syncFldrsWin->hide();
+    }
 }
 
 void PCloudApp::showWindow(QMainWindow *win)
@@ -195,7 +204,7 @@ void PCloudApp::logOut(){
 
 #endif
     username="";
-    if(this->lastStatus != PSTATUS_BAD_LOGIN_DATA || this->lastStatus != PSTATUS_LOGIN_REQUIRED)
+    if(this->lastStatus != PSTATUS_BAD_LOGIN_DATA || this->lastStatus != PSTATUS_LOGIN_REQUIRED || this->lastStatus != PSTATUS_BAD_LOGIN_TOKEN)
         psync_logout();
     tray->setContextMenu(notloggedmenu);
     tray->setToolTip("pCloud");
@@ -261,15 +270,12 @@ void PCloudApp::showOnClick(){
     if(!loggedin)
         showLogin();
     else
-        showAccount();
+        this->openCloudDir();
 }
 
 void PCloudApp::trayClicked(QSystemTrayIcon::ActivationReason reason){
-    if (reason == QSystemTrayIcon::Trigger)
-    {
+    if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::MiddleClick) //3 = Trigger - left click
         showOnClick();
-        return;
-    }
 }
 
 void PCloudApp::createMenus()
@@ -552,7 +558,7 @@ void status_callback(pstatus_t *status)
                     PCloudApp::appStatic->downldInfo = QObject::trUtf8("Download: ") + QString::number(status->downloadspeed/1000) + "kB/s, " +
                             PCloudApp::appStatic->timeConvert(status->bytestodownload/status->downloadspeed) + ", " +
                             PCloudApp::appStatic->bytesConvert(status->bytestodownload - status->bytesdownloaded) + ", " +
-                            QString::number(status->filestodownload) + files; //" files";
+                            QString::number(status->filestodownload) + files;
                 }
                 else
                     PCloudApp::appStatic->downldInfo = QObject::trUtf8("Download: ")  + PCloudApp::appStatic->bytesConvert(status->bytestodownload - status->bytesdownloaded) +
@@ -694,16 +700,26 @@ void status_callback(pstatus_t *status)
         }
         break;
 
-    case PSTATUS_ACCOUNT_FULL:              //6
-        qDebug()<<"PSTATUS_ACCOUNT_FULL";
-        if(previousStatus != PSTATUS_ACCOUNT_FULL)
+    case PSTATUS_BAD_LOGIN_TOKEN: //6
+        qDebug()<<"PSTATUS_BAD_LOGIN_TOKEN";
+        if(previousStatus != PSTATUS_BAD_LOGIN_TOKEN && PCloudApp::appStatic->isLogedIn())
         {
-            PCloudApp::appStatic->changeSyncIconPublic(SYNC_FULL_ICON);
-            PCloudApp::appStatic->lastStatus = PSTATUS_ACCOUNT_FULL;
+            PCloudApp::appStatic->logoutPublic();
+            PCloudApp::appStatic->lastStatus = PSTATUS_BAD_LOGIN_TOKEN;
+            PCloudApp::appStatic->sendTrayMsgTypePublic("Password Changed!", "Your password has been changed from another device!", -1);
         }
         break;
 
-    case PSTATUS_DISK_FULL:                 //7
+    case PSTATUS_ACCOUNT_FULL:              //7
+        qDebug()<<"PSTATUS_ACCOUNT_FULL";
+        if(previousStatus != PSTATUS_ACCOUNT_FULL)
+        {
+            PCloudApp::appStatic->lastStatus = PSTATUS_ACCOUNT_FULL;
+            PCloudApp::appStatic->changeSyncIconPublic(SYNC_FULL_ICON);
+        }
+        break;
+
+    case PSTATUS_DISK_FULL:
         qDebug()<<"PSTATUS_DISK_FULL";
         if(previousStatus != PSTATUS_DISK_FULL)
         {
@@ -712,7 +728,7 @@ void status_callback(pstatus_t *status)
         }
         break;
 
-    case PSTATUS_PAUSED:                    //8
+    case PSTATUS_PAUSED:
         qDebug()<<"PSTATUS_PAUSED";
         if (PCloudApp::appStatic->isLogedIn() && previousStatus != PSTATUS_PAUSED)
             PCloudApp::appStatic->changeSyncIconPublic(PAUSED_ICON);
@@ -720,13 +736,13 @@ void status_callback(pstatus_t *status)
         //update menu -> start sync for initial login
         break;
 
-    case PSTATUS_STOPPED:                   //9
+    case PSTATUS_STOPPED:
         qDebug()<<"PSTATUS_STOPPED";
         PCloudApp::appStatic->changeSyncIconPublic(OFFLINE_ICON);
         PCloudApp::appStatic->lastStatus = PSTATUS_STOPPED;
         break;
 
-    case PSTATUS_OFFLINE:                   //10
+    case PSTATUS_OFFLINE:
         qDebug()<<"PSTATUS_OFFLINE";
         if(previousStatus != PSTATUS_OFFLINE)
         {
@@ -737,17 +753,17 @@ void status_callback(pstatus_t *status)
         }
         break;
 
-    case PSTATUS_CONNECTING:                //11
+    case PSTATUS_CONNECTING:
         qDebug()<<"PSTATUS_CONNECTING";
         PCloudApp::appStatic->lastStatus = PSTATUS_CONNECTING;
         break;
 
-    case PSTATUS_SCANNING:                  //12
+    case PSTATUS_SCANNING:
         qDebug()<<" PSTATUS_SCANNING";
         PCloudApp::appStatic->lastStatus = PSTATUS_SCANNING;
         break;
 
-    case PSTATUS_USER_MISMATCH:             //13
+    case PSTATUS_USER_MISMATCH:
         //case when set wrong user
         qDebug()<<"PSTATUS_USER_MISMATCH";
         PCloudApp::appStatic->lastStatus = PSTATUS_USER_MISMATCH;
@@ -1168,7 +1184,7 @@ void PCloudApp::check_error()
         msgBox.exec();
         break;
     case PERROR_FOLDER_ALREADY_SYNCING: //9
-        msgBox.setText(trUtf8("Can not add new sync: Folder has already synchronized"));
+        msgBox.setText(trUtf8("Can not add new sync: Folder already syncing!"));
         msgBox.exec();
         break;
     case PERROR_INVALID_SYNCTYPE:  //10
@@ -1185,6 +1201,12 @@ void PCloudApp::check_error()
     case PERROR_PARENT_OR_SUBFOLDER_ALREADY_SYNCING: //13
         msgBox.setText(trUtf8("Can not add new sync: Parent folder or subfolder of it has already synchronized!"));
         msgBox.setInformativeText(trUtf8("Please check your synchronized folders list"));
+        msgBox.exec();
+        break;
+    case PERROR_LOCAL_IS_ON_PDRIVE: //14
+        qDebug()<<"PERROR_LOCAL_IS_ON_PDRIVE";
+        msgBox.setText(trUtf8("Can not add new sync: The selected local folder is from pDrive!"));
+        msgBox.setInformativeText(trUtf8("Please select correct local folder"));
         msgBox.exec();
         break;
     default:
@@ -1251,6 +1273,12 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
         welcomeWin = new WelcomeWin(this, NULL);
         this->showWindow(welcomeWin);
     }
+    /* NEXT VERSION - when screeshots are ready
+        if (isFirstLaunch || (this->settings->contains("showintrowin") && this->settings->value("showintrowin").toBool()))
+            if(introwin == NULL)
+                introwin = new InfoScreensWin(this);
+            this->showWindow(introwin);
+     */
 }
 
 void PCloudApp::getUserInfo()
@@ -1297,6 +1325,9 @@ void PCloudApp::getQuota()
 
 void PCloudApp::trayMsgClicked()
 {
+    if(lastMessageType == -1 )
+        return;
+
     if (lastMessageType == 3)
         emit showpCloudAbout();
     if (lastMessageType == 0 || lastMessageType == 1 )
