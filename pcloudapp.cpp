@@ -725,6 +725,8 @@ void status_callback(pstatus_t *status)
         {
             PCloudApp::appStatic->lastStatus = PSTATUS_DISK_FULL;
             PCloudApp::appStatic->changeSyncIconPublic(SYNC_FULL_ICON);
+            if (PCloudApp::appStatic->isLogedIn())
+                PCloudApp::appStatic->changeOnlineItems(true);
         }
         break;
 
@@ -747,7 +749,7 @@ void status_callback(pstatus_t *status)
         if(previousStatus != PSTATUS_OFFLINE)
         {
             PCloudApp::appStatic->changeSyncIconPublic(OFFLINE_ICON);
-            PCloudApp::appStatic->changeOnlineItemsPublic(false);
+            //PCloudApp::appStatic->changeOnlineItemsPublic(false);
             PCloudApp::appStatic->nointernetFlag = true;
             PCloudApp::appStatic->lastStatus = PSTATUS_OFFLINE;
         }
@@ -1260,7 +1262,8 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
         tray->setIcon(QIcon(PAUSED_ICON));
         break;
     case PSTATUS_OFFLINE:
-        return;
+        tray->setIcon(QIcon(OFFLINE_ICON));
+        break;
     default:
         tray->setIcon(QIcon(SYNCED_ICON));
     }
