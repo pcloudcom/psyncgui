@@ -34,7 +34,7 @@ public:
     QString newRemoteFldr(QTreeWidget* table);
     int getCurrentPage();
     SyncPage* get_sync_page();    
-    void refreshPagePulbic(int pageindex, int param);    
+    void refreshPagePulbic(int pageindex, int param);        
 private:
     Ui::PCloudWindow *ui;
     PCloudApp *app;
@@ -54,6 +54,7 @@ private:
 protected:
     void showEvent(QShowEvent *);    
     bool eventFilter(QObject *obj, QEvent *event);
+    //bool mouseMoveEvent(QMouseEvent *event);
 signals:
     void refreshPageSgnl(int pageindex, int param);
 public slots:
