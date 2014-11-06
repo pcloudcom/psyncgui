@@ -31,6 +31,7 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     ui->listButtonsWidget->setMinimumWidth(450);
     ui->listButtonsWidget->setMaximumHeight(85);
     ui->listButtonsWidget->setMinimumHeight(84); // precakva mi layouta
+    ui->listButtonsWidget->installEventFilter(this);
 
     //create Items for QListWidget
     new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 0
@@ -113,6 +114,30 @@ void PCloudWindow::closeEvent(QCloseEvent *event) //not to close the app after w
 {
     hide();
     event->ignore();
+}
+
+bool PCloudWindow::eventFilter(QObject *obj, QEvent *event)
+{
+    if (event->type() == QEvent::KeyPress)
+    {
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        if(keyEvent->key() == Qt::Key_Home || keyEvent->key() == Qt::Key_Backspace)
+        {
+            event->ignore();
+            return true;
+        }
+    }
+    else
+         return QObject::eventFilter(obj, event);
+
+/*
+    eles if (event->type() == QEvent::MouseButtonPress)
+    {
+        QMouseEvent* pMouseEvent = static_cast<QMouseEvent*>(event);
+        if(pMouseEvent->KeyPress == Qt::LeftButton)
+            qDebug()<<"PCloudWindow::eventFilter mouse click";
+    }
+    */
 }
 
 void PCloudWindow::changePage(QListWidgetItem *current, QListWidgetItem *previous)

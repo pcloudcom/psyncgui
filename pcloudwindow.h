@@ -53,6 +53,7 @@ private:
     void refreshPage(int currentIndex);
 protected:
     void showEvent(QShowEvent *);    
+    bool eventFilter(QObject *obj, QEvent *event);
 signals:
     void refreshPageSgnl(int pageindex, int param);
 public slots:
