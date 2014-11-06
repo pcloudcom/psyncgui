@@ -33,25 +33,15 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     ui->listButtonsWidget->setMinimumHeight(84); // precakva mi layouta
     ui->listButtonsWidget->installEventFilter(this);
 
-    QIcon icon; // for QS_LInUX
-
-    icon.addPixmap(QPixmap(":/128x128/images/128x128/user.png"),QIcon::Normal);
-    icon.addPixmap(QPixmap(":/128x128/images/128x128/drive.png"),QIcon::Selected);
-
-    //qstandardItem.setIcon(icon);
-    //connect(ui->listButtonsWidget, SIGNAL(
-
     //create Items for QListWidget
     new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 0
-    //new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 1
-    new QListWidgetItem(icon,trUtf8("Account"),ui->listButtonsWidget); //index 1
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 1
     new QListWidgetItem(QIcon(":/128x128/images/128x128/drive.png"),trUtf8("Drive"),ui->listButtonsWidget); //index 2
     new QListWidgetItem(QIcon(":/128x128/images/128x128/sync.png"),trUtf8("Sync"),ui->listButtonsWidget); //Sync Page index 3
     new QListWidgetItem(QIcon(":/128x128/images/128x128/shares.png"),trUtf8("Shares"),ui->listButtonsWidget); //index 4
     new QListWidgetItem(QIcon(":/128x128/images/128x128/settings.png"),trUtf8("Settings"),ui->listButtonsWidget); //index 5
     new QListWidgetItem(QIcon(":/128x128/images/128x128//help.png"),trUtf8("Help"),ui->listButtonsWidget); //index 6
     new QListWidgetItem(QIcon(":/128x128/images/128x128/info.png"),trUtf8("About"),ui->listButtonsWidget); //index 7
-
 
     fillAccountLoggedPage();
     fillAboutPage();
@@ -152,35 +142,8 @@ bool PCloudWindow::eventFilter(QObject *obj, QEvent *event)
 
 void PCloudWindow::changePage(QListWidgetItem *current, QListWidgetItem *previous)
 {
-    qDebug()<<"changePage" << ui->listButtonsWidget->currentIndex();
-
-    //ui->listButtonsWidget->setCurrentItem(previous);
-    //return;
-
     if (!current)
         current = previous;
-    //ui->listButtonsWidget->blockSignals(tr)
-
-    current->setSelected(true);
-    if(ui->listButtonsWidget->row(previous) == SETTINGS_PAGE_NUM && ui->btnSaveSttngs->isEnabled())
-    {
-        QMessageBox::StandardButton reply;
-        reply = QMessageBox::warning(this,trUtf8("Changes not saved"),
-                                     trUtf8("There are unsaved changes to the settings. Do you wish to continue without saving?"),
-                                     QMessageBox::Yes|QMessageBox::No);
-        if (reply == QMessageBox::No)
-        {
-            //setCurrntIndxPclWin(SETTINGS_PAGE_NUM);
-            // previous->setSelected(true);
-            ui->listButtonsWidget->setCurrentItem(previous);
-
-            //ui->listButtonsWidget->setSelectionMode(QItemSelectionModel::ClearAndSelect);
-            //ui->listButtonsWidget->setCurrentItem(previous);
-            //ui->listButtonsWidget->sets
-            return;
-        }
-    }
-
     int currentIndex = ui->listButtonsWidget->row(current);
 
     // auto resize
@@ -206,7 +169,6 @@ void PCloudWindow::showEvent(QShowEvent *)
 
 void PCloudWindow::refreshPage(int currentIndex)
 {            
-    qDebug()<<"PCloudWindow::refreshPage"<<currentIndex;
     switch(currentIndex)
     {
     case ACCNT_LOGGED_PAGE_NUM:
