@@ -85,10 +85,11 @@ win32:RC_FILE= pCloud.rc
 RESOURCES += \
     Resources.qrc
 win32{
-LIBS += -L$$PWD/.. -lpsync
+LIBS += -L$$PWD/../.. -lpsync
 LIBS += -lssl -lcrypto -lsqlite -liphlpapi
 
-INCLUDEPATH += $$PWD/.. $$PWD/../pclsync
+INCLUDEPATH += $$PWD/../.. $$PWD/../../pclsync
+#INCLUDEPATH += $$PWD/.. $$PWD/../.. $$PWD/../../sync/pclsync
 }
 
 unix{

@@ -39,7 +39,6 @@
         <file>images/48x48/onlinehelp-modal.png</file>
         <file>images/48x48/both.png</file>
         <file>images/48x48/in.png</file>
-        <file>images/48x48/out.png</file>
     </qresource>
     <qresource prefix="/24x24">
         <file>images/24x24/offline.png</file>

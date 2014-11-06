@@ -91,7 +91,7 @@ bool isRunning(){
 int main(int argc, char *argv[])
 {    
 #ifdef Q_OS_WIN
-   // MyLogger logger;
+    //MyLogger logger;
     if (isRunning()){
       //  MessageBoxA(NULL, "PCloud is already running.", "Already running", MB_OK);
         return 1;
