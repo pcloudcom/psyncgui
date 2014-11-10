@@ -118,26 +118,60 @@ void PCloudWindow::closeEvent(QCloseEvent *event) //not to close the app after w
 
 bool PCloudWindow::eventFilter(QObject *obj, QEvent *event)
 {
+    if(obj->objectName() != "listButtonsWidget")
+        return QObject::eventFilter(obj, event);
+
     if (event->type() == QEvent::KeyPress)
     {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-        if(keyEvent->key() == Qt::Key_Home || keyEvent->key() == Qt::Key_Backspace)
+        int keyid = keyEvent->key();
+
+        if(app->isLogedIn())
         {
-            event->ignore();
-            return true;
+            switch(keyid)
+            {
+            case Qt::Key_Home:
+                this->setCurrntIndxPclWin(ACCNT_LOGGED_PAGE_NUM);
+                event->ignore();
+                return true;
+            case Qt::Key_A:
+                if(ui->listButtonsWidget->currentRow() == ACCNT_LOGGED_PAGE_NUM)
+                    this->setCurrntIndxPclWin(ABOUT_PAGE_NUM);
+                else
+                    this->setCurrntIndxPclWin(ACCNT_LOGGED_PAGE_NUM);
+                event->ignore();
+                return true;
+            case Qt::Key_D:
+            case Qt::Key_Backspace:
+                event->ignore();
+                return true;
+            default:
+                return QObject::eventFilter(obj, event);
+            }
+        }
+        else
+        {
+            switch(keyid)
+            {
+            case Qt::Key_Home:
+                this->setCurrntIndxPclWin(HELP_PAGE_NUM);
+                event->ignore();
+                return true;
+            case Qt::Key_A:
+                this->setCurrntIndxPclWin(ABOUT_PAGE_NUM);
+                event->ignore();
+                return true;
+            case Qt::Key_D:
+            case Qt::Key_Backspace:
+                event->ignore();
+                return true;
+            default:
+                return QObject::eventFilter(obj, event);
+            }
         }
     }
     else
-         return QObject::eventFilter(obj, event);
-
-/*
-    eles if (event->type() == QEvent::MouseButtonPress)
-    {
-        QMouseEvent* pMouseEvent = static_cast<QMouseEvent*>(event);
-        if(pMouseEvent->KeyPress == Qt::LeftButton)
-            qDebug()<<"PCloudWindow::eventFilter mouse click";
-    }
-    */
+        return QObject::eventFilter(obj, event);
 }
 
 void PCloudWindow::changePage(QListWidgetItem *current, QListWidgetItem *previous)
@@ -163,12 +197,12 @@ void PCloudWindow::changePage(QListWidgetItem *current, QListWidgetItem *previou
 
 }
 void PCloudWindow::showEvent(QShowEvent *)
-{        
+{
     refreshPage(ui->listButtonsWidget->currentRow());
 }
 
 void PCloudWindow::refreshPage(int currentIndex)
-{            
+{
     switch(currentIndex)
     {
     case ACCNT_LOGGED_PAGE_NUM:
@@ -194,7 +228,6 @@ void PCloudWindow::setCurrntIndxPclWin(int index)
 {
     ui->listButtonsWidget->setCurrentRow(index);
     ui->pagesWidget->setCurrentIndex(index);
-
 }
 
 void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when is loggedin and loggedout
@@ -266,7 +299,7 @@ void PCloudWindow::fillAboutPage()
 }
 
 void PCloudWindow::fillAccountLoggedPage()
-{        
+{
     ui->label_email->setText(app->username);
     if (app->isVerified)
     {
@@ -475,7 +508,7 @@ void PCloudWindow::forgotPass()
 }
 
 void PCloudWindow::unlinkSync()
-{   
+{
     QMessageBox::StandardButton reply;
     //reply = QMessageBox::warning(this,trUtf8("Unlink"), trUtf8("If you unlink your account from this computer any data about your synced folders will be lost. Do you still want to unlink?"),
     reply = QMessageBox::warning(this,trUtf8("Unlink"),
@@ -516,7 +549,7 @@ void PCloudWindow::checkVerify() // has the user verified after had clicked "Ver
     }
 }
 void PCloudWindow::updateVersion()
-{        
+{
     app->stopTimer();
     QMessageBox::information(this,"pCloud Sync",trUtf8( "The new version of pCloud starts downloading and prepearing to install.\n Please wait."));
     if(!vrsnDwnldThread)
@@ -525,7 +558,7 @@ void PCloudWindow::updateVersion()
 }
 
 void PCloudWindow::refreshPageSlot(int pageindex, int param)
-{    
+{
     switch(pageindex)
     {
     case DRIVE_PAGE_NUM:
