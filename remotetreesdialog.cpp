@@ -15,7 +15,7 @@ RemoteTreesDialog::RemoteTreesDialog(PCloudWindow* &w,QWidget *parent) :
     connect(ui->btnReject, SIGNAL(clicked()),this,SLOT(hide()));
     connect(ui->btnNewFolder, SIGNAL(clicked()), this, SLOT(newRemoteFldr()));
     this->setWindowIcon(QIcon(WINDOW_ICON));
-    this->setWindowTitle("pCloud");
+    this->setWindowTitle("pCloud Drive");
 
 }
 

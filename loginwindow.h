@@ -31,7 +31,7 @@ public slots:
     void forgotPassword();
     void focusPass();
     void unlinkSync();
-    void setError(const char *err);
+    void showError(const char *err);
 };
 
 #endif // LOGINWINDOW_H

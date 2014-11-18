@@ -37,7 +37,7 @@ SuggestnsBaseWin::SuggestnsBaseWin(PCloudApp *a, bool addlocal, QStringList *fld
     connect(ui->btnModify, SIGNAL(clicked()), this, SLOT(modifyType()));
     ui->statusbar->setVisible(false);
 
-    this->setWindowTitle(trUtf8("pCloud Sync"));
+    this->setWindowTitle(trUtf8("pCloud Drive"));
     this->setWindowIcon(QIcon(WINDOW_ICON));
 
     //default synced fldrs

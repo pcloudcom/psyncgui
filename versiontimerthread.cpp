@@ -35,7 +35,7 @@ void VersionTimerThread::run()
         if(now > dateTimeForNotify)
         {
             qDebug()<<QDateTime::currentDateTime() <<"NOTIFICATIONS (Timer): Tray Notification shown";
-            emit sendTrayMsg("New Version", "A new version of pCloud Sync is available!\nClick here for more details");
+            emit sendTrayMsg("New Version", "A new version of pCloud Drive is available!\nClick here for more details");
             //start new reminder timer for the next interval
             emit restartTimer(app->settings->value("vrsnNotifyInvervalIndx").toInt());
         }

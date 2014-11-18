@@ -15,7 +15,7 @@ InfoScreensWin::InfoScreensWin(PCloudApp *a, QWidget *parent) :
     ui->checkBox_showagain->setChecked(Qt::Checked);
 
     setWindowIcon(QIcon(WINDOW_ICON));
-    setWindowTitle("pCloud Sync");
+    setWindowTitle("pCloud Drive");
     this->setWindowFlags(Qt::WindowTitleHint | Qt::CustomizeWindowHint);
 
     connect(ui->pagesWidget, SIGNAL(currentChanged(int)), this, SLOT(changePageContent(int)));

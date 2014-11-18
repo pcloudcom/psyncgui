@@ -13,16 +13,17 @@ LoginWindow::LoginWindow(PCloudApp *a, QWidget *parent) :
     app=a;
     ui->setupUi(this);
     setWindowIcon(QIcon(WINDOW_ICON));
-    setWindowTitle("pCloud Sync");
+    setWindowTitle("pCloud Drive");
     QPalette palette;
     palette.setColor(QPalette::WindowText, Qt::red);
-    ui->error->setPalette(palette);
-    ui->forgotPassBtn->setStyleSheet("QToolButton{background-color:transparent;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");
+  //  ui->error->setPalette(palette);
+    ui->forgotPassBtn->setStyleSheet("QToolButton{background-color:transparent; text-decoration: underline;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");
+    ui->tbtnReg->setStyleSheet("QToolButton{background-color:transparent; text-decoration: underline;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");
     ui->loginButton->setDefault(true);
     connect(ui->loginButton, SIGNAL(clicked()), this, SLOT(logIn()));
     connect(ui->password, SIGNAL(returnPressed()), this, SLOT(logIn()));
     connect(ui->email, SIGNAL(returnPressed()), this, SLOT(focusPass()));
-    connect(ui->registerButton, SIGNAL(clicked()), app, SLOT(showRegister()));
+    connect(ui->tbtnReg, SIGNAL(clicked()), app, SLOT(showRegister()));
     connect(ui->forgotPassBtn,SIGNAL(clicked()), this,SLOT(forgotPassword()));
     connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(unlinkSync()));
 
@@ -42,7 +43,7 @@ void LoginWindow::closeEvent(QCloseEvent *event)
 void LoginWindow::showEvent(QShowEvent *)
 {
     username = psync_get_username();
-    ui->error->setText("");
+   // ui->error->setText("");
     if (username == "")
     {
         ui->btnUnlink->setVisible(false);
@@ -63,14 +64,15 @@ void LoginWindow::focusPass(){
     ui->password->setFocus();
 }
 
-void LoginWindow::setError(const char *err)
+void LoginWindow::showError(const char *err)
 {
-    ui->error->setText(trUtf8(err)); //for translation
+    //ui->error->setText(trUtf8(err)); //for translation
+    QMessageBox::critical(this, "pCloud", trUtf8(err));
 }
 
 void LoginWindow::logIn()
 {
-    ui->error->setText("");
+   // ui->error->setText("");
     QByteArray email=ui->email->text().toUtf8();
     QByteArray password=ui->password->text().toUtf8();
     int ischecked = ui->checkBox->isChecked()? 1: 0;
@@ -104,11 +106,11 @@ void LoginWindow::logIn()
             {
                 if (status.status != PSTATUS_OFFLINE)
                 {
-                    this->setError("Invalid user and password combination");
+                    this->showError("Invalid user and password combination");
                     psync_set_bool_setting("saveauth",false);
                 }
                 else
-                    this->setError("No internet connection");
+                    this->showError("No internet connection");
                 QApplication::restoreOverrideCursor();
                 return;
             }
@@ -128,8 +130,7 @@ void LoginWindow::logIn()
 
     app->logIn(email, ischecked); // thisway quoa won't be 0
     QApplication::restoreOverrideCursor();
-    ui->password->clear();
-    setError("");
+    ui->password->clear();    
     this->close();
     //p app->openCloudDir();
 
@@ -139,7 +140,7 @@ void LoginWindow::forgotPassword()
 {
     QByteArray email=ui->email->text().toUtf8();
     if (email.size() == 0){
-        setError("Enter your email.");
+        showError("Enter your email.");
         return;
     }
     QApplication::setOverrideCursor(Qt::WaitCursor);
@@ -154,20 +155,19 @@ void LoginWindow::forgotPassword()
     {
         if (res == -1)
         {
-            setError("No internet connection");
+            showError("No internet connection");
             QApplication::restoreOverrideCursor();
             return;
         }
         else
         {
-            setError(err);
+             showError(err);
             QApplication::restoreOverrideCursor();
             return;
         }
     }
     QApplication::restoreOverrideCursor();
-    free(err);
-    setError("");
+    free(err);    
 }
 void LoginWindow::unlinkSync() // to be moved in sync class
 {    
