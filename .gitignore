@@ -1,2 +1,4 @@
 psyncgui.pro.user
-
+moc_*
+*.o
+/debian/pclsync/DEBIAN/*
