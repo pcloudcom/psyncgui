@@ -6,30 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>923</width>
-    <height>618</height>
+    <width>794</width>
+    <height>579</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_16">
+   <layout class="QVBoxLayout" name="verticalLayout_31">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
       <property name="spacing">
        <number>0</number>
       </property>
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
+      <property name="margin">
        <number>0</number>
       </property>
       <item>
@@ -49,122 +40,8 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>5</number>
+       <number>4</number>
       </property>
-      <widget class="QWidget" name="pageAccntNotLogged">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_22">
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_4">
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_3">
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_14">
-              <item>
-               <widget class="QPushButton" name="btnLogin">
-                <property name="text">
-                 <string>Login</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="horizontalSpacer">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_or">
-              <property name="text">
-               <string>          or</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_15">
-              <item>
-               <widget class="QPushButton" name="btnRegstr">
-                <property name="text">
-                 <string>Register</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="horizontalSpacer_10">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <widget class="Line" name="line">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_16">
-            <item>
-             <widget class="QPushButton" name="btnExit">
-              <property name="text">
-               <string>Exit</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_11">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <widget class="QToolButton" name="toolBtnContact">
-            <property name="text">
-             <string>Contact Us</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
       <widget class="QWidget" name="pageAccntLogged">
        <property name="maximumSize">
         <size>
@@ -172,161 +49,16 @@
          <height>16777215</height>
         </size>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_30">
+       <layout class="QVBoxLayout" name="verticalLayout_36">
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_6">
+           <layout class="QVBoxLayout" name="verticalLayout_5">
             <item>
-             <widget class="QLabel" name="label_11">
-              <property name="text">
-               <string/>
-              </property>
-              <property name="pixmap">
-               <pixmap resource="Resources.qrc">:/128x128/images/128x128/FolderIconX.png</pixmap>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QFormLayout" name="formLayout">
+             <layout class="QFormLayout" name="formLayout_2">
               <property name="fieldGrowthPolicy">
                <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
               </property>
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_14">
-                <property name="text">
-                 <string>Space Usage: </string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QLabel" name="label_space">
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="label_plan">
-                <property name="text">
-                 <string>Current Plan:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <layout class="QHBoxLayout" name="horizontalLayout">
-                <item>
-                 <widget class="QLabel" name="label_planVal">
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="label_expDt">
-                <property name="text">
-                 <string>Expiry date:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QLabel" name="label_expDtVal">
-                <property name="text">
-                 <string>TextLabel</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <spacer name="verticalSpacer_6">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_5">
-              <item>
-               <widget class="QToolButton" name="tbtnOpenFolder">
-                <property name="text">
-                 <string>Open pCloud Folder</string>
-                </property>
-                <property name="icon">
-                 <iconset resource="Resources.qrc">
-                  <normaloff>:/images/images/folder.png</normaloff>:/images/images/folder.png</iconset>
-                </property>
-                <property name="toolButtonStyle">
-                 <enum>Qt::ToolButtonTextBesideIcon</enum>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QToolButton" name="tbtnMyPcloud">
-                <property name="minimumSize">
-                 <size>
-                  <width>150</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>my.pcloud.com</string>
-                </property>
-                <property name="icon">
-                 <iconset resource="Resources.qrc">
-                  <normaloff>:/images/images/folder.png</normaloff>:/images/images/folder.png</iconset>
-                </property>
-                <property name="toolButtonStyle">
-                 <enum>Qt::ToolButtonTextBesideIcon</enum>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QToolButton" name="tbtnGetMoreSpace">
-                <property name="minimumSize">
-                 <size>
-                  <width>150</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>Get More Space</string>
-                </property>
-                <property name="icon">
-                 <iconset resource="Resources.qrc">
-                  <normaloff>:/images/images/web.png</normaloff>:/images/images/web.png</iconset>
-                </property>
-                <property name="toolButtonStyle">
-                 <enum>Qt::ToolButtonTextBesideIcon</enum>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <widget class="Line" name="line_5">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
-            <item>
-             <layout class="QFormLayout" name="formLayout_2">
               <item row="0" column="0">
                <widget class="QLabel" name="label_user">
                 <property name="text">
@@ -339,7 +71,7 @@
                 <item>
                  <widget class="QLabel" name="label_email">
                   <property name="text">
-                   <string>fdds</string>
+                   <string/>
                   </property>
                  </widget>
                 </item>
@@ -421,8 +153,113 @@
                 </item>
                </layout>
               </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_14">
+                <property name="text">
+                 <string>Space Usage: </string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLabel" name="label_space">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="label_plan">
+                <property name="text">
+                 <string>Current Plan:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QLabel" name="label_planVal">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="label_expDt">
+                <property name="text">
+                 <string>Expiry date:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="1">
+               <widget class="QLabel" name="label_expDtVal">
+                <property name="text">
+                 <string>TextLabel</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </item>
+            <item>
+             <spacer name="verticalSpacer_6">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_6">
+              <item>
+               <widget class="QToolButton" name="tbtnOpenFolder">
+                <property name="text">
+                 <string>Open pCloud Folder</string>
+                </property>
+                <property name="toolButtonStyle">
+                 <enum>Qt::ToolButtonTextBesideIcon</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QToolButton" name="tbtnMyPcloud">
+                <property name="minimumSize">
+                 <size>
+                  <width>150</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>my.pcloud.com</string>
+                </property>
+                <property name="toolButtonStyle">
+                 <enum>Qt::ToolButtonTextBesideIcon</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QToolButton" name="tbtnGetMoreSpace">
+                <property name="minimumSize">
+                 <size>
+                  <width>150</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Get More Space</string>
+                </property>
+                <property name="toolButtonStyle">
+                 <enum>Qt::ToolButtonTextBesideIcon</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_22">
             <item>
              <spacer name="verticalSpacer_7">
               <property name="orientation">
@@ -473,204 +310,131 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="pageDrive">
-       <layout class="QVBoxLayout" name="verticalLayout_15">
-        <item>
-         <widget class="QLabel" name="label_drivelogo">
-          <property name="text">
-           <string/>
-          </property>
-          <property name="pixmap">
-           <pixmap resource="Resources.qrc">:/128x128/images/128x128/FolderIconX.png</pixmap>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_driveinfo">
-          <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;pCloud Drive allows you to expand your Computer’s local storage by creating an additional virtual drive,which represents your entire pCloud storage. You can access it directly from File Explorer and use it as a normal hard drive. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_6">
-          <item>
-           <spacer name="horizontalSpacer_12">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="btnDriveStart">
-            <property name="text">
-             <string>Start pCloud Drive</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="btnDriveStop">
-            <property name="text">
-             <string>Stop pCloud Drive</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="btnDriveOpenFldr">
-            <property name="text">
-             <string>Open pCloud Drive</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer_26">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
       <widget class="QWidget" name="pageSync">
-       <layout class="QVBoxLayout" name="verticalLayout_31">
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_36">
-          <item>
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="btnResumeSync">
-            <property name="toolTip">
-             <string>Resume Sync</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset resource="Resources.qrc">
-              <normaloff>:/menu/images/menu 48x48/resume.png</normaloff>:/menu/images/menu 48x48/resume.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="btnPauseSync">
-            <property name="toolTip">
-             <string>Pause Sync</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset resource="Resources.qrc">
-              <normaloff>:/menu/images/menu 48x48/pause.png</normaloff>:/menu/images/menu 48x48/pause.png</iconset>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
+       <layout class="QHBoxLayout" name="horizontalLayout_32">
         <item>
          <widget class="QTabWidget" name="tabWidgetSync">
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tabSyncList">
            <attribute name="title">
             <string>Tab 1</string>
            </attribute>
-           <layout class="QHBoxLayout" name="horizontalLayout_25">
+           <layout class="QHBoxLayout" name="horizontalLayout_16">
             <item>
-             <layout class="QVBoxLayout" name="verticalLayout_21">
+             <layout class="QHBoxLayout" name="horizontalLayout_20">
               <item>
-               <widget class="QLabel" name="label_sync">
-                <property name="text">
-                 <string>Synced Folders:</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QTreeWidget" name="treeSyncList">
-                <column>
-                 <property name="text">
-                  <string>Local path</string>
-                 </property>
-                </column>
-                <column>
-                 <property name="text">
-                  <string>Sync Type</string>
-                 </property>
-                </column>
-                <column>
-                 <property name="text">
-                  <string>Remote Path</string>
-                 </property>
-                </column>
-               </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_20">
+               <layout class="QVBoxLayout" name="verticalLayout_21">
                 <item>
-                 <widget class="QPushButton" name="btnSyncAdd">
-                  <property name="text">
-                   <string>Add New Sync</string>
-                  </property>
+                 <widget class="QTreeWidget" name="treeSyncList">
+                  <column>
+                   <property name="text">
+                    <string>Local Folder</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>pCloud Drive Folder</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </column>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="btnSyncModify">
-                  <property name="text">
-                   <string>Modify Sync Type</string>
-                  </property>
-                 </widget>
+                 <layout class="QHBoxLayout" name="horizontalLayout_21">
+                  <item>
+                   <spacer name="horizontalSpacer_16">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="btnSyncAdd">
+                    <property name="text">
+                     <string>   Add New Sync</string>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="Resources.qrc">
+                      <normaloff>:/menu/images/menu 48x48/newsync.png</normaloff>:/menu/images/menu 48x48/newsync.png</iconset>
+                    </property>
+                    <property name="iconSize">
+                     <size>
+                      <width>16</width>
+                      <height>16</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="btnSyncModify">
+                    <property name="text">
+                     <string>Modify Sync Type</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="btnSyncStop">
+                    <property name="text">
+                     <string>Stop </string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="btnSyncStop">
-                  <property name="text">
-                   <string>Stop </string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_16">
+                 <widget class="Line" name="line_2">
                   <property name="orientation">
                    <enum>Qt::Horizontal</enum>
                   </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_forspace">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_dwnld">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_upld">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_3">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
                   <property name="sizeHint" stdset="0">
                    <size>
-                    <width>40</width>
-                    <height>20</height>
+                    <width>20</width>
+                    <height>40</height>
                    </size>
                   </property>
                  </spacer>
@@ -678,45 +442,78 @@
                </layout>
               </item>
               <item>
-               <widget class="Line" name="line_2">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_forspace">
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_dwnld">
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_upld">
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="verticalSpacer_3">
+               <widget class="Line" name="line_14">
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
                 </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>20</height>
-                 </size>
+               </widget>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_38">
+                <property name="leftMargin">
+                 <number>12</number>
                 </property>
-               </spacer>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="label_syninfotitle">
+                  <property name="text">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;What is sync?&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_syncinfo">
+                  <property name="text">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_25">
+                  <item>
+                   <spacer name="horizontalSpacer_29">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_syncpic">
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="pixmap">
+                     <pixmap resource="Resources.qrc">:/images/images/synco-de.png</pixmap>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_30">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
               </item>
              </layout>
             </item>
@@ -726,24 +523,17 @@
            <attribute name="title">
             <string>Tab 2</string>
            </attribute>
-           <layout class="QHBoxLayout" name="horizontalLayout_37">
+           <layout class="QHBoxLayout" name="horizontalLayout_23">
             <item>
-             <layout class="QGridLayout" name="gridLayout">
-              <item row="1" column="0" colspan="2">
+             <layout class="QVBoxLayout" name="verticalLayout_24">
+              <item>
                <widget class="QGroupBox" name="groupBoxSyncPatterns">
                 <property name="title">
-                 <string>Exceptions</string>
+                 <string>Ingore the following patterns:</string>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_26">
                  <item>
-                  <layout class="QVBoxLayout" name="verticalLayout_24">
-                   <item>
-                    <widget class="QLabel" name="label_exptns">
-                     <property name="text">
-                      <string>Ingore the following patterns:</string>
-                     </property>
-                    </widget>
-                   </item>
+                  <layout class="QVBoxLayout" name="verticalLayout_27">
                    <item>
                     <widget class="QTextEdit" name="text_patterns">
                      <property name="maximumSize">
@@ -755,6 +545,19 @@
                     </widget>
                    </item>
                   </layout>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_infoexptns">
+                   <property name="text">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                   </property>
+                   <property name="wordWrap">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
                  </item>
                  <item>
                   <spacer name="verticalSpacer_10">
@@ -772,8 +575,8 @@
                 </layout>
                </widget>
               </item>
-              <item row="2" column="1">
-               <layout class="QHBoxLayout" name="horizontalLayout_23">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_31">
                 <item>
                  <spacer name="horizontalSpacer_21">
                   <property name="orientation">
@@ -802,39 +605,6 @@
                  </widget>
                 </item>
                </layout>
-              </item>
-              <item row="0" column="0">
-               <widget class="QGroupBox" name="groupBoxSyncSSL">
-                <property name="title">
-                 <string>Use Secure Connection</string>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_27">
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_21">
-                   <item>
-                    <widget class="QCheckBox" name="checkBoxSyncSSL">
-                     <property name="text">
-                      <string>SSL</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <spacer name="horizontalSpacer_20">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>40</width>
-                       <height>20</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                  </layout>
-                 </item>
-                </layout>
-               </widget>
               </item>
              </layout>
             </item>
@@ -1005,16 +775,7 @@
                <property name="spacing">
                 <number>6</number>
                </property>
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
+               <property name="margin">
                 <number>0</number>
                </property>
                <item>
@@ -1176,16 +937,7 @@
                <property name="spacing">
                 <number>6</number>
                </property>
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
+               <property name="margin">
                 <number>0</number>
                </property>
                <item>
@@ -1260,282 +1012,377 @@
        </layout>
       </widget>
       <widget class="QWidget" name="pageSettings">
-       <layout class="QVBoxLayout" name="verticalLayout_9">
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
-         <widget class="QTabWidget" name="tabWidgetSttngs">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>340</height>
-           </size>
-          </property>
-          <property name="currentIndex">
-           <number>2</number>
-          </property>
-          <widget class="QWidget" name="tabGeneral">
-           <attribute name="title">
-            <string>Tab 1</string>
-           </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_33">
-            <item>
-             <widget class="QGroupBox" name="groupBox_autorun">
-              <property name="title">
-               <string>Start pCloud Drive on system startup </string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_14">
-               <item>
-                <widget class="QCheckBox" name="checkBox_autorun">
-                 <property name="text">
-                  <string>Start pCloudSync when Windows starts</string>
-                 </property>
-                 <property name="shortcut">
-                  <string>Ctrl+S</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_infoautostrt">
-                 <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:7pt; font-style:italic;&quot;&gt;Open pCloud Drive automatically after you log into the computer.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QGroupBox" name="groupBoxContextMenu">
-              <property name="title">
-               <string>Show Context Menu</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_25">
-               <item>
-                <widget class="QCheckBox" name="checkBox_contxtMenu">
-                 <property name="text">
-                  <string>Turn on Context menu extensions</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_infoCM">
-                 <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:7pt; font-style:italic;&quot;&gt;Show pCloud Drive in the Windows Explorer's context menu&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <spacer name="verticalSpacer_8">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::MinimumExpanding</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </widget>
-          <widget class="QWidget" name="tabSpeed">
-           <attribute name="title">
-            <string>Tab 2</string>
-           </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_36">
-            <item>
-             <widget class="QGroupBox" name="groupBoxSyncUpldSpeed">
-              <property name="title">
-               <string>Upload Speed Limit</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_17">
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_27">
-                 <item>
-                  <widget class="QRadioButton" name="rBtnSyncUpldUnlimit">
-                   <property name="text">
-                    <string>Unlimited</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QRadioButton" name="rBtnSyncUpldAuto">
-                   <property name="accessibleName">
-                    <string>upldAuto</string>
-                   </property>
-                   <property name="text">
-                    <string>Auto</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_24">
+         <layout class="QVBoxLayout" name="verticalLayout_16">
+          <item>
+           <widget class="QTabWidget" name="tabWidgetSttngs">
+            <property name="currentIndex">
+             <number>2</number>
+            </property>
+            <widget class="QWidget" name="tabGeneral">
+             <attribute name="title">
+              <string>Tab 1</string>
+             </attribute>
+             <layout class="QVBoxLayout" name="verticalLayout_15">
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_9">
+                <item>
+                 <widget class="QGroupBox" name="groupBox_autorun">
+                  <property name="title">
+                   <string>Start pCloud Drive on system startup </string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_14">
                    <item>
-                    <widget class="QRadioButton" name="rbtnSyncupldChoose">
-                     <property name="maximumSize">
-                      <size>
-                       <width>80</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
+                    <widget class="QCheckBox" name="checkBox_autorun">
                      <property name="text">
-                      <string>Custom</string>
+                      <string>Start pCloudSync when Windows starts</string>
+                     </property>
+                     <property name="shortcut">
+                      <string>Ctrl+S</string>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLineEdit" name="edit_UpldSpeed">
+                    <widget class="QLabel" name="label_infoautostrt">
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open pCloud Drive automatically after you log into the computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QGroupBox" name="groupBoxContextMenu">
+                  <property name="title">
+                   <string>Show Context Menu</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_25">
+                   <item>
+                    <widget class="QCheckBox" name="checkBox_contxtMenu">
+                     <property name="text">
+                      <string>Turn on Context menu extensions</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_infoCM">
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show pCloud Drive in the Windows Explorer's context menu&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_8">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::MinimumExpanding</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="tabSpeed">
+             <attribute name="title">
+              <string>Tab 2</string>
+             </attribute>
+             <layout class="QVBoxLayout" name="verticalLayout_4">
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_3">
+                <item>
+                 <widget class="QGroupBox" name="groupBoxSyncUpldSpeed">
+                  <property name="title">
+                   <string>Upload Speed Limit</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_17">
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_27">
+                     <item>
+                      <widget class="QRadioButton" name="rBtnSyncUpldUnlimit">
+                       <property name="text">
+                        <string>Unlimited</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QRadioButton" name="rBtnSyncUpldAuto">
+                       <property name="accessibleName">
+                        <string>upldAuto</string>
+                       </property>
+                       <property name="text">
+                        <string>Auto</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_24">
+                       <item>
+                        <widget class="QRadioButton" name="rbtnSyncupldChoose">
+                         <property name="maximumSize">
+                          <size>
+                           <width>80</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>Custom</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLineEdit" name="edit_UpldSpeed">
+                         <property name="maximumSize">
+                          <size>
+                           <width>70</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="label_3">
+                         <property name="text">
+                          <string>kB/s</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_18">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_infoupld">
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The speed used to upload the data from local folders to pCloud folders.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QGroupBox" name="groupBoxSyncDwnldSpeed">
+                  <property name="title">
+                   <string>Download Speed Limit</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_28">
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_28">
+                     <item>
+                      <widget class="QRadioButton" name="rBtnSyncDwldUnlimit">
+                       <property name="text">
+                        <string>Unlimited</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QRadioButton" name="rBtnSyncDwldAuto">
+                       <property name="text">
+                        <string>Auto</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_26">
+                       <item>
+                        <widget class="QRadioButton" name="rbtnSyncDwnlChoose">
+                         <property name="maximumSize">
+                          <size>
+                           <width>80</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>Custom</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLineEdit" name="edit_DwnldSpeed">
+                         <property name="maximumSize">
+                          <size>
+                           <width>70</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="label_4">
+                         <property name="text">
+                          <string>kB/s</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_19">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_infodwld">
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The speed used to download the data from pCloud folders to local folders.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QGroupBox" name="groupBox_3">
+                  <property name="title">
+                   <string>LAN</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_32">
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_29">
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_29">
+                       <item>
+                        <widget class="QCheckBox" name="checkBoxp2p">
+                         <property name="text">
+                          <string>LAN Sync</string>
+                         </property>
+                         <property name="checked">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="horizontalSpacer_3">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="label_infop2p">
+                       <property name="text">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                       </property>
+                       <property name="scaledContents">
+                        <bool>false</bool>
+                       </property>
+                       <property name="wordWrap">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <spacer name="verticalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="tabSpace">
+             <attribute name="title">
+              <string>Page</string>
+             </attribute>
+             <layout class="QVBoxLayout" name="verticalLayout_35">
+              <item>
+               <widget class="QGroupBox" name="groupBox">
+                <property name="title">
+                 <string>Disk Space</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_23">
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_22" stretch="0,0,0,0">
+                   <item>
+                    <widget class="QLabel" name="label_minspaceinfo">
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minumum Disk Free Space&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="edit_minLocalSpace">
                      <property name="maximumSize">
                       <size>
                        <width>70</width>
                        <height>16777215</height>
                       </size>
                      </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="label_3">
-                     <property name="text">
-                      <string>kB/s</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <spacer name="horizontalSpacer_18">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_infoupld">
-                 <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:7pt; font-style:italic;&quot;&gt;The speed used to upload the data from local folders to pCloud folders.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QGroupBox" name="groupBoxSyncDwnldSpeed">
-              <property name="title">
-               <string>Download Speed Limit</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_28">
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_28">
-                 <item>
-                  <widget class="QRadioButton" name="rBtnSyncDwldUnlimit">
-                   <property name="text">
-                    <string>Unlimited</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QRadioButton" name="rBtnSyncDwldAuto">
-                   <property name="text">
-                    <string>Auto</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_26">
-                   <item>
-                    <widget class="QRadioButton" name="rbtnSyncDwnlChoose">
-                     <property name="maximumSize">
-                      <size>
-                       <width>80</width>
-                       <height>16777215</height>
-                      </size>
+                     <property name="inputMethodHints">
+                      <set>Qt::ImhDigitsOnly</set>
                      </property>
                      <property name="text">
-                      <string>Custom</string>
+                      <string/>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLineEdit" name="edit_DwnldSpeed">
-                     <property name="maximumSize">
-                      <size>
-                       <width>70</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="label_4">
+                    <widget class="QLabel" name="label_syncmb">
                      <property name="text">
-                      <string>kB/s</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <spacer name="horizontalSpacer_19">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_infodwld">
-                 <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:7pt; font-style:italic;&quot;&gt;The speed used to download the data from pCloud folders to local folders.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QGroupBox" name="groupBox_3">
-              <property name="title">
-               <string>LAN</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_32">
-               <item>
-                <layout class="QVBoxLayout" name="verticalLayout_29">
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_29">
-                   <item>
-                    <widget class="QCheckBox" name="checkBoxp2p">
-                     <property name="text">
-                      <string>LAN Sync</string>
-                     </property>
-                     <property name="checked">
-                      <bool>true</bool>
+                      <string>MB</string>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <spacer name="horizontalSpacer_3">
+                    <spacer name="horizontalSpacer_17">
                      <property name="orientation">
                       <enum>Qt::Horizontal</enum>
                      </property>
@@ -1550,214 +1397,125 @@
                   </layout>
                  </item>
                  <item>
-                  <widget class="QLabel" name="label_infop2p">
+                  <widget class="QLabel" name="label_infominspace">
                    <property name="text">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:7pt; font-style:italic;&quot;&gt;pCloud Drive uses p2p (peer to peer), which is a computer-to-computer connection within your Local Area Network (LAN), to speed up synchronization. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Limit the Minimum Free Space on your local Hard Drive. Minimum recommended: 2048 MB&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
-                   <property name="scaledContents">
-                    <bool>false</bool>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="groupBox_2">
+                <property name="title">
+                 <string>Cache</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_34">
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_7">
+                   <item>
+                    <widget class="QLabel" name="label_cache">
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cache Size&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="edit_cache">
+                     <property name="maximumSize">
+                      <size>
+                       <width>70</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="inputMethodHints">
+                      <set>Qt::ImhDigitsOnly</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_mb">
+                     <property name="text">
+                      <string>MB</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_14">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_infocache">
+                   <property name="text">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                    <property name="wordWrap">
-                    <bool>true</bool>
+                    <bool>false</bool>
                    </property>
                   </widget>
                  </item>
                 </layout>
-               </item>
-              </layout>
-             </widget>
-            </item>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_9">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>249</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
-             <spacer name="verticalSpacer">
+             <spacer name="horizontalSpacer_13">
               <property name="orientation">
-               <enum>Qt::Vertical</enum>
+               <enum>Qt::Horizontal</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>20</width>
-                <height>40</height>
+                <width>40</width>
+                <height>20</height>
                </size>
               </property>
              </spacer>
             </item>
-           </layout>
-          </widget>
-          <widget class="QWidget" name="tabSpace">
-           <attribute name="title">
-            <string>Page</string>
-           </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_35">
             <item>
-             <widget class="QGroupBox" name="groupBox">
-              <property name="title">
-               <string>Disk Space</string>
+             <widget class="QPushButton" name="btnSaveSttngs">
+              <property name="text">
+               <string>Save</string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_23">
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_22" stretch="0,0,0,0">
-                 <item>
-                  <widget class="QLabel" name="label_minspaceinfo">
-                   <property name="text">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minumum Disk Free Space&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="edit_minLocalSpace">
-                   <property name="maximumSize">
-                    <size>
-                     <width>70</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="inputMethodHints">
-                    <set>Qt::ImhDigitsOnly</set>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_syncmb">
-                   <property name="text">
-                    <string>MB</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <spacer name="horizontalSpacer_17">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_minspaceinfo2">
-                 <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:7pt; font-style:italic;&quot;&gt;Limit the Minimum Free Space on your local Hard Drive. Minimum recommended: 2048 MB&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
              </widget>
             </item>
             <item>
-             <widget class="QGroupBox" name="groupBox_2">
-              <property name="title">
-               <string>Cache</string>
+             <widget class="QPushButton" name="btnCancelSttngs">
+              <property name="text">
+               <string>Cancel</string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_34">
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_7">
-                 <item>
-                  <widget class="QLabel" name="label_cache">
-                   <property name="text">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cache Size&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="edit_cache">
-                   <property name="maximumSize">
-                    <size>
-                     <width>70</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="inputMethodHints">
-                    <set>Qt::ImhDigitsOnly</set>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_mb">
-                   <property name="text">
-                    <string>MB</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <spacer name="horizontalSpacer_14">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_cacheinfo">
-                 <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:7pt; font-style:italic;&quot;&gt;&amp;quot;Cache size&amp;quot; is the amount of disk space the pCloud Drive will use to store locally information from the cloud. It should be at least the size of the files you usually work with.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:7pt; font-style:italic;&quot;&gt;Minimum recommended: 5120 MB &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="wordWrap">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-              </layout>
              </widget>
             </item>
-            <item>
-             <spacer name="verticalSpacer_9">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>249</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
            </layout>
-          </widget>
-         </widget>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
-          <item>
-           <spacer name="horizontalSpacer_13">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="btnSaveSttngs">
-            <property name="text">
-             <string>Save</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="btnCancelSttngs">
-            <property name="text">
-             <string>Cancel</string>
-            </property>
-           </widget>
           </item>
          </layout>
         </item>
@@ -1770,6 +1528,9 @@
         </property>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_10">
+          <property name="margin">
+           <number>20</number>
+          </property>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_17">
             <item>
@@ -1933,13 +1694,16 @@
        </layout>
       </widget>
       <widget class="QWidget" name="pageAbout">
-       <layout class="QVBoxLayout" name="verticalLayout_14">
+       <layout class="QHBoxLayout" name="horizontalLayout_14">
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="1,1,1">
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_12" stretch="0,1">
-            <property name="spacing">
-             <number>0</number>
+           <layout class="QVBoxLayout" name="verticalLayout_37">
+            <property name="topMargin">
+             <number>16</number>
+            </property>
+            <property name="bottomMargin">
+             <number>20</number>
             </property>
             <item>
              <widget class="QLabel" name="label_logo">
@@ -1947,7 +1711,7 @@
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="Resources.qrc">:/images/images/logo.png</pixmap>
+               <pixmap resource="Resources.qrc">:/128x128/images/128x128/logo.png</pixmap>
               </property>
               <property name="scaledContents">
                <bool>false</bool>
@@ -1958,42 +1722,179 @@
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_pcloud">
-              <property name="font">
-               <font>
-                <pointsize>16</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
+             <layout class="QVBoxLayout" name="verticalLayout_12">
+              <property name="spacing">
+               <number>0</number>
               </property>
+              <item>
+               <widget class="QLabel" name="label_tos">
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
+                </property>
+                <property name="text">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://www.pcloud.com/terms_and_conditions.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#000000;&quot;&gt;Terms of Service&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+                <property name="wordWrap">
+                 <bool>false</bool>
+                </property>
+                <property name="openExternalLinks">
+                 <bool>true</bool>
+                </property>
+                <property name="textInteractionFlags">
+                 <set>Qt::LinksAccessibleByMouse</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_pp">
+                <property name="text">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://www.pcloud.com/privacy_policy.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#000000;&quot;&gt;Privacy Policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+                <property name="wordWrap">
+                 <bool>false</bool>
+                </property>
+                <property name="openExternalLinks">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_ipp">
+                <property name="text">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://www.pcloud.com/int_pr_policy.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#000000;&quot;&gt;Intellectual Property Policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+                <property name="wordWrap">
+                 <bool>false</bool>
+                </property>
+                <property name="openExternalLinks">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_copyright">
               <property name="text">
-               <string>pCloud</string>
+               <string>© 2014 pCloud AG. All rights reserved.</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignHCenter|Qt::AlignTop</set>
+               <set>Qt::AlignBottom|Qt::AlignHCenter</set>
               </property>
              </widget>
             </item>
            </layout>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_13">
+           <widget class="Line" name="line_13">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_39">
             <property name="leftMargin">
-             <number>50</number>
+             <number>30</number>
             </property>
             <property name="topMargin">
-             <number>25</number>
+             <number>30</number>
+            </property>
+            <property name="bottomMargin">
+             <number>20</number>
             </property>
             <item>
-             <widget class="QLabel" name="label_versionVal">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
+             <layout class="QVBoxLayout" name="verticalLayout_13">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_5">
+                <item>
+                 <widget class="QLabel" name="label_versionVal">
+                  <property name="font">
+                   <font>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_2">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="Line" name="line_12">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_versionInfo">
+                <property name="text">
+                 <string>Latest version is already installed.</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_11">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
             </item>
             <item>
              <widget class="QWidget" name="widget_newVersion" native="true">
               <layout class="QVBoxLayout" name="verticalLayout_11">
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
                <item>
                 <widget class="QLabel" name="label_newVersion">
                  <property name="text">
@@ -2084,93 +1985,6 @@
           </item>
          </layout>
         </item>
-        <item>
-         <spacer name="verticalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>155</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_19">
-          <property name="spacing">
-           <number>20</number>
-          </property>
-          <property name="bottomMargin">
-           <number>10</number>
-          </property>
-          <item>
-           <widget class="QLabel" name="label_tos">
-            <property name="layoutDirection">
-             <enum>Qt::LeftToRight</enum>
-            </property>
-            <property name="text">
-             <string>&lt;a href=&quot;https://www.pcloud.com/terms_and_conditions.html&quot;&gt;Terms of Service&lt;/a&gt;</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-            <property name="openExternalLinks">
-             <bool>true</bool>
-            </property>
-            <property name="textInteractionFlags">
-             <set>Qt::LinksAccessibleByMouse</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_pp">
-            <property name="text">
-             <string>&lt;a href=&quot;https://www.pcloud.com/privacy_policy.html&quot;&gt;Privacy Policy&lt;/a&gt;</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-            <property name="openExternalLinks">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_ipp">
-            <property name="text">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://www.pcloud.com/int_pr_policy.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Intellectual Property Policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-            <property name="wordWrap">
-             <bool>false</bool>
-            </property>
-            <property name="openExternalLinks">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_copyright">
-          <property name="text">
-           <string>Copyright @ 2014 pCloud. All rights reserved.</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignBottom|Qt::AlignHCenter</set>
-          </property>
-         </widget>
-        </item>
        </layout>
       </widget>
      </widget>
@@ -2182,8 +1996,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>923</width>
-     <height>21</height>
+     <width>794</width>
+     <height>27</height>
     </rect>
    </property>
   </widget>
