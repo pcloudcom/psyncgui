@@ -63,16 +63,6 @@
                 </column>
                </widget>
               </item>
-              <item alignment="Qt::AlignTop">
-               <widget class="QLabel" name="label_changeinfo">
-                <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:7pt; font-style:italic;&quot;&gt;*double-click on an item for modify&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-                </property>
-               </widget>
-              </item>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout">
                 <item>
@@ -366,7 +356,7 @@
      <x>0</x>
      <y>0</y>
      <width>884</width>
-     <height>21</height>
+     <height>27</height>
     </rect>
    </property>
   </widget>

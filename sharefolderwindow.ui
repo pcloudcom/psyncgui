@@ -6,18 +6,46 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>291</width>
-    <height>348</height>
+    <width>348</width>
+    <height>536</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Share Folder</string>
+   <string>Create New Share</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_6">
     <property name="spacing">
-     <number>12</number>
+     <number>16</number>
     </property>
+    <property name="leftMargin">
+     <number>20</number>
+    </property>
+    <property name="topMargin">
+     <number>30</number>
+    </property>
+    <property name="rightMargin">
+     <number>20</number>
+    </property>
+    <property name="bottomMargin">
+     <number>20</number>
+    </property>
+    <item>
+     <widget class="QLabel" name="labelinfo">
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Invite your friends and collegues to collaborate on files in the selected folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
@@ -26,7 +54,7 @@
       <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Recipient's Email(s):</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Send Invite to:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
@@ -46,7 +74,7 @@
          </font>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:7pt; font-style:italic;&quot;&gt;Separate multiple emails with commas&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Separate multiple emails with commas&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -56,25 +84,17 @@
      </layout>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_5">
-      <property name="spacing">
-       <number>0</number>
+     <widget class="QPushButton" name="btnOpenRemoteDialog">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
       </property>
-      <item>
-       <widget class="QPushButton" name="btnOpenRemoteDialog">
-        <property name="text">
-         <string>Choose remote folder</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_remotefldr">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-     </layout>
+      <property name="text">
+       <string>Choose pCloud Drive Folder</string>
+      </property>
+     </widget>
     </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -84,7 +104,7 @@
       <item>
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Share name:</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Invite Title:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
@@ -101,7 +121,7 @@
       <item>
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Set Permissions:</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Set Permissions:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
@@ -175,10 +195,10 @@
          </size>
         </property>
         <property name="text">
-         <string>Message to Recipient:</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Message (optional):&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>

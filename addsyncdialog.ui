@@ -6,76 +6,36 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>563</width>
-    <height>505</height>
+    <width>301</width>
+    <height>225</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1,7,1">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="spacing">
+    <number>30</number>
+   </property>
    <item>
-    <widget class="QLabel" name="label_info">
-     <property name="text">
-      <string>To create a new sync, choose a local folder from your computer, a folder from pCloud remotes and which sync type you want to apply between them.</string>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>12</number>
      </property>
-     <property name="wordWrap">
-      <bool>true</bool>
+     <property name="margin">
+      <number>12</number>
      </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QPushButton" name="btnOpenLocals">
        <property name="text">
-        <string>Choose Sync Type:</string>
+        <string>Choose Local Folder</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboSyncType">
-       <property name="currentIndex">
-        <number>2</number>
-       </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
        <item>
-        <property name="text">
-         <string>Download only</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Upload only</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Download and Upload</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout" rowstretch="1,10,1,0">
-     <item row="3" column="1">
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <spacer name="horizontalSpacer">
+        <spacer name="horizontalSpacer_5">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -88,18 +48,17 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="btnNewFldrRemote">
+        <widget class="QLabel" name="label_sync">
          <property name="text">
-          <string>New Folder</string>
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="Resources.qrc">:/32x32/images/32x32/sync.png</pixmap>
          </property>
         </widget>
        </item>
-      </layout>
-     </item>
-     <item row="3" column="0">
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <spacer name="horizontalSpacer_2">
+        <spacer name="horizontalSpacer_6">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -111,58 +70,31 @@
          </property>
         </spacer>
        </item>
-       <item>
-        <widget class="QPushButton" name="btnNewFldrLocal">
-         <property name="text">
-          <string>New Folder</string>
-         </property>
-        </widget>
-       </item>
       </layout>
      </item>
-     <item row="0" column="1">
-      <widget class="QLabel" name="label_choose_remote">
+     <item>
+      <widget class="QPushButton" name="btnOpenRemotes">
        <property name="text">
-        <string>Choose pCloud Drive folder:</string>
+        <string>Choose pCloud Drive Folder</string>
        </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_choose_local">
-       <property name="text">
-        <string>Choose Local Folder:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0" rowspan="2">
-      <widget class="QTreeView" name="treeSyncLocal"/>
-     </item>
-     <item row="1" column="1" rowspan="2">
-      <widget class="QTreeWidget" name="treeSyncRemote">
-       <column>
-        <property name="text">
-         <string notr="true">Name</string>
-        </property>
-       </column>
       </widget>
      </item>
     </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>12</number>
+     </property>
+     <property name="rightMargin">
+      <number>12</number>
+     </property>
+     <property name="bottomMargin">
+      <number>12</number>
+     </property>
      <item>
       <widget class="QPushButton" name="btnAdd">
        <property name="text">
@@ -181,6 +113,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="Resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
