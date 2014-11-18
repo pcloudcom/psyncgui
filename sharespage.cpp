@@ -161,7 +161,11 @@ void SharesPage::setTableProps(QTreeWidget *table)
     table->setColumnWidth(1,(int) tableWidth/3); //name
     table->setColumnWidth(2,(int) tableWidth/6); //perms
     table->setColumnWidth(3,(int) tableWidth/6); //date
+#if QT_VERSION>QT_VERSION_CHECK(5,0,0)
+    table->header()->setSectionsMovable(false);
+#else
     table->header()->setMovable(false);
+#endif
     table->setSelectionBehavior(QAbstractItemView::SelectRows);
     table->setSelectionMode(QAbstractItemView::SingleSelection);
     table->setSortingEnabled(true);

@@ -46,7 +46,11 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
     headerTitles << "Local Folder"<<""<<"pCloud Drive Folder"<<"";
     win->ui->treeSyncList->setHeaderLabels(headerTitles);
     win->ui->treeSyncList->setMinimumWidth(450);
+#if QT_VERSION>QT_VERSION_CHECK(5,0,0)
+    win->ui->treeSyncList->header()->setSectionsMovable(false);
+#else
     win->ui->treeSyncList->header()->setMovable(false);
+#endif
     // win->ui->treeSyncList->setSortingEnabled(true);
     //win->ui->treeSyncList->sortByColumn(0, Qt::AscendingOrder);
     int tableWidth =  win->ui->treeSyncList->width() - 64;

@@ -301,9 +301,9 @@ void PCloudApp::createMenus()
     connect(registerAction, SIGNAL(triggered()), this, SLOT(showRegister()));
     loginAction=new QAction(QIcon(":/menu/images/menu 48x48/login.png"),trUtf8("Login"), this);
     connect(loginAction, SIGNAL(triggered()), this, SLOT(showLogin()));
-    helpAction = new QAction(QIcon(":/menu/images/menu32x32/help.png"),trUtf8("Help"),this);
+    helpAction = new QAction(QIcon(":/menu/images/menu 32x32/help.png"),trUtf8("Help"),this);
     connect(helpAction, SIGNAL(triggered()), this, SLOT(showpcloudHelp()));
-    aboutPCloudAction = new QAction(QIcon(":/menu/images/menu32x32/info.png"),trUtf8("About"), this);
+    aboutPCloudAction = new QAction(QIcon(":/menu/images/menu 32x32/info.png"),trUtf8("About"), this);
     connect(aboutPCloudAction, SIGNAL(triggered()), this, SLOT(showpCloudAbout()));
     exitAction=new QAction(QIcon(":/menu/images/menu 48x48/exit.png"),trUtf8("Exit"), this); // to be hidden in account tab
     connect(exitAction, SIGNAL(triggered()), this, SLOT(doExit()));
@@ -318,15 +318,15 @@ void PCloudApp::createMenus()
 
     //LOGGED MENU
     //main menu actions
-    accountAction = new QAction(QIcon(":/menu/images/menu32x32/user.png"),trUtf8("Account"), this); // Account tab
+    accountAction = new QAction(QIcon(":/menu/images/menu 32x32/user.png"),trUtf8("Account"), this); // Account tab
     connect(accountAction, SIGNAL(triggered()),this, SLOT(showAccount()));
-    userinfoAction = new QAction(QIcon(":/menu/images/menu16x16/user.png"), "", this); //UserInfo - space action
-    driveAction = new QAction(QIcon(":/menu/images/menu16x16/spaceinfo.png"),trUtf8("Open Drive"), this); //pDrive tab
+    userinfoAction = new QAction(QIcon(":/menu/images/menu16x16/spaceinfo.png"), "", this); //UserInfo - space action
+    driveAction = new QAction(QIcon(":/menu/images/menu16x16/drive.png"),trUtf8("Open Drive"), this); //pDrive tab
     //connect(driveAction, SIGNAL(triggered()), this, SLOT(showDrive()));
     connect(driveAction, SIGNAL(triggered()), this, SLOT(openCloudDir()));
     //p openAction=new QAction("&Open pCloud folder", this);
     //p connect(openAction, SIGNAL(triggered()), this, SLOT(openCloudDir()));
-    settingsAction=new QAction(QIcon(":/menu/images/menu32x32/settings.png"),trUtf8("Settings"), this); //Settings tab
+    settingsAction=new QAction(QIcon(":/menu/images/menu 32x32/settings.png"),trUtf8("Settings"), this); //Settings tab
     connect(settingsAction, SIGNAL(triggered()), this, SLOT(showSettings()));
     pauseSyncAction = new QAction(QIcon(":/menu/images/menu 48x48/pause.png"),trUtf8("Pause Sync"),this);
     connect(pauseSyncAction, SIGNAL(triggered()),this,SLOT(pauseSync()));
@@ -342,7 +342,7 @@ void PCloudApp::createMenus()
     connect(addSyncAction, SIGNAL(triggered()),this, SLOT(addNewSync()));
     connect(this, SIGNAL(addNewSyncSgnl()), this, SLOT(addNewSync()));
     connect(this, SIGNAL(addNewSyncLstSgnl(bool)), this, SLOT(addNewSyncLst(bool)));  //for creating syncs from OS file browser Contextmenu
-    syncSttngsAction = new QAction(QIcon(":/menu/images/menu32x32/settings.png"),trUtf8("Settings"),this); // may be to del
+    syncSttngsAction = new QAction(QIcon(":/menu/images/menu 32x32/settings.png"),trUtf8("Settings"),this); // may be to del
     connect(syncSttngsAction, SIGNAL(triggered()), this, SLOT(showSyncSttngs()));
 
     //shares actions
@@ -358,14 +358,14 @@ void PCloudApp::createMenus()
     loggedmenu->addAction(driveAction);
     loggedmenu->addSeparator();
 #endif   
-    syncMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu16x16/sync.png"),trUtf8("Sync"));
+    syncMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu 32x32/sync.png"),trUtf8("Sync"));
     syncedFldrsMenu = syncMenu->addMenu(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),trUtf8("Synced Folders"));
     syncMenu->addSeparator();
     syncMenu->addAction(syncAction);
     syncMenu->addAction(addSyncAction);
     //syncMenu->addAction(syncSttngsAction); may be temp
 
-    sharesMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu32x32/share.png"),trUtf8("Shares"));
+    sharesMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu 32x32/share.png"),trUtf8("Shares"));
     sharesMenu->addAction(sharesAction);
     sharesMenu->addAction(shareFolderAction);
 
