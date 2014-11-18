@@ -33,19 +33,53 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     ui->listButtonsWidget->setMinimumHeight(84); // precakva mi layouta
     ui->listButtonsWidget->installEventFilter(this);
 
-    //create Items for QListWidget
-    new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 0
-    new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 1
-    new QListWidgetItem(QIcon(":/128x128/images/128x128/drive.png"),trUtf8("Drive"),ui->listButtonsWidget); //index 2
-    new QListWidgetItem(QIcon(":/128x128/images/128x128/sync.png"),trUtf8("Sync"),ui->listButtonsWidget); //Sync Page index 3
-    new QListWidgetItem(QIcon(":/128x128/images/128x128/shares.png"),trUtf8("Shares"),ui->listButtonsWidget); //index 4
-    new QListWidgetItem(QIcon(":/128x128/images/128x128/settings.png"),trUtf8("Settings"),ui->listButtonsWidget); //index 5
-    new QListWidgetItem(QIcon(":/128x128/images/128x128//help.png"),trUtf8("Help"),ui->listButtonsWidget); //index 6
-    new QListWidgetItem(QIcon(":/128x128/images/128x128/info.png"),trUtf8("About"),ui->listButtonsWidget); //index 7
+    if (ui->listButtonsWidget->palette().highlightedText().color().value() == 255)
+    {
+        QIcon accnticon;
+        accnticon.addPixmap(QPixmap(":/128x128/images/128x128/user.png"), QIcon::Normal);
+        accnticon.addPixmap(QPixmap(":/128x128/images/128x128/user-w.png"), QIcon::Selected);
+        new QListWidgetItem(accnticon,trUtf8("Account "), ui->listButtonsWidget); //index 0
+
+        QIcon syncicon;
+        syncicon.addPixmap(QPixmap(":/128x128/images/128x128/sync.png"), QIcon::Normal);
+        syncicon.addPixmap(QPixmap(":/128x128/images/128x128/sync-w.png"), QIcon::Selected);
+        new QListWidgetItem(syncicon,trUtf8("  Sync  "), ui->listButtonsWidget); //index 1
+
+        QIcon sharesicon;
+        sharesicon.addPixmap(QPixmap(":/128x128/images/128x128/shares.png"), QIcon::Normal);
+        sharesicon.addPixmap(QPixmap(":/128x128/images/128x128/shares-w.png"), QIcon::Selected);
+        new QListWidgetItem(sharesicon,trUtf8(" Shares "), ui->listButtonsWidget); //index 2
+
+        QIcon settingsicon;
+        settingsicon.addPixmap(QPixmap(":/128x128/images/128x128/settings.png"), QIcon::Normal);
+        settingsicon.addPixmap(QPixmap(":/128x128/images/128x128/settings-w.png"), QIcon::Selected);
+        new QListWidgetItem(settingsicon,trUtf8("Settings"), ui->listButtonsWidget); //index 3
+
+        QIcon helpicon;
+        helpicon.addPixmap(QPixmap(":/128x128/images/128x128/help.png"), QIcon::Normal);
+        helpicon.addPixmap(QPixmap(":/128x128/images/128x128/help-w.png"), QIcon::Selected);
+        new QListWidgetItem(helpicon,trUtf8("  Help  "), ui->listButtonsWidget); //index 4
+
+        QIcon abouticon;
+        abouticon.addPixmap(QPixmap(":/128x128/images/128x128/info.png"), QIcon::Normal);
+        abouticon.addPixmap(QPixmap(":/128x128/images/128x128/info-w.png"), QIcon::Selected);
+        new QListWidgetItem(abouticon,trUtf8(" About  "), ui->listButtonsWidget); //index 5
+
+    }
+    else
+    {
+        new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 0
+        new QListWidgetItem(QIcon(":/128x128/images/128x128/sync.png"),trUtf8("Sync"),ui->listButtonsWidget); //Sync Page index 1
+        new QListWidgetItem(QIcon(":/128x128/images/128x128/shares.png"),trUtf8("Shares"),ui->listButtonsWidget); //index 2
+        new QListWidgetItem(QIcon(":/128x128/images/128x128/settings.png"),trUtf8("Settings"),ui->listButtonsWidget); //index 3
+        new QListWidgetItem(QIcon(":/128x128/images/128x128//help.png"),trUtf8("Help"),ui->listButtonsWidget); //index 4
+        new QListWidgetItem(QIcon(":/128x128/images/128x128/info.png"),trUtf8("About"),ui->listButtonsWidget); //index 5
+    }
+
 
     fillAccountLoggedPage();
     fillAboutPage();
-    fillDrivePage();
+    // fillDrivePage();
     settngsPage = new SettingsPage(this, app);
     syncPage = new SyncPage(this, app);
     sharesPage = new SharesPage(this, app);
@@ -62,18 +96,18 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
         ui->pagesWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
     setWindowIcon(QIcon(WINDOW_ICON));
-    setWindowTitle("pCloud Sync");
+    setWindowTitle("pCloud Drive");
     this->setWindowFlags((windowFlags() | Qt::CustomizeWindowHint) & ~Qt::WindowMaximizeButtonHint);
 
     // ui notes - set statusbar max size to (0,0)
 
-    connect(ui->btnLogin, SIGNAL(clicked()),app, SLOT(showLogin()));
-    connect(ui->btnRegstr, SIGNAL(clicked()), app, SLOT(showRegister()));
-    connect(ui->btnExit, SIGNAL(clicked()), app, SLOT(doExit()));
-    connect(ui->btnDriveOpenFldr, SIGNAL(clicked()), app, SLOT(openCloudDir()));
-    connect(ui->btnDriveStart, SIGNAL(clicked()), this, SLOT(launchFS()));
-    connect(ui->btnDriveStop, SIGNAL(clicked()), this, SLOT(launchFS()));
-    connect(ui->toolBtnContact, SIGNAL(clicked()), this, SLOT(contactUs()));
+    //connect(ui->btnLogin, SIGNAL(clicked()),app, SLOT(showLogin())); - to del
+    //connect(ui->btnRegstr, SIGNAL(clicked()), app, SLOT(showRegister()));
+    //connect(ui->btnExit, SIGNAL(clicked()), app, SLOT(doExit()));
+    //  connect(ui->btnDriveOpenFldr, SIGNAL(clicked()), app, SLOT(openCloudDir()));
+    //connect(ui->btnDriveStart, SIGNAL(clicked()), this, SLOT(launchFS()));
+    //onnect(ui->btnDriveStop, SIGNAL(clicked()), this, SLOT(launchFS()));
+    //connect(ui->toolBtnContact, SIGNAL(clicked()), this, SLOT(contactUs()));
     connect(ui->tBtnOnlineHelp, SIGNAL(clicked()), this, SLOT(openOnlineHelp()));
     connect(ui->tBtnOnlineTutorial, SIGNAL(clicked()), this, SLOT(openOnlineTutorial()));
     connect(ui->tBtnFeedback, SIGNAL(clicked()), this, SLOT(sendFeedback()));
@@ -95,6 +129,7 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     ui->btnAccntMenu->setMenu(menuAccnt);
     this->setMinimumHeight(560);
     //this->setMinimumWidth(1024);
+    updateGeometry();
 
 }
 
@@ -184,12 +219,13 @@ void PCloudWindow::changePage(QListWidgetItem *current, QListWidgetItem *previou
     for(int i = 0; i < ui->pagesWidget->count(); i++)
     {
         if ( i != currentIndex)
-            // ui->pagesWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-            ui->pagesWidget->widget(i)->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Ignored);
+             //ui->pagesWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored); // resizes the form horizontally also
+            ui->pagesWidget->widget(i)->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Ignored); //hoz vert
     }
-    //ui->pagesWidget->widget(currentIndex)->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    ui->pagesWidget->widget(currentIndex)->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
-    //setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    //ui->pagesWidget->widget(currentIndex)->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred); // resizes the form horizontally also
+    ui->pagesWidget->widget(currentIndex)->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred); //+
+
+    //setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum); // resizes the form horizontally also
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
     updateGeometry();
     ui->pagesWidget->setCurrentIndex(currentIndex); // sets page
@@ -199,6 +235,7 @@ void PCloudWindow::changePage(QListWidgetItem *current, QListWidgetItem *previou
 void PCloudWindow::showEvent(QShowEvent *)
 {
     refreshPage(ui->listButtonsWidget->currentRow());
+   // this->update();
 }
 
 void PCloudWindow::refreshPage(int currentIndex)
@@ -234,20 +271,14 @@ void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when
 {
     if(online)
     {
-        ui->listButtonsWidget->setRowHidden(ACCNT_NOT_LOGGED_PAGE_NUM, true); //Accont - not logged
         ui->listButtonsWidget->setRowHidden(ACCNT_LOGGED_PAGE_NUM, false); //Account - logged
-#ifdef VFS
-        ui->listButtonsWidget->setRowHidden(DRIVE_PAGE_NUM, true); // to be removed
-#endif
         ui->listButtonsWidget->setRowHidden(SYNC_PAGE_NUM, false); //Sync
         ui->listButtonsWidget->setRowHidden(SHARES_PAGE_NUM, false); //Shares
         ui->listButtonsWidget->setRowHidden(SETTINGS_PAGE_NUM, false);       //setttings
     }
     else
     {
-        ui->listButtonsWidget->setRowHidden(ACCNT_NOT_LOGGED_PAGE_NUM, true);
         ui->listButtonsWidget->setRowHidden(ACCNT_LOGGED_PAGE_NUM, true);
-        ui->listButtonsWidget->setRowHidden(DRIVE_PAGE_NUM, true); // to be removed
         ui->listButtonsWidget->setRowHidden(SYNC_PAGE_NUM,true);
         ui->listButtonsWidget->setRowHidden(SHARES_PAGE_NUM,true);
         ui->listButtonsWidget->setRowHidden(SETTINGS_PAGE_NUM, true);
@@ -257,42 +288,24 @@ void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when
 /*void PCloudWindow::setOnlinePages()
 {    
     fillAccountLoggedPage();
-}*/
-void PCloudWindow::fillAcountNotLoggedPage()
-{
-    ui->toolBtnContact->setStyleSheet("QToolButton{background-color:transparent;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");
 }
-
-void PCloudWindow::fillDrivePage()
-{
-    bool isFSStarted = psync_fs_isstarted();
-    qDebug()<< "fill drive page, is fs started:" << isFSStarted << psync_fs_getmountpoint();
-    if(isFSStarted)
-    {
-        ui->btnDriveStart->setVisible(false);
-        ui->btnDriveStop->setVisible(true);
-        ui->btnDriveOpenFldr->setVisible(true);
-    }
-    else
-    {
-        ui->btnDriveStart->setVisible(true);
-        ui->btnDriveOpenFldr->setVisible(false);
-        ui->btnDriveStop->setVisible(false);
-    }
-}
+*/
 
 void PCloudWindow::fillAboutPage()
 {
+    ui->label_copyright->setFont(app->smaller1pFont);
     if(!app->new_version())
     {
-        ui->label_versionVal->setText(QString("Version ") + APP_VERSION + QString("\n\nEverything is up to date"));
-        ui->label_versionVal->setAlignment(Qt::AlignHCenter);
+        ui->label_versionVal->setText(QString("Installed Version: ") + APP_VERSION); // + QString("\n\nEverything is up to date"));
+        // ui->label_versionVal->setAlignment(Qt::AlignHCenter);
+        //ui->label_versionInfo->setVisible(true);
         ui->widget_newVersion->setVisible(false);
     }
     else
     {
-        ui->label_versionVal->setText(QString ("Version ") + APP_VERSION);
+        ui->label_versionVal->setText(QString ("Installed Version: ") + APP_VERSION);
         ui->label_newVersion->setText(QString("New version "  + app->newVersion.versionstr + " has already been released"));
+        //ui->label_versionInfo->setVisible(false);
         ui->label_notes->setText(QString("Notes:\n "+ app->newVersion.notes));
         ui->comboBox_versionReminder->setCurrentIndex(app->settings->value("vrsnNotifyInvervalIndx").toInt());
     }
@@ -338,86 +351,6 @@ void PCloudWindow::refreshUserinfo()
     this->fillAccountLoggedPage();
 }
 
-static QList<QTreeWidgetItem *> listRemoteFldrs(QString parentPath)
-{
-    QList<QTreeWidgetItem *> items;
-    pfolder_list_t *res = psync_list_remote_folder_by_path(parentPath.toUtf8(),PLIST_FOLDERS);
-
-    if (res != NULL)
-    {
-        for(uint i = 0; i < res->entrycnt; i++)
-        {
-            QString path = parentPath;
-            if (parentPath != "/")
-                path.append("/").append(res->entries[i].name);
-            else
-                path.append(res->entries[i].name);
-
-            QTreeWidgetItem *item = new QTreeWidgetItem((QTreeWidgetItem*)0, QStringList(res->entries[i].name));
-            item->setIcon(0, QIcon(":images/images/folder-p.png"));
-            item->setData(0, Qt::UserRole, path);
-            item->setData(1, Qt::UserRole, (quint64)res->entries[i].folder.folderid);
-            item->addChildren(listRemoteFldrs(path));
-            items.append(item);
-        }
-    }
-
-    free(res);
-    return items;
-}
-
-void PCloudWindow::initRemoteTree(QTreeWidget *table)
-{
-    //pcloud folders
-    QList<QTreeWidgetItem *> items;
-    table->clear();
-    table->setColumnCount(1);
-    table->setHeaderLabels(QStringList("Name"));
-    QString root = "/";
-    QTreeWidgetItem *rootItem = new QTreeWidgetItem(QStringList(root));
-    rootItem->setIcon(0,QIcon(":images/images/folder-p.png"));
-    rootItem->setData(0, Qt::UserRole,root); //set path
-    rootItem->setData(1,Qt::UserRole,0); //id
-    table->insertTopLevelItem(0,rootItem);
-    table->setCurrentItem(rootItem);
-    items = listRemoteFldrs(root);
-    rootItem->addChildren(items);
-    table->expandItem(rootItem);
-    table->setSortingEnabled(true);
-    table->sortByColumn(0, Qt::AscendingOrder);
-}
-
-QString PCloudWindow::newRemoteFldr(QTreeWidget *table)
-{
-    QString dirname = QInputDialog::getText(this,
-                                            tr("Create Directory"),
-                                            tr("Directory name"));
-    if(dirname.isEmpty())
-        return "";
-    QString parentpath = table->currentItem()->data(0, Qt::UserRole).toString();
-    if(parentpath != "/")
-        parentpath.append("/");
-    parentpath.append(dirname);
-
-    char *err = NULL;
-    psync_create_remote_folder_by_path(parentpath.toUtf8(),&err);
-    if (err)
-    {
-        QMessageBox::critical(this,"pCloud",trUtf8(err));
-        return "";
-    }
-    free(err);
-
-    QTreeWidgetItem *item = new QTreeWidgetItem((QTreeWidgetItem*)0,QStringList(dirname));
-    item->setIcon(0,QIcon(":images/images/folder-p.png"));
-    item->setData(0,Qt::UserRole, parentpath);
-    table->currentItem()->insertChild(0,item);
-    table->setCurrentItem(item);
-    table->scrollToItem(item);
-
-    return dirname;
-}
-
 int PCloudWindow::getCurrentPage()
 {
     return this->ui->listButtonsWidget->currentRow();
@@ -431,27 +364,6 @@ SyncPage* PCloudWindow::get_sync_page()
 void PCloudWindow::refreshPagePulbic(int pageindex, int param)
 {
     emit this->refreshPageSgnl(pageindex, param);
-}
-
-//SLOTS
-void PCloudWindow::launchFS()
-{
-    if(QObject::sender()->objectName() == "btnDriveStart")
-    {
-        qDebug()<<"start fs";
-        psync_fs_start();
-        ui->btnDriveStart->setVisible(false);
-        ui->btnDriveOpenFldr->setVisible(true);
-        ui->btnDriveStop->setVisible(true);
-    }
-    else
-    {
-        qDebug()<<"stop fs";
-        psync_fs_stop();
-        ui->btnDriveStart->setVisible(true);
-        ui->btnDriveOpenFldr->setVisible(false);
-        ui->btnDriveStop->setVisible(false);
-    }
 }
 
 void PCloudWindow::changePass()
@@ -551,7 +463,7 @@ void PCloudWindow::checkVerify() // has the user verified after had clicked "Ver
 void PCloudWindow::updateVersion()
 {
     app->stopTimer();
-    QMessageBox::information(this,"pCloud Sync",trUtf8( "The new version of pCloud starts downloading and prepearing to install.\n Please wait."));
+    QMessageBox::information(this,"pCloud Drive",trUtf8( "The new version of pCloud starts downloading and prepearing to install.\n Please wait."));
     if(!vrsnDwnldThread)
         vrsnDwnldThread = new VersionDwnldThread(app->OSStr);
     vrsnDwnldThread->start();
@@ -561,8 +473,8 @@ void PCloudWindow::refreshPageSlot(int pageindex, int param)
 {
     switch(pageindex)
     {
-    case DRIVE_PAGE_NUM:
-        this->fillDrivePage();
+    //case DRIVE_PAGE_NUM:
+    //  this->fillDrivePage();
     case SHARES_PAGE_NUM:  // sharespage
         this->sharesPage->refreshTab(param);
     }

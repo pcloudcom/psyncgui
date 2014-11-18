@@ -1,25 +1,30 @@
 #include "addsyncdialog.h"
 #include "ui_addsyncdialog.h"
 
-#include <QFileSystemModel>
+//#include <QFileSystemModel>
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QTextCodec>
 #include <QDebug>
 
-addSyncDialog::addSyncDialog(PCloudApp *a, PCloudWindow *w, SyncPage *sp,SuggestnsBaseWin *wlcm, QWidget *parent) :
+addSyncDialog::addSyncDialog(PCloudApp *a, PCloudWindow *w, SuggestnsBaseWin *wlcm, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::addSyncDialog)
 {
     ui->setupUi(this);
     app = a;
     win = w;
-    syncpage = sp;
     addNewSyncsWin = wlcm;
-    ui->treeSyncRemote->header()->setSortIndicatorShown(true);
+    if (addNewSyncsWin != NULL && addNewSyncsWin->getChangeItem())
+        remotesDialog = new RemoteTreesDialog(addNewSyncsWin->getCurrRemotePath(), this); //dialog is for changing a suggested sync
+    else
+        remotesDialog = new RemoteTreesDialog("", this); // dialog is for selecting new sync
+    //ui->treeSyncRemote->header()->setSortIndicatorShown(true);
     connect(ui->btnAdd, SIGNAL(clicked()), this, SLOT(addSync()));
-    connect(ui->btnNewFldrLocal, SIGNAL(clicked()), this, SLOT(newLocalFldr()));
-    connect(ui->btnNewFldrRemote, SIGNAL(clicked()), this, SLOT(newRemoteFldr()));
+    connect(ui->btnOpenLocals, SIGNAL(clicked()), this, SLOT(chooseLocalFldr()));
+    connect(ui->btnOpenRemotes, SIGNAL(clicked()), this, SLOT(chooseRemoteFldr()));
+    //connect(ui->btnNewFldrLocal, SIGNAL(clicked()), this, SLOT(newLocalFldr()));
+    //connect(ui->btnNewFldrRemote, SIGNAL(clicked()), this, SLOT(newRemoteFldr()));
     connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(hideDialog()));
     if (addNewSyncsWin && addNewSyncsWin->getChangeItem())
     {
@@ -34,6 +39,7 @@ addSyncDialog::addSyncDialog(PCloudApp *a, PCloudWindow *w, SyncPage *sp,Suggest
 addSyncDialog::~addSyncDialog()
 {
     delete ui;
+    delete remotesDialog;
 }
 
 void addSyncDialog::hideDialog()
@@ -43,12 +49,69 @@ void addSyncDialog::hideDialog()
     this->hide();
 }
 
-void addSyncDialog::load()
+static QString getDisplFldrName(QString fldrname)
+{
+    if(fldrname.isEmpty())
+        return "/";
+
+    if(fldrname.length() < 40)
+        return fldrname;
+    else
+        return fldrname.left(40).append("...");
+}
+
+void addSyncDialog::chooseLocalFldr()
+{
+    QFileDialog* d = new QFileDialog(this);
+    d->setWindowIcon(QIcon(WINDOW_ICON));
+    d->setWindowTitle("Choose Local Directory");
+    d->setFileMode(QFileDialog::Directory);
+    d->setOption(QFileDialog::ShowDirsOnly, true);
+
+    //case when change item in suggestions in Context Menu
+    if (this->addNewSyncsWin != NULL && addNewSyncsWin->getChangeItem())
+    {
+        localpath = addNewSyncsWin->getCurrLocalPath();
+        d->selectFile(localpath);
+        ui->btnOpenLocals->setText(getDisplFldrName(localpath.section("/",-1)));
+    }
+
+    if(d->exec() == QFileDialog::Accepted)
+    {
+        QStringList filenames = d->selectedFiles();
+        if (filenames.isEmpty())
+        {
+            QMessageBox::critical(this, "pCloud", trUtf8("Please select local folder!"));
+            return;
+        }
+
+        this->localpath = filenames.at(0);
+        ui->btnOpenLocals->setText(getDisplFldrName(localpath.section("/",-1)));
+
+        for (int i = 0; i < filenames.size(); i++)
+            qDebug()<<"FIledialog"<< filenames.at(i);
+    }
+    else
+    {
+        this->localpath = "";
+        qDebug()<<"add local fodler for new sync CANCEDL";
+    }
+}
+
+void addSyncDialog::chooseRemoteFldr()
+{
+    this->remotesDialog->exec();
+    this->remotepath = remotesDialog->getFldrPath();
+    if (!this->remotepath.isNull())
+        ui->btnOpenRemotes->setText(getDisplFldrName(remotepath.section("/",-1)));
+}
+
+void addSyncDialog::load() //obsolete
 {    
     //remote tree
-    win->initRemoteTree(ui->treeSyncRemote);
+    //  win->initRemoteTree(ui->treeSyncRemote);
 
-    //local tree
+    /*   //local tree
     model = new QFileSystemModel;
     model->setReadOnly(false);
     model->setFilter(QDir::NoDotAndDotDot | QDir::Dirs);
@@ -114,29 +177,43 @@ void addSyncDialog::load()
     }
 
 }
+*/
+}
 
 void addSyncDialog::addSync()
 {
+    int type = PSYNC_FULL - 1; // no one-way sync anymore
+    /*
     QString localpath,localname, remotepath;
-    int type;
+
     localpath = model->filePath(ui->treeSyncLocal->currentIndex());
 #ifdef Q_OS_WIN
     localpath.replace("/","\\");
 #endif
     localname = model->fileName(ui->treeSyncLocal->currentIndex());
     remotepath.append( ui->treeSyncRemote->currentItem()->data(0,Qt::UserRole).toString());
-    type = ui->comboSyncType->currentIndex();
+    //type = ui->comboSyncType->currentIndex();
+    */
+
     if(localpath == "" || remotepath == "")
     {
-        QMessageBox::warning(this, "pCloud", trUtf8("Please select both paths!"));
+        QMessageBox::warning(this, "pCloud Drive", trUtf8("Please select both paths!"));
         return;
     }
-    qDebug()<<"TO ADD NEW SYNC :   localpath = "<<localpath<< " remotepath = "<<remotepath << " type = "<<type+1<< "local folder name ="<<localname;
+    QString localname;
+    if(localpath != "/")
+        localname = localpath.section("/",-1);
+    else
+        localname = localpath;
+
+    //qDebug()<<"TO ADD NEW SYNC :   localpath = "<<localpath<< " remotepath = "<<remotepath << " type = "<<type+1<< "local folder name ="<<localname;
+    qDebug()<<"TO ADD NEW SYNC :   localpath = "<<localpath<< " remotepath = "<<remotepath << "local folder name ="<<localname;
+
     if(this->addNewSyncsWin)
         addNewSyncsWin->addNewItem(localpath,remotepath,type);
     else
     {
-        quint32 id = psync_add_sync_by_path(localpath.toUtf8(), remotepath.toUtf8(),type+1);
+        quint32 id = psync_add_sync_by_path(localpath.toUtf8(), remotepath.toUtf8(), PSYNC_FULL);
         if (id == -1)
         {
             qDebug()<<"err adding new sync"<<psync_get_last_error();
@@ -147,7 +224,8 @@ void addSyncDialog::addSync()
         fldrAction->setProperty("path",localpath);
         connect(fldrAction,SIGNAL(triggered()),app, SLOT(openLocalDir()));
         app->addNewFolderInMenu(fldrAction);
-        syncpage->load();
+        //syncpage->load();
+        win->get_sync_page()->load();
     }
     this->hide();
 
@@ -158,6 +236,16 @@ void addSyncDialog::showError(const QString &err)
     QMessageBox::information(this,"", err );
 }
 
+void addSyncDialog::newRemoteFldr(QString dirname)
+{
+    qDebug()<<"addSyncDialog"<<dirname;
+    if (this->addNewSyncsWin && dirname != "")
+    {
+        addNewSyncsWin->addNewRemoteFldr(dirname);
+    }
+}
+
+/*obsolete - old specifications
 void addSyncDialog::newLocalFldr()
 {
     QModelIndex current = ui->treeSyncLocal->currentIndex();
@@ -177,13 +265,4 @@ void addSyncDialog::newLocalFldr()
     ui->treeSyncLocal->setCurrentIndex(newIndex);
     model->setReadOnly(false);
 }
-
-void addSyncDialog::newRemoteFldr()
-{
-    QString dirname = this->win->newRemoteFldr(ui->treeSyncRemote);
-    if (this->addNewSyncsWin && dirname != "")
-    {
-        addNewSyncsWin->addNewRemoteFldr(dirname);
-    }
-}
-
+*/

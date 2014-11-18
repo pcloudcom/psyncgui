@@ -19,21 +19,21 @@ class RemoteTreesDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit RemoteTreesDialog(PCloudWindow* &w,QWidget *parent = 0);
+    explicit RemoteTreesDialog(QString curritem, QWidget *parent);
     ~RemoteTreesDialog();
     quint64 getFldrid();       
     QString getFldrPath();
     void init();
 protected:
-    Ui::RemoteTreesDialog *ui;
-    PCloudWindow* win;
+    Ui::RemoteTreesDialog *ui;   
     quint64 fldrid;
     QString fldrPath;
     void showEvent(QShowEvent *event); 
 private:
     QTreeWidgetItem* root;
+    QString currentItemPath;
 public slots:
-    void newRemoteFldr();
+    QString newRemoteFldr();
     virtual void setSelectedFolder();
 };
 

@@ -54,12 +54,29 @@ void PCloudApp::showWindow(QMainWindow *win)
     this->setActiveWindow(win);
 }
 
-void PCloudApp::showRegister(){  
+void PCloudApp::showRegister()
+{
+    hideAllWindows();
+
+    int currPage;
     QString user = psync_get_username();
     if (user != "") //case after logout when the user is still linked
-    {
+        currPage = 1; // we have a linked user
+    else
+        currPage = 0; //register
+
+    if (!regwin)
+        regwin=new RegisterWindow(this,currPage);
+    else
+        regwin->setCurrPage(currPage);
+
+    showWindow(regwin);
+
+
+    /*
+
         QMessageBox msgBox;
-        msgBox.setWindowTitle("pCloud Sync");
+        msgBox.setWindowTitle("pCloud Drive");
         msgBox.setText(trUtf8 ("User %1 has already linked in.").arg(user));
         msgBox.setInformativeText(trUtf8 ("Do you want to unlink %1 and continue?").arg(user));
         msgBox.setStandardButtons(QMessageBox::Cancel);
@@ -68,20 +85,18 @@ void PCloudApp::showRegister(){
         {
             this->unlink();
             hideAllWindows();
-            if (!regwin)
-                regwin=new RegisterWindow(this);
-            showWindow(regwin);
         }
         else
             this->showLogin();
     }
     else
     {
-        hideAllWindows();
+
         if (!regwin)
-            regwin=new RegisterWindow(this);
+            regwin=new RegisterWindow(this, 0); // register
         showWindow(regwin);
     }
+    */
 }
 void PCloudApp::showLogin(){
     hideAllWindows();
@@ -100,14 +115,14 @@ void PCloudApp::showAccount()
     this->showWindow(pCloudWin);
 }
 
-void PCloudApp::showDrive()
+void PCloudApp::showDrive() // osbolete specif
 {
     if(psync_fs_isstarted())
         emit this->openCloudDir();
     else
     {
         hideAllWindows();
-        pCloudWin->setCurrntIndxPclWin(DRIVE_PAGE_NUM);
+        //pCloudWin->setCurrntIndxPclWin(DRIVE_PAGE_NUM);
         this->showWindow(pCloudWin);
     }
 }
@@ -274,7 +289,7 @@ void PCloudApp::showOnClick(){
 }
 
 void PCloudApp::trayClicked(QSystemTrayIcon::ActivationReason reason){
-    if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::MiddleClick) //3 = Trigger - left click
+    if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::MiddleClick) //3 = Trigger - left click        
         showOnClick();
 }
 
@@ -286,9 +301,9 @@ void PCloudApp::createMenus()
     connect(registerAction, SIGNAL(triggered()), this, SLOT(showRegister()));
     loginAction=new QAction(QIcon(":/menu/images/menu 48x48/login.png"),trUtf8("Login"), this);
     connect(loginAction, SIGNAL(triggered()), this, SLOT(showLogin()));
-    helpAction = new QAction(QIcon(":/menu/images/menu16x16/help.png"),trUtf8("Help"),this);
+    helpAction = new QAction(QIcon(":/menu/images/menu32x32/help.png"),trUtf8("Help"),this);
     connect(helpAction, SIGNAL(triggered()), this, SLOT(showpcloudHelp()));
-    aboutPCloudAction = new QAction(QIcon(":/menu/images/menu16x16/info.png"),trUtf8("About"), this);
+    aboutPCloudAction = new QAction(QIcon(":/menu/images/menu32x32/info.png"),trUtf8("About"), this);
     connect(aboutPCloudAction, SIGNAL(triggered()), this, SLOT(showpCloudAbout()));
     exitAction=new QAction(QIcon(":/menu/images/menu 48x48/exit.png"),trUtf8("Exit"), this); // to be hidden in account tab
     connect(exitAction, SIGNAL(triggered()), this, SLOT(doExit()));
@@ -303,14 +318,15 @@ void PCloudApp::createMenus()
 
     //LOGGED MENU
     //main menu actions
-    accountAction = new QAction(QIcon(":/menu/images/menu16x16/user.png"),trUtf8("Account"), this); // Account tab
+    accountAction = new QAction(QIcon(":/menu/images/menu32x32/user.png"),trUtf8("Account"), this); // Account tab
     connect(accountAction, SIGNAL(triggered()),this, SLOT(showAccount()));
-    driveAction = new QAction(QIcon(":/menu/images/menu16x16/drive.png"),trUtf8("pCloudDrive"), this); //pDrive tab
+    userinfoAction = new QAction(QIcon(":/menu/images/menu16x16/user.png"), "", this); //UserInfo - space action
+    driveAction = new QAction(QIcon(":/menu/images/menu16x16/spaceinfo.png"),trUtf8("Open Drive"), this); //pDrive tab
     //connect(driveAction, SIGNAL(triggered()), this, SLOT(showDrive()));
     connect(driveAction, SIGNAL(triggered()), this, SLOT(openCloudDir()));
     //p openAction=new QAction("&Open pCloud folder", this);
     //p connect(openAction, SIGNAL(triggered()), this, SLOT(openCloudDir()));
-    settingsAction=new QAction(QIcon(":/menu/images/menu16x16/settings.png"),trUtf8("Settings"), this); //Settings tab
+    settingsAction=new QAction(QIcon(":/menu/images/menu32x32/settings.png"),trUtf8("Settings"), this); //Settings tab
     connect(settingsAction, SIGNAL(triggered()), this, SLOT(showSettings()));
     pauseSyncAction = new QAction(QIcon(":/menu/images/menu 48x48/pause.png"),trUtf8("Pause Sync"),this);
     connect(pauseSyncAction, SIGNAL(triggered()),this,SLOT(pauseSync()));
@@ -326,7 +342,7 @@ void PCloudApp::createMenus()
     connect(addSyncAction, SIGNAL(triggered()),this, SLOT(addNewSync()));
     connect(this, SIGNAL(addNewSyncSgnl()), this, SLOT(addNewSync()));
     connect(this, SIGNAL(addNewSyncLstSgnl(bool)), this, SLOT(addNewSyncLst(bool)));  //for creating syncs from OS file browser Contextmenu
-    syncSttngsAction = new QAction(QIcon(":/menu/images/menu16x16/settings.png"),trUtf8("Settings"),this); // may be to del
+    syncSttngsAction = new QAction(QIcon(":/menu/images/menu32x32/settings.png"),trUtf8("Settings"),this); // may be to del
     connect(syncSttngsAction, SIGNAL(triggered()), this, SLOT(showSyncSttngs()));
 
     //shares actions
@@ -341,22 +357,22 @@ void PCloudApp::createMenus()
 #ifdef VFS
     loggedmenu->addAction(driveAction);
     loggedmenu->addSeparator();
-#endif
-    loggedmenu->addAction(accountAction);
+#endif   
     syncMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu16x16/sync.png"),trUtf8("Sync"));
-
     syncedFldrsMenu = syncMenu->addMenu(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),trUtf8("Synced Folders"));
     syncMenu->addSeparator();
     syncMenu->addAction(syncAction);
     syncMenu->addAction(addSyncAction);
     //syncMenu->addAction(syncSttngsAction); may be temp
 
-    sharesMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu16x16/share.png"),trUtf8("Shares"));
+    sharesMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu32x32/share.png"),trUtf8("Shares"));
     sharesMenu->addAction(sharesAction);
     sharesMenu->addAction(shareFolderAction);
 
     loggedmenu->addSeparator();
     loggedmenu->addAction(settingsAction);
+    loggedmenu->addAction(accountAction);
+    loggedmenu->addAction(userinfoAction);
     loggedmenu->addAction(helpAction);
     loggedmenu->addAction(aboutPCloudAction);
     loggedmenu->addSeparator();
@@ -373,65 +389,22 @@ void PCloudApp::createMenus()
     if (status.status != PSTATUS_PAUSED)
     {
         resumeSyncAction->setVisible(false);
-        pCloudWin->ui->btnResumeSync->setVisible(false);
+        //pCloudWin->ui->btnResumeSync->setVisible(false);
     }
     else
     {
         pauseSyncAction->setVisible(false);
-        pCloudWin->ui->btnPauseSync->setVisible(false);
+       // pCloudWin->ui->btnPauseSync->setVisible(false);
     }
 
     this->createSyncFolderActions(); //loads sub menu with local synced folders
 
     connect(loggedmenu, SIGNAL(aboutToShow()), this, SLOT(updateSyncStatus()));
     connect(syncedFldrsMenu, SIGNAL(aboutToShow()),this,SLOT(createSyncFolderActions())); //delete old if exist, adds new
+    userinfoAction->setEnabled(false);
     syncDownldAction->setEnabled(false);
     syncUpldAction->setEnabled(false);
 
-
-    /*
-    * OLD MENU
-    *  loggedmenu->addSeparator();
-    loggedmenu->addAction(sharesAction);
-    loggedmenu->addAction(syncAction);
-#ifdef Q_OS_WIN
-    loggedmenu->addAction(settingsAction);
-#endif
-    loggedmenu->addSeparator();
-    loggedmenu->addAction(shareFolderAction);
-    loggedmenu->addAction(addSyncAction);
-    syncedFldrsMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),trUtf8("Sync &Folders"));
-    loggedmenu->addAction(pauseSyncAction);
-    loggedmenu->addAction(resumeSyncAction);
-    pstatus_t status;
-    psync_get_status(&status);
-    if (status.status != PSTATUS_PAUSED)
-    {
-        resumeSyncAction->setVisible(false);
-        pCloudWin->ui->btnResumeSync->setVisible(false);
-    }
-    else
-    {
-        pauseSyncAction->setVisible(false);
-        pCloudWin->ui->btnPauseSync->setVisible(false);
-    }
-    syncDownldAction = new QAction(QIcon(":/menu/images/menu 48x48/download.png"),trUtf8("Everything downloaded"),this);
-    syncUpldAction = new QAction(QIcon(":/menu/images/menu 48x48/upload.png"),trUtf8("Everything uploaded"),this);
-    loggedmenu->addAction(syncDownldAction);
-    loggedmenu->addAction(syncUpldAction);
-    loggedmenu->addSeparator();
-    loggedmenu->addAction(helpAction);
-    loggedmenu->addAction(aboutPCloudAction);
-    loggedmenu->addSeparator();
-    loggedmenu->addAction(exitAction);
-
-    this->createSyncFolderActions(); //loads sub menu with local synced folders
-
-    connect(loggedmenu, SIGNAL(aboutToShow()), this, SLOT(updateSyncStatus()));
-    connect(syncedFldrsMenu, SIGNAL(aboutToShow()),this,SLOT(createSyncFolderActions())); //delete old if exist, adds new
-    syncDownldAction->setEnabled(false);
-    syncUpldAction->setEnabled(false);
-*/
 #ifdef Q_OS_WIM
     dbgPipeHlprActn = new QAction("Debug Pipe",this); //TEMP
     connect(dbgPipeHlprActn, SIGNAL(triggered()), this, SLOT(dbgPipeHlprSLot()));
@@ -961,6 +934,9 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     notifythread = NULL;
 #endif */
     appStatic = this;
+    fontPointSize = this->font().pointSize();
+    smaller1pFont.setPointSize(fontPointSize - 1);
+    smaller2pFont.setPointSize(fontPointSize - 2);
     regwin=NULL;
     logwin=NULL;
     loggedmenu=NULL;
@@ -996,7 +972,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
 
     if (psync_init() == -1)
     {
-        QMessageBox::critical(NULL, "pCloud sync", tr("pCloud sync has stopped. Please connect to our support"));
+        QMessageBox::critical(NULL, "pCloud Drive", tr("pCloud Drive has stopped. Please connect to our support"));
         qDebug()<<" psync-init returned -1 "<<psync_get_last_error();
         this->quit();
     }
@@ -1031,7 +1007,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     tray->setContextMenu(notloggedmenu);
     connect(tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayClicked(QSystemTrayIcon::ActivationReason)));
     connect(tray, SIGNAL(messageClicked()), this, SLOT(trayMsgClicked()));
-    connect(this,SIGNAL(showMsgBoxSgnl(QString,QString,int)), this, SLOT(showMsgBox(QString,QString,int)));
+    connect(this, SIGNAL(showMsgBoxSgnl(QString,QString,int)), this, SLOT(showMsgBox(QString,QString,int)));
     connect(this, SIGNAL(showLoginSgnl()),this, SLOT(showLogin()));
     connect(this, SIGNAL(logoutSignl()), this, SLOT(logOut()));
     connect(this, SIGNAL(changeSyncIcon(QString)), this, SLOT(setTrayIcon(QString)));
@@ -1118,10 +1094,9 @@ PCloudApp::~PCloudApp(){
     delete registerAction;
     delete loginAction;
     delete exitAction;
-    //p delete openAction;
     delete settingsAction;
     delete sharesAction;
-    //delete shareFolderAction;
+    delete userinfoAction;
     delete syncAction;
     delete helpAction;
     delete aboutPCloudAction;
@@ -1237,8 +1212,6 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
         this->uplodInfo = QObject::trUtf8("Everything uploaded");
         this->pCloudWin->get_sync_page()->load();
         this->pCloudWin->get_sync_page()->loadSettings();
-        pCloudWin->ui->btnResumeSync->setVisible(false);
-        pCloudWin->ui->btnPauseSync->setVisible(true);
         this->unlinkFlag = false;
     }
     this->username = uname;
@@ -1250,6 +1223,9 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     //if (loggedmenu){
     //loggedmenu->actions()[0]->setText(username);
     //}
+
+    userinfoAction->setText(QString::number(usedSpace, 'f', 2) + "GB (" +
+                            QString::number(this->freeSpacePercentage) + "%) of " + this->planStr + " used");
     pCloudWin->fillAccountLoggedPage();
 
     switch (this->lastStatus)
@@ -1271,7 +1247,7 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     pCloudWin->setOnlineItems(true);
     tray->setContextMenu(loggedmenu);
 
-    //isFirstLaunch = false; // for test TEMP
+    //isFirstLaunch = true; // for test TEMP
     if (isFirstLaunch)
     {
         welcomeWin = new WelcomeWin(this, NULL);
@@ -1530,7 +1506,7 @@ void PCloudApp::setTimerInterval(int index)
 void PCloudApp::showPopupNewVersion()
 {
     qDebug()<<QDateTime::currentDateTime() <<"NOTIFICATIONS show popup message";
-    tray->showMessage("New Version", "A new version of pCloud Sync is available!\nClick here for more details");
+    tray->showMessage("New Version", "A new version of pCloud Drive is available!\nClick here for more details");
 }
 void PCloudApp::stopTimer()
 {
@@ -1694,7 +1670,7 @@ void PCloudApp::setErrText(int win, const char *err)
     {
     case 1:
         if (this->logwin)
-            logwin->setError(err);
+            logwin->showError(err);
         break;
     default:
         break;
@@ -1704,7 +1680,7 @@ void PCloudApp::setErrText(int win, const char *err)
 void PCloudApp::setLogWinError(const char *msg)
 {
     if (this->logwin)
-        this->logwin->setError(msg);
+        this->logwin->showError(msg);
 }
 void PCloudApp::setTrayIcon(const QString &icon)
 {
@@ -1748,16 +1724,16 @@ void PCloudApp::pauseSync()
     psync_pause();
     pauseSyncAction->setVisible(false);
     resumeSyncAction->setVisible(true);
-    pCloudWin->ui->btnPauseSync->setVisible(false);
-    pCloudWin->ui->btnResumeSync->setVisible(true);
+  //  pCloudWin->ui->btnPauseSync->setVisible(false);
+   // pCloudWin->ui->btnResumeSync->setVisible(true);
 }
 void PCloudApp::resumeSync()
 {
     psync_resume();
     pauseSyncAction->setVisible(true);
     resumeSyncAction->setVisible(false);
-    pCloudWin->ui->btnPauseSync->setVisible(true);
-    pCloudWin->ui->btnResumeSync->setVisible(false);
+    //pCloudWin->ui->btnPauseSync->setVisible(true);
+    //pCloudWin->ui->btnResumeSync->setVisible(false);
 }
 
 void PCloudApp::createSyncFolderActions() //refreshes menu when user rename/delete local root sync folder, add new folder through context menu..
@@ -1861,6 +1837,9 @@ void PCloudApp::updateUserInfo(const char* &param)
         this->getQuota();
     else
         this->getUserInfo();
+
+    userinfoAction->setText(QString::number(usedSpace, 'f', 2) + "GB (" +
+                            QString::number(this->freeSpacePercentage) + "%) of " + this->planStr + " used");
 }
 void PCloudApp::changeOnlineItems(bool logged)
 {

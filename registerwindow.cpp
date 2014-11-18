@@ -4,22 +4,26 @@
 #include "common.h"
 #include "psynclib.h"
 
-RegisterWindow::RegisterWindow(PCloudApp *a, QWidget *parent) :
+RegisterWindow::RegisterWindow(PCloudApp *a, int pageIndex, QWidget *parent):
     QMainWindow(parent),
     ui(new Ui::RegisterWindow)
 {
-    app=a;
-    setWindowIcon(QIcon(WINDOW_ICON));
+    app = a;
     ui->setupUi(this);
-    QPalette palette;
-    palette.setColor(QPalette::WindowText, Qt::red);
-    ui->error->setPalette(palette);
+    setWindowIcon(QIcon(WINDOW_ICON));
+    setWindowTitle("pCloud Drive");
+    ui->stackedWidget->setCurrentIndex(pageIndex);
+    if(pageIndex)
+         this->setUnlinkLabelText();
     ui->registerButton->setDefault(true);
+    ui->tbtnLogin->setStyleSheet("QToolButton{background-color:transparent; text-decoration: underline;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");
     connect(ui->registerButton, SIGNAL(clicked()), this, SLOT(doRegister()));
     connect(ui->email, SIGNAL(returnPressed()), this, SLOT(focusPass()));
     connect(ui->password, SIGNAL(returnPressed()), this, SLOT(focusConfirm()));
     connect(ui->confirmpassword, SIGNAL(returnPressed()), this, SLOT(focusTOS()));
-    connect(ui->loginButton, SIGNAL(clicked()), app, SLOT(showLogin()));
+    connect(ui->tbtnLogin, SIGNAL(clicked()), app, SLOT(showLogin()));
+    connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(askUnlink()));
+    connect(ui->btnCancel, SIGNAL(clicked()), app, SLOT(showLogin()));
     this->setFixedSize(this->width(),this->height()); //makes the win not resizable
 }
 
@@ -41,8 +45,21 @@ void RegisterWindow::showEvent(QShowEvent *)
     ui->password->clear();
 }
 
+void RegisterWindow::setCurrPage(int index)
+{
+    if(index)
+        this->setUnlinkLabelText();
+    ui->stackedWidget->setCurrentIndex(index);
+}
+
+void RegisterWindow::setUnlinkLabelText()
+{
+     ui->label_accntinfo->setText(QString("The account:\n").append(psync_get_username()).append("\nis currently linked to this computer. You need to unlink in order to register a new account."));
+}
+
 void RegisterWindow::setError(const char *err){
-    ui->error->setText(trUtf8(err));
+   // ui->error->setText(trUtf8(err));
+     QMessageBox::critical(this, "pCloud Drive", trUtf8(err));
 }
 
 void RegisterWindow::focusPass(){
@@ -95,8 +112,21 @@ void RegisterWindow::doRegister(){
     free(err);
     ui->password->clear();
     ui->confirmpassword->clear();
-    setError("");
+   // setError("");
     hide();
     //p app->openCloudDir();
 
+}
+
+void RegisterWindow::askUnlink()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::warning(this,trUtf8("Unlink"),
+                                 trUtf8("By unlinking you will lose all pCloud Drive settings for the current account on this computer. Are you sure?"),
+                                 QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::Yes)
+    {
+        app->unlink();
+        ui->stackedWidget->setCurrentIndex(0);
+    }
 }

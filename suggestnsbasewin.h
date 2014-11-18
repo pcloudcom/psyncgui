@@ -54,7 +54,7 @@ protected:
 public slots:
     void addSync();
     virtual void changeCurrItem(QModelIndex index);
-    void modifyType();
+   // void modifyType(); //obsolete behaviuor
     void finish();
 };
 

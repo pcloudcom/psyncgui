@@ -16,12 +16,14 @@ class RegisterWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit RegisterWindow(PCloudApp *a, QWidget *parent = 0);
+    explicit RegisterWindow(PCloudApp *a, int pageIndex, QWidget *parent = 0);
     ~RegisterWindow();
+    void setCurrPage(int index);
 private:
     PCloudApp *app;
     Ui::RegisterWindow *ui;
     void setError(const char *err);
+    void setUnlinkLabelText();
     void closeEvent(QCloseEvent *event);
 protected:
     void showEvent(QShowEvent *event);
@@ -30,6 +32,7 @@ public slots:
     void focusConfirm();
     void focusTOS();
     void doRegister();
+    void askUnlink();
 };
 
 #endif // REGISTERWINDOW_H

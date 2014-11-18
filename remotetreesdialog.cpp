@@ -1,29 +1,76 @@
 #include "remotetreesdialog.h"
 #include "ui_remotetreesdialog.h"
 #include "pcloudwindow.h"
+#include <QInputDialog>
 
-RemoteTreesDialog::RemoteTreesDialog(PCloudWindow* &w,QWidget *parent) :
+RemoteTreesDialog::RemoteTreesDialog(QString curritem, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::RemoteTreesDialog)
 {
     ui->setupUi(this);
-    this->win = w;
-    ui->widget_fldrName->setVisible(false); /// for acceptshare - to edin fldr name
-    root = ui->treeRemoteFldrs->currentItem();
+    if (parent != NULL)
+        this->setParent(parent);       
+    if(!curritem.isNull())
+        this->currentItemPath = curritem;
+    ui->widget_fldrName->setVisible(false); /// for acceptshare - to edin fldr name   
     this->init();
     connect(ui->btnAccept, SIGNAL(clicked()), this,SLOT(setSelectedFolder()));
     connect(ui->btnReject, SIGNAL(clicked()),this,SLOT(hide()));
     connect(ui->btnNewFolder, SIGNAL(clicked()), this, SLOT(newRemoteFldr()));
     this->setWindowIcon(QIcon(WINDOW_ICON));
-    this->setWindowTitle("pCloud Drive");
+    this->setWindowTitle("Choose pCloud Drive Folder");
+}
 
+static QList<QTreeWidgetItem *> listRemoteFldrs(QString parentPath)
+{
+    QList<QTreeWidgetItem *> items;
+    pfolder_list_t *res = psync_list_remote_folder_by_path(parentPath.toUtf8(),PLIST_FOLDERS);
+
+    if (res != NULL)
+    {
+        for(uint i = 0; i < res->entrycnt; i++)
+        {
+            QString path = parentPath;
+            if (parentPath != "/")
+                path.append("/").append(res->entries[i].name);
+            else
+                path.append(res->entries[i].name);
+
+            QTreeWidgetItem *item = new QTreeWidgetItem((QTreeWidgetItem*)0, QStringList(res->entries[i].name));
+            item->setIcon(0, QIcon(":images/images/folder-p.png"));
+            item->setData(0, Qt::UserRole, path);
+            item->setData(1, Qt::UserRole, (quint64)res->entries[i].folder.folderid);
+            item->addChildren(listRemoteFldrs(path));
+            items.append(item);
+        }
+    }
+
+    free(res);
+    return items;
 }
 
 void RemoteTreesDialog::init()
 {
     if(ui->treeRemoteFldrs->topLevelItemCount())
-        ui->treeRemoteFldrs->clear();
-    win->initRemoteTree(ui->treeRemoteFldrs);
+        ui->treeRemoteFldrs->clear();    
+
+    QList<QTreeWidgetItem *> items;   
+    ui->treeRemoteFldrs->setColumnCount(1);
+    ui->treeRemoteFldrs->setHeaderLabels(QStringList("Name"));
+    QString root = "/";
+    QTreeWidgetItem *rootItem = new QTreeWidgetItem(QStringList(root));  // ??
+    rootItem->setIcon(0,QIcon(":images/images/folder-p.png"));
+    rootItem->setData(0, Qt::UserRole,root); //set path
+    rootItem->setData(1,Qt::UserRole,0); //id
+    ui->treeRemoteFldrs->insertTopLevelItem(0,rootItem);
+    ui->treeRemoteFldrs->setCurrentItem(rootItem);
+    this->root = rootItem;
+    items = listRemoteFldrs(root);
+    rootItem->addChildren(items);
+    ui->treeRemoteFldrs->expandItem(rootItem);
+    ui->treeRemoteFldrs->setSortingEnabled(true);
+    ui->treeRemoteFldrs->sortByColumn(0, Qt::AscendingOrder);
+
 }
 
 RemoteTreesDialog::~RemoteTreesDialog()
@@ -37,9 +84,41 @@ void RemoteTreesDialog::showEvent(QShowEvent *event)
     event->accept();
 }
 
-void RemoteTreesDialog::newRemoteFldr()
-{
-    this->win->newRemoteFldr(ui->treeRemoteFldrs);
+QString RemoteTreesDialog::newRemoteFldr()
+{  
+    QString dirname = QInputDialog::getText(this, tr("Create New Folder"), tr("Folder name"));
+    if(dirname.isEmpty())
+        return "";
+
+    QString parentpath = ui->treeRemoteFldrs->currentItem()->data(0, Qt::UserRole).toString();
+    if(parentpath != "/")
+        parentpath.append("/");
+    parentpath.append(dirname);
+
+    char *err = NULL;
+    psync_create_remote_folder_by_path(parentpath.toUtf8(),&err);
+    if (err)
+    {
+        QMessageBox::critical(this,"pCloud",trUtf8(err));
+        return "";
+    }
+    free(err);
+
+    QTreeWidgetItem *item = new QTreeWidgetItem((QTreeWidgetItem*)0,QStringList(dirname));
+    item->setIcon(0,QIcon(":images/images/folder-p.png"));
+    item->setData(0,Qt::UserRole, parentpath);
+    ui->treeRemoteFldrs->currentItem()->insertChild(0,item);
+    ui->treeRemoteFldrs->setCurrentItem(item);
+    ui->treeRemoteFldrs->scrollToItem(item);
+
+   if(this->parent() != NULL && this->parent()->objectName() == "addSyncDialog")
+   {       
+       QObject *obj = this->parent();       
+       addSyncDialog *parent = qobject_cast<addSyncDialog*>(obj);
+       parent->newRemoteFldr(dirname);
+   }
+
+    return dirname;
 }
 
 void RemoteTreesDialog::setSelectedFolder()

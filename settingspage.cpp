@@ -21,6 +21,20 @@ SettingsPage::SettingsPage(PCloudWindow *w, PCloudApp *a, QObject* parent):
     win->ui->tabWidgetSttngs->setTabText(1,trUtf8("Speed"));
     win->ui->tabWidgetSttngs->setTabText(2,trUtf8("Disk Usage"));
 
+
+    win->ui->label_infoupld->setFont(app->smaller2pFont);
+    win->ui->label_infodwld->setFont(app->smaller2pFont);
+    win->ui->label_infop2p->setFont(app->smaller2pFont);
+    win->ui->label_infoautostrt->setFont(app->smaller2pFont);
+    win->ui->label_infoCM->setFont(app->smaller2pFont);
+    win->ui->label_infominspace->setFont(app->smaller2pFont);
+    win->ui->label_infocache->setFont(app->smaller2pFont);
+
+    win->ui->label_infop2p->setText("pCloud Drive uses p2p (peer to peer), which is a computer-to-computer connection within your Local Area Network (LAN),\nto speed up synchronization.");
+    win->ui->label_infocache->setText("\"Cache size\" is the amount of disk space the pCloud Drive will use to store locally information from the cloud.\n"
+                                      "It should be at least the size of the files you usually work with. Minimum recommended: 5120 MB.");
+
+
     QRegExp regExp("[1-9][0-9]{0,4}");
     QRegExpValidator* regExpValidator = new QRegExpValidator(regExp, this);
     win->ui->edit_cache->setValidator(regExpValidator);
@@ -258,13 +272,13 @@ void SettingsPage::saveSettings()
 
     if(cacheSize != win->ui->edit_cache->text().toUInt())  //cache
     {
-        if(win->ui->edit_cache->text().toUInt() > 256)         
+        if(win->ui->edit_cache->text().toUInt() > 256)
             cacheSize = win->ui->edit_cache->text().toUInt();
         else
-        {            
+        {
             cacheSize = 256;
             win->ui->edit_cache->setText(QString::number(256));
-        }       
+        }
 
         psync_set_uint_setting("fscachesize",cacheSize<<20);
     }
@@ -273,7 +287,7 @@ void SettingsPage::saveSettings()
     {
         minLocalSpace = win->ui->edit_minLocalSpace->text().toUInt();
         psync_set_uint_setting("minlocalfreespace", minLocalSpace << 20 );
-    }   
+    }
 
 #ifdef Q_OS_WIN
     //autorun win

@@ -28,10 +28,7 @@ public:
     friend class SharesPage;    
     friend class SyncPage;    
     explicit PCloudWindow(PCloudApp *a, QWidget *parent = 0);
-    ~PCloudWindow();
-   //QList<QTreeWidgetItem *> listRemoteFldrs(QString parentPath);
-    void initRemoteTree(QTreeWidget* table); // fill remote trees in differnt woins/dialogs
-    QString newRemoteFldr(QTreeWidget* table);
+    ~PCloudWindow();       
     int getCurrentPage();
     SyncPage* get_sync_page();    
     void refreshPagePulbic(int pageindex, int param);    
@@ -45,10 +42,8 @@ private:
     QByteArray auth; // to del
     bool verifyClicked;
     void checkVerify();
-    void closeEvent(QCloseEvent *event);
-    void fillAcountNotLoggedPage();
-    void fillAccountLoggedPage();
-    void fillDrivePage();
+    void closeEvent(QCloseEvent *event);    
+    void fillAccountLoggedPage();    
     void fillAboutPage();
     void refreshPage(int currentIndex);
 protected:
@@ -60,8 +55,7 @@ public slots:
     void changePage(QListWidgetItem *current, QListWidgetItem *previous);
     void setCurrntIndxPclWin(int index);    
     void setOnlineItems(bool online);   
-    void refreshUserinfo();
-    void launchFS();
+    void refreshUserinfo();    
     void openMyPcloud();    
     void openOnlineTutorial();
     void openOnlineHelp();

@@ -1,10 +1,10 @@
 #include "acceptsharedialog.h"
 
-AcceptShareDialog::AcceptShareDialog(QString name,PCloudWindow* &w,QWidget *parent):
-    RemoteTreesDialog(w,parent)
+AcceptShareDialog::AcceptShareDialog(QString fldrname, QWidget *parent):
+    RemoteTreesDialog("",parent)
 {        
     ui->widget_fldrName->setVisible(true);
-    ui->line_folderName->setText(name);
+    ui->line_folderName->setText(fldrname);
     ui->btnAccept->setText("Accept");    
 }
 

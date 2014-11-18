@@ -10,13 +10,10 @@ LoginWindow::LoginWindow(PCloudApp *a, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::LoginWindow)
 {
-    app=a;
+    app = a;
     ui->setupUi(this);
     setWindowIcon(QIcon(WINDOW_ICON));
-    setWindowTitle("pCloud Drive");
-    QPalette palette;
-    palette.setColor(QPalette::WindowText, Qt::red);
-  //  ui->error->setPalette(palette);
+    setWindowTitle("pCloud Drive");  
     ui->forgotPassBtn->setStyleSheet("QToolButton{background-color:transparent; text-decoration: underline;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");
     ui->tbtnReg->setStyleSheet("QToolButton{background-color:transparent; text-decoration: underline;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");
     ui->loginButton->setDefault(true);
@@ -28,6 +25,18 @@ LoginWindow::LoginWindow(PCloudApp *a, QWidget *parent) :
     connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(unlinkSync()));
 
     this->setFixedSize(this->width(),this->height()); //makes the win not resizable
+
+
+/*
+    qDebug()<<ui->label_login->font().pointSize()<<ui->label_login->font().pointSizeF();
+  //  ui->label_email->font().;
+    QFont font;
+    font.setPointSizeF(qreal(11 + 13/11));
+    ui->label_email->setFont(font);
+
+      qDebug()<<ui->label_email->font().pointSize()<<ui->label_email->font().pointSizeF();
+*/
+
 }
 
 LoginWindow::~LoginWindow()
@@ -67,7 +76,7 @@ void LoginWindow::focusPass(){
 void LoginWindow::showError(const char *err)
 {
     //ui->error->setText(trUtf8(err)); //for translation
-    QMessageBox::critical(this, "pCloud", trUtf8(err));
+    QMessageBox::critical(this, "pCloud Drive", trUtf8(err));
 }
 
 void LoginWindow::logIn()

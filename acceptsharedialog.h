@@ -12,7 +12,7 @@ class AcceptShareDialog : public RemoteTreesDialog
 {
     Q_OBJECT
 public:    
-    AcceptShareDialog(QString name, PCloudWindow* &w, QWidget *parent = 0);
+    AcceptShareDialog(QString fldrname, QWidget *parent);
     QString getShareName();
 private:
     QString sharename;

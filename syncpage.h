@@ -29,12 +29,12 @@ public slots:
     void openTab(int index);
     void refreshTab(int index);
     void syncDoubleClicked(QTreeWidgetItem *item,int col);
-    void modifySync();
-    void stopSync();
+    //void modifySync();
+    void stopSync(QTreeWidgetItem *item,int col);
     void addSync();
     void saveSettings();
     void cancelSettings();
-    void enableSaveBtn();
+    void enableSaveBtn();    
 };
 
 #endif // SYNCPAGE_H

@@ -1,13 +1,15 @@
 #ifndef ADDSYNCDIALOG_H
 #define ADDSYNCDIALOG_H
 
-#include <QDialog>
-#include <QFileSystemModel>
 #include <syncpage.h>
 //#include "pcloudapp.h"
 //#include "pcloudwindow.h"
 #include "suggestnsbasewin.h"
-
+#include "remotetreesdialog.h"
+#include "common.h"
+#include <QFileDialog>
+#include <QDialog>
+#include <QFileSystemModel>
 
 namespace Ui {
 class addSyncDialog;
@@ -22,21 +24,24 @@ class addSyncDialog : public QDialog
 
 public:
     friend class SuggestnsBaseWin;
-    explicit addSyncDialog(PCloudApp *a,PCloudWindow *w,SyncPage *sp,SuggestnsBaseWin *wlcm, QWidget *parent = 0);     
+    explicit addSyncDialog(PCloudApp *a,PCloudWindow *w,SuggestnsBaseWin *wlcm, QWidget *parent = 0);
     ~addSyncDialog();
 private:
     Ui::addSyncDialog *ui;
     PCloudApp *app;
     PCloudWindow *win;
-    SyncPage *syncpage;
     SuggestnsBaseWin *addNewSyncsWin;
-    QFileSystemModel *model;
+    //QFileSystemModel *model; // the old tree
+    RemoteTreesDialog *remotesDialog;
+    QString localpath, remotepath;
     void showError(const QString &err);
     void load();
 public slots:
+    void chooseLocalFldr();
+    void chooseRemoteFldr();
     void addSync();
-    void newLocalFldr();
-    void newRemoteFldr();
+    //  void newLocalFldr(); //obsolete
+    void newRemoteFldr(QString dirname);
     void hideDialog();
 };
 

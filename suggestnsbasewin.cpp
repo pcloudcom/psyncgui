@@ -34,7 +34,8 @@ SuggestnsBaseWin::SuggestnsBaseWin(PCloudApp *a, bool addlocal, QStringList *fld
     connect(ui->btnAdd, SIGNAL(clicked()),this, SLOT(addSync()));
     connect(ui->btnFinish, SIGNAL(clicked()), this, SLOT(finish()));
     connect(ui->treeWidget, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(changeCurrItem(QModelIndex)));
-    connect(ui->btnModify, SIGNAL(clicked()), this, SLOT(modifyType()));
+    //connect(ui->btnModify, SIGNAL(clicked()), this, SLOT(modifyType()));
+    ui->btnModify->setVisible(false); //obsolete behav
     ui->statusbar->setVisible(false);
 
     this->setWindowTitle(trUtf8("pCloud Drive"));
@@ -226,7 +227,7 @@ void SuggestnsBaseWin::addSync()
         currentType = ui->treeWidget->currentItem()->data(2,Qt::UserRole).toInt();
         currentRemote = ui->treeWidget->currentItem()->data(3,Qt::UserRole).toString();
     }
-    addSyncDialog *addDialog = new addSyncDialog(app,app->pCloudWin, app->pCloudWin->get_sync_page(),this);
+    addSyncDialog *addDialog = new addSyncDialog(app,app->pCloudWin, this);
     addDialog->exec();
     delete addDialog;
 }
@@ -265,7 +266,8 @@ void SuggestnsBaseWin::addNewItem(QString &localpath, QString &remotepath, int t
     item->setData(2,Qt::UserRole,type + 1);
 }
 
-void SuggestnsBaseWin::modifyType()
+/*
+void SuggestnsBaseWin::modifyType() // obsolete behavior - sync now is only two-way
 {
     QTreeWidgetItem *current = ui->treeWidget->currentItem();
     if(!current)
@@ -285,6 +287,7 @@ void SuggestnsBaseWin::modifyType()
         }
     }
 }
+*/
 
 void SuggestnsBaseWin::finish()
 {    

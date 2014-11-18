@@ -13,7 +13,7 @@ SharesPage::SharesPage(PCloudWindow *w, PCloudApp *a,  QObject *parent) :
     app = a;
     win->ui->tabWidgetShares->setTabText(0, tr("My Shares"));
     //win->ui->tabWidgetShares->setTabIcon(0, QIcon(":/images/images/myshares.png"));
-    win->ui->tabWidgetShares->setTabText(1, tr("Shared with me"));
+    win->ui->tabWidgetShares->setTabText(1, tr("Shared With Me"));
     win->ui->tabWidgetShares->setCurrentIndex(0);
     this->setTableProps(win->ui->treeMyShares);
     this->setTableProps(win->ui->treeMyRequest);
@@ -153,10 +153,15 @@ void SharesPage::setTableProps(QTreeWidget *table)
 {
 #ifdef Q_OS_LINUX
     table->setMinimumWidth(600);
-    table->setColumnWidth(0,200);
 #else
     table->setMinimumWidth(450);
 #endif
+    int tableWidth = table->width();
+    table->setColumnWidth(0,(int) tableWidth/3); //mail
+    table->setColumnWidth(1,(int) tableWidth/3); //name
+    table->setColumnWidth(2,(int) tableWidth/6); //perms
+    table->setColumnWidth(3,(int) tableWidth/6); //date
+    table->header()->setMovable(false);
     table->setSelectionBehavior(QAbstractItemView::SelectRows);
     table->setSelectionMode(QAbstractItemView::SingleSelection);
     table->setSortingEnabled(true);
@@ -332,7 +337,7 @@ void SharesPage::acceptRqst()
     }
     else
     {
-        AcceptShareDialog dialog(currentItem->text(1),win);
+        AcceptShareDialog dialog(currentItem->text(1),this->win);
         if(dialog.exec() == QDialog::Accepted)
         {
             char* err = NULL;

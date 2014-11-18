@@ -17,43 +17,60 @@
 
 SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
     QWidget(parent)
-{    
+{
     win = w;
     app = a;
 
     initSyncPage();
-    win->ui->tabWidgetSync->setTabText(0, trUtf8("Synced Folders"));
-    win->ui->tabWidgetSync->setTabText(1, trUtf8("Sync Settings"));
-    win->ui->tabWidgetSync->setCurrentIndex(0);
 
+    //word wrap property breaks the layouts min size policy
+    win->ui->label_syncinfo->setText("With Sync you can synchronize\n"
+                                     "the content in multiple folders from your\n"
+                                     "computer in real time.By synchronizing\n"
+                                     "folders in pCloud Drive you make them\navailable even in offline mode.");
+    win->ui->label_syncinfo->setFont(app->smaller1pFont);
+
+    win->ui->label_infoexptns->setText("The patterns you enter (folder name, file name, extension, etc) will be ignored while synchronizing data\n"
+                                       "with your pCloud Account.Allowed wildcards: asterisk(*), question mark(?), patterns separated by semicolon(;).");
+
+    win->ui->label_dwnld->setFont(app->smaller1pFont);
+    win->ui->label_dwnld->setEnabled(false);
+    win->ui->label_upld->setFont(app->smaller1pFont);
+    win->ui->label_upld->setEnabled(false);
+    win->ui->tabWidgetSync->setTabText(0, trUtf8("Synced Folders"));
+    win->ui->tabWidgetSync->setTabText(1, trUtf8("Advanced Settings"));
+    win->ui->tabWidgetSync->setCurrentIndex(0);
+    win->ui->treeSyncList->setSelectionBehavior(QAbstractItemView::SelectRows);
+    win->ui->treeSyncList->setSelectionMode(QAbstractItemView::SingleSelection);
+    QStringList headerTitles;
+    headerTitles << "Local Folder"<<""<<"pCloud Drive Folder"<<"";
+    win->ui->treeSyncList->setHeaderLabels(headerTitles);
+    win->ui->treeSyncList->setMinimumWidth(450);
+    win->ui->treeSyncList->header()->setMovable(false);
+    // win->ui->treeSyncList->setSortingEnabled(true);
+    //win->ui->treeSyncList->sortByColumn(0, Qt::AscendingOrder);
+    int tableWidth =  win->ui->treeSyncList->width() - 64;
+    win->ui->treeSyncList->setColumnWidth(0, (int)tableWidth/2);
+    win->ui->treeSyncList->setColumnWidth(2, (int)tableWidth/2);
+    win->ui->treeSyncList->setColumnWidth(1, 32);
+    win->ui->treeSyncList->setColumnWidth(3, 32);
+    //win->ui->label_syncinfo->setFont(app->smaller1pFont);
     win->ui->label_dwnld->setText(app->downldInfo);
     win->ui->label_upld->setText(app->uplodInfo);
 
     connect(win->ui->tabWidgetSync, SIGNAL(currentChanged(int)), this, SLOT(refreshTab(int)));
+    connect(win->ui->treeSyncList, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(stopSync(QTreeWidgetItem*,int)));
     connect(win->ui->treeSyncList, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(syncDoubleClicked(QTreeWidgetItem*,int)));
-    connect(win->ui->btnSyncModify,SIGNAL(clicked()), this, SLOT(modifySync()));
-    connect(win->ui->btnSyncStop, SIGNAL(clicked()), this, SLOT(stopSync()));
     connect(win->ui->btnSyncAdd, SIGNAL(clicked()), this, SLOT(addSync()));
-    connect(win->ui->btnResumeSync, SIGNAL(clicked()), app, SLOT(resumeSync()));
-    connect(win->ui->btnPauseSync, SIGNAL(clicked()), app, SLOT(pauseSync()));
-
+    //connect(win->ui->btnSyncModify,SIGNAL(clicked()), this, SLOT(modifySync()));
+    win->ui->btnSyncModify->setVisible(false); // to del
+    win->ui->btnSyncStop->setVisible(false); // to del
+    //connect(win->ui->btnSyncStop, SIGNAL(clicked()), this, SLOT(stopSync()));
+    // connect(win->ui->btnResumeSync, SIGNAL(clicked()), app, SLOT(resumeSync()));
+    // connect(win->ui->btnPauseSync, SIGNAL(clicked()), app, SLOT(pauseSync()));
     connect(win->ui->btnSyncSttngsSave, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(win->ui->btnSyncSttngCancel, SIGNAL(clicked()), this, SLOT(cancelSettings()));
-    connect(win->ui->text_patterns, SIGNAL(textChanged()), this, SLOT(enableSaveBtn()));
-
-    win->ui->groupBoxSyncSSL->setVisible(false);
-    /*connect(win->ui->checkBoxSyncSSL, SIGNAL(stateChanged(int)), this, SLOT(enableSaveBtn()));
-    connect(win->ui->checkBoxp2p, SIGNAL(stateChanged(int)), this, SLOT(enableSaveBtn()));
-   connect(win->ui->rBtnSyncDwldAuto, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
-    connect(win->ui->rBtnSyncDwldUnlimit, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
-    connect(win->ui->rbtnSyncDwnlChoose, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
-    connect(win->ui->rBtnSyncUpldAuto, SIGNAL(clicked()),this, SLOT(setNewUpldSpeed()));
-    connect(win->ui->rBtnSyncUpldUnlimit, SIGNAL(clicked()),this, SLOT(setNewUpldSpeed()));
-    connect(win->ui->rbtnSyncupldChoose, SIGNAL(clicked()),this, SLOT(()));
-
-   connect(win->ui->edit_DwnldSpeed, SIGNAL(textEdited(QString)), this, SLOT(setNewSpeedFromEditline())); //textedited signal will not emit when the text is changed programmatically
-    connect(win->ui->edit_UpldSpeed, SIGNAL(textEdited(QString)), this, SLOT(setNewSpeedFromEditline()));
-*/
+    connect(win->ui->text_patterns, SIGNAL(textChanged()), this, SLOT(enableSaveBtn()));   
 }
 
 void SyncPage::openTab(int index)
@@ -93,8 +110,9 @@ static QString get_sync_type(int synctype)
 }
 
 void SyncPage::load()
-{    
-    win->ui->treeSyncList->clear();
+{
+    if(win->ui->treeSyncList->topLevelItemCount())
+        win->ui->treeSyncList->clear();
     //there is a delay with the result from lib after add_sync_delay
     QApplication::setOverrideCursor(Qt::WaitCursor);
     sleep(2);
@@ -108,8 +126,12 @@ void SyncPage::load()
                   << " "<<fldrsList->folders[i].remotepath<< " sync id="<<fldrsList->folders[i].syncid<< "sync type "<<fldrsList->folders[i].synctype;
 
             QStringList row;
-            row << fldrsList->folders[i].localpath <<get_sync_type(fldrsList->folders[i].synctype) << fldrsList->folders[i].remotepath;
+            row <<fldrsList->folders[i].localpath <<""<< fldrsList->folders[i].remotepath;
             QTreeWidgetItem *item = new QTreeWidgetItem(row);
+            item->setIcon(0,QIcon(":/32x32/images/32x32/empty-folder.png"));
+            item->setIcon(1,QIcon(":/32x32/images/32x32/sync.png"));
+            item->setIcon(2,QIcon(":images/images/folder-p.png"));
+            item->setIcon(3,QIcon(":/32x32/images/32x32/stop-sync.png"));
 
             QDir localDir(fldrsList->folders[i].localpath);
             if(localDir.exists())
@@ -139,7 +161,7 @@ void SyncPage::load()
 
 
 void SyncPage::initSyncPage()
-{    
+{
     load();
     loadSettings();
 }
@@ -157,7 +179,7 @@ void SyncPage::syncDoubleClicked(QTreeWidgetItem *item, int col)
     }
     case 1: //opens modify sync type dialog
     {
-        this->modifySync();
+        // this->modifySync();
         break;
     }
     case 2: //opens remote folder
@@ -183,7 +205,8 @@ void SyncPage::syncDoubleClicked(QTreeWidgetItem *item, int col)
     }
 }
 
-void SyncPage::modifySync()
+/* obsolete
+void SyncPage::modifySync() // to del
 {
     QTreeWidgetItem *current = win->ui->treeSyncList->currentItem();
     if (!current)
@@ -212,9 +235,14 @@ void SyncPage::modifySync()
         }
     }
 }
-void SyncPage::stopSync()
+*/
+
+void SyncPage::stopSync(QTreeWidgetItem *item, int col)
 {
-    QTreeWidgetItem *current = win->ui->treeSyncList->currentItem();
+    if(col != 3)
+        return;
+
+    QTreeWidgetItem *current = item;
     if (!current)
     {
         QMessageBox::warning(this,"pCloud", trUtf8("Please select a sync!"));
@@ -246,69 +274,15 @@ void SyncPage::stopSync()
 }
 
 void SyncPage::addSync()
-{       
-    addSyncDialog *addSync = new addSyncDialog(app,win,this, NULL);
+{
+    addSyncDialog *addSync = new addSyncDialog(app,win, NULL);
     addSync->exec();
     delete addSync;
 }
 
 // Settings tab
 void SyncPage::loadSettings()
-{    
-    /* SSL = psync_get_bool_setting("usessl");
-    win->ui->checkBoxSyncSSL->setChecked(SSL);
-
-    //p2p = psync_get_bool_setting("p2psync");
-    //win->ui->checkBoxp2p->setChecked(p2p);
-
-    //maximum upload speed in bytes per second, 0 for auto-shaper, -1 for no limit
-    //donwload default - unlimitted -1
-    //upload default - auto-shater 0
-    dwnldSpeed = psync_get_int_setting("maxdownloadspeed");
-    dwnldSpeedNew = dwnldSpeed;
-    if (!dwnldSpeed)
-    {
-        win->ui->rBtnSyncDwldAuto->setChecked(true);
-        win->ui->edit_DwnldSpeed->setEnabled(false);
-    }
-    else
-    {
-        if (dwnldSpeed == -1)
-        {
-            win->ui->rBtnSyncDwldUnlimit->setChecked(true);
-            win->ui->edit_DwnldSpeed->setEnabled(false);
-        }
-        else
-        {
-            win->ui->rbtnSyncDwnlChoose->setChecked(true);
-            win->ui->edit_DwnldSpeed->setText(QString::number(dwnldSpeed/1000));
-            win->ui->rbtnSyncDwnlChoose->setEnabled(true);
-        }
-    }
-
-    upldSpeed = psync_get_int_setting("maxuploadspeed");
-    upldSpeedNew = upldSpeed;
-    if (!upldSpeed)
-    {
-        win->ui->rBtnSyncUpldAuto->setChecked(true);
-        win->ui->edit_UpldSpeed->setEnabled(false);
-    }
-    else
-    {
-        if (upldSpeed == -1)
-        {
-            win->ui->rBtnSyncUpldUnlimit->setChecked(true);
-            win->ui->edit_UpldSpeed->setEnabled(false);
-        }
-        else
-        {
-            win->ui->rbtnSyncupldChoose->setChecked(true);
-            win->ui->edit_UpldSpeed->setText(QString::number(upldSpeed/1000));
-            win->ui->edit_UpldSpeed->setEnabled(true);
-        }
-    }
-*/
-
+{   
     patterns = psync_get_string_setting("ignorepatterns");
     win->ui->text_patterns->setText(patterns);
 
@@ -316,109 +290,9 @@ void SyncPage::loadSettings()
     win->ui->btnSyncSttngCancel->setEnabled(false);
 
 }
-/*
-void SyncPage::setNewDwnldSpeed()
-{    
-    QObject *obj = this->sender();
-    QString objname = obj->objectName();
-    if (objname == "rBtnSyncDwldAuto")
-    {
-        dwnldSpeedNew = 0;
-        win->ui->edit_DwnldSpeed->setEnabled(false);
-        emit enableSaveBtn();
-        return;
-    }
-    if (objname == "rBtnSyncDwldUnlimit")
-    {
-        dwnldSpeedNew = -1;
-        win->ui->edit_DwnldSpeed->setEnabled(false);
-        emit enableSaveBtn();
-        return;
-    }
-    if (objname == "rbtnSyncDwnlChoose")
-    {
-        win->ui->edit_DwnldSpeed->setEnabled(true);
-
-        //already entered new value but changed after that without save
-        if(!win->ui->edit_DwnldSpeed->text().isEmpty())
-        {
-            if(dwnldSpeedNew != win->ui->edit_DwnldSpeed->text().toInt()*1000)
-                dwnldSpeedNew = win->ui->edit_DwnldSpeed->text().toInt()*1000;
-        }
-        else
-            dwnldSpeedNew = -2; //flag for empty line
-        emit enableSaveBtn();
-    }
-}
-
-void SyncPage::setNewUpldSpeed()
-{
-    QObject *obj = this->sender();
-    QString objname = obj->objectName();
-    if (objname == "rBtnSyncUpldAuto")
-    {
-        upldSpeedNew = 0;
-        win->ui->edit_UpldSpeed->setEnabled(false);
-        emit enableSaveBtn();
-        return;
-    }
-    if (objname == "rBtnSyncUpldUnlimit")
-    {
-        upldSpeedNew = -1;
-        win->ui->edit_UpldSpeed->setEnabled(false);
-        emit enableSaveBtn();
-        return;
-    }
-    if (objname == "rbtnSyncupldChoose")
-    {
-        win->ui->edit_UpldSpeed->setEnabled(true);
-
-        //already entered new value but changed after that without save
-        if(!win->ui->edit_UpldSpeed->text().isEmpty())
-        {
-            if(upldSpeedNew != win->ui->edit_UpldSpeed->text().toInt()*1000)
-                upldSpeedNew = win->ui->edit_UpldSpeed->text().toInt()*1000;
-        }
-        else
-            upldSpeedNew = -2; //flag for empty line
-        emit enableSaveBtn();
-    }
-}
-
-void SyncPage::setNewSpeedFromEditline()
-{   
-    QObject *obj = this->sender();
-    QString objname = obj->objectName();
-    if (objname == "edit_UpldSpeed")
-    {
-        if(!win->ui->edit_UpldSpeed->text().isEmpty())
-            upldSpeedNew = win->ui->edit_UpldSpeed->text().toInt()*1000;
-        else
-            upldSpeedNew = -2; //flag for empty line
-    }
-    else
-    {
-        if(!win->ui->edit_DwnldSpeed->text().isEmpty())
-            dwnldSpeedNew = win->ui->edit_DwnldSpeed->text().toInt()*1000;
-        else
-            dwnldSpeedNew = -2; //flag for empty line
-    }
-    emit enableSaveBtn();
-}
-*/
 
 void SyncPage::enableSaveBtn()
 {    
-    /*   if (dwnldSpeedNew == -2 || upldSpeedNew == -2) // if one of speeds is choosen to be custom value but the value is not entered
-    {
-        win->ui->btnSyncSttngsSave->setEnabled(false);
-        return;
-    }
-    if (SSL != win->ui->checkBoxSyncSSL->isChecked()
-            || p2p != win->ui->checkBoxp2p->isChecked()
-          //  || minLocalSpace != win->ui->edit_minLocalSpace->text()
-            || upldSpeed != upldSpeedNew || dwnldSpeed != dwnldSpeedNew
-        */
     if(win->ui->text_patterns->document()->isModified())
     {
         win->ui->btnSyncSttngsSave->setEnabled(true);
@@ -434,30 +308,6 @@ void SyncPage::enableSaveBtn()
 
 void SyncPage::saveSettings()
 {
-    /*if (SSL != win->ui->checkBoxSyncSSL->isChecked())
-    {
-        SSL = !SSL;
-        psync_set_bool_setting("usessl", SSL);
-    }
-    if (p2p != win->ui->checkBoxp2p->isChecked())
-    {
-        p2p = !p2p;
-        psync_set_bool_setting("p2psync", p2p);
-    }
-
-
-    if(upldSpeed != upldSpeedNew)
-    {
-        psync_set_int_setting("maxuploadspeed",upldSpeedNew);
-        upldSpeed = upldSpeedNew;
-    }
-
-    if(dwnldSpeed != dwnldSpeedNew)
-    {
-        psync_set_int_setting("maxdownloadspeed", dwnldSpeedNew);
-        dwnldSpeed = dwnldSpeedNew;
-    }
- */
 
     if(patterns != win->ui->text_patterns->toPlainText())
     {

@@ -32,10 +32,9 @@ class PCloudApp : public QApplication
 private:
     QAction *registerAction;
     QAction *loginAction;
-    QAction *exitAction;    
-    //p  QAction *openAction; //open pcld fldr
-    QAction *accountAction;
-    QAction *driveAction; // opens Drive page
+    QAction *exitAction;        
+    QAction *accountAction, *userinfoAction;
+    QAction *driveAction; // opens Drive folder
     QAction *sharesAction; // Shares page
     QAction *shareFolderAction; //opens share folderwin
     QAction *syncAction, *syncSttngsAction; //Sync Tab
@@ -91,6 +90,8 @@ public:
     quint64 freeSpacePercentage;
     qreal usedSpace;
     const char* OSStr;
+    int fontPointSize;
+    QFont smaller2pFont,smaller1pFont;
     // PSettings *settings;
     QSettings *settings;
     QStringList syncSuggstLst; // send from context menu when add new syncs
