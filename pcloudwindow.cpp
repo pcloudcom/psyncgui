@@ -197,6 +197,7 @@ bool PCloudWindow::eventFilter(QObject *obj, QEvent *event)
                 event->ignore();
                 return true;
             case Qt::Key_D:
+            case Qt::Key_S:
             case Qt::Key_Backspace:
                 event->ignore();
                 return true;
