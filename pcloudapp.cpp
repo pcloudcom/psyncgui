@@ -288,8 +288,10 @@ void PCloudApp::showOnClick(){
         this->openCloudDir();
 }
 
-void PCloudApp::trayClicked(QSystemTrayIcon::ActivationReason reason){
-    if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::MiddleClick) //3 = Trigger - left click        
+void PCloudApp::trayClicked(QSystemTrayIcon::ActivationReason reason)
+{
+    qDebug()<<"tray activation reason"<<reason;
+    if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::MiddleClick) //3 = Trigger - left click
         showOnClick();
 }
 
@@ -394,7 +396,7 @@ void PCloudApp::createMenus()
     else
     {
         pauseSyncAction->setVisible(false);
-       // pCloudWin->ui->btnPauseSync->setVisible(false);
+        // pCloudWin->ui->btnPauseSync->setVisible(false);
     }
 
     this->createSyncFolderActions(); //loads sub menu with local synced folders
@@ -1272,7 +1274,8 @@ void PCloudApp::getUserInfo()
 void PCloudApp::getQuota()
 {
     quint64 quota = psync_get_uint_value("quota");
-    if (quota){
+    if (quota)
+    {
         this->planStr =  QString::number(quota >> 30 ) + " GB";
         quint64 usedquota =  psync_get_uint_value("usedquota");
         if (!usedquota) // sometimes  synclib doesn't return quaota immediately
@@ -1297,7 +1300,7 @@ void PCloudApp::getQuota()
         }
         else
         {
-            this->usedSpace = 0;
+            this->usedSpace = 0.0;
             this->freeSpacePercentage = 100;
         }
     }
@@ -1724,8 +1727,8 @@ void PCloudApp::pauseSync()
     psync_pause();
     pauseSyncAction->setVisible(false);
     resumeSyncAction->setVisible(true);
-  //  pCloudWin->ui->btnPauseSync->setVisible(false);
-   // pCloudWin->ui->btnResumeSync->setVisible(true);
+    //  pCloudWin->ui->btnPauseSync->setVisible(false);
+    // pCloudWin->ui->btnResumeSync->setVisible(true);
 }
 void PCloudApp::resumeSync()
 {
