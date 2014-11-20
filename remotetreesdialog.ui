@@ -70,7 +70,7 @@
      <item>
       <widget class="QPushButton" name="btnNewFolder">
        <property name="text">
-        <string>Create new folder</string>
+        <string>Create New Folder</string>
        </property>
       </widget>
      </item>

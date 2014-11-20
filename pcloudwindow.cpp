@@ -284,6 +284,10 @@ void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when
         ui->listButtonsWidget->setRowHidden(SHARES_PAGE_NUM,true);
         ui->listButtonsWidget->setRowHidden(SETTINGS_PAGE_NUM, true);
     }
+    ui->label_upld->setVisible(online);
+    ui->label_upldpic->setVisible(online);
+    ui->label_dwnld->setVisible(online);
+    ui->label_dwldpic->setVisible(online);
 }
 
 /*void PCloudWindow::setOnlinePages()
@@ -327,7 +331,7 @@ void PCloudWindow::fillAccountLoggedPage()
         ui->checkBoxVerified->setVisible(false);
         ui->btnVerify->setVisible(true);
     }
-    ui->label_space->setText(QString::number(app->usedSpace, 'f', 2) + "GB (" + QString::number(app->freeSpacePercentage) + "% free)");
+    ui->label_space->setText(app->usedSpaceStr + " (" +  QString::number(app->freeSpacePercentage) + "% free)");
     ui->label_planVal->setText(app->planStr);
 
     if (app->isPremium)

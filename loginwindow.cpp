@@ -25,18 +25,6 @@ LoginWindow::LoginWindow(PCloudApp *a, QWidget *parent) :
     connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(unlinkSync()));
 
     this->setFixedSize(this->width(),this->height()); //makes the win not resizable
-
-
-/*
-    qDebug()<<ui->label_login->font().pointSize()<<ui->label_login->font().pointSizeF();
-  //  ui->label_email->font().;
-    QFont font;
-    font.setPointSizeF(qreal(11 + 13/11));
-    ui->label_email->setFont(font);
-
-      qDebug()<<ui->label_email->font().pointSize()<<ui->label_email->font().pointSizeF();
-*/
-
 }
 
 LoginWindow::~LoginWindow()

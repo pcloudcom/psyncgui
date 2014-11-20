@@ -87,8 +87,8 @@ public:
     bool noEventCallbackFlag; // indicates if event is raised by current user
     bool nointernetFlag;
     QString planStr;
-    quint64 freeSpacePercentage;
-    qreal usedSpace;
+    int freeSpacePercentage;
+    QString usedSpaceStr;
     const char* OSStr;
     int fontPointSize;
     QFont smaller2pFont,smaller1pFont;

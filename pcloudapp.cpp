@@ -338,9 +338,9 @@ void PCloudApp::createMenus()
     syncUpldAction = new QAction(QIcon(":/menu/images/menu 48x48/upload.png"),trUtf8("Everything uploaded"),this);
 
     //sync actions
-    syncAction = new QAction(QIcon(":/menu/images/menu16x16/manage.png"),trUtf8("Manage Syncs"),this);
+    syncAction = new QAction(QIcon(":/menu/images/menu16x16/manage.png"),trUtf8("Manage"),this);
     connect(syncAction, SIGNAL(triggered()), this, SLOT(showSync()));
-    addSyncAction = new QAction(QIcon(":/menu/images/menu 48x48/newsync.png"),trUtf8("Add New Sync"),this);
+    addSyncAction = new QAction(QIcon(":/menu/images/menu 48x48/newsync.png"),trUtf8("Add New"),this);
     connect(addSyncAction, SIGNAL(triggered()),this, SLOT(addNewSync()));
     connect(this, SIGNAL(addNewSyncSgnl()), this, SLOT(addNewSync()));
     connect(this, SIGNAL(addNewSyncLstSgnl(bool)), this, SLOT(addNewSyncLst(bool)));  //for creating syncs from OS file browser Contextmenu
@@ -348,9 +348,9 @@ void PCloudApp::createMenus()
     connect(syncSttngsAction, SIGNAL(triggered()), this, SLOT(showSyncSttngs()));
 
     //shares actions
-    sharesAction = new QAction(QIcon(":/menu/images/menu16x16/manage.png"),trUtf8("Manage Shares"),this);
+    sharesAction = new QAction(QIcon(":/menu/images/menu16x16/manage.png"),trUtf8("Manage"),this);
     connect(sharesAction, SIGNAL(triggered()), this, SLOT(showShares()));
-    shareFolderAction = new QAction(QIcon(":/menu/images/menu 48x48/newsync.png"), trUtf8("Add New Share"),this);
+    shareFolderAction = new QAction(QIcon(":/menu/images/menu 48x48/newsync.png"), trUtf8("Add New"),this);
     connect(shareFolderAction, SIGNAL(triggered()), this, SLOT(addNewShare()));
 
     //create tray menu and it's submenus and add actions
@@ -1226,8 +1226,8 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     //loggedmenu->actions()[0]->setText(username);
     //}
 
-    userinfoAction->setText(QString::number(usedSpace, 'f', 2) + "GB (" +
-                            QString::number(this->freeSpacePercentage) + "%) of " + this->planStr + " used");
+    userinfoAction->setText(this->usedSpaceStr + " ("+
+                            QString::number(100 - this->freeSpacePercentage) + "%) of " + this->planStr + " used");
     pCloudWin->fillAccountLoggedPage();
 
     switch (this->lastStatus)
@@ -1249,18 +1249,20 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     pCloudWin->setOnlineItems(true);
     tray->setContextMenu(loggedmenu);
 
-    //isFirstLaunch = true; // for test TEMP
+    //  isFirstLaunch = true; // for test TEMP
     if (isFirstLaunch)
     {
         welcomeWin = new WelcomeWin(this, NULL);
         this->showWindow(welcomeWin);
     }
-    /* NEXT VERSION - when screeshots are ready
-        if (isFirstLaunch || (this->settings->contains("showintrowin") && this->settings->value("showintrowin").toBool()))
-            if(introwin == NULL)
-                introwin = new InfoScreensWin(this);
-            this->showWindow(introwin);
-     */
+    // NEXT VERSION - when screeshots are ready
+    /* if (isFirstLaunch || (this->settings->contains("showintrowin") && this->settings->value("showintrowin").toBool()))
+    {
+        if(introwin == NULL)
+            introwin = new InfoScreensWin(this);
+        this->showWindow(introwin);
+    }*/
+
 }
 
 void PCloudApp::getUserInfo()
@@ -1272,7 +1274,7 @@ void PCloudApp::getUserInfo()
 }
 
 void PCloudApp::getQuota()
-{
+{    
     quint64 quota = psync_get_uint_value("quota");
     if (quota)
     {
@@ -1296,11 +1298,11 @@ void PCloudApp::getQuota()
             else
                 this->freeSpacePercentage = (100*(quota - usedquota))/quota; // should be only this line when bug is fixed
 
-            this->usedSpace = static_cast<double>(usedquota) / (1<<30);
+            this->usedSpaceStr = bytesConvert(usedquota);
         }
         else
         {
-            this->usedSpace = 0.0;
+            this->usedSpaceStr = "0.00 GB";
             this->freeSpacePercentage = 100;
         }
     }
@@ -1841,8 +1843,8 @@ void PCloudApp::updateUserInfo(const char* &param)
     else
         this->getUserInfo();
 
-    userinfoAction->setText(QString::number(usedSpace, 'f', 2) + "GB (" +
-                            QString::number(this->freeSpacePercentage) + "%) of " + this->planStr + " used");
+    userinfoAction->setText(this->usedSpaceStr + " ("+
+                            QString::number(100 - this->freeSpacePercentage) + "%) of " + this->planStr + " used");
 }
 void PCloudApp::changeOnlineItems(bool logged)
 {
@@ -1882,12 +1884,12 @@ QString PCloudApp::bytesConvert(quint64 bytes)
     if(bytes< one<<40)
     {
         qreal res = static_cast<double>(bytes) / (1<<30);
-        return QString::number(res, 'f', 1) + " GB";
+        return QString::number(res, 'f', 2) + " GB";
     }
     else
     {
         qreal res = static_cast<double>(bytes) / (one<<40);
-        return QString::number(res, 'f' ,1) + " TB";
+        return QString::number(res, 'f' ,2) + " TB";
     }
 }
 QString PCloudApp::timeConvert(quint64 seconds)

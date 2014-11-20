@@ -32,7 +32,7 @@ addSyncDialog::addSyncDialog(PCloudApp *a, PCloudWindow *w, SuggestnsBaseWin *wl
         this->setWindowTitle(trUtf8("Change sync"));
     }
     else
-        this->setWindowTitle(trUtf8("Add new sync"));
+        this->setWindowTitle(trUtf8("Add New Sync"));
     load();
 }
 
