@@ -6,15 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>620</width>
+    <width>590</width>
     <height>434</height>
    </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>590</width>
+    <height>434</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>pCloud</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_7">
+   <layout class="QVBoxLayout" name="verticalLayout_10">
     <property name="spacing">
      <number>0</number>
     </property>
@@ -34,7 +40,7 @@
         <number>0</number>
        </property>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="1,1">
          <property name="spacing">
           <number>0</number>
          </property>
@@ -54,16 +60,16 @@
             <number>0</number>
            </property>
            <property name="leftMargin">
-            <number>25</number>
+            <number>15</number>
            </property>
            <property name="topMargin">
-            <number>30</number>
-           </property>
-           <property name="rightMargin">
             <number>20</number>
            </property>
+           <property name="rightMargin">
+            <number>15</number>
+           </property>
            <property name="bottomMargin">
-            <number>10</number>
+            <number>0</number>
            </property>
            <item>
             <widget class="QLabel" name="label_5">
@@ -73,7 +79,7 @@
               </font>
              </property>
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Register&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;Register&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -96,12 +102,18 @@
            <item>
             <widget class="QStackedWidget" name="stackedWidget">
              <property name="currentIndex">
-              <number>0</number>
+              <number>1</number>
              </property>
              <widget class="QWidget" name="page_reg">
-              <layout class="QVBoxLayout" name="verticalLayout_4">
+              <layout class="QVBoxLayout" name="verticalLayout_8">
+               <property name="margin">
+                <number>0</number>
+               </property>
                <item>
-                <layout class="QVBoxLayout" name="verticalLayout_3">
+                <layout class="QVBoxLayout" name="verticalLayout_7">
+                 <property name="spacing">
+                  <number>12</number>
+                 </property>
                  <item>
                   <layout class="QVBoxLayout" name="verticalLayout_2">
                    <item>
@@ -114,6 +126,10 @@
                    <item>
                     <widget class="QLineEdit" name="email"/>
                    </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_3">
                    <item>
                     <widget class="QLabel" name="label_2">
                      <property name="text">
@@ -128,6 +144,10 @@
                      </property>
                     </widget>
                    </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_4">
                    <item>
                     <widget class="QLabel" name="label_3">
                      <property name="text">
@@ -147,103 +167,116 @@
                    </item>
                   </layout>
                  </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,35">
+                 <property name="topMargin">
+                  <number>6</number>
+                 </property>
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,35">
+                  <layout class="QVBoxLayout" name="verticalLayout">
                    <property name="topMargin">
-                    <number>6</number>
+                    <number>0</number>
                    </property>
                    <item>
-                    <layout class="QVBoxLayout" name="verticalLayout">
-                     <property name="topMargin">
-                      <number>0</number>
+                    <widget class="QCheckBox" name="accepttos">
+                     <property name="layoutDirection">
+                      <enum>Qt::LeftToRight</enum>
                      </property>
-                     <item>
-                      <widget class="QCheckBox" name="accepttos">
-                       <property name="layoutDirection">
-                        <enum>Qt::LeftToRight</enum>
-                       </property>
-                       <property name="text">
-                        <string/>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <spacer name="verticalSpacer_2">
-                       <property name="orientation">
-                        <enum>Qt::Vertical</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>20</width>
-                         <height>16</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="label_4">
                      <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;I accept&lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/terms_and_conditions.html&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#000000;&quot;&gt;Terms of Service&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:9pt; color:#000000;&quot;&gt;, &lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/privacy_policy.html&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#000000;&quot;&gt;Privacy Policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;and &lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/int_pr_policy.html&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#000000;&quot;&gt;Intellectual Property Policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                     </property>
-                     <property name="scaledContents">
-                      <bool>false</bool>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignHCenter|Qt::AlignTop</set>
-                     </property>
-                     <property name="wordWrap">
-                      <bool>true</bool>
-                     </property>
-                     <property name="openExternalLinks">
-                      <bool>true</bool>
+                      <string/>
                      </property>
                     </widget>
+                   </item>
+                   <item>
+                    <spacer name="verticalSpacer_2">
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>20</width>
+                       <height>16</height>
+                      </size>
+                     </property>
+                    </spacer>
                    </item>
                   </layout>
                  </item>
                  <item>
-                  <spacer name="verticalSpacer_4">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
+                  <widget class="QLabel" name="label_4">
+                   <property name="text">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;I accept&lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/terms_and_conditions.html&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#000000;&quot;&gt;Terms of Service&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:9pt; color:#000000;&quot;&gt;, &lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/privacy_policy.html&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#000000;&quot;&gt;Privacy Policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;and &lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/int_pr_policy.html&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#000000;&quot;&gt;Intellectual Property Policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
+                   <property name="scaledContents">
+                    <bool>false</bool>
                    </property>
-                  </spacer>
+                   <property name="alignment">
+                    <set>Qt::AlignHCenter|Qt::AlignTop</set>
+                   </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
+                   <property name="openExternalLinks">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
                  </item>
+                </layout>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_4">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>28</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_2">
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_2">
-                   <item>
-                    <widget class="QPushButton" name="registerButton">
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>Register</string>
-                     </property>
-                     <property name="default">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
+                  <widget class="QPushButton" name="registerButton">
+                   <property name="font">
+                    <font>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Register</string>
+                   </property>
+                   <property name="default">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
               </layout>
              </widget>
              <widget class="QWidget" name="page_2">
-              <layout class="QHBoxLayout" name="horizontalLayout_4">
+              <layout class="QVBoxLayout" name="verticalLayout_9">
+               <property name="margin">
+                <number>0</number>
+               </property>
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout_5">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="label_6">
+                   <property name="text">
+                    <string>The account:</string>
+                   </property>
+                  </widget>
+                 </item>
                  <item>
                   <widget class="QLabel" name="label_accntinfo">
                    <property name="text">
@@ -255,33 +288,40 @@
                   </widget>
                  </item>
                  <item>
-                  <spacer name="verticalSpacer">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="btnUnlink">
+                  <widget class="QLabel" name="label_7">
                    <property name="text">
-                    <string>Unlink</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="btnCancel">
-                   <property name="text">
-                    <string>Cancel</string>
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;is currently linked to this computer.&lt;br&gt;You need to unlink in order to&lt;br&gt;register a new account.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                   </widget>
                  </item>
                 </layout>
+               </item>
+               <item>
+                <spacer name="verticalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>63</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btnUnlink">
+                 <property name="text">
+                  <string>Unlink</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btnCancel">
+                 <property name="text">
+                  <string>Cancel</string>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
