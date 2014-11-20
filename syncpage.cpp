@@ -28,8 +28,9 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
                                      "the content in multiple folders from your\n"
                                      "computer in real time.By synchronizing\n"
                                      "folders in pCloud Drive you make them\navailable even in offline mode.");
+ #ifndef Q_OS_WIN
     win->ui->label_syncinfo->setFont(app->smaller1pFont);
-
+#endif
     win->ui->label_infoexptns->setText("The patterns you enter (folder name, file name, extension, etc) will be ignored while synchronizing data\n"
                                        "with your pCloud Account.Allowed wildcards: asterisk(*), question mark(?), patterns separated by semicolon(;).");
 
