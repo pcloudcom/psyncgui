@@ -14,9 +14,13 @@ RegisterWindow::RegisterWindow(PCloudApp *a, int pageIndex, QWidget *parent):
     setWindowTitle("pCloud Drive");
     ui->stackedWidget->setCurrentIndex(pageIndex);
     if(pageIndex)
-         this->setUnlinkLabelText();
+        this->setUnlinkLabelText();
     ui->registerButton->setDefault(true);
+    ui->btnUnlink->setDefault(true);
     ui->tbtnLogin->setStyleSheet("QToolButton{background-color:transparent; text-decoration: underline;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");
+    QFont italicFont;
+    italicFont.setItalic(true);
+    ui->label_accntinfo->setFont(italicFont);
     connect(ui->registerButton, SIGNAL(clicked()), this, SLOT(doRegister()));
     connect(ui->email, SIGNAL(returnPressed()), this, SLOT(focusPass()));
     connect(ui->password, SIGNAL(returnPressed()), this, SLOT(focusConfirm()));
@@ -54,12 +58,15 @@ void RegisterWindow::setCurrPage(int index)
 
 void RegisterWindow::setUnlinkLabelText()
 {
-     ui->label_accntinfo->setText(QString("The account:\n").append(psync_get_username()).append("\nis currently linked to this computer. You need to unlink in order to register a new account."));
+    QString user = psync_get_username();
+    if(user.length() > 30)
+        user = user.left(30).append("...");
+    ui->label_accntinfo->setText(user);
 }
 
 void RegisterWindow::setError(const char *err){
-   // ui->error->setText(trUtf8(err));
-     QMessageBox::critical(this, "pCloud Drive", trUtf8(err));
+    // ui->error->setText(trUtf8(err));
+    QMessageBox::critical(this, "pCloud Drive", trUtf8(err));
 }
 
 void RegisterWindow::focusPass(){
@@ -112,7 +119,7 @@ void RegisterWindow::doRegister(){
     free(err);
     ui->password->clear();
     ui->confirmpassword->clear();
-   // setError("");
+    // setError("");
     hide();
     //p app->openCloudDir();
 

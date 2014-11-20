@@ -102,7 +102,7 @@
            <item>
             <widget class="QStackedWidget" name="stackedWidget">
              <property name="currentIndex">
-              <number>1</number>
+              <number>0</number>
              </property>
              <widget class="QWidget" name="page_reg">
               <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -171,6 +171,9 @@
                </item>
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,35">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
                  <property name="topMargin">
                   <number>6</number>
                  </property>
@@ -207,7 +210,7 @@
                  <item>
                   <widget class="QLabel" name="label_4">
                    <property name="text">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;I accept&lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/terms_and_conditions.html&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#000000;&quot;&gt;Terms of Service&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:9pt; color:#000000;&quot;&gt;, &lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/privacy_policy.html&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#000000;&quot;&gt;Privacy Policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;and &lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/int_pr_policy.html&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#000000;&quot;&gt;Intellectual Property Policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;I accept&lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/terms_and_conditions.html&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#000000;&quot;&gt;Terms of Service&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:9pt; color:#000000;&quot;&gt;, &lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/privacy_policy.html&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#000000;&quot;&gt;Privacy Policy&lt;/span&gt;&lt;/a&gt; &lt;br&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;and &lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/int_pr_policy.html&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#000000;&quot;&gt;Intellectual Property Policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                    <property name="scaledContents">
                     <bool>false</bool>
