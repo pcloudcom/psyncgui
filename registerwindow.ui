@@ -102,7 +102,7 @@
            <item>
             <widget class="QStackedWidget" name="stackedWidget">
              <property name="currentIndex">
-              <number>0</number>
+              <number>1</number>
              </property>
              <widget class="QWidget" name="page_reg">
               <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -314,6 +314,12 @@
                </item>
                <item>
                 <widget class="QPushButton" name="btnUnlink">
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
                  <property name="text">
                   <string>Unlink</string>
                  </property>
@@ -321,6 +327,12 @@
                </item>
                <item>
                 <widget class="QPushButton" name="btnCancel">
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
                  <property name="text">
                   <string>Cancel</string>
                  </property>
