@@ -26,8 +26,8 @@ SettingsPage::SettingsPage(PCloudWindow *w, PCloudApp *a, QObject* parent):
     win->ui->label_infop2p->setFont(app->smaller2pFont);
     win->ui->label_infoautostrt->setFont(app->smaller2pFont);
     win->ui->label_infoCM->setFont(app->smaller2pFont);
-    win->ui->label_infominspace->setFont(app->smaller2pFont);
-    win->ui->label_infocache->setFont(app->smaller2pFont);
+    win->ui->label_infominspace->setFont(app->smaller1pFont);
+    win->ui->label_infocache->setFont(app->smaller1pFont);
 #else
     win->ui->line_settngsGeneral->setVisible(false);
     win->ui->line_settngsSpace->setVisible(false);
@@ -35,9 +35,6 @@ SettingsPage::SettingsPage(PCloudWindow *w, PCloudApp *a, QObject* parent):
     win->ui->line_settngsSpeed2->setVisible(false);
 #endif
     win->ui->label_infop2p->setText("pCloud Drive uses p2p (peer to peer), which is a computer-to-computer connection within your Local Area Network (LAN),\nto speed up synchronization.");
-    win->ui->label_infocache->setText("\"Cache size\" is the amount of disk space the pCloud Drive will use to store locally information from the cloud.\n"
-                                      "It should be at least the size of the files you usually work with. Minimum recommended: 5120 MB.");
-
 
     QRegExp regExp("[1-9][0-9]{0,4}");
     QRegExpValidator* regExpValidator = new QRegExpValidator(regExp, this);

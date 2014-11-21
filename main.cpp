@@ -1,5 +1,6 @@
 #include "pcloudapp.h"
 #include "mylogger.h"
+#include "psynclib.h"
 #include <QApplication>
 
 #ifdef Q_OS_WIN
@@ -90,10 +91,19 @@ bool isRunning(){
 
 int main(int argc, char *argv[])
 {    
+    if (psync_init() == -1)
+    {
+        //QMessageBox::critical(NULL, "pCloud Drive", QObject::trUtf8("pCloud Drive is already running!"));
+        qDebug()<<"Init sync returned failed. It may be already running! "<<psync_get_last_error();
+        return 1;
+        //this->quit();
+    }
+
 #ifdef Q_OS_WIN
     //MyLogger logger;
-    if (isRunning()){
-      //  MessageBoxA(NULL, "PCloud is already running.", "Already running", MB_OK);
+    if (isRunning())
+    {
+        MessageBoxA(NULL, "PCloud is already running.", "Already running", MB_OK);
         return 1;
     }
 #endif
