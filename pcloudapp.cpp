@@ -41,7 +41,7 @@ void PCloudApp::hideAllWindows(){
 }
 
 void PCloudApp::showWindow(QMainWindow *win)
-{   
+{
     QDesktopWidget *desktop = QApplication::desktop();
     int x = (desktop->width() - win->width()) / 2;
     int y = (desktop->height() - win->height()) / 2;
@@ -251,7 +251,7 @@ void PCloudApp::removeSetting(QString settingKey)
         settings->remove(settingKey);
 }
 void PCloudApp::clearUpdtNotifctnSettngs()
-{    
+{
     removeSetting("vrsnNotifyInvervalIndx");
 }
 void PCloudApp::clearAllSettings()
@@ -266,7 +266,7 @@ void PCloudApp::clearAllSettings()
         QSettings appDir("HKEY_LOCAL_MACHINE\\SOFTWARE\\PCloud\\pCloud",QSettings::NativeFormat); //take app install ddir
         registrySttng->setValue("pSync",appDir.value("Install_Dir").toString().append("\\pSync.exe"));
     }
-#endif    
+#endif
 
 }
 
@@ -290,7 +290,7 @@ void PCloudApp::showOnClick(){
 
 void PCloudApp::trayClicked(QSystemTrayIcon::ActivationReason reason)
 {
-    qDebug()<<"tray activation reason"<<reason;
+    qDebug()<<Q_FUNC_INFO<<"tray activation reason"<<reason;
     if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::MiddleClick) //3 = Trigger - left click
         showOnClick();
 }
@@ -359,7 +359,7 @@ void PCloudApp::createMenus()
 #ifdef VFS
     loggedmenu->addAction(driveAction);
     loggedmenu->addSeparator();
-#endif   
+#endif
     syncMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu 32x32/sync.png"),trUtf8("Sync"));
     syncedFldrsMenu = syncMenu->addMenu(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),trUtf8("Synced Folders"));
     syncMenu->addSeparator();
@@ -530,7 +530,7 @@ void status_callback(pstatus_t *status)
 
                 if(status->downloadspeed)// sometimes lib returns 0
                 {
-                    PCloudApp::appStatic->downldInfo = QObject::trUtf8("Download: ") + QString::number(status->downloadspeed/1000) + "kB/s, " +
+                    PCloudApp::appStatic->downldInfo = QObject::trUtf8("Download: ") + QString::number(status->downloadspeed/1000) + " kB/s, " +
                             PCloudApp::appStatic->timeConvert(status->bytestodownload/status->downloadspeed) + ", " +
                             PCloudApp::appStatic->bytesConvert(status->bytestodownload - status->bytesdownloaded) + ", " +
                             QString::number(status->filestodownload) + files;
@@ -572,7 +572,7 @@ void status_callback(pstatus_t *status)
 
                 if(status->uploadspeed)// sometimes is 0
                 {
-                    PCloudApp::appStatic->uplodInfo = QObject::trUtf8("Upload: ") + QString::number(status->uploadspeed/1000) + "kB/s, " +
+                    PCloudApp::appStatic->uplodInfo = QObject::trUtf8("Upload: ") + QString::number(status->uploadspeed/1000) + " kB/s, " +
                             PCloudApp::appStatic->timeConvert(status->bytestoupload/status->uploadspeed) + ", " +
                             PCloudApp::appStatic->bytesConvert(status->bytestoupload - status->bytesuploaded) + ", " +
                             QString::number(status->filestoupload) + files;
@@ -617,7 +617,7 @@ void status_callback(pstatus_t *status)
 
                 if(status->downloadspeed)// sometimes is 0
                 {
-                    PCloudApp::appStatic->downldInfo = QObject::trUtf8("Download: ") + QString::number(status->downloadspeed/1000) + "kB/s, " +
+                    PCloudApp::appStatic->downldInfo = QObject::trUtf8("Download: ") + QString::number(status->downloadspeed/1000) + " kB/s, " +
                             PCloudApp::appStatic->timeConvert(status->bytestodownload/status->downloadspeed) + ", " +
                             PCloudApp::appStatic->bytesConvert(status->bytestodownload - status->bytesdownloaded) + ", " +
                             QString::number(status->filestodownload) + filesdwnld;
@@ -643,7 +643,7 @@ void status_callback(pstatus_t *status)
 
                 if(status->uploadspeed)// sometimes is 0
                 {
-                    PCloudApp::appStatic->uplodInfo = QObject::trUtf8("Upload: ") + QString::number(status->uploadspeed/1000) + "kB/s, " +
+                    PCloudApp::appStatic->uplodInfo = QObject::trUtf8("Upload: ") + QString::number(status->uploadspeed/1000) + " kB/s, " +
                             PCloudApp::appStatic->timeConvert(status->bytestoupload/status->uploadspeed) + ", " +
                             PCloudApp::appStatic->bytesConvert(status->bytestoupload - status->bytesuploaded) + ", " +
                             QString::number(status->filestoupload) + filesupld;
@@ -1022,8 +1022,9 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     connect(this, SIGNAL(addNewShareSgnl(QString)), this, SLOT(addNewShare(QString)));
     bool savedauth = psync_get_bool_value("saveauth"); //works when syns is paused also
 
-    qDebug()<<"saveauth"<<savedauth << "username" <<psync_get_username();
+    qDebug()<<"saveauth"<<savedauth << "username" <<psync_get_username()<< "auth"<< psync_get_auth_string();
     if (!savedauth)
+        //if (!strcmp(psync_get_auth_string(), ""))
     {
         //case not remembered
         //p othread=NULL;
@@ -1204,7 +1205,7 @@ void PCloudApp::showTrayMessage(QString title, QString msg)
 }
 
 void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
-{    
+{
     if (this->unlinkFlag)
     {
         syncedFldrsMenu->clear();
@@ -1274,7 +1275,7 @@ void PCloudApp::getUserInfo()
 }
 
 void PCloudApp::getQuota()
-{    
+{
     quint64 quota = psync_get_uint_value("quota");
     if (quota)
     {
@@ -1803,7 +1804,7 @@ void PCloudApp::addNewSync()
     emit this->pCloudWin->syncPage->addSync(); // to be moved
 }
 void PCloudApp::addNewSyncLst(bool addLocalFldrs)
-{    
+{
     hideAllWindows();
     if(syncFldrsWin == NULL)
         syncFldrsWin = new  SuggestnsBaseWin(this, addLocalFldrs, &syncSuggstLst);
