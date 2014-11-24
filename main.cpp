@@ -27,7 +27,7 @@ BOOL CALLBACK EnumProc(HWND hwnd, LPARAM lParam)
     if(processId == (DWORD)lParam)
     {
 
-       char wn[255];
+        char wn[255];
         int iLen = GetWindowTextA(hwnd, wn, 255);
         if ( iLen > 0)
             qDebug()<<"first"<<wn;
@@ -48,7 +48,7 @@ BOOL CALLBACK EnumProc(HWND hwnd, LPARAM lParam)
                 qDebug()<<"second"<<wn;
             //SendMessage(hwnd,WM_SYSCOMMAND,0,0);
             //SendMessageA
-           // SendMessageW(hwnd,WM_NOTIFY,0,0);
+            // SendMessageW(hwnd,WM_NOTIFY,0,0);
             //PostMessageW(hwnd,WM_COMMAND,0,0);
         }
     }
@@ -76,7 +76,7 @@ bool isRunning(){
     if (processName[0] && Process32First(snapshot, &entry)){
         while (Process32Next(snapshot, &entry)){
             if (entry.th32ProcessID != id && !wcsicmp(processName, entry.szExeFile)){
-               EnumWindows(EnumProc,entry.th32ProcessID);
+                EnumWindows(EnumProc,entry.th32ProcessID);
                 CloseHandle(snapshot);
                 return true;
             }
@@ -93,20 +93,14 @@ int main(int argc, char *argv[])
 {    
     if (psync_init() == -1)
     {
-        //QMessageBox::critical(NULL, "pCloud Drive", QObject::trUtf8("pCloud Drive is already running!"));
         qDebug()<<"Init sync returned failed. It may be already running! "<<psync_get_last_error();
-        return 1;
-        //this->quit();
-    }
-
 #ifdef Q_OS_WIN
-    //MyLogger logger;
-    if (isRunning())
-    {
-        MessageBoxA(NULL, "PCloud is already running.", "Already running", MB_OK);
+        MyLogger logger;
+        if (isRunning())
+            MessageBoxA(NULL, "pCloud Drive is already running.", "Already running", MB_OK);
+#endif
         return 1;
     }
-#endif
 
     return PCloudApp(argc, argv).exec();
 }
