@@ -512,7 +512,7 @@ void PCloudWindow::openOnlineTutorial(){
 void PCloudWindow::openOnlineHelp()
 {
     //QUrl url ("https://my.pcloud.com/#page=faq"); //to check
-    QUrl url("https://www.pcloud.com/support.html#p=8");
+    QUrl url("https://my.pcloud.com/#page=faqsync");
     QDesktopServices::openUrl(url);
 }
 

@@ -175,7 +175,6 @@ void PCloudApp::openCloudDir()
 {
     QDesktopServices::openUrl(QUrl::fromLocalFile(psync_fs_getmountpoint()));
 
-
     /*p    QString path = settings->get("path");
 
 #ifdef Q_OS_WIN
@@ -227,8 +226,8 @@ void PCloudApp::logOut(){
     emit changeSyncIcon(OFFLINE_ICON);
     this->hideAllWindows();
     this->authentication = "";
-    this->setFirstLaunch(false); //after unlink has to be true
-    //to show login again
+    this->isFirstLaunch = false;
+    this->showLogin();
     //p unmount
 }
 
@@ -1250,20 +1249,22 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     pCloudWin->setOnlineItems(true);
     tray->setContextMenu(loggedmenu);
 
-    //  isFirstLaunch = true; // for test TEMP
+     //isFirstLaunch = true; // for test TEMP
+#ifdef Q_OS_WIN // NEXT VERSION - when screeshots for win are ready
     if (isFirstLaunch)
     {
         welcomeWin = new WelcomeWin(this, NULL);
         this->showWindow(welcomeWin);
     }
-    // NEXT VERSION - when screeshots are ready
-    /* if (isFirstLaunch || (this->settings->contains("showintrowin") && this->settings->value("showintrowin").toBool()))
+#else
+     // ++ create pclsyn default
+     if (isFirstLaunch || (this->settings->contains("showintrowin") && this->settings->value("showintrowin").toBool()))
     {
         if(introwin == NULL)
             introwin = new InfoScreensWin(this);
         this->showWindow(introwin);
-    }*/
-
+    }
+#endif
 }
 
 void PCloudApp::getUserInfo()

@@ -10,24 +10,16 @@ InfoScreensWin::InfoScreensWin(PCloudApp *a, QWidget *parent) :
 {
     ui->setupUi(this);
     app = a;
-    ui->pagesWidget->setCurrentIndex(0);
-    ui->btnPreviuos->setVisible(false);
     ui->checkBox_showagain->setChecked(Qt::Checked);
-
     setWindowIcon(QIcon(WINDOW_ICON));
     setWindowTitle("pCloud Drive");
     this->setWindowFlags(Qt::WindowTitleHint | Qt::CustomizeWindowHint);
-
     connect(ui->pagesWidget, SIGNAL(currentChanged(int)), this, SLOT(changePageContent(int)));
-    ui->btnOpenFldr->setVisible(false);
-
     connect(ui->btnPreviuos, SIGNAL(clicked()), this, SLOT(openPreviousPage()));
     connect(ui->btnNext, SIGNAL(clicked()), this, SLOT(openNextPage()));
-   // connect(ui->btnFinish, SIGNAL(clicked()), this, SLOT(finish()));
-    //connect(ui->btnOpenFldr, SIGNAL(clicked()), app, SLOT(openCloudDir()));
     connect(ui->btnOpenFldr, SIGNAL(clicked()), this, SLOT(finish()));
-
-    //this->setAttribute(Qt::WA_DeleteOnClose, true);
+    if(app->isFirstLaunch)
+        emit this->createDfltSync();
 }
 
 InfoScreensWin::~InfoScreensWin()
@@ -35,27 +27,31 @@ InfoScreensWin::~InfoScreensWin()
     delete ui;
 }
 
+void InfoScreensWin::showEvent(QShowEvent *event)
+{
+    ui->pagesWidget->setCurrentIndex(0);
+    ui->btnOpenFldr->setVisible(false);
+    ui->btnPreviuos->setVisible(false);
+    ui->btnNext->setVisible(true);
+    event->accept();
+}
 
 //slots
 void InfoScreensWin::changePageContent(int index)
 {
     switch(index)
     {
-    case DRIVE_INFO_PAGE_NUM:
-        qDebug()<<DRIVE_INFO_PAGE_NUM<<"DRIVE_INFO_PAGE_NUM";
+    case WELCOME_INTRO_PAGE_NUM:
+        qDebug()<<WELCOME_INTRO_PAGE_NUM<<"WELCOME_INTRO_PAGE_NUM";
         ui->btnPreviuos->setVisible(false);
         break;
-    case SYNC_INFO_PAGE_NUM:
-        qDebug()<<SYNC_INFO_PAGE_NUM<<"SYNC_INFO_PAGE_NUM";
+    case DRIVE_INFO_PAGE_NUM:
+        qDebug()<<DRIVE_INFO_PAGE_NUM<<"DRIVE_INFO_PAGE_NUM";
         ui->btnPreviuos->setVisible(true);
         break;
-    case SHARES_INFO_PAGE_NUM:
-        qDebug()<<SHARES_INFO_PAGE_NUM<<"SHARES_INFO_PAGE_NUM";
-        return;
     case OTHERS_PLATFORMS_PAGE_NUM:
         qDebug()<<OTHERS_PLATFORMS_PAGE_NUM<<"OTHERS_PLATFORMS_PAGE_NUM";
         ui->btnOpenFldr->setVisible(false); //if was on last page
-       // ui->btnPreviuos->setVisible(true);
         ui->btnNext->setVisible(true);
         break;
     case FINISH_INFO_PAGE_NUM:
@@ -64,8 +60,7 @@ void InfoScreensWin::changePageContent(int index)
         ui->btnOpenFldr->setVisible(true);
         break;
     default:
-        qDebug()<<"InfoScreensWin::changePageContent default";
-        break;
+        return;
     }
 }
 
@@ -82,12 +77,47 @@ void InfoScreensWin::openNextPage()
 }
 
 void InfoScreensWin::finish()
-{
-    //++ save checkbox
+{    
     if(ui->checkBox_showagain->isChecked())
         this->app->settings->setValue("showintrowin",true);
     else if(app->settings->contains("showintrowin"))
         app->settings->remove("showintrowin");
     app->openCloudDir();
     this->close();
+}
+
+void InfoScreensWin::createDfltSync()
+{
+    QString dfltRemotePath = "/pCloud Sync";
+    pentry_t *pfldr = psync_stat_path(dfltRemotePath.toUtf8());
+    if(pfldr == NULL)
+    {
+        char *err = NULL;
+        psync_create_remote_folder_by_path(dfltRemotePath.toUtf8(),&err);
+        if (err)
+        {
+            qDebug()<<"create psync default fldr err:"<<err;
+            return;
+        }
+        free(err);
+    }
+
+    QDir *dfltLocalDir;
+#ifdef Q_OS_WIN
+    dfltLocalDir = new QDir(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+#else
+    dfltLocalDir = new QDir(QDir::homePath());
+#endif
+    QString localpath = dfltLocalDir->path().append(OSPathSeparator).append("pCloud Sync");
+    QDir pcloudDir(localpath);
+    if(!pcloudDir.exists())
+    {
+        dfltLocalDir->mkdir("pCloud Sync");
+    }
+
+    psync_syncid_t id = psync_add_sync_by_path(localpath.toUtf8(),dfltRemotePath.toUtf8(), PSYNC_FULL);
+    if (id == -1)
+        app->check_error();
+    else
+        app->pCloudWin->get_sync_page()->load();
 }
