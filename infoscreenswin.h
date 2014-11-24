@@ -2,6 +2,7 @@
 #define INFOSCREENSWIN_H
 
 #include <QMainWindow>
+#include <QShowEvent>
 
 namespace Ui {
 class InfoScreensWin;
@@ -17,6 +18,7 @@ public:
     explicit InfoScreensWin(PCloudApp *a,QWidget *parent = 0);
     ~InfoScreensWin();
 public slots:
+    void createDfltSync();
     void changePageContent(int index);
     void openPreviousPage();
     void openNextPage();
@@ -24,6 +26,8 @@ public slots:
 private:
     Ui::InfoScreensWin *ui;
     PCloudApp *app;
+protected:
+    void showEvent(QShowEvent *event);
 };
 
 #endif // INFOSCREENSWIN_H

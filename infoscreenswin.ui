@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>684</width>
+    <height>515</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_3">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
     <property name="leftMargin">
      <number>0</number>
     </property>
@@ -24,16 +24,16 @@
     <property name="rightMargin">
      <number>0</number>
     </property>
+    <property name="bottomMargin">
+     <number>9</number>
+    </property>
     <item>
      <widget class="QStackedWidget" name="pagesWidget">
       <property name="currentIndex">
-       <number>4</number>
+       <number>5</number>
       </property>
-      <widget class="QWidget" name="pageDrive">
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <property name="spacing">
-         <number>0</number>
-        </property>
+      <widget class="QWidget" name="pageIntro">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
         <property name="leftMargin">
          <number>0</number>
         </property>
@@ -43,7 +43,27 @@
         <property name="rightMargin">
          <number>0</number>
         </property>
-        <property name="bottomMargin">
+        <item>
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="Resources.qrc">:/welcomes/images/welcomes/welcomeIntro.png</pixmap>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageDrive">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
          <number>0</number>
         </property>
         <item>
@@ -51,23 +71,22 @@
           <property name="text">
            <string/>
           </property>
+          <property name="pixmap">
+           <pixmap resource="Resources.qrc">:/welcomes/images/welcomes/welcomeDrive.png</pixmap>
+          </property>
           <property name="scaledContents">
            <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>1 то дел</string>
           </property>
          </widget>
         </item>
        </layout>
       </widget>
       <widget class="QWidget" name="pageSync">
-       <layout class="QVBoxLayout" name="verticalLayout_4">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
         <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
          <number>0</number>
         </property>
         <property name="rightMargin">
@@ -78,23 +97,22 @@
           <property name="text">
            <string/>
           </property>
+          <property name="pixmap">
+           <pixmap resource="Resources.qrc">:/welcomes/images/welcomes/welcomeSync.png</pixmap>
+          </property>
           <property name="scaledContents">
            <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>sync 2 // test label</string>
           </property>
          </widget>
         </item>
        </layout>
       </widget>
       <widget class="QWidget" name="pageShares">
-       <layout class="QVBoxLayout" name="verticalLayout_5">
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
         <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
          <number>0</number>
         </property>
         <property name="rightMargin">
@@ -105,23 +123,22 @@
           <property name="text">
            <string/>
           </property>
+          <property name="pixmap">
+           <pixmap resource="Resources.qrc">:/welcomes/images/welcomes/welcomeShares.png</pixmap>
+          </property>
           <property name="scaledContents">
            <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>shares 3</string>
           </property>
          </widget>
         </item>
        </layout>
       </widget>
       <widget class="QWidget" name="pageOthers">
-       <layout class="QVBoxLayout" name="verticalLayout_6">
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
         <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
          <number>0</number>
         </property>
         <property name="rightMargin">
@@ -132,23 +149,22 @@
           <property name="text">
            <string/>
           </property>
+          <property name="pixmap">
+           <pixmap resource="Resources.qrc">:/welcomes/images/welcomes/welcomeOthers.png</pixmap>
+          </property>
           <property name="scaledContents">
            <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_8">
-          <property name="text">
-           <string>others 4</string>
           </property>
          </widget>
         </item>
        </layout>
       </widget>
       <widget class="QWidget" name="pageFinish">
-       <layout class="QVBoxLayout" name="verticalLayout_7">
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
         <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
          <number>0</number>
         </property>
         <property name="rightMargin">
@@ -156,13 +172,19 @@
         </property>
         <item>
          <widget class="QLabel" name="label_10">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="text">
-           <string>finish 5</string>
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="Resources.qrc">:/welcomes/images/welcomes/welcomeFInish.png</pixmap>
           </property>
          </widget>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2"/>
         </item>
        </layout>
       </widget>
@@ -221,7 +243,7 @@
         <item>
          <widget class="QPushButton" name="btnOpenFldr">
           <property name="text">
-           <string>Open pCloud Folder</string>
+           <string>Open Drive</string>
           </property>
          </widget>
         </item>
@@ -231,18 +253,9 @@
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>800</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="Resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

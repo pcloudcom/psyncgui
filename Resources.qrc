@@ -98,4 +98,12 @@
         <file>images/32x32/pcl-folder.png</file>
         <file>images/32x32/empty-folder.png</file>
     </qresource>
+    <qresource prefix="/welcomes">
+        <file>images/welcomes/welcomeFInish.png</file>
+        <file>images/welcomes/welcomeOthers.png</file>
+        <file>images/welcomes/welcomeShares.png</file>
+        <file>images/welcomes/welcomeSync.png</file>
+        <file>images/welcomes/welcomeDrive.png</file>
+        <file>images/welcomes/welcomeIntro.png</file>
+    </qresource>
 </RCC>
