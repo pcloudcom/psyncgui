@@ -1779,17 +1779,20 @@ void PCloudApp::addNewFolderInMenu(QAction *fldrAction) //for add new sync case
 
 void PCloudApp::addNewShare()
 {
+    QApplication::setOverrideCursor(Qt::WaitCursor);
     if (!sharefolderwin)
         sharefolderwin = new ShareFolderWindow(pCloudWin,NULL);
     else
         sharefolderwin->setContextMenuFlag(false);
     showWindow(sharefolderwin);
+    QApplication::restoreOverrideCursor();
 }
 
 void PCloudApp::addNewShare(QString fldrPath) // from context menu
 {
     qDebug()<<"addNewShare path"<<fldrPath;
     this->hideAllWindows();
+    QApplication::setOverrideCursor(Qt::WaitCursor);
     if (!sharefolderwin)
         sharefolderwin = new ShareFolderWindow(pCloudWin,fldrPath);
     else
@@ -1798,6 +1801,7 @@ void PCloudApp::addNewShare(QString fldrPath) // from context menu
         sharefolderwin->setContextMenuFlag(true);
     }
     showWindow(sharefolderwin);
+    QApplication::restoreOverrideCursor();
 }
 
 void PCloudApp::addNewSync()

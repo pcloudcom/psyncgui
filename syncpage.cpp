@@ -28,7 +28,7 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
                                      "the content in multiple folders from your\n"
                                      "computer in real time.By synchronizing\n"
                                      "folders in pCloud Drive you make them\navailable even in offline mode.");
- #ifndef Q_OS_WIN
+#ifndef Q_OS_WIN
     win->ui->label_syncinfo->setFont(app->smaller1pFont);
     win->ui->label_infoexptns->setFont(app->smaller2pFont);
 #endif
@@ -77,7 +77,7 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
     // connect(win->ui->btnPauseSync, SIGNAL(clicked()), app, SLOT(pauseSync()));
     connect(win->ui->btnSyncSttngsSave, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(win->ui->btnSyncSttngCancel, SIGNAL(clicked()), this, SLOT(cancelSettings()));
-    connect(win->ui->text_patterns, SIGNAL(textChanged()), this, SLOT(enableSaveBtn()));   
+    connect(win->ui->text_patterns, SIGNAL(textChanged()), this, SLOT(enableSaveBtn()));
 }
 
 void SyncPage::openTab(int index)
@@ -282,7 +282,9 @@ void SyncPage::stopSync(QTreeWidgetItem *item, int col)
 
 void SyncPage::addSync()
 {
+    QApplication::setOverrideCursor(Qt::WaitCursor);
     addSyncDialog *addSync = new addSyncDialog(app,win, NULL);
+    QApplication::restoreOverrideCursor();
     addSync->exec();
     delete addSync;
 }

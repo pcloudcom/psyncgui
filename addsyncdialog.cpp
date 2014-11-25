@@ -34,6 +34,7 @@ addSyncDialog::addSyncDialog(PCloudApp *a, PCloudWindow *w, SuggestnsBaseWin *wl
     else
         this->setWindowTitle(trUtf8("Add New Sync"));
     load();
+    this->setFixedSize(this->width(),this->height()); //makes the win not resizable
 }
 
 addSyncDialog::~addSyncDialog()

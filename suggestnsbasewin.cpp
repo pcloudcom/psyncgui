@@ -227,7 +227,9 @@ void SuggestnsBaseWin::addSync()
         currentType = ui->treeWidget->currentItem()->data(2,Qt::UserRole).toInt();
         currentRemote = ui->treeWidget->currentItem()->data(3,Qt::UserRole).toString();
     }
+    QApplication::setOverrideCursor(Qt::WaitCursor);
     addSyncDialog *addDialog = new addSyncDialog(app,app->pCloudWin, this);
+    QApplication::restoreOverrideCursor();
     addDialog->exec();
     delete addDialog;
 }
