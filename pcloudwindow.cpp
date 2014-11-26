@@ -32,7 +32,7 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     ui->listButtonsWidget->setMaximumHeight(85);
     ui->listButtonsWidget->setMinimumHeight(84); // precakva mi layouta
     ui->listButtonsWidget->installEventFilter(this);
-
+#ifndef Q_OS_WIN
     if (ui->listButtonsWidget->palette().highlightedText().color().value() == 255)
     {
         QIcon accnticon;
@@ -76,7 +76,14 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
         new QListWidgetItem(QIcon(":/128x128/images/128x128/info.png"),trUtf8("About"),ui->listButtonsWidget); //index 5
     }
 
-
+#else
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 0
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/sync.png"),trUtf8("Sync"),ui->listButtonsWidget); //Sync Page index 1
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/shares.png"),trUtf8("Shares"),ui->listButtonsWidget); //index 2
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/settings.png"),trUtf8("Settings"),ui->listButtonsWidget); //index 3
+    new QListWidgetItem(QIcon(":/128x128/images/128x128//help.png"),trUtf8("Help"),ui->listButtonsWidget); //index 4
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/info.png"),trUtf8("About"),ui->listButtonsWidget); //index 5
+#endif
     fillAccountLoggedPage();
     fillAboutPage();
     // fillDrivePage();
@@ -111,8 +118,8 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     connect(ui->tBtnOnlineHelp, SIGNAL(clicked()), this, SLOT(openOnlineHelp()));
     connect(ui->tBtnOnlineTutorial, SIGNAL(clicked()), this, SLOT(openOnlineTutorial()));
     connect(ui->tBtnFeedback, SIGNAL(clicked()), this, SLOT(sendFeedback()));
-    connect(ui->tbtnGetMoreSpace, SIGNAL(clicked()), this, SLOT(upgradePlan()));
-    connect(ui->tbtnMyPcloud, SIGNAL(clicked()), this, SLOT(openMyPcloud()));
+    connect(ui->btnGetMoreSpace, SIGNAL(clicked()), this, SLOT(upgradePlan()));
+    connect(ui->btnMyPcloud, SIGNAL(clicked()), this, SLOT(openMyPcloud()));
     connect(ui->comboBox_versionReminder, SIGNAL(currentIndexChanged(int)), app, SLOT(setTimerInterval(int)));
     connect(ui->btnUpdtVersn, SIGNAL(clicked()), this, SLOT(updateVersion()));
     //p connect(ui->tbtnOpenFolder, SIGNAL(clicked()),app,SLOT(openCloudDir()));
@@ -126,7 +133,7 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     connect(forgotPassAction, SIGNAL(triggered()), this, SLOT(forgotPass()));
     menuAccnt->addAction(actionChangePass);
     menuAccnt->addAction(forgotPassAction);
-    ui->btnAccntMenu->setMenu(menuAccnt);
+   // ui->btnAccntMenu->setMenu(menuAccnt);
     this->setMinimumHeight(560);
     //this->setMinimumWidth(1024);
     updateGeometry();
@@ -318,6 +325,17 @@ void PCloudWindow::fillAboutPage()
 
 void PCloudWindow::fillAccountLoggedPage()
 {
+    //ui->pageAccntLogged->setBackgroundRole(QPalette::Light);
+    //ui->frame_accnt->setStyleSheet("background-color:white;");
+
+    QPalette Pal(palette());
+    Pal.setColor(QPalette::Background, Qt::white);
+    ui->frame_accnt->setAutoFillBackground(true);
+    ui->frame_accnt->setPalette(Pal);
+
+    ui->frame_accnt->setFrameShadow(QFrame::Sunken);
+    ui->frame_accnt->setFrameShape(QFrame::StyledPanel);
+    ui->frame_accnt->setMidLineWidth(3);
     ui->label_email->setText(app->username);
     if (app->isVerified)
     {
@@ -333,23 +351,6 @@ void PCloudWindow::fillAccountLoggedPage()
     }
     ui->label_space->setText(app->usedSpaceStr + " (" +  QString::number(app->freeSpacePercentage) + "% free)");
     ui->label_planVal->setText(app->planStr);
-
-    if (app->isPremium)
-    {
-        quint64 unixTime = psync_get_uint_value("premiumexpires");
-        QDateTime timestamp;
-        timestamp.setTime_t(unixTime);
-        ui->label_expDtVal->setText(timestamp.toString("dd.MM.yyyy"));
-    }
-    else
-    {
-        ui->label_expDt->setVisible(false);
-        ui->label_expDtVal->setVisible(false);
-    }
-
-    //for sync hide some widgets till start use new fs
-    ui->tbtnOpenFolder->setVisible(false);
-
 }
 void PCloudWindow::refreshUserinfo()
 {
