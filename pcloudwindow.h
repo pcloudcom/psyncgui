@@ -32,8 +32,8 @@ public:
     int getCurrentPage();
     SyncPage* get_sync_page();    
     void refreshPagePulbic(int pageindex, int param);    
-private:
-    Ui::PCloudWindow *ui;
+private:    
+    Ui::PCloudWindow *ui;    
     PCloudApp *app;
     VersionDwnldThread *vrsnDwnldThread;
     SettingsPage *settngsPage;
@@ -46,6 +46,7 @@ private:
     void fillAccountLoggedPage();    
     void fillAboutPage();
     void refreshPage(int currentIndex);
+    void setFrameProps(QFrame* frame);
 protected:
     void showEvent(QShowEvent *);    
     bool eventFilter(QObject *obj, QEvent *event);

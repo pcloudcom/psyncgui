@@ -10,7 +10,6 @@
 #include <QDateTime>
 #include <QDebug>
 
-
 PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::PCloudWindow)
@@ -19,6 +18,9 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     ui->setupUi(this);
     this->verifyClicked = false;
     vrsnDwnldThread = NULL;
+
+    ui->label_email->setFont(app->bigger1pFont);
+    ui->label_plan->setFont(app->bigger1pFont);
 
     // the window consists of QListWidget(for icon-buttons) and
     //QStackedWidget which loads different page according to selected item in the listWidget (and hides other pages)
@@ -106,18 +108,11 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     setWindowTitle("pCloud Drive");
     this->setWindowFlags((windowFlags() | Qt::CustomizeWindowHint) & ~Qt::WindowMaximizeButtonHint);
 
-    // ui notes - set statusbar max size to (0,0)
-
-    //connect(ui->btnLogin, SIGNAL(clicked()),app, SLOT(showLogin())); - to del
-    //connect(ui->btnRegstr, SIGNAL(clicked()), app, SLOT(showRegister()));
-    //connect(ui->btnExit, SIGNAL(clicked()), app, SLOT(doExit()));
-    //  connect(ui->btnDriveOpenFldr, SIGNAL(clicked()), app, SLOT(openCloudDir()));
-    //connect(ui->btnDriveStart, SIGNAL(clicked()), this, SLOT(launchFS()));
-    //onnect(ui->btnDriveStop, SIGNAL(clicked()), this, SLOT(launchFS()));
-    //connect(ui->toolBtnContact, SIGNAL(clicked()), this, SLOT(contactUs()));
     connect(ui->tBtnOnlineHelp, SIGNAL(clicked()), this, SLOT(openOnlineHelp()));
     connect(ui->tBtnOnlineTutorial, SIGNAL(clicked()), this, SLOT(openOnlineTutorial()));
     connect(ui->tBtnFeedback, SIGNAL(clicked()), this, SLOT(sendFeedback()));
+    connect(ui->btnChangePass, SIGNAL(clicked()), this, SLOT(changePass()));
+    connect(ui->btnForgotpass, SIGNAL(clicked()), this, SLOT(forgotPass()));
     connect(ui->btnGetMoreSpace, SIGNAL(clicked()), this, SLOT(upgradePlan()));
     connect(ui->btnMyPcloud, SIGNAL(clicked()), this, SLOT(openMyPcloud()));
     connect(ui->comboBox_versionReminder, SIGNAL(currentIndexChanged(int)), app, SLOT(setTimerInterval(int)));
@@ -133,11 +128,23 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     connect(forgotPassAction, SIGNAL(triggered()), this, SLOT(forgotPass()));
     menuAccnt->addAction(actionChangePass);
     menuAccnt->addAction(forgotPassAction);
-   // ui->btnAccntMenu->setMenu(menuAccnt);
+    // ui->btnAccntMenu->setMenu(menuAccnt);
     this->setMinimumHeight(560);
     //this->setMinimumWidth(1024);
+
     updateGeometry();
 
+}
+
+void PCloudWindow::setFrameProps(QFrame *frame)
+{
+    QPalette Pal(palette());
+    Pal.setColor(QPalette::Background, Qt::white);
+    frame->setAutoFillBackground(true);
+    frame->setPalette(Pal);
+    frame->setFrameShadow(QFrame::Sunken);
+    frame->setFrameShape(QFrame::StyledPanel);
+    frame->setMidLineWidth(3);
 }
 
 PCloudWindow::~PCloudWindow()
@@ -227,7 +234,7 @@ void PCloudWindow::changePage(QListWidgetItem *current, QListWidgetItem *previou
     for(int i = 0; i < ui->pagesWidget->count(); i++)
     {
         if ( i != currentIndex)
-             //ui->pagesWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored); // resizes the form horizontally also
+            //ui->pagesWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored); // resizes the form horizontally also
             ui->pagesWidget->widget(i)->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Ignored); //hoz vert
     }
     //ui->pagesWidget->widget(currentIndex)->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred); // resizes the form horizontally also
@@ -243,7 +250,7 @@ void PCloudWindow::changePage(QListWidgetItem *current, QListWidgetItem *previou
 void PCloudWindow::showEvent(QShowEvent *)
 {
     refreshPage(ui->listButtonsWidget->currentRow());
-   // this->update();
+    // this->update();
 }
 
 void PCloudWindow::refreshPage(int currentIndex)
@@ -325,17 +332,7 @@ void PCloudWindow::fillAboutPage()
 
 void PCloudWindow::fillAccountLoggedPage()
 {
-    //ui->pageAccntLogged->setBackgroundRole(QPalette::Light);
-    //ui->frame_accnt->setStyleSheet("background-color:white;");
-
-    QPalette Pal(palette());
-    Pal.setColor(QPalette::Background, Qt::white);
-    ui->frame_accnt->setAutoFillBackground(true);
-    ui->frame_accnt->setPalette(Pal);
-
-    ui->frame_accnt->setFrameShadow(QFrame::Sunken);
-    ui->frame_accnt->setFrameShape(QFrame::StyledPanel);
-    ui->frame_accnt->setMidLineWidth(3);
+    this->setFrameProps(ui->frame_accnt);
     ui->label_email->setText(app->username);
     if (app->isVerified)
     {
@@ -349,7 +346,7 @@ void PCloudWindow::fillAccountLoggedPage()
         ui->checkBoxVerified->setVisible(false);
         ui->btnVerify->setVisible(true);
     }
-    ui->label_space->setText(app->usedSpaceStr + " (" +  QString::number(app->freeSpacePercentage) + "% free)");
+    ui->label_space->setText(app->usedSpaceStr + " (" +  QString::number(100 - app->freeSpacePercentage) + "% free)");
     ui->label_planVal->setText(app->planStr);
 }
 void PCloudWindow::refreshUserinfo()
