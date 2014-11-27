@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>602</width>
-    <height>533</height>
+    <height>456</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_30">
+   <layout class="QVBoxLayout" name="verticalLayout_16">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
       <property name="spacing">
@@ -55,7 +55,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>5</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="pageAccntLogged">
        <property name="maximumSize">
@@ -82,6 +82,9 @@
           <layout class="QHBoxLayout" name="horizontalLayout_8">
            <item>
             <layout class="QGridLayout" name="gridLayout" rowstretch="10,0,10,0,10">
+             <property name="leftMargin">
+              <number>6</number>
+             </property>
              <item row="3" column="0" colspan="3">
               <widget class="Line" name="line_5">
                <property name="orientation">
@@ -98,6 +101,9 @@
              </item>
              <item row="0" column="0">
               <layout class="QHBoxLayout" name="horizontalLayout">
+               <property name="rightMargin">
+                <number>6</number>
+               </property>
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout_5">
                  <property name="spacing">
@@ -187,7 +193,10 @@
                 <number>6</number>
                </property>
                <property name="topMargin">
-                <number>7</number>
+                <number>6</number>
+               </property>
+               <property name="rightMargin">
+                <number>6</number>
                </property>
                <item>
                 <widget class="QLabel" name="label_plan">
@@ -1629,13 +1638,19 @@
             <number>18</number>
            </property>
            <property name="topMargin">
+            <number>9</number>
+           </property>
+           <property name="rightMargin">
             <number>18</number>
            </property>
            <property name="bottomMargin">
-            <number>18</number>
+            <number>9</number>
            </property>
            <item row="0" column="0">
             <layout class="QHBoxLayout" name="horizontalLayout_33">
+             <property name="spacing">
+              <number>12</number>
+             </property>
              <item>
               <widget class="QLabel" name="label_7">
                <property name="text">
@@ -1667,13 +1682,7 @@
               </spacer>
              </item>
              <item>
-              <widget class="QToolButton" name="tBtnOnlineHelp">
-               <property name="minimumSize">
-                <size>
-                 <width>115</width>
-                 <height>0</height>
-                </size>
-               </property>
+              <widget class="QPushButton" name="btnOnlineHelp">
                <property name="text">
                 <string>Get Help</string>
                </property>
@@ -1690,6 +1699,9 @@
            </item>
            <item row="2" column="0">
             <layout class="QHBoxLayout" name="horizontalLayout_17">
+             <property name="spacing">
+              <number>12</number>
+             </property>
              <item>
               <widget class="QLabel" name="label_5">
                <property name="text">
@@ -1724,13 +1736,7 @@
               </spacer>
              </item>
              <item>
-              <widget class="QToolButton" name="tBtnOnlineTutorial">
-               <property name="minimumSize">
-                <size>
-                 <width>115</width>
-                 <height>0</height>
-                </size>
-               </property>
+              <widget class="QPushButton" name="btnOnlineTutorial">
                <property name="text">
                 <string>See Tutorial</string>
                </property>
@@ -1747,6 +1753,9 @@
            </item>
            <item row="4" column="0">
             <layout class="QHBoxLayout" name="horizontalLayout_34">
+             <property name="spacing">
+              <number>12</number>
+             </property>
              <item>
               <widget class="QLabel" name="label_6">
                <property name="text">
@@ -1778,13 +1787,7 @@
               </spacer>
              </item>
              <item>
-              <widget class="QToolButton" name="tBtnFeedback">
-               <property name="minimumSize">
-                <size>
-                 <width>115</width>
-                 <height>0</height>
-                </size>
-               </property>
+              <widget class="QPushButton" name="btnFeedback">
                <property name="text">
                 <string>Contact Us</string>
                </property>
@@ -1798,7 +1801,7 @@
        </layout>
       </widget>
       <widget class="QWidget" name="pageAbout">
-       <layout class="QVBoxLayout" name="verticalLayout_16">
+       <layout class="QHBoxLayout" name="horizontalLayout_14">
         <item>
          <widget class="QFrame" name="frame">
           <property name="minimumSize">
@@ -1814,13 +1817,20 @@
            <enum>QFrame::Raised</enum>
           </property>
           <layout class="QGridLayout" name="gridLayout_4" columnstretch="2,1,3">
+           <item row="0" column="1">
+            <widget class="Line" name="line_13">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="0">
             <layout class="QVBoxLayout" name="verticalLayout_37">
              <property name="topMargin">
               <number>16</number>
              </property>
              <property name="bottomMargin">
-              <number>20</number>
+              <number>9</number>
              </property>
              <item>
               <widget class="QLabel" name="label_logo">
@@ -1844,7 +1854,7 @@
                 <number>0</number>
                </property>
                <property name="topMargin">
-                <number>12</number>
+                <number>20</number>
                </property>
                <item>
                 <widget class="QLabel" name="label_tos">
@@ -1927,82 +1937,44 @@
              </item>
             </layout>
            </item>
-           <item row="0" column="1">
-            <widget class="Line" name="line_13">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="2">
-            <layout class="QVBoxLayout" name="verticalLayout_39">
+            <layout class="QVBoxLayout" name="verticalLayout_13">
              <property name="leftMargin">
-              <number>20</number>
+              <number>12</number>
              </property>
              <property name="topMargin">
-              <number>9</number>
+              <number>12</number>
              </property>
              <property name="rightMargin">
-              <number>20</number>
+              <number>12</number>
              </property>
              <property name="bottomMargin">
-              <number>20</number>
+              <number>9</number>
              </property>
              <item>
-              <layout class="QVBoxLayout" name="verticalLayout_13">
+              <layout class="QHBoxLayout" name="horizontalLayout_5">
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_5">
-                 <item>
-                  <widget class="QLabel" name="label_versionVal">
-                   <property name="font">
-                    <font>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <spacer name="horizontalSpacer_2">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                </layout>
+                <widget class="QLabel" name="label_versionVal">
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
                </item>
                <item>
-                <widget class="Line" name="line_12">
+                <spacer name="horizontalSpacer_2">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
                  </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_versionInfo">
-                 <property name="text">
-                  <string>Latest version is already installed.</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="verticalSpacer_11">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
                  <property name="sizeHint" stdset="0">
                   <size>
-                   <width>20</width>
-                   <height>40</height>
+                   <width>40</width>
+                   <height>20</height>
                   </size>
                  </property>
                 </spacer>
@@ -2010,9 +1982,26 @@
               </layout>
              </item>
              <item>
+              <widget class="Line" name="line_12">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_versionInfo">
+               <property name="text">
+                <string>Latest version is already installed.</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QWidget" name="widget_newVersion" native="true">
                <layout class="QVBoxLayout" name="verticalLayout_11">
                 <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
                  <number>0</number>
                 </property>
                 <property name="bottomMargin">
@@ -2026,42 +2015,35 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_notes">
-                  <property name="text">
-                   <string>Notes:</string>
+                 <spacer name="verticalSpacer_11">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
                   </property>
-                 </widget>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
                 </item>
                 <item>
-                 <layout class="QGridLayout" name="gridLayout_2">
-                  <property name="topMargin">
-                   <number>12</number>
-                  </property>
-                  <property name="horizontalSpacing">
-                   <number>32</number>
-                  </property>
-                  <item row="1" column="2">
-                   <spacer name="horizontalSpacer_27">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                  <item row="0" column="0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_9">
+                  <item>
                    <widget class="QLabel" name="label_versionRemind">
                     <property name="text">
                      <string>Remind me:</string>
                     </property>
                    </widget>
                   </item>
-                  <item row="1" column="0">
+                  <item>
                    <widget class="QComboBox" name="comboBox_versionReminder">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>23</height>
+                     </size>
+                    </property>
                     <property name="currentIndex">
                      <number>0</number>
                     </property>
@@ -2092,12 +2074,31 @@
                     </item>
                    </widget>
                   </item>
-                  <item row="1" column="1">
+                  <item>
                    <widget class="QPushButton" name="btnUpdtVersn">
+                    <property name="minimumSize">
+                     <size>
+                      <width>96</width>
+                      <height>0</height>
+                     </size>
+                    </property>
                     <property name="text">
-                     <string>Update now</string>
+                     <string> Update now  </string>
                     </property>
                    </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_27">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
                   </item>
                  </layout>
                 </item>
@@ -2207,6 +2208,8 @@
      </layout>
     </item>
    </layout>
+   <zorder>pagesWidget</zorder>
+   <zorder></zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
