@@ -19,7 +19,7 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     this->verifyClicked = false;
     vrsnDwnldThread = NULL;
 
-    ui->label_email->setFont(app->bigger1pFont);
+    ui->label_user->setFont(app->bigger1pFont);
     ui->label_plan->setFont(app->bigger1pFont);
 
     // the window consists of QListWidget(for icon-buttons) and
@@ -333,6 +333,8 @@ void PCloudWindow::fillAboutPage()
 void PCloudWindow::fillAccountLoggedPage()
 {
     this->setFrameProps(ui->frame_accnt);
+    this->setFrameProps(ui->frame_help);
+    this->setFrameProps(ui->frame);
     ui->label_email->setText(app->username);
     if (app->isVerified)
     {
