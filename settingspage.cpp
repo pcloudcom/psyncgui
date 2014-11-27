@@ -34,7 +34,7 @@ SettingsPage::SettingsPage(PCloudWindow *w, PCloudApp *a, QObject* parent):
     win->ui->line_settngsSpeed1->setVisible(false);
     win->ui->line_settngsSpeed2->setVisible(false);
 #endif
-    win->ui->label_infop2p->setText("pCloud Drive uses p2p (peer to peer), which is a computer-to-computer connection within your Local Area Network (LAN),\nto speed up synchronization.");
+    win->ui->label_infop2p->setText("pCloud Drive uses p2p (peer to peer), which is a computer-to-computer connection within your\nLocal Area Network (LAN),to speed up synchronization.");
 
     QRegExp regExp("[1-9][0-9]{0,4}");
     QRegExpValidator* regExpValidator = new QRegExpValidator(regExp, this);

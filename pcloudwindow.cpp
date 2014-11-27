@@ -322,7 +322,7 @@ void PCloudWindow::fillAboutPage()
     }
     else
     {
-        ui->label_versionVal->setText(QString ("Installed Version: ") + APP_VERSION);
+        ui->label_versionVal->setVisible(false);
         ui->label_newVersion->setText(QString("New version "  + app->newVersion.versionstr + " has already been released"));
         //ui->label_versionInfo->setVisible(false);
         ui->label_notes->setText(QString("Notes:\n "+ app->newVersion.notes));

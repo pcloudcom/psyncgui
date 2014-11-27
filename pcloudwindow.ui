@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_22">
+   <layout class="QVBoxLayout" name="verticalLayout_30">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
       <property name="spacing">
@@ -39,6 +39,12 @@
     </item>
     <item>
      <widget class="QStackedWidget" name="pagesWidget">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>300</height>
+       </size>
+      </property>
       <property name="maximumSize">
        <size>
         <width>16777215</width>
@@ -49,7 +55,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>5</number>
       </property>
       <widget class="QWidget" name="pageAccntLogged">
        <property name="maximumSize">
@@ -58,146 +64,63 @@
          <height>16777215</height>
         </size>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_8">
+       <layout class="QVBoxLayout" name="verticalLayout_22">
         <item>
          <widget class="QFrame" name="frame_accnt">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>300</height>
+           </size>
+          </property>
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
           </property>
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <layout class="QGridLayout" name="gridLayout">
-           <property name="leftMargin">
-            <number>18</number>
-           </property>
-           <property name="topMargin">
-            <number>18</number>
-           </property>
-           <property name="verticalSpacing">
-            <number>18</number>
-           </property>
-           <item row="2" column="2">
-            <widget class="QPushButton" name="btnGetMoreSpace">
-             <property name="text">
-              <string>Get More Space</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0" colspan="5">
-            <widget class="Line" name="line_5">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <layout class="QHBoxLayout" name="horizontalLayout">
-             <item>
-              <layout class="QVBoxLayout" name="verticalLayout_5">
-               <property name="spacing">
-                <number>6</number>
-               </property>
-               <item>
-                <widget class="QLabel" name="label_user">
-                 <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;User:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_email">
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer_4">
+          <layout class="QHBoxLayout" name="horizontalLayout_8">
+           <item>
+            <layout class="QGridLayout" name="gridLayout" rowstretch="10,0,10,0,10">
+             <item row="3" column="0" colspan="3">
+              <widget class="Line" name="line_5">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
+              </widget>
              </item>
-             <item>
-              <widget class="QCheckBox" name="checkBoxVerified">
-               <property name="layoutDirection">
-                <enum>Qt::LeftToRight</enum>
-               </property>
-               <property name="text">
-                <string>Verified</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
+             <item row="1" column="0" colspan="3">
+              <widget class="Line" name="line">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
                </property>
               </widget>
              </item>
-             <item>
-              <widget class="QPushButton" name="btnVerify">
-               <property name="text">
-                <string>Verify</string>
-               </property>
-               <property name="default">
-                <bool>false</bool>
-               </property>
-               <property name="flat">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item row="2" column="0">
-            <layout class="QVBoxLayout" name="verticalLayout_6">
-             <property name="spacing">
-              <number>6</number>
-             </property>
-             <item>
-              <widget class="QLabel" name="label_plan">
-               <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Storage:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QProgressBar" name="progressBar_storage">
-               <property name="textVisible">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <item row="0" column="0">
+              <layout class="QHBoxLayout" name="horizontalLayout">
                <item>
-                <widget class="QLabel" name="label">
-                 <property name="text">
-                  <string>Used:</string>
+                <layout class="QVBoxLayout" name="verticalLayout_5">
+                 <property name="spacing">
+                  <number>6</number>
                  </property>
-                </widget>
+                 <item>
+                  <widget class="QLabel" name="label_user">
+                   <property name="text">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;User:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_email">
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </item>
                <item>
-                <widget class="QLabel" name="label_space">
-                 <property name="font">
-                  <font>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                  </font>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer">
+                <spacer name="horizontalSpacer_4">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
                  </property>
@@ -210,70 +133,160 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QLabel" name="label_14">
+                <widget class="QCheckBox" name="checkBoxVerified">
+                 <property name="layoutDirection">
+                  <enum>Qt::LeftToRight</enum>
+                 </property>
                  <property name="text">
-                  <string>Total:</string>
+                  <string>Verified</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_planVal">
-                 <property name="font">
-                  <font>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                  </font>
-                 </property>
+                <widget class="QPushButton" name="btnVerify">
                  <property name="text">
-                  <string/>
+                  <string>Verify</string>
+                 </property>
+                 <property name="default">
+                  <bool>false</bool>
+                 </property>
+                 <property name="flat">
+                  <bool>false</bool>
                  </property>
                 </widget>
                </item>
               </layout>
              </item>
+             <item row="2" column="2">
+              <widget class="QPushButton" name="btnMyPcloud">
+               <property name="text">
+                <string>my.pcloud.com</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QPushButton" name="btnChangePass">
+               <property name="text">
+                <string> Change Password </string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QPushButton" name="btnForgotpass">
+               <property name="text">
+                <string> Forgot Password </string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <layout class="QVBoxLayout" name="verticalLayout_6">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <property name="topMargin">
+                <number>7</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="label_plan">
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Storage:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QProgressBar" name="progressBar_storage">
+                 <property name="alignment">
+                  <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                 </property>
+                 <property name="textVisible">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_4">
+                 <item>
+                  <widget class="QLabel" name="label">
+                   <property name="text">
+                    <string>Used:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_space">
+                   <property name="font">
+                    <font>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="horizontalSpacer">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_14">
+                   <property name="text">
+                    <string>Total:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_planVal">
+                   <property name="font">
+                    <font>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item row="4" column="2">
+              <widget class="QPushButton" name="btnUnlink">
+               <property name="text">
+                <string>Unlink</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QPushButton" name="btnLgout">
+               <property name="text">
+                <string>Logout</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QPushButton" name="btnGetMoreSpace">
+               <property name="text">
+                <string>Get More Space</string>
+               </property>
+              </widget>
+             </item>
             </layout>
-           </item>
-           <item row="4" column="2">
-            <widget class="QPushButton" name="btnUnlink">
-             <property name="text">
-              <string>Unlink</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="4">
-            <widget class="QPushButton" name="btnForgotpass">
-             <property name="text">
-              <string> Forgot Password </string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="4">
-            <widget class="QPushButton" name="btnLgout">
-             <property name="text">
-              <string>Logout</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="5">
-            <widget class="Line" name="line">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="4">
-            <widget class="QPushButton" name="btnMyPcloud">
-             <property name="text">
-              <string>my.pcloud.com</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QPushButton" name="btnChangePass">
-             <property name="text">
-              <string> Change Password </string>
-             </property>
-            </widget>
            </item>
           </layout>
          </widget>
@@ -1599,6 +1612,12 @@
        <layout class="QVBoxLayout" name="verticalLayout_10">
         <item>
          <widget class="QFrame" name="frame_help">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>300</height>
+           </size>
+          </property>
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
           </property>
@@ -1782,13 +1801,19 @@
        <layout class="QVBoxLayout" name="verticalLayout_16">
         <item>
          <widget class="QFrame" name="frame">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>300</height>
+           </size>
+          </property>
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
           </property>
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <layout class="QGridLayout" name="gridLayout_4" columnminimumwidth="1,1,1">
+          <layout class="QGridLayout" name="gridLayout_4" columnstretch="2,1,3">
            <item row="0" column="0">
             <layout class="QVBoxLayout" name="verticalLayout_37">
              <property name="topMargin">
@@ -1817,6 +1842,9 @@
               <layout class="QVBoxLayout" name="verticalLayout_12">
                <property name="spacing">
                 <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>12</number>
                </property>
                <item>
                 <widget class="QLabel" name="label_tos">
@@ -1912,7 +1940,10 @@
               <number>20</number>
              </property>
              <property name="topMargin">
-              <number>30</number>
+              <number>9</number>
+             </property>
+             <property name="rightMargin">
+              <number>20</number>
              </property>
              <property name="bottomMargin">
               <number>20</number>
