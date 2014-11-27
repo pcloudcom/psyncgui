@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>602</width>
-    <height>544</height>
+    <height>533</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -49,7 +49,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="pageAccntLogged">
        <property name="maximumSize">
@@ -168,7 +168,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QProgressBar" name="progressBar">
+              <widget class="QProgressBar" name="progressBar_storage">
                <property name="textVisible">
                 <bool>false</bool>
                </property>
@@ -614,7 +614,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidgetShares">
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tabMyShares">
            <attribute name="title">
@@ -1041,13 +1041,16 @@
              </size>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="tabGeneral">
              <attribute name="title">
               <string>Tab 1</string>
              </attribute>
              <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <property name="spacing">
+               <number>6</number>
+              </property>
               <item>
                <layout class="QVBoxLayout" name="verticalLayout_9">
                 <item>
@@ -1056,20 +1059,19 @@
                    <string>Start pCloud Drive on System Startup </string>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_14">
+                   <property name="topMargin">
+                    <number>12</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>12</number>
+                   </property>
                    <item>
                     <widget class="QCheckBox" name="checkBox_autorun">
                      <property name="text">
-                      <string>Open pCloud Drive automatically after you log into the computer.</string>
+                      <string>Open pCloud Drive automatically after you log in your computer.</string>
                      </property>
                      <property name="shortcut">
                       <string>Ctrl+S</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="label_infoautostrt">
-                     <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -1089,17 +1091,16 @@
                    <string>Show Context Menu</string>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_25">
+                   <property name="topMargin">
+                    <number>12</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>12</number>
+                   </property>
                    <item>
                     <widget class="QCheckBox" name="checkBox_contxtMenu">
                      <property name="text">
                       <string>Show pCloud Drive in the Windows Explorer's context menu.</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="label_infoCM">
-                     <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -1141,6 +1142,9 @@
                   <layout class="QVBoxLayout" name="verticalLayout_17">
                    <item>
                     <layout class="QHBoxLayout" name="horizontalLayout_27">
+                     <property name="spacing">
+                      <number>0</number>
+                     </property>
                      <item>
                       <widget class="QRadioButton" name="rBtnSyncUpldUnlimit">
                        <property name="text">
@@ -1400,6 +1404,9 @@
                    </property>
                    <item>
                     <layout class="QHBoxLayout" name="horizontalLayout_22" stretch="0,0,0,0">
+                     <property name="spacing">
+                      <number>2</number>
+                     </property>
                      <item>
                       <widget class="QLabel" name="label_minspaceinfo">
                        <property name="text">
@@ -1420,6 +1427,9 @@
                        </property>
                        <property name="text">
                         <string/>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                        </property>
                       </widget>
                      </item>
@@ -1448,7 +1458,7 @@
                    <item>
                     <widget class="QLabel" name="label_infominspace">
                      <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Limit the Minimum Free Space on your local Hard Drive.&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Minimum recommended: 2048 MB&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Limit the Minimum Free Space on your local Hard Drive.&lt;br/&gt;Minimum recommended: 2048 MB&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -1491,6 +1501,9 @@
                        <property name="inputMethodHints">
                         <set>Qt::ImhDigitsOnly</set>
                        </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
                       </widget>
                      </item>
                      <item>
@@ -1518,7 +1531,7 @@
                    <item>
                     <widget class="QLabel" name="label_infocache">
                      <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Cache size&amp;quot; is the amount of disk space the pCloud Drive will use to store locally information from the cloud.&lt;br/&gt;It should be at least the size of the files you usually work with. &lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Minimum recommended: 5120 MB&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Cache size&amp;quot; is the amount of disk space the pCloud Drive will use to store locally information from the cloud.&lt;br/&gt;It should be at least the size of the files you usually work with. &lt;br/&gt;Minimum recommended: 5120 MB&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                      <property name="wordWrap">
                       <bool>false</bool>
@@ -2075,7 +2088,7 @@
        <number>0</number>
       </property>
       <property name="topMargin">
-       <number>12</number>
+       <number>0</number>
       </property>
       <item>
        <widget class="Line" name="line_10">

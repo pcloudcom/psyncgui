@@ -142,7 +142,7 @@ void PCloudWindow::setFrameProps(QFrame *frame)
     Pal.setColor(QPalette::Background, Qt::white);
     frame->setAutoFillBackground(true);
     frame->setPalette(Pal);
-    frame->setFrameShadow(QFrame::Sunken);
+    frame->setFrameShadow(QFrame::Plain);
     frame->setFrameShape(QFrame::StyledPanel);
     frame->setMidLineWidth(3);
 }
@@ -336,6 +336,9 @@ void PCloudWindow::fillAccountLoggedPage()
     this->setFrameProps(ui->frame_help);
     this->setFrameProps(ui->frame);
     ui->label_email->setText(app->username);
+    ui->progressBar_storage->setMinimum(0);
+    ui->progressBar_storage->setMaximum(100);
+    ui->progressBar_storage->setValue(100-app->freeSpacePercentage);
     if (app->isVerified)
     {
         ui->btnVerify->setVisible(false);
@@ -348,7 +351,7 @@ void PCloudWindow::fillAccountLoggedPage()
         ui->checkBoxVerified->setVisible(false);
         ui->btnVerify->setVisible(true);
     }
-    ui->label_space->setText(app->usedSpaceStr + " (" +  QString::number(100 - app->freeSpacePercentage) + "% free)");
+    ui->label_space->setText(app->usedSpaceStr + " (" +  QString::number(100 - app->freeSpacePercentage) + "%)");
     ui->label_planVal->setText(app->planStr);
 }
 void PCloudWindow::refreshUserinfo()

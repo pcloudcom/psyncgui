@@ -38,12 +38,13 @@ SettingsPage::SettingsPage(PCloudWindow *w, PCloudApp *a, QObject* parent):
 
     QRegExp regExp("[1-9][0-9]{0,4}");
     QRegExpValidator* regExpValidator = new QRegExpValidator(regExp, this);
-    win->ui->edit_cache->setValidator(regExpValidator);
     win->ui->edit_DwnldSpeed->setValidator(regExpValidator);
     win->ui->edit_UpldSpeed->setValidator(regExpValidator);
 
-    QRegExp regExpSpace("[1-9][0-9]{0,4}");
-    win->ui->edit_minLocalSpace->setValidator(new QRegExpValidator(regExpSpace, this));
+    QRegExp regExpSpace("[1-9][0-9]{0,5}");
+    QRegExpValidator* regExpValidatornewSpace = new QRegExpValidator(regExpSpace, this);
+    win->ui->edit_minLocalSpace->setValidator(regExpValidatornewSpace);
+    win->ui->edit_cache->setValidator(regExpValidatornewSpace);
 
     connect(win->ui->checkBoxp2p, SIGNAL(clicked()), this, SLOT(setSaveBtnEnable()));
     connect(win->ui->rBtnSyncDwldAuto, SIGNAL(clicked()),this, SLOT(setNewDwnldSpeed()));
