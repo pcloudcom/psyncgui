@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>602</width>
-    <height>456</height>
+    <width>679</width>
+    <height>529</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -55,7 +55,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="pageAccntLogged">
        <property name="maximumSize">
@@ -137,19 +137,6 @@
                   </size>
                  </property>
                 </spacer>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="checkBoxVerified">
-                 <property name="layoutDirection">
-                  <enum>Qt::LeftToRight</enum>
-                 </property>
-                 <property name="text">
-                  <string>Verified</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="btnVerify">
@@ -1186,6 +1173,9 @@
                      </item>
                      <item>
                       <layout class="QHBoxLayout" name="horizontalLayout_24">
+                       <property name="spacing">
+                        <number>2</number>
+                       </property>
                        <item>
                         <widget class="QRadioButton" name="rbtnSyncupldChoose">
                          <property name="maximumSize">
@@ -1258,6 +1248,9 @@
                   <layout class="QVBoxLayout" name="verticalLayout_28">
                    <item>
                     <layout class="QHBoxLayout" name="horizontalLayout_28">
+                     <property name="spacing">
+                      <number>2</number>
+                     </property>
                      <item>
                       <widget class="QRadioButton" name="rBtnSyncDwldUnlimit">
                        <property name="text">
@@ -1274,6 +1267,9 @@
                      </item>
                      <item>
                       <layout class="QHBoxLayout" name="horizontalLayout_26">
+                       <property name="spacing">
+                        <number>2</number>
+                       </property>
                        <item>
                         <widget class="QRadioButton" name="rbtnSyncDwnlChoose">
                          <property name="maximumSize">
@@ -2008,11 +2004,7 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="label_newVersion">
-                  <property name="text">
-                   <string>A new version is available:</string>
-                  </property>
-                 </widget>
+                 <widget class="QLabel" name="label_newVersion"/>
                 </item>
                 <item>
                  <spacer name="verticalSpacer_11">
@@ -2216,7 +2208,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>602</width>
+     <width>679</width>
      <height>21</height>
     </rect>
    </property>

@@ -19,12 +19,8 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     this->verifyClicked = false;
     vrsnDwnldThread = NULL;
 
-    ui->label_user->setFont(app->bigger1pFont);
-    ui->label_plan->setFont(app->bigger1pFont);
-
     // the window consists of QListWidget(for icon-buttons) and
     //QStackedWidget which loads different page according to selected item in the listWidget (and hides other pages)
-
     ui->listButtonsWidget->setViewMode(QListView::IconMode);
     ui->listButtonsWidget->setFlow(QListWidget::LeftToRight); //orientation
     ui->listButtonsWidget->setSpacing(12);
@@ -35,7 +31,7 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     ui->listButtonsWidget->setMinimumHeight(84); // precakva mi layouta
     ui->listButtonsWidget->installEventFilter(this);
 #ifndef Q_OS_WIN
-    if (ui->listButtonsWidget->palette().highlightedText().color().value() == 255)
+    if (ui->listButtonsWidget->palette().highlightedText().color().value() == 255) //if selection is white
     {
         QIcon accnticon;
         accnticon.addPixmap(QPixmap(":/128x128/images/128x128/user.png"), QIcon::Normal);
@@ -86,12 +82,20 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     new QListWidgetItem(QIcon(":/128x128/images/128x128//help.png"),trUtf8("Help"),ui->listButtonsWidget); //index 4
     new QListWidgetItem(QIcon(":/128x128/images/128x128/info.png"),trUtf8("About"),ui->listButtonsWidget); //index 5
 #endif
+
     fillAccountLoggedPage();
     fillAboutPage();
-    // fillDrivePage();
+    ui->label_user->setFont(app->bigger1pFont);
+    ui->label_plan->setFont(app->bigger1pFont);
+    ui->label_versionVal->setText(QString("Installed Version: ") + APP_VERSION);
+    this->setFrameProps(ui->frame_accnt);
+    this->setFrameProps(ui->frame_help);
+    this->setFrameProps(ui->frame);
+
     settngsPage = new SettingsPage(this, app);
     syncPage = new SyncPage(this, app);
     sharesPage = new SharesPage(this, app);
+
     // indexes of Items in listWidget and their coresponding pages in StackWidget are the same
     connect(ui->listButtonsWidget,
             SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
@@ -108,38 +112,28 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     setWindowTitle("pCloud Drive");
     this->setWindowFlags((windowFlags() | Qt::CustomizeWindowHint) & ~Qt::WindowMaximizeButtonHint);
 
-    connect(ui->tBtnOnlineHelp, SIGNAL(clicked()), this, SLOT(openOnlineHelp()));
-    connect(ui->tBtnOnlineTutorial, SIGNAL(clicked()), this, SLOT(openOnlineTutorial()));
-    connect(ui->tBtnFeedback, SIGNAL(clicked()), this, SLOT(sendFeedback()));
+    connect(ui->btnOnlineHelp, SIGNAL(clicked()), this, SLOT(openOnlineHelp()));
+    connect(ui->btnOnlineTutorial, SIGNAL(clicked()), this, SLOT(openOnlineTutorial()));
+    connect(ui->btnFeedback, SIGNAL(clicked()), this, SLOT(sendFeedback()));
     connect(ui->btnChangePass, SIGNAL(clicked()), this, SLOT(changePass()));
     connect(ui->btnForgotpass, SIGNAL(clicked()), this, SLOT(forgotPass()));
     connect(ui->btnGetMoreSpace, SIGNAL(clicked()), this, SLOT(upgradePlan()));
     connect(ui->btnMyPcloud, SIGNAL(clicked()), this, SLOT(openMyPcloud()));
     connect(ui->comboBox_versionReminder, SIGNAL(currentIndexChanged(int)), app, SLOT(setTimerInterval(int)));
     connect(ui->btnUpdtVersn, SIGNAL(clicked()), this, SLOT(updateVersion()));
-    //p connect(ui->tbtnOpenFolder, SIGNAL(clicked()),app,SLOT(openCloudDir()));
     connect(ui->btnLgout, SIGNAL(clicked()), app, SLOT(logOut()));
     connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(unlinkSync()));
 
-    QMenu *menuAccnt = new QMenu(this);
-    QAction *actionChangePass = new QAction(trUtf8("Change Password"),this);
-    connect(actionChangePass, SIGNAL(triggered()), this, SLOT(changePass()));
-    QAction *forgotPassAction = new QAction(trUtf8("Forgot Password"), this);
-    connect(forgotPassAction, SIGNAL(triggered()), this, SLOT(forgotPass()));
-    menuAccnt->addAction(actionChangePass);
-    menuAccnt->addAction(forgotPassAction);
-    // ui->btnAccntMenu->setMenu(menuAccnt);
     this->setMinimumHeight(560);
     //this->setMinimumWidth(1024);
 
     updateGeometry();
-
 }
 
 void PCloudWindow::setFrameProps(QFrame *frame)
 {
     QPalette Pal(palette());
-    Pal.setColor(QPalette::Background, Qt::white);
+    Pal.setColor(QPalette::Background,Qt::white); //ui->tabSyncList->palette().background().color());
     frame->setAutoFillBackground(true);
     frame->setPalette(Pal);
     frame->setFrameShadow(QFrame::Plain);
@@ -311,52 +305,36 @@ void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when
 */
 
 void PCloudWindow::fillAboutPage()
-{
-    ui->label_copyright->setFont(app->smaller1pFont);
+{        
     if(!app->new_version())
     {
-        ui->label_versionVal->setText(QString("Installed Version: ") + APP_VERSION); // + QString("\n\nEverything is up to date"));
-        // ui->label_versionVal->setAlignment(Qt::AlignHCenter);
-        //ui->label_versionInfo->setVisible(true);
+        ui->label_versionInfo->setVisible(true);
         ui->widget_newVersion->setVisible(false);
     }
     else
     {
-        ui->label_versionVal->setVisible(false);
-        ui->label_newVersion->setText(QString("New version "  + app->newVersion.versionstr + " has already been released"));
-        //ui->label_versionInfo->setVisible(false);
-        ui->label_notes->setText(QString("Notes:\n "+ app->newVersion.notes));
+        ui->label_versionInfo->setVisible(false);
+        ui->label_newVersion->setText(QString("New in version: "  + app->newVersion.versionstr + "\n"+ app->newVersion.notes));
         ui->comboBox_versionReminder->setCurrentIndex(app->settings->value("vrsnNotifyInvervalIndx").toInt());
     }
 }
 
 void PCloudWindow::fillAccountLoggedPage()
-{
-    this->setFrameProps(ui->frame_accnt);
-    this->setFrameProps(ui->frame_help);
-    this->setFrameProps(ui->frame);
+{    
     ui->label_email->setText(app->username);
     ui->progressBar_storage->setMinimum(0);
     ui->progressBar_storage->setMaximum(100);
     ui->progressBar_storage->setValue(100-app->freeSpacePercentage);
-    if (app->isVerified)
-    {
-        ui->btnVerify->setVisible(false);
-        ui->checkBoxVerified->setVisible(true);
-        ui->checkBoxVerified->setCheckState(Qt::Checked);
-        ui->checkBoxVerified->setEnabled(false);
-    }
-    else
-    {
-        ui->checkBoxVerified->setVisible(false);
-        ui->btnVerify->setVisible(true);
-    }
+    ui->btnVerify->setVisible(!app->isVerified);
     ui->label_space->setText(app->usedSpaceStr + " (" +  QString::number(100 - app->freeSpacePercentage) + "%)");
     ui->label_planVal->setText(app->planStr);
 }
 void PCloudWindow::refreshUserinfo()
 {
-    this->fillAccountLoggedPage();
+    ui->label_email->setText(app->username);
+    ui->btnVerify->setVisible(!app->isVerified);
+    ui->label_space->setText(app->usedSpaceStr + " (" +  QString::number(100 - app->freeSpacePercentage) + "%)");
+    ui->label_planVal->setText(app->planStr);
 }
 
 int PCloudWindow::getCurrentPage()
@@ -461,9 +439,6 @@ void PCloudWindow::checkVerify() // has the user verified after had clicked "Ver
     bool verified = psync_get_bool_value("emailverified");
     if (verified)
     {
-        ui->checkBoxVerified->setVisible(true);
-        ui->checkBoxVerified->setChecked(true);
-        ui->checkBoxVerified->setEnabled(false);
         ui->btnVerify->setVisible(false);
         verifyClicked = false;
     }
@@ -490,13 +465,13 @@ void PCloudWindow::refreshPageSlot(int pageindex, int param)
 
 void PCloudWindow::openMyPcloud()
 {
-    QUrl url("https://my.pcloud.com/#page=filemanager&authtoken="+app->authentication);
+    QUrl url(QString("https://my.pcloud.com/#page=filemanager&authtoken=").append(psync_get_auth_string()));
     QDesktopServices::openUrl(url);
 }
 
 void PCloudWindow::upgradePlan()
 {
-    QUrl url("https://my.pcloud.com/#page=plans&authtoken="+app->authentication);
+    QUrl url(QString("https://my.pcloud.com/#page=plans&authtoken=").append(psync_get_auth_string()));
     QDesktopServices::openUrl(url);
 }
 
