@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>679</width>
-    <height>529</height>
+    <width>602</width>
+    <height>520</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_16">
+   <layout class="QVBoxLayout" name="verticalLayout_16" stretch="0,0,0">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
       <property name="spacing">
@@ -33,7 +33,23 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QListWidget" name="listButtonsWidget"/>
+       <widget class="QListWidget" name="listButtonsWidget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAsNeeded</enum>
+        </property>
+        <property name="autoScroll">
+         <bool>true</bool>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
@@ -55,7 +71,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="pageAccntLogged">
        <property name="maximumSize">
@@ -294,7 +310,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidgetSync">
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tabSyncList">
            <attribute name="title">
@@ -395,26 +411,6 @@
                   </item>
                  </layout>
                 </item>
-                <item>
-                 <widget class="QLabel" name="label_forspace">
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="verticalSpacer_3">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>20</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
                </layout>
               </item>
               <item>
@@ -432,10 +428,10 @@
                    <number>0</number>
                   </property>
                   <property name="leftMargin">
-                   <number>15</number>
+                   <number>12</number>
                   </property>
                   <property name="topMargin">
-                   <number>15</number>
+                   <number>12</number>
                   </property>
                   <item>
                    <widget class="QLabel" name="label_syninfotitle">
@@ -462,7 +458,7 @@
                    <number>0</number>
                   </property>
                   <property name="topMargin">
-                   <number>20</number>
+                   <number>12</number>
                   </property>
                   <item>
                    <spacer name="horizontalSpacer_29">
@@ -484,6 +480,9 @@
                     </property>
                     <property name="pixmap">
                      <pixmap resource="Resources.qrc">:/images/images/synco-de.png</pixmap>
+                    </property>
+                    <property name="scaledContents">
+                     <bool>false</bool>
                     </property>
                    </widget>
                   </item>
@@ -623,7 +622,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidgetShares">
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tabMyShares">
            <attribute name="title">
@@ -632,6 +631,16 @@
            <layout class="QVBoxLayout" name="verticalLayout_18">
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_13">
+              <item>
+               <widget class="QLabel" name="label_myshares">
+                <property name="text">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;My Shares:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                </property>
+               </widget>
+              </item>
               <item>
                <spacer name="horizontalSpacer_8">
                 <property name="orientation">
@@ -669,13 +678,6 @@
                </widget>
               </item>
              </layout>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_myshares">
-              <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;My Shares:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
-             </widget>
             </item>
             <item>
              <widget class="QTreeWidget" name="treeMyShares">
@@ -752,19 +754,6 @@
              </widget>
             </item>
             <item>
-             <spacer name="verticalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
              <widget class="QLabel" name="label_noMyRqsts">
               <property name="layoutDirection">
                <enum>Qt::LeftToRight</enum>
@@ -798,7 +787,7 @@
                <item>
                 <widget class="QLabel" name="label_myreq">
                  <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;My Requests:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;My Requests:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                 </widget>
                </item>
@@ -924,19 +913,6 @@
                <enum>Qt::Horizontal</enum>
               </property>
              </widget>
-            </item>
-            <item>
-             <spacer name="verticalSpacer_5">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
             </item>
             <item>
              <widget class="QLabel" name="label_noRqstsWithMe">
@@ -1992,6 +1968,19 @@
               </widget>
              </item>
              <item>
+              <spacer name="verticalSpacer_11">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
               <widget class="QWidget" name="widget_newVersion" native="true">
                <layout class="QVBoxLayout" name="verticalLayout_11">
                 <property name="leftMargin">
@@ -2005,19 +1994,6 @@
                 </property>
                 <item>
                  <widget class="QLabel" name="label_newVersion"/>
-                </item>
-                <item>
-                 <spacer name="verticalSpacer_11">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>20</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                 </spacer>
                 </item>
                 <item>
                  <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -2208,7 +2184,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>679</width>
+     <width>602</width>
      <height>21</height>
     </rect>
    </property>

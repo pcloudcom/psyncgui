@@ -21,7 +21,7 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
     win = w;
     app = a;
 
-    initSyncPage();
+    initSyncPage();    
 
     //word wrap property breaks the layouts min size policy
     win->ui->label_syncinfo->setText("With Sync you can synchronize\n"
@@ -36,9 +36,9 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
     win->ui->label_infoexptns->setText("The patterns you enter (folder name, file name, extension, etc.) will be ignored while synchronizing data\n"
                                        "with your pCloud Account. Allowed wildcards: asterisk(*), question mark(?), patterns separated by semicolon(;).");
 
-    win->ui->label_dwnld->setFont(app->smaller1pFont);
+    //win->ui->label_dwnld->setFont(app->smaller1pFont);
     win->ui->label_dwnld->setEnabled(false);
-    win->ui->label_upld->setFont(app->smaller1pFont);
+    //win->ui->label_upld->setFont(app->smaller1pFont);
     win->ui->label_upld->setEnabled(false);
     win->ui->tabWidgetSync->setTabText(0, trUtf8("Synced Folders"));
     win->ui->tabWidgetSync->setTabText(1, trUtf8("Advanced Settings"));
@@ -56,7 +56,7 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
 #endif
     // win->ui->treeSyncList->setSortingEnabled(true);
     //win->ui->treeSyncList->sortByColumn(0, Qt::AscendingOrder);
-    int tableWidth =  win->ui->treeSyncList->width() - 64;
+    int tableWidth =  win->ui->treeSyncList->width() - 66;
     win->ui->treeSyncList->setColumnWidth(0, (int)tableWidth/2);
     win->ui->treeSyncList->setColumnWidth(2, (int)tableWidth/2);
     win->ui->treeSyncList->setColumnWidth(1, 32);

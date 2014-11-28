@@ -15,6 +15,11 @@ SharesPage::SharesPage(PCloudWindow *w, PCloudApp *a,  QObject *parent) :
     //win->ui->tabWidgetShares->setTabIcon(0, QIcon(":/images/images/myshares.png"));
     win->ui->tabWidgetShares->setTabText(1, tr("Shared With Me"));
     win->ui->tabWidgetShares->setCurrentIndex(0);
+
+    int requestsHight = 3 * win->ui->treeMyShares->height()/5;
+    win->ui->treeMyRequest->setMaximumHeight(requestsHight);
+    win->ui->treeRequestsWithMe->setMaximumHeight(requestsHight);
+
     this->setTableProps(win->ui->treeMyShares);
     this->setTableProps(win->ui->treeMyRequest);
     this->setTableProps(win->ui->treeSharedWithMe);

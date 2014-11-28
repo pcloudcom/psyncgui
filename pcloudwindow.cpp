@@ -27,8 +27,14 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     ui->listButtonsWidget->setStyleSheet("background-color:transparent");
     ui->listButtonsWidget->setMovement(QListView::Static); //not to move items with the mouse
     ui->listButtonsWidget->setMinimumWidth(450);
+#ifdef Q_OS_WIN
+    ui->listButtonsWidget->setMaximumHeight(80);
+    ui->listButtonsWidget->setMinimumHeight(79);
+#else
     ui->listButtonsWidget->setMaximumHeight(85);
     ui->listButtonsWidget->setMinimumHeight(84); // precakva mi layouta
+#endif
+
     ui->listButtonsWidget->installEventFilter(this);
 #ifndef Q_OS_WIN
     if (ui->listButtonsWidget->palette().highlightedText().color().value() == 255) //if selection is white
