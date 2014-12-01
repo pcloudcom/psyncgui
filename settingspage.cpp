@@ -24,8 +24,6 @@ SettingsPage::SettingsPage(PCloudWindow *w, PCloudApp *a, QObject* parent):
     win->ui->label_infoupld->setFont(app->smaller2pFont);
     win->ui->label_infodwld->setFont(app->smaller2pFont);
     win->ui->label_infop2p->setFont(app->smaller2pFont);
-    win->ui->label_infoautostrt->setFont(app->smaller2pFont);
-    win->ui->label_infoCM->setFont(app->smaller2pFont);
     win->ui->label_infominspace->setFont(app->smaller1pFont);
     win->ui->label_infocache->setFont(app->smaller1pFont);
 #else
