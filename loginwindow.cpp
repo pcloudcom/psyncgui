@@ -15,7 +15,7 @@ LoginWindow::LoginWindow(PCloudApp *a, QWidget *parent) :
     setWindowIcon(QIcon(WINDOW_ICON));
     setWindowTitle("pCloud Drive");  
     ui->forgotPassBtn->setStyleSheet("QToolButton{background-color:transparent; text-decoration: underline;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");
-    ui->tbtnReg->setStyleSheet("QToolButton{background-color:transparent; text-decoration: underline;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");
+    ui->tbtnReg->setStyleSheet("QToolButton{background-color:transparent; text-decoration: underline;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");    
     ui->loginButton->setDefault(true);
     connect(ui->loginButton, SIGNAL(clicked()), this, SLOT(logIn()));
     connect(ui->password, SIGNAL(returnPressed()), this, SLOT(logIn()));
@@ -23,9 +23,12 @@ LoginWindow::LoginWindow(PCloudApp *a, QWidget *parent) :
     connect(ui->tbtnReg, SIGNAL(clicked()), app, SLOT(showRegister()));
     connect(ui->forgotPassBtn,SIGNAL(clicked()), this,SLOT(forgotPassword()));
     connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(unlinkSync()));
-
-    this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-    this->layout()->setSizeConstraint(QLayout::SetFixedSize);
+#ifndef Q_OS_WIN
+    this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding); // to have min size for diff OSs
+    this->layout()->setSizeConstraint(QLayout::SetFixedSize);  //not resized
+#else
+    this->setFixedSize(570,412);
+#endif
 }
 
 LoginWindow::~LoginWindow()

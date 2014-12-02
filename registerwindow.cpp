@@ -15,12 +15,14 @@ RegisterWindow::RegisterWindow(PCloudApp *a, int pageIndex, QWidget *parent):
     ui->stackedWidget->setCurrentIndex(pageIndex);
     if(pageIndex)
         this->setUnlinkLabelText();
+    ui->label_accntinfo->setAlignment(Qt::AlignHCenter);
+    QFont boldfont;
+    boldfont.setBold(true);
+    ui->label_accntinfo->setFont(boldfont);
     ui->registerButton->setDefault(true);
     ui->btnUnlink->setDefault(true);
     ui->tbtnLogin->setStyleSheet("QToolButton{background-color:transparent; text-decoration: underline;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");
-    QFont italicFont;
-    italicFont.setItalic(true);
-    ui->label_accntinfo->setFont(italicFont);
+    ui->label_terms->setFont(app->smaller1pFont);
     connect(ui->registerButton, SIGNAL(clicked()), this, SLOT(doRegister()));
     connect(ui->email, SIGNAL(returnPressed()), this, SLOT(focusPass()));
     connect(ui->password, SIGNAL(returnPressed()), this, SLOT(focusConfirm()));
@@ -28,8 +30,12 @@ RegisterWindow::RegisterWindow(PCloudApp *a, int pageIndex, QWidget *parent):
     connect(ui->tbtnLogin, SIGNAL(clicked()), app, SLOT(showLogin()));
     connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(askUnlink()));
     connect(ui->btnCancel, SIGNAL(clicked()), app, SLOT(showLogin()));
+#ifndef Q_OS_WIN
     this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding); // to have min size for diff OSs
     this->layout()->setSizeConstraint(QLayout::SetFixedSize);  //not resized
+#else
+    this->setFixedSize(570,412);
+#endif
 }
 
 RegisterWindow::~RegisterWindow()
@@ -62,7 +68,7 @@ void RegisterWindow::setUnlinkLabelText()
     QString user = psync_get_username();
     if(user.length() > 30)
         user = user.left(30).append("...");
-    ui->label_accntinfo->setText(user);    
+    ui->label_accntinfo->setText(user);
 }
 
 void RegisterWindow::setError(const char *err){

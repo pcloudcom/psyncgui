@@ -6,14 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>590</width>
-    <height>434</height>
+    <width>600</width>
+    <height>416</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>600</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>590</width>
-    <height>434</height>
+    <height>416</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -22,6 +28,18 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_10">
     <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
      <number>0</number>
     </property>
     <item>
@@ -64,7 +82,7 @@
           </widget>
          </item>
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_6" stretch="1,1,6,1">
+          <layout class="QVBoxLayout" name="verticalLayout_6" stretch="1,1,8,1">
            <property name="spacing">
             <number>0</number>
            </property>
@@ -78,7 +96,7 @@
             <number>15</number>
            </property>
            <property name="bottomMargin">
-            <number>0</number>
+            <number>12</number>
            </property>
            <item>
             <widget class="QLabel" name="label_5">
@@ -111,7 +129,7 @@
            <item>
             <widget class="QStackedWidget" name="stackedWidget">
              <property name="currentIndex">
-              <number>0</number>
+              <number>1</number>
              </property>
              <widget class="QWidget" name="page_reg">
               <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -245,9 +263,9 @@
                   </layout>
                  </item>
                  <item>
-                  <widget class="QLabel" name="label_4">
+                  <widget class="QLabel" name="label_terms">
                    <property name="text">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:7pt;&quot;&gt;I agree with the &lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/terms_and_conditions.html&quot;&gt;&lt;span style=&quot; font-size:7pt; text-decoration: underline; color:#000000;&quot;&gt;Terms of Service&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:7pt; color:#000000;&quot;&gt;, &lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/privacy_policy.html&quot;&gt;&lt;span style=&quot; font-size:7pt; text-decoration: underline; color:#000000;&quot;&gt;Privacy Policy&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:7pt;&quot;&gt;&lt;br/&gt;and &lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/int_pr_policy.html&quot;&gt;&lt;span style=&quot; font-size:7pt; text-decoration: underline; color:#000000;&quot;&gt;Intellectual Property Policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I agree with the &lt;a href=&quot;https://www.pcloud.com/terms_and_conditions.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#000000;&quot;&gt;Terms of Service&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; color:#000000;&quot;&gt;, &lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/privacy_policy.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#000000;&quot;&gt;Privacy Policy&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;and &lt;a href=&quot;https://www.pcloud.com/int_pr_policy.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#000000;&quot;&gt;Intellectual Property Policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                    <property name="scaledContents">
                     <bool>false</bool>
@@ -329,7 +347,10 @@
                  <item>
                   <widget class="QLabel" name="label_accntinfo">
                    <property name="text">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br/&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
                    </property>
                    <property name="wordWrap">
                     <bool>true</bool>
