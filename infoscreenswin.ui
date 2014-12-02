@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>684</width>
-    <height>515</height>
+    <height>501</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,6 +15,9 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <property name="spacing">
+     <number>0</number>
+    </property>
     <property name="leftMargin">
      <number>0</number>
     </property>
@@ -30,10 +33,13 @@
     <item>
      <widget class="QStackedWidget" name="pagesWidget">
       <property name="currentIndex">
-       <number>5</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="pageIntro">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <property name="leftMargin">
          <number>0</number>
         </property>
@@ -51,12 +57,18 @@
           <property name="pixmap">
            <pixmap resource="Resources.qrc">:/welcomes/images/welcomes/welcomeIntro.png</pixmap>
           </property>
+          <property name="scaledContents">
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
        </layout>
       </widget>
       <widget class="QWidget" name="pageDrive">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <property name="leftMargin">
          <number>0</number>
         </property>
@@ -75,7 +87,7 @@
            <pixmap resource="Resources.qrc">:/welcomes/images/welcomes/welcomeDrive.png</pixmap>
           </property>
           <property name="scaledContents">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -83,6 +95,9 @@
       </widget>
       <widget class="QWidget" name="pageSync">
        <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <property name="leftMargin">
          <number>0</number>
         </property>
@@ -101,7 +116,7 @@
            <pixmap resource="Resources.qrc">:/welcomes/images/welcomes/welcomeSync.png</pixmap>
           </property>
           <property name="scaledContents">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -109,6 +124,9 @@
       </widget>
       <widget class="QWidget" name="pageShares">
        <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <property name="leftMargin">
          <number>0</number>
         </property>
@@ -127,7 +145,7 @@
            <pixmap resource="Resources.qrc">:/welcomes/images/welcomes/welcomeShares.png</pixmap>
           </property>
           <property name="scaledContents">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -135,6 +153,9 @@
       </widget>
       <widget class="QWidget" name="pageOthers">
        <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <property name="leftMargin">
          <number>0</number>
         </property>
@@ -153,7 +174,7 @@
            <pixmap resource="Resources.qrc">:/welcomes/images/welcomes/welcomeOthers.png</pixmap>
           </property>
           <property name="scaledContents">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -161,6 +182,9 @@
       </widget>
       <widget class="QWidget" name="pageFinish">
        <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <property name="leftMargin">
          <number>0</number>
         </property>
@@ -184,6 +208,9 @@
           <property name="pixmap">
            <pixmap resource="Resources.qrc">:/welcomes/images/welcomes/welcomeFInish.png</pixmap>
           </property>
+          <property name="scaledContents">
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
        </layout>
@@ -196,7 +223,7 @@
        <number>9</number>
       </property>
       <property name="rightMargin">
-       <number>9</number>
+       <number>0</number>
       </property>
       <item>
        <widget class="QCheckBox" name="checkBox_showagain">
@@ -211,7 +238,7 @@
          <number>0</number>
         </property>
         <property name="rightMargin">
-         <number>0</number>
+         <number>9</number>
         </property>
         <item>
          <spacer name="horizontalSpacer">
