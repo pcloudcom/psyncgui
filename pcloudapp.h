@@ -78,7 +78,7 @@ public:
     PCloudWindow *pCloudWin;
     WelcomeWin *welcomeWin;
     SuggestnsBaseWin *syncFldrsWin; // for context menu
-    QString username, authentication;
+    QString username;
     QString downldInfo, uplodInfo;
     bool rememberMe,isFirstLaunch;
     bool isPremium,isVerified;

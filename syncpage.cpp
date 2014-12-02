@@ -201,7 +201,7 @@ void SyncPage::syncDoubleClicked(QTreeWidgetItem *item, int col)
         {
             quint64 fldrid = item->data(4,Qt::UserRole).toLongLong();
             QString urlstr = "https://my.pcloud.com/#folder=";
-            urlstr.append(QString::number(fldrid) + "&page=filemanager&authtoken=" + app->authentication);
+            urlstr.append(QString::number(fldrid) + "&page=filemanager&authtoken=" + psync_get_auth_string());
             QUrl url(urlstr);
             QDesktopServices::openUrl(url);
         }

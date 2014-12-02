@@ -106,5 +106,11 @@
         <file>images/welcomes/welcomeSync.png</file>
         <file>images/welcomes/welcomeDrive.png</file>
         <file>images/welcomes/welcomeIntro.png</file>
+        <file>images/welcomes/welcomeDriveXP.png</file>
+        <file>images/welcomes/welcomeFinishXP.png</file>
+        <file>images/welcomes/welcomeIntroXP.png</file>
+        <file>images/welcomes/welcomeSharesXP.png</file>
+        <file>images/welcomes/welcomeSyncXP.png</file>
+        <file>images/welcomes/welcomeOthersXP.png</file>
     </qresource>
 </RCC>

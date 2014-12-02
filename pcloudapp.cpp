@@ -225,7 +225,6 @@ void PCloudApp::logOut(){
     pCloudWin->setOnlineItems(false);
     emit changeSyncIcon(OFFLINE_ICON);
     this->hideAllWindows();
-    this->authentication = "";
     this->isFirstLaunch = false;
     this->showLogin();
     //p unmount
@@ -1250,7 +1249,8 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     pCloudWin->setOnlineItems(true);
     tray->setContextMenu(loggedmenu);
 
-     //isFirstLaunch = true; // for test TEMP
+    //isFirstLaunch = true; // for test TEMP
+    /*
 #ifdef Q_OS_WIN // NEXT VERSION - when screeshots for win are ready
     if (isFirstLaunch)
     {
@@ -1258,19 +1258,19 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
         this->showWindow(welcomeWin);
     }
 #else
-     // ++ create pclsyn default
-     if (isFirstLaunch || (this->settings->contains("showintrowin") && this->settings->value("showintrowin").toBool()))
+*/
+    // ++ create pclsyn default
+    if (isFirstLaunch || (this->settings->contains("showintrowin") && this->settings->value("showintrowin").toBool()))
     {
         if(introwin == NULL)
             introwin = new InfoScreensWin(this);
         this->showWindow(introwin);
     }
-#endif
+
 }
 
 void PCloudApp::getUserInfo()
-{
-    this->authentication = psync_get_auth_string();
+{    
     this->isVerified = psync_get_bool_value("emailverified");
     this->isPremium = psync_get_bool_value("premium");
     this->getQuota();

@@ -12,14 +12,33 @@ InfoScreensWin::InfoScreensWin(PCloudApp *a, QWidget *parent) :
     app = a;
     ui->checkBox_showagain->setChecked(Qt::Checked);
     setWindowIcon(QIcon(WINDOW_ICON));
-    setWindowTitle("pCloud Drive");
+    setWindowTitle("pCloud Drive");    
     this->setWindowFlags(Qt::WindowTitleHint | Qt::CustomizeWindowHint);
+
+ #ifdef Q_OS_LINUX
+    ui->label_intro->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeIntro.png"));
+    ui->label_drive->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeDrive.png"));
+    ui->label_sync->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeSync.png"));
+    ui->label_shares->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeShares.png"));
+    ui->label_othrs->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeOthers.png"));
+    ui->label_finish->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeFInish.png"));
+#else
+    ui->label_intro->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeIntroXP.png"));
+    ui->label_drive->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeDriveXP.png"));
+    ui->label_sync->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeSyncXP.png"));
+    ui->label_shares->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeSharesXP.png"));
+    ui->label_othrs->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeOthersXP.png"));
+    ui->label_finish->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeFinishXP.png"));
+#endif
+
     connect(ui->pagesWidget, SIGNAL(currentChanged(int)), this, SLOT(changePageContent(int)));
     connect(ui->btnPreviuos, SIGNAL(clicked()), this, SLOT(openPreviousPage()));
     connect(ui->btnNext, SIGNAL(clicked()), this, SLOT(openNextPage()));
-    connect(ui->btnOpenFldr, SIGNAL(clicked()), this, SLOT(finish()));
+    connect(ui->btnOpenFldr, SIGNAL(clicked()), this, SLOT(finish()));    
+
     if(app->isFirstLaunch)
         emit this->createDfltSync();
+
 }
 
 InfoScreensWin::~InfoScreensWin()
