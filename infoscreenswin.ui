@@ -201,7 +201,7 @@
       <item>
        <widget class="QCheckBox" name="checkBox_showagain">
         <property name="text">
-         <string>Show this screen each time I start pCloud Drive</string>
+         <string>Show introduction every time pCloud Drive starts</string>
         </property>
        </widget>
       </item>
