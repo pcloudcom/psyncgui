@@ -25,6 +25,7 @@
         <file>images/log-reg_small.png</file>
         <file>images/synco-de.png</file>
         <file>images/sync-w.png</file>
+        <file>images/sync_XP.png</file>
     </qresource>
     <qresource prefix="/128x128">
         <file>images/128x128/FolderIconX.png</file>

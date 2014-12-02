@@ -360,8 +360,7 @@ void PCloudWindow::refreshPagePulbic(int pageindex, int param)
 
 void PCloudWindow::changePass()
 {
-    ChangePassDialog *dialog = new ChangePassDialog();
-    dialog->ui->label_email->setText(app->username);
+    ChangePassDialog *dialog = new ChangePassDialog();    
     if (dialog->exec() == QDialog::Accepted)
     {
         char *err = NULL;

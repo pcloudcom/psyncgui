@@ -34,6 +34,7 @@ private:
     //QFileSystemModel *model; // the old tree
     RemoteTreesDialog *remotesDialog;
     QString localpath, remotepath;
+    QString getDisplFldrPath(QString fldrpath, QChar osSep);
     void showError(const QString &err);
     void load();
 public slots:
@@ -42,7 +43,7 @@ public slots:
     void addSync();
     //  void newLocalFldr(); //obsolete
     void newRemoteFldr(QString dirname);
-    void hideDialog();
+    void hideDialog();  
 };
 
 #endif // ADDSYNCDIALOG_H

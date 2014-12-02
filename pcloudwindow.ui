@@ -479,7 +479,7 @@
                      <string/>
                     </property>
                     <property name="pixmap">
-                     <pixmap resource="Resources.qrc">:/images/images/synco-de.png</pixmap>
+                     <pixmap resource="Resources.qrc">:/images/images/sync_XP.png</pixmap>
                     </property>
                     <property name="scaledContents">
                      <bool>false</bool>

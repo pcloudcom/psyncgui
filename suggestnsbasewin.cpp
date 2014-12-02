@@ -24,6 +24,10 @@ SuggestnsBaseWin::SuggestnsBaseWin(PCloudApp *a, bool addlocal, QStringList *fld
     isChangingItem = false;
     addFldrsLst = fldrs;
     addLocalFldrsFlag = addlocal;
+    ui->label_syncinfo->setText("With Sync you can synchronize\n"
+                                "the content in multiple folders from your\n"
+                                "computer in real time.By synchronizing\n"
+                                "folders in pCloud Drive you make them\navailable even in offline mode.");
 
 #ifdef Q_OS_WIN
     dfltDir = new QDir(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
@@ -33,9 +37,8 @@ SuggestnsBaseWin::SuggestnsBaseWin(PCloudApp *a, bool addlocal, QStringList *fld
 
     connect(ui->btnAdd, SIGNAL(clicked()),this, SLOT(addSync()));
     connect(ui->btnFinish, SIGNAL(clicked()), this, SLOT(finish()));
+    connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->treeWidget, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(changeCurrItem(QModelIndex)));
-    //connect(ui->btnModify, SIGNAL(clicked()), this, SLOT(modifyType()));
-    ui->btnModify->setVisible(false); //obsolete behav
     ui->statusbar->setVisible(false);
 
     this->setWindowTitle(trUtf8("pCloud Drive"));
@@ -129,11 +132,12 @@ SuggestnsBaseWin::SuggestnsBaseWin(PCloudApp *a, bool addlocal, QStringList *fld
     //ui->treeWidget->resizeColumnToContents(0);
     ui->treeWidget->setColumnWidth(0,40);
     ui->treeWidget->setColumnWidth(1,200);
-    ui->treeWidget->setColumnWidth(2,140);
+    ui->treeWidget->setColumnWidth(2,32);
     ui->treeWidget->resizeColumnToContents(3);
-    ui->treeWidget->setMinimumWidth(400);
+    ui->treeWidget->setMinimumWidth(450);
     //ui->tableWidget->setItemDelegate(new SyncItemsDelegate());
-    // this->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
+    this->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
+    this->setFixedSize(this->width(), this->height());
 
     if(addFldrsLst != NULL) //if not creating a default suggestion sync
     {
@@ -161,8 +165,7 @@ void SuggestnsBaseWin::addLocalFldrs(QStringList *itemsLst) //received from cont
         item->setData(0,Qt::UserRole,true);
         item->setText(1,itemsLst->at(i)); //localpath
         item->setData(1, Qt::UserRole,itemsLst->at(i));
-        item->setText(2, typeStr[2]); //synctype
-        item->setData(2, Qt::UserRole, PSYNC_FULL);
+        item->setIcon(2,QIcon(":/32x32/images/32x32/sync.png"));
 #ifdef Q_OS_WIN
         QString name = itemsLst->at(i).section("\\",-1);
 #else
@@ -201,8 +204,7 @@ void SuggestnsBaseWin::addRemoteFldrs(QStringList *itemsLst)
 #endif
         item->setText(1, localpath);
         item->setData(1, Qt::UserRole, localpath);
-        item->setText(2, typeStr[2]);
-        item->setData(2, Qt::UserRole, PSYNC_FULL);
+        item->setIcon(2,QIcon(":/32x32/images/32x32/sync.png"));
         item->setText(3, remotepath);
         item->setData(3, Qt::UserRole, remotepath);
     }

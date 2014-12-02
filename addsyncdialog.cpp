@@ -30,9 +30,21 @@ addSyncDialog::addSyncDialog(PCloudApp *a, PCloudWindow *w, SuggestnsBaseWin *wl
     {
         ui->btnAdd->setText(trUtf8("Change"));
         this->setWindowTitle(trUtf8("Change sync"));
+        localpath = addNewSyncsWin->getCurrLocalPath();
+        ui->btnOpenLocals->setText(getDisplFldrPath(localpath,'\\'));
+        remotepath = addNewSyncsWin->getCurrRemotePath();
+        ui->btnOpenRemotes->setText(getDisplFldrPath(remotepath, '/'));
     }
     else
+    {
         this->setWindowTitle(trUtf8("Add New Sync"));
+#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
+        localpath = QDir::homePath(); //lin
+#else
+        localpath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation); //windows
+#endif
+        remotepath = "";
+    }
     load();
     this->setFixedSize(this->width(),this->height()); //makes the win not resizable
 }
@@ -50,33 +62,41 @@ void addSyncDialog::hideDialog()
     this->hide();
 }
 
-static QString getDisplFldrName(QString fldrname)
+QString addSyncDialog::getDisplFldrPath(QString fldrpath, QChar osSep)
 {
-    if(fldrname.isEmpty())
-        return "/";
+    if(fldrpath.isEmpty())
+        return "";
 
-    if(fldrname.length() < 40)
-        return fldrname;
+    if(fldrpath.length() < 40)
+        return fldrpath;
     else
-        return fldrname.left(40).append("...");
+    {
+        int namelen = fldrpath.section(osSep,-1).length();
+        if(namelen < 34)
+            return fldrpath.left(40 - namelen).append("...").append(fldrpath.right(namelen));
+        else
+            return fldrpath.left(3).append("...").append(fldrpath.right(36)); //c:\...last 36
+    }
 }
 
 void addSyncDialog::chooseLocalFldr()
 {
     QFileDialog* d = new QFileDialog(this);
     d->setWindowIcon(QIcon(WINDOW_ICON));
-    d->setWindowTitle("Choose Local Directory");
-    d->setFileMode(QFileDialog::Directory);
-    d->setOption(QFileDialog::ShowDirsOnly, true);
+    d->setFileMode(QFileDialog::DirectoryOnly);
+    this->localpath = d->getExistingDirectory(this,"Choose Local Directory", localpath, QFileDialog::ShowDirsOnly
+                                              | QFileDialog::DontResolveSymlinks);
+    if (this->localpath.isEmpty())
+        return;
+#ifdef Q_OS_WIN
+    localpath.replace("/","\\");
+    ui->btnOpenLocals->setText(getDisplFldrPath(localpath, '\\'));
+#else
+    ui->btnOpenLocals->setText(getDisplFldrPath(localpath, '/'));
+#endif
+    qDebug()<<"addSyncDialog::chooseLocalFldr"<<localpath;
 
-    //case when change item in suggestions in Context Menu
-    if (this->addNewSyncsWin != NULL && addNewSyncsWin->getChangeItem())
-    {
-        localpath = addNewSyncsWin->getCurrLocalPath();
-        d->selectFile(localpath);
-        ui->btnOpenLocals->setText(getDisplFldrName(localpath.section("/",-1)));
-    }
-
+    /*
     if(d->exec() == QFileDialog::Accepted)
     {
         QStringList filenames = d->selectedFiles();
@@ -87,7 +107,7 @@ void addSyncDialog::chooseLocalFldr()
         }
 
         this->localpath = filenames.at(0);
-        ui->btnOpenLocals->setText(getDisplFldrName(localpath.section("/",-1)));
+       // ui->btnOpenLocals->setText(getDisplFldrPath(localpath.section("/",-1)));
 
         for (int i = 0; i < filenames.size(); i++)
             qDebug()<<"FIledialog"<< filenames.at(i);
@@ -97,6 +117,7 @@ void addSyncDialog::chooseLocalFldr()
         this->localpath = "";
         qDebug()<<"add local fodler for new sync CANCEDL";
     }
+    */
 }
 
 void addSyncDialog::chooseRemoteFldr()
@@ -104,7 +125,7 @@ void addSyncDialog::chooseRemoteFldr()
     this->remotesDialog->exec();
     this->remotepath = remotesDialog->getFldrPath();
     if (!this->remotepath.isNull())
-        ui->btnOpenRemotes->setText(getDisplFldrName(remotepath.section("/",-1)));
+        ui->btnOpenRemotes->setText(getDisplFldrPath(remotepath,'/'));
 }
 
 void addSyncDialog::load() //obsolete
@@ -196,7 +217,7 @@ void addSyncDialog::addSync()
     //type = ui->comboSyncType->currentIndex();
     */
 
-    if(localpath == "" || remotepath == "")
+    if(this->localpath == "" || this->remotepath == "")
     {
         QMessageBox::warning(this, "pCloud Drive", trUtf8("Please select both paths!"));
         return;
