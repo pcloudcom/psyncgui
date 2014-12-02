@@ -255,6 +255,12 @@
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>23</height>
+                  </size>
+                 </property>
                 </widget>
                </item>
                <item>
@@ -301,6 +307,12 @@
              </item>
              <item>
               <widget class="QLineEdit" name="password">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>23</height>
+                </size>
+               </property>
                <property name="echoMode">
                 <enum>QLineEdit::Password</enum>
                </property>
@@ -312,10 +324,23 @@
                 <number>0</number>
                </property>
                <item>
+                <spacer name="horizontalSpacer_5">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
                 <widget class="QToolButton" name="forgotPassBtn">
                  <property name="font">
                   <font>
-                   <pointsize>9</pointsize>
+                   <pointsize>8</pointsize>
                   </font>
                  </property>
                  <property name="mouseTracking">

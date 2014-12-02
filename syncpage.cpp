@@ -26,7 +26,7 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
     //word wrap property breaks the layouts min size policy
     win->ui->label_syncinfo->setText("With Sync you can synchronize\n"
                                      "the content in multiple folders from your\n"
-                                     "computer in real time.By synchronizing\n"
+                                     "computer in real time. By synchronizing\n"
                                      "folders in pCloud Drive you make them\navailable even in offline mode.");
 #ifndef Q_OS_WIN
     win->ui->label_syncinfo->setFont(app->smaller1pFont);

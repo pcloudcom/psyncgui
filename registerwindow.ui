@@ -64,7 +64,7 @@
           </widget>
          </item>
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_6">
+          <layout class="QVBoxLayout" name="verticalLayout_6" stretch="1,1,6,1">
            <property name="spacing">
             <number>0</number>
            </property>
@@ -142,7 +142,14 @@
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLineEdit" name="email"/>
+                    <widget class="QLineEdit" name="email">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>23</height>
+                      </size>
+                     </property>
+                    </widget>
                    </item>
                   </layout>
                  </item>
@@ -157,6 +164,12 @@
                    </item>
                    <item>
                     <widget class="QLineEdit" name="password">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>23</height>
+                      </size>
+                     </property>
                      <property name="echoMode">
                       <enum>QLineEdit::Password</enum>
                      </property>
@@ -175,6 +188,12 @@
                    </item>
                    <item>
                     <widget class="QLineEdit" name="confirmpassword">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>23</height>
+                      </size>
+                     </property>
                      <property name="text">
                       <string/>
                      </property>
@@ -228,7 +247,7 @@
                  <item>
                   <widget class="QLabel" name="label_4">
                    <property name="text">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;I accept&lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/terms_and_conditions.html&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#000000;&quot;&gt;Terms of Service&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:9pt; color:#000000;&quot;&gt;, &lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/privacy_policy.html&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#000000;&quot;&gt;Privacy Policy&lt;/span&gt;&lt;/a&gt; &lt;br&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;and &lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/int_pr_policy.html&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#000000;&quot;&gt;Intellectual Property Policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:7pt;&quot;&gt;I agree with the &lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/terms_and_conditions.html&quot;&gt;&lt;span style=&quot; font-size:7pt; text-decoration: underline; color:#000000;&quot;&gt;Terms of Service&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:7pt; color:#000000;&quot;&gt;, &lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/privacy_policy.html&quot;&gt;&lt;span style=&quot; font-size:7pt; text-decoration: underline; color:#000000;&quot;&gt;Privacy Policy&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:7pt;&quot;&gt;&lt;br/&gt;and &lt;/span&gt;&lt;a href=&quot;https://www.pcloud.com/int_pr_policy.html&quot;&gt;&lt;span style=&quot; font-size:7pt; text-decoration: underline; color:#000000;&quot;&gt;Intellectual Property Policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                    <property name="scaledContents">
                     <bool>false</bool>
@@ -303,14 +322,14 @@
                  <item>
                   <widget class="QLabel" name="label_6">
                    <property name="text">
-                    <string>The account:</string>
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;The account:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                   </widget>
                  </item>
                  <item>
                   <widget class="QLabel" name="label_accntinfo">
                    <property name="text">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                    <property name="wordWrap">
                     <bool>true</bool>
@@ -320,7 +339,7 @@
                  <item>
                   <widget class="QLabel" name="label_7">
                    <property name="text">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;is currently linked to this computer.&lt;br&gt;You need to unlink in order to&lt;br&gt;register a new account.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;is currently linked to this computer.&lt;br/&gt;You need to unlink in order to&lt;br/&gt;register a new account.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                   </widget>
                  </item>

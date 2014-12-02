@@ -28,7 +28,8 @@ RegisterWindow::RegisterWindow(PCloudApp *a, int pageIndex, QWidget *parent):
     connect(ui->tbtnLogin, SIGNAL(clicked()), app, SLOT(showLogin()));
     connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(askUnlink()));
     connect(ui->btnCancel, SIGNAL(clicked()), app, SLOT(showLogin()));
-    this->setFixedSize(this->width(),this->height()); //makes the win not resizable
+    this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding); // to have min size for diff OSs
+    this->layout()->setSizeConstraint(QLayout::SetFixedSize);  //not resized
 }
 
 RegisterWindow::~RegisterWindow()
@@ -61,7 +62,7 @@ void RegisterWindow::setUnlinkLabelText()
     QString user = psync_get_username();
     if(user.length() > 30)
         user = user.left(30).append("...");
-    ui->label_accntinfo->setText(user);
+    ui->label_accntinfo->setText(user);    
 }
 
 void RegisterWindow::setError(const char *err){

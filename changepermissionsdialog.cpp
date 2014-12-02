@@ -15,6 +15,7 @@ ChangePermissionsDialog::ChangePermissionsDialog(quint32 perms, QString folderNa
     ui->permDelete->setChecked(perms & PSYNC_PERM_DELETE);
     connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(hide()));
     connect(ui->btnSave,SIGNAL(clicked()),this,SLOT(setNewPermissions()));
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 ChangePermissionsDialog::~ChangePermissionsDialog()

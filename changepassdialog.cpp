@@ -8,8 +8,10 @@ ChangePassDialog::ChangePassDialog(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->btnSave, SIGNAL(clicked()), this, SLOT(checkPasses()));
     connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(reject()));
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
     this->setWindowTitle("pCloud Drive");
-    this->setFixedSize(this->width(),this->height()); //not resized
+    this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding); // to have min size for diff OSs
+    this->layout()->setSizeConstraint(QLayout::SetFixedSize);  //not resized
 }
 
 ChangePassDialog::~ChangePassDialog()

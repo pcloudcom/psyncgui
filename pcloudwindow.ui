@@ -178,6 +178,12 @@
              </item>
              <item row="0" column="1">
               <widget class="QPushButton" name="btnChangePass">
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
                <property name="text">
                 <string> Change Password </string>
                </property>
@@ -185,6 +191,12 @@
              </item>
              <item row="0" column="2">
               <widget class="QPushButton" name="btnForgotpass">
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
                <property name="text">
                 <string> Forgot Password </string>
                </property>
@@ -318,7 +330,7 @@
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_31">
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_16">
+             <layout class="QHBoxLayout" name="horizontalLayout_16" stretch="2,0,1">
               <item>
                <layout class="QVBoxLayout" name="verticalLayout_21">
                 <item>
@@ -381,7 +393,7 @@
                      </font>
                     </property>
                     <property name="text">
-                     <string>   Add New Sync  </string>
+                     <string> Add New Sync  </string>
                     </property>
                     <property name="icon">
                      <iconset resource="Resources.qrc">
@@ -389,8 +401,8 @@
                     </property>
                     <property name="iconSize">
                      <size>
-                      <width>16</width>
-                      <height>16</height>
+                      <width>15</width>
+                      <height>15</height>
                      </size>
                     </property>
                    </widget>
@@ -431,6 +443,9 @@
                    <number>12</number>
                   </property>
                   <property name="topMargin">
+                   <number>12</number>
+                  </property>
+                  <property name="rightMargin">
                    <number>12</number>
                   </property>
                   <item>
@@ -659,7 +674,7 @@
                 <property name="maximumSize">
                  <size>
                   <width>180</width>
-                  <height>16777215</height>
+                  <height>23</height>
                  </size>
                 </property>
                 <property name="text">
@@ -671,8 +686,8 @@
                 </property>
                 <property name="iconSize">
                  <size>
-                  <width>16</width>
-                  <height>16</height>
+                  <width>15</width>
+                  <height>15</height>
                  </size>
                 </property>
                </widget>

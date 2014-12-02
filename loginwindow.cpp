@@ -24,7 +24,8 @@ LoginWindow::LoginWindow(PCloudApp *a, QWidget *parent) :
     connect(ui->forgotPassBtn,SIGNAL(clicked()), this,SLOT(forgotPassword()));
     connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(unlinkSync()));
 
-    this->setFixedSize(this->width(),this->height()); //makes the win not resizable
+    this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    this->layout()->setSizeConstraint(QLayout::SetFixedSize);
 }
 
 LoginWindow::~LoginWindow()

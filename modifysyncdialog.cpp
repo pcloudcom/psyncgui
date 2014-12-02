@@ -19,7 +19,9 @@ ModifySyncDialog::ModifySyncDialog(QString local, QString remote,int type, QWidg
     connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(hide()));
     this->setWindowTitle("pCloud Drive");
     this->setWindowIcon(QIcon(WINDOW_ICON));
-    this->setFixedSize(this->width(),this->height()); //makes the win not resizable
+    this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding); // to have min size for diff OSs
+    this->layout()->setSizeConstraint(QLayout::SetFixedSize);  //not resized
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint); //remove help option
 }
 
 ModifySyncDialog::~ModifySyncDialog()

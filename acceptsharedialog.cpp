@@ -5,7 +5,8 @@ AcceptShareDialog::AcceptShareDialog(QString fldrname, QWidget *parent):
 {        
     ui->widget_fldrName->setVisible(true);
     ui->line_folderName->setText(fldrname);
-    ui->btnAccept->setText("Accept");    
+    ui->btnAccept->setText("Accept");
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 void AcceptShareDialog::setSelectedFolder()

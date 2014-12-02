@@ -50,7 +50,7 @@
       <item>
        <widget class="QLabel" name="label_modifyinfo">
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:7pt; font-style:italic;&quot;&gt;*Double-click on an item for modify&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:7pt; font-style:italic;&quot;&gt;*Double-click on an item to modify&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
@@ -58,6 +58,12 @@
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QPushButton" name="btnAdd">
+          <property name="minimumSize">
+           <size>
+            <width>115</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="text">
            <string>Add More Folders </string>
           </property>
@@ -65,10 +71,22 @@
            <iconset resource="Resources.qrc">
             <normaloff>:/32x32/images/32x32/sync.png</normaloff>:/32x32/images/32x32/sync.png</iconset>
           </property>
+          <property name="iconSize">
+           <size>
+            <width>15</width>
+            <height>15</height>
+           </size>
+          </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="btnFinish">
+          <property name="minimumSize">
+           <size>
+            <width>115</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="text">
            <string> Confirm new Syncs </string>
           </property>
@@ -76,6 +94,12 @@
         </item>
         <item>
          <widget class="QPushButton" name="btnCancel">
+          <property name="minimumSize">
+           <size>
+            <width>115</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="text">
            <string>Cancel</string>
           </property>
@@ -116,6 +140,9 @@
          <number>12</number>
         </property>
         <property name="topMargin">
+         <number>12</number>
+        </property>
+        <property name="rightMargin">
          <number>12</number>
         </property>
         <item>

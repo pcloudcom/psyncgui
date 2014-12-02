@@ -1,7 +1,5 @@
 #include "addsyncdialog.h"
 #include "ui_addsyncdialog.h"
-
-//#include <QFileSystemModel>
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QTextCodec>
@@ -19,7 +17,6 @@ addSyncDialog::addSyncDialog(PCloudApp *a, PCloudWindow *w, SuggestnsBaseWin *wl
         remotesDialog = new RemoteTreesDialog(addNewSyncsWin->getCurrRemotePath(), this); //dialog is for changing a suggested sync
     else
         remotesDialog = new RemoteTreesDialog("", this); // dialog is for selecting new sync
-    //ui->treeSyncRemote->header()->setSortIndicatorShown(true);
     connect(ui->btnAdd, SIGNAL(clicked()), this, SLOT(addSync()));
     connect(ui->btnOpenLocals, SIGNAL(clicked()), this, SLOT(chooseLocalFldr()));
     connect(ui->btnOpenRemotes, SIGNAL(clicked()), this, SLOT(chooseRemoteFldr()));
@@ -45,8 +42,9 @@ addSyncDialog::addSyncDialog(PCloudApp *a, PCloudWindow *w, SuggestnsBaseWin *wl
 #endif
         remotepath = "";
     }
-    load();
-    this->setFixedSize(this->width(),this->height()); //makes the win not resizable
+    // load();
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    this->setFixedSize(300, this->height());
 }
 
 addSyncDialog::~addSyncDialog()

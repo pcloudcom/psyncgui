@@ -19,6 +19,7 @@ RemoteTreesDialog::RemoteTreesDialog(QString curritem, QWidget *parent) :
     connect(ui->btnNewFolder, SIGNAL(clicked()), this, SLOT(newRemoteFldr()));
     this->setWindowIcon(QIcon(WINDOW_ICON));
     this->setWindowTitle("Choose pCloud Drive Folder");
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 static QList<QTreeWidgetItem *> listRemoteFldrs(QString parentPath)

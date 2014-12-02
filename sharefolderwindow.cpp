@@ -24,7 +24,8 @@ ShareFolderWindow::ShareFolderWindow(PCloudWindow *w,QString path, QWidget *pare
     connect(ui->cancelbutton, SIGNAL(clicked()), this, SLOT(hide()));
     connect(ui->sharebutton, SIGNAL(clicked()), this, SLOT(shareFolder()));
 
-    this->setFixedSize(this->width(),this->height()); //makes the win not resizable
+    this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    this->layout()->setSizeConstraint(QLayout::SetFixedSize);  //not resized
 }
 
 ShareFolderWindow::~ShareFolderWindow()
