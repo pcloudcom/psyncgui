@@ -44,7 +44,7 @@
      <item>
       <widget class="QLineEdit" name="line_pass">
        <property name="inputMethodHints">
-        <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhSensitiveData</set>
+        <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText</set>
        </property>
        <property name="echoMode">
         <enum>QLineEdit::Password</enum>
@@ -67,7 +67,7 @@
      <item>
       <widget class="QLineEdit" name="line_newpass">
        <property name="inputMethodHints">
-        <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhSensitiveData</set>
+        <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText</set>
        </property>
        <property name="echoMode">
         <enum>QLineEdit::Password</enum>
@@ -90,7 +90,7 @@
      <item>
       <widget class="QLineEdit" name="line_newpass2">
        <property name="inputMethodHints">
-        <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhSensitiveData</set>
+        <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText</set>
        </property>
        <property name="echoMode">
         <enum>QLineEdit::Password</enum>
