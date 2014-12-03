@@ -288,7 +288,7 @@ void PCloudApp::showOnClick(){
 
 void PCloudApp::trayClicked(QSystemTrayIcon::ActivationReason reason)
 {
-   // qDebug()<<Q_FUNC_INFO<<"tray activation reason"<<reason;
+    // qDebug()<<Q_FUNC_INFO<<"tray activation reason"<<reason;
     if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::MiddleClick) //3 = Trigger - left click
         showOnClick();
 }
@@ -1249,7 +1249,7 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     pCloudWin->setOnlineItems(true);
     tray->setContextMenu(loggedmenu);
 
-    isFirstLaunch = true; // for test TEMP
+    // isFirstLaunch = true; // for test TEMP
     /*
 #ifdef Q_OS_WIN // NEXT VERSION - when screeshots for win are ready
     if (isFirstLaunch)
