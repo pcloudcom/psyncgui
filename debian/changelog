@@ -1,15 +1,17 @@
-pclsync (0.102+nmu45) UNRELEASED; urgency=low
+pclsync (0.102+nmu46) UNRELEASED; urgency=low
 
   [ Damyanka Miteva ]
   * Build with  FS
-  * rel 45
+  * rel 46
 
   * debian/changelog
-  *  new design 
+  *  new design (branch slx-236)
+  * xp crash for custom settings fix
+  * add welcome screens
 
- -- Damyanka Miteva <damyanka@iain.office.mobileinno.com>  Fri, 21 Nov 2014 10:12:32 +0200
+ -- Damyanka Miteva <damyanka@iain.office.mobileinno.com>  Wed, 03 Dec 2014 12:49:22 +0200
 
-pclsync (0.102+nmu45) unstable; urgency=low
+pclsync (0.102+nmu46) unstable; urgency=low
 
   [ Damyanka Miteva ]
   * Initial
