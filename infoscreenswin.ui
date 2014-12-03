@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>684</width>
-    <height>501</height>
+    <height>492</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,7 +28,7 @@
      <number>0</number>
     </property>
     <property name="bottomMargin">
-     <number>9</number>
+     <number>0</number>
     </property>
     <item>
      <widget class="QStackedWidget" name="pagesWidget">
