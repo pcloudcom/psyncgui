@@ -288,7 +288,7 @@ void PCloudApp::showOnClick(){
 
 void PCloudApp::trayClicked(QSystemTrayIcon::ActivationReason reason)
 {
-    qDebug()<<Q_FUNC_INFO<<"tray activation reason"<<reason;
+   // qDebug()<<Q_FUNC_INFO<<"tray activation reason"<<reason;
     if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::MiddleClick) //3 = Trigger - left click
         showOnClick();
 }
