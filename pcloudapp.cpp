@@ -225,7 +225,8 @@ void PCloudApp::logOut(){
     pCloudWin->setOnlineItems(false);
     emit changeSyncIcon(OFFLINE_ICON);
     this->hideAllWindows();
-    this->isFirstLaunch = false;
+    if(!this->unlinkFlag)
+        this->isFirstLaunch = false;
     this->showLogin();
     //p unmount
 }
@@ -360,10 +361,10 @@ void PCloudApp::createMenus()
 #endif
     syncMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu 32x32/sync.png"),trUtf8("Sync"));
     syncedFldrsMenu = syncMenu->addMenu(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),trUtf8("Synced Folders"));
+   // this->createSyncFolderActions(); //loads sub menu with local synced folders
     syncMenu->addSeparator();
     syncMenu->addAction(syncAction);
     syncMenu->addAction(addSyncAction);
-    //syncMenu->addAction(syncSttngsAction); may be temp
 
     sharesMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu 32x32/share.png"),trUtf8("Shares"));
     sharesMenu->addAction(sharesAction);
@@ -397,10 +398,9 @@ void PCloudApp::createMenus()
         // pCloudWin->ui->btnPauseSync->setVisible(false);
     }
 
-    this->createSyncFolderActions(); //loads sub menu with local synced folders
-
     connect(loggedmenu, SIGNAL(aboutToShow()), this, SLOT(updateSyncStatus()));
     connect(syncedFldrsMenu, SIGNAL(aboutToShow()),this,SLOT(createSyncFolderActions())); //delete old if exist, adds new
+    //connect(syncMenu, SIGNAL(aboutToShow()),this,SLOT(createSyncFolderActions())); //fu4ur version
     userinfoAction->setEnabled(false);
     syncDownldAction->setEnabled(false);
     syncUpldAction->setEnabled(false);
@@ -1208,6 +1208,7 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     if (this->unlinkFlag)
     {
         syncedFldrsMenu->clear();
+        //this->clearSyncFolderActions(); //fu4ur version menu
         resumeSyncAction->setVisible(false);
         pauseSyncAction->setVisible(true);
         this->downldInfo = QObject::trUtf8("Everything Downloaded");
@@ -1743,10 +1744,55 @@ void PCloudApp::resumeSync()
     //pCloudWin->ui->btnPauseSync->setVisible(true);
     //pCloudWin->ui->btnResumeSync->setVisible(false);
 }
+/*
+void PCloudApp::clearSyncFolderActions()
+{
+    int actnsNum = this->syncMenu->actions().size();
+    qDebug()<<"PCloudApp::createSyncFolderActions"<<actnsNum;
+    QList<QAction*> list = syncMenu->actions();
+    for (int i = 0; i < list.size(); i++)
+    {
+        qDebug()<<i<<list[i]->data().toString();
+    }
+
+
+    if (actnsNum > 3)
+    {
+        for (int i = 0; i < actnsNum - 3; i++)
+        {
+            QAction* action = syncMenu->actions()[i];
+            syncMenu->removeAction(action);
+            delete action;
+        }
+    }
+}
+*/
 
 void PCloudApp::createSyncFolderActions() //refreshes menu when user rename/delete local root sync folder, add new folder through context menu..
 {
+   /* this->clearSyncFolderActions();
+
+    psync_folder_list_t *fldrsList = psync_get_sync_list();
+    if (fldrsList != NULL && fldrsList->foldercnt)
+    {
+        for (uint i = 0; i < fldrsList->foldercnt; i++)
+        {
+            QDir localDir(fldrsList->folders[i].localpath);
+            if (localDir.exists())
+            {
+                QAction *fldrAction = new QAction(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),fldrsList->folders[i].localname,this);
+                fldrAction->setProperty("path", fldrsList->folders[i].localpath);
+                connect(fldrAction, SIGNAL(triggered()),this, SLOT(openLocalDir()));
+                this->syncMenu->addAction(fldrAction);
+            }
+        }
+        free(fldrsList);
+    }
+*/
+
+
     this->syncedFldrsMenu->clear(); //Actions owned by the menu and not shown in any other widget are deleted by this func
+
     psync_folder_list_t *fldrsList = psync_get_sync_list();
 
     if (fldrsList != NULL && fldrsList->foldercnt)
@@ -1776,6 +1822,7 @@ void PCloudApp::openLocalDir()
 void PCloudApp::addNewFolderInMenu(QAction *fldrAction) //for add new sync case
 {
     this->syncedFldrsMenu->addAction(fldrAction);
+    //this->createSyncFolderActions();
 }
 
 void PCloudApp::addNewShare()

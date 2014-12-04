@@ -26,7 +26,7 @@ SuggestnsBaseWin::SuggestnsBaseWin(PCloudApp *a, bool addlocal, QStringList *fld
     addLocalFldrsFlag = addlocal;
     ui->label_syncinfo->setText("With Sync you can synchronize\n"
                                 "the content in multiple folders from your\n"
-                                "computer in real time.By synchronizing\n"
+                                "computer in real time. By synchronizing\n"
                                 "folders in pCloud Drive you make them\navailable even in offline mode.");
 
 #ifdef Q_OS_WIN
@@ -132,13 +132,13 @@ SuggestnsBaseWin::SuggestnsBaseWin(PCloudApp *a, bool addlocal, QStringList *fld
     //ui->treeWidget->resizeColumnToContents(0);
     ui->treeWidget->setColumnWidth(0,40);
     ui->treeWidget->setColumnWidth(1,200);
-    ui->treeWidget->setColumnWidth(2,32);
+    ui->treeWidget->setColumnWidth(2,30);
     ui->treeWidget->resizeColumnToContents(3);
-    ui->treeWidget->setMinimumWidth(450);
+    ui->treeWidget->setMinimumWidth(460);
     //ui->tableWidget->setItemDelegate(new SyncItemsDelegate());
     this->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
-    this->setFixedSize(this->width(), this->height());
-
+    this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    this->layout()->setSizeConstraint(QLayout::SetFixedSize);  //not resized
     if(addFldrsLst != NULL) //if not creating a default suggestion sync
     {
         if(addlocal)

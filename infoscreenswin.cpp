@@ -14,6 +14,8 @@ InfoScreensWin::InfoScreensWin(PCloudApp *a, QWidget *parent) :
     setWindowIcon(QIcon(WINDOW_ICON));
     setWindowTitle("pCloud Drive");    
     this->setWindowFlags(Qt::WindowTitleHint | Qt::CustomizeWindowHint);
+    this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    this->layout()->setSizeConstraint(QLayout::SetFixedSize);
 
  #ifdef Q_OS_LINUX
     ui->label_intro->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeIntro.png"));
@@ -132,6 +134,7 @@ void InfoScreensWin::createDfltSync()
     if(!pcloudDir.exists())
     {
         dfltLocalDir->mkdir("pCloud Sync");
+        localpath = dfltLocalDir->toNativeSeparators(localpath);
     }
 
     psync_syncid_t id = psync_add_sync_by_path(localpath.toUtf8(),dfltRemotePath.toUtf8(), PSYNC_FULL);
