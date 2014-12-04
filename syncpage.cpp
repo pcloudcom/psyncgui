@@ -34,7 +34,7 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
 #endif
 
     win->ui->label_infoexptns->setText("The patterns you enter (folder name, file name, extension, etc.) will be ignored while synchronizing data\n"
-                                       "with your pCloud Account. Allowed wildcards: asterisk(*), question mark(?), patterns separated by semicolon(;).");
+                                       "with your pCloud Account. Allowed wildcards: asterisk (*), question mark (?), patterns separated by semicolon (;).");
 
     //win->ui->label_dwnld->setFont(app->smaller1pFont);
     win->ui->label_dwnld->setEnabled(false);
