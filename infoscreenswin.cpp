@@ -36,11 +36,7 @@ InfoScreensWin::InfoScreensWin(PCloudApp *a, QWidget *parent) :
     connect(ui->pagesWidget, SIGNAL(currentChanged(int)), this, SLOT(changePageContent(int)));
     connect(ui->btnPreviuos, SIGNAL(clicked()), this, SLOT(openPreviousPage()));
     connect(ui->btnNext, SIGNAL(clicked()), this, SLOT(openNextPage()));
-    connect(ui->btnOpenFldr, SIGNAL(clicked()), this, SLOT(finish()));    
-
-    if(app->isFirstLaunch)
-        emit this->createDfltSync();
-
+    connect(ui->btnOpenFldr, SIGNAL(clicked()), this, SLOT(finish()));      
 }
 
 InfoScreensWin::~InfoScreensWin()
@@ -54,6 +50,8 @@ void InfoScreensWin::showEvent(QShowEvent *event)
     ui->btnOpenFldr->setVisible(false);
     ui->btnPreviuos->setVisible(false);
     ui->btnNext->setVisible(true);
+    if(app->isFirstLaunch)
+        emit this->createDfltSync();
     event->accept();
 }
 
@@ -131,10 +129,11 @@ void InfoScreensWin::createDfltSync()
 #endif
     QString localpath = dfltLocalDir->path().append(OSPathSeparator).append("pCloud Sync");
     QDir pcloudDir(localpath);
+    localpath = dfltLocalDir->toNativeSeparators(localpath);
+
     if(!pcloudDir.exists())
     {
         dfltLocalDir->mkdir("pCloud Sync");
-        localpath = dfltLocalDir->toNativeSeparators(localpath);
     }
 
     psync_syncid_t id = psync_add_sync_by_path(localpath.toUtf8(),dfltRemotePath.toUtf8(), PSYNC_FULL);
