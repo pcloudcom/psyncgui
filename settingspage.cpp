@@ -318,6 +318,7 @@ void SettingsPage::saveSettings()
     }
 #endif
 
+    clearSpeedEditLines();
     win->ui->btnSaveSttngs->setEnabled(false);
     win->ui->btnCancelSttngs->setEnabled(false);
 }
