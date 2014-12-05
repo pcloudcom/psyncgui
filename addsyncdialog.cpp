@@ -35,11 +35,7 @@ addSyncDialog::addSyncDialog(PCloudApp *a, PCloudWindow *w, SuggestnsBaseWin *wl
     else
     {
         this->setWindowTitle(trUtf8("Add New Sync"));
-#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
-        localpath = QDir::homePath(); //lin
-#else
-        localpath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation); //windows
-#endif
+        localpath = "";
         remotepath = "";
     }
     // load();
@@ -79,10 +75,21 @@ QString addSyncDialog::getDisplFldrPath(QString fldrpath, QChar osSep)
 
 void addSyncDialog::chooseLocalFldr()
 {
+    QString dfltlocalpath;
+    if (localpath == "")
+    {
+#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
+        dfltlocalpath = QDir::homePath(); //lin
+#else
+        dfltlocalpath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation); //windows
+#endif
+    }
+    else
+        dfltlocalpath = localpath;
     QFileDialog* d = new QFileDialog(this);
     d->setWindowIcon(QIcon(WINDOW_ICON));
     d->setFileMode(QFileDialog::DirectoryOnly);
-    this->localpath = d->getExistingDirectory(this,"Choose Local Directory", localpath, QFileDialog::ShowDirsOnly
+    this->localpath = d->getExistingDirectory(this,"Choose Local Directory", dfltlocalpath, QFileDialog::ShowDirsOnly
                                               | QFileDialog::DontResolveSymlinks);
     if (this->localpath.isEmpty())
         return;
@@ -220,6 +227,7 @@ void addSyncDialog::addSync()
         QMessageBox::warning(this, "pCloud Drive", trUtf8("Please select both paths!"));
         return;
     }
+
     QString localname;
     if(localpath != "/")
         localname = localpath.section("/",-1);
