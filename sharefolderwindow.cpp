@@ -8,7 +8,7 @@ ShareFolderWindow::ShareFolderWindow(PCloudWindow *w,QString path, QWidget *pare
     ui(new Ui::ShareFolderWindow)
 {
     ui->setupUi(this);
-    pclwin = w;
+    pclwin = w;   
     remoteFldrsDialog = new RemoteTreesDialog("", this);
     if(path == NULL)
         this->contxMenuFlag = false;
@@ -36,10 +36,11 @@ ShareFolderWindow::~ShareFolderWindow()
 
 void ShareFolderWindow::showEvent(QShowEvent *event)
 {
-    qDebug()<<"ShareFolderWindow::showEvent";
+    qDebug()<<"ShareFolderWindow::showEvent";    
     ui->email->clear();
     if(!contxMenuFlag)
     {
+        fldrid = -1;
         ui->editline_sharename->clear();
         ui->btnOpenRemoteDialog->setVisible(true);
         ui->btnOpenRemoteDialog->setText(trUtf8("Choose pCloud Drive Folder"));
