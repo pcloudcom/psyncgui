@@ -16,7 +16,8 @@ class SettingsPage: public QObject
 public:
   friend class PCloudWindow;
   explicit SettingsPage(PCloudWindow *w, PCloudApp *a, QObject *parent = 0);
-    void showEvent(); // custom
+  void showEvent(); // custom
+  void initPublic();
 private:
     PCloudWindow *win;
     PCloudApp *app;

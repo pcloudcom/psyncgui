@@ -353,6 +353,11 @@ SyncPage* PCloudWindow::get_sync_page()
     return this->syncPage;
 }
 
+void PCloudWindow::refreshSettingsPage()
+{
+    this->settngsPage->initPublic();
+}
+
 void PCloudWindow::refreshPagePulbic(int pageindex, int param)
 {
     emit this->refreshPageSgnl(pageindex, param);

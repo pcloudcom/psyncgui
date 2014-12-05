@@ -66,6 +66,11 @@ SettingsPage::SettingsPage(PCloudWindow *w, PCloudApp *a, QObject* parent):
     initSettingsPage();
 }
 
+void SettingsPage::initPublic()
+{
+    this->initSettingsPage();
+}
+
 void SettingsPage::showEvent()
 {
     win->ui->tabWidgetSttngs->setCurrentIndex(0);

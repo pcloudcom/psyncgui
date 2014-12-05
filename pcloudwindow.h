@@ -30,7 +30,8 @@ public:
     explicit PCloudWindow(PCloudApp *a, QWidget *parent = 0);
     ~PCloudWindow();       
     int getCurrentPage();
-    SyncPage* get_sync_page();    
+    SyncPage* get_sync_page();
+    void refreshSettingsPage();
     void refreshPagePulbic(int pageindex, int param);    
 private:    
     Ui::PCloudWindow *ui;    

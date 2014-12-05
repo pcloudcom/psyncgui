@@ -1225,6 +1225,7 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
         this->uplodInfo = QObject::trUtf8("Everything Uploaded");
         this->pCloudWin->get_sync_page()->load();
         this->pCloudWin->get_sync_page()->loadSettings();
+        this->pCloudWin->refreshSettingsPage();
         this->unlinkFlag = false;
     }
     this->username = uname;
