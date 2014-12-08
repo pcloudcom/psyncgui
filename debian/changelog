@@ -1,17 +1,18 @@
-pclsync (0.102+nmu47) UNRELEASED; urgency=low
+pclsync (0.102+nmu48) UNRELEASED; urgency=low
 
   [ Damyanka Miteva ]
   * Build with  FS
-  * rel 47
+  * rel 48
 
   * debian/changelog
   *  new design (branch slx-236)
   * bug fixes	
   * debian/changelog
+  * debian/changelog
 
- -- Damyanka Miteva <damyanka@iain.office.mobileinno.com>  Fri, 05 Dec 2014 15:28:55 +0200
+ -- Damyanka Miteva <damyanka@iain.office.mobileinno.com>  Mon, 08 Dec 2014 12:14:39 +0200
 
-pclsync (0.102+nmu47) unstable; urgency=low
+pclsync (0.102+nmu48) unstable; urgency=low
 
   [ Damyanka Miteva ]
   * Initial
