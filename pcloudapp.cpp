@@ -260,10 +260,10 @@ void PCloudApp::clearAllSettings()
     //clear settings from settings page
 #ifdef Q_OS_WIN
     removeSetting("shellExt");
-    if(!registrySttng->contains("pSync")) //set app to auto start with  windows; this setting is written in windows registry
+    if(!registrySttng->contains("pCloud")) //set app to auto start with  windows; this setting is written in windows registry
     {
         QSettings appDir("HKEY_LOCAL_MACHINE\\SOFTWARE\\PCloud\\pCloud",QSettings::NativeFormat); //take app install ddir
-        registrySttng->setValue("pSync",appDir.value("Install_Dir").toString().append("\\pSync.exe"));
+        registrySttng->setValue("pCloud",appDir.value("Install_Dir").toString().append("\\pCloud.exe"));
     }
 #endif
 
@@ -679,7 +679,7 @@ void status_callback(pstatus_t *status)
         {
             PCloudApp::appStatic->logoutPublic();
             PCloudApp::appStatic->lastStatus = PSTATUS_BAD_LOGIN_TOKEN;
-            PCloudApp::appStatic->sendTrayMsgTypePublic("Password Changed!", "Your password has been changed from another device!", -1);
+            PCloudApp::appStatic->sendTrayMsgTypePublic("Session expired", "Your session has expired. Please login again.", -1);
         }
         break;
 

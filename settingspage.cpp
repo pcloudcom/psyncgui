@@ -97,7 +97,7 @@ void SettingsPage::initMain()
 {
 #ifdef Q_OS_WIN
     //autostart app
-    win->ui->checkBox_autorun->setChecked(app->registrySttng->contains("pSync"));
+    win->ui->checkBox_autorun->setChecked(app->registrySttng->contains("pCloud"));
 
     //context menu
     if(app->settings->contains("shellExt"))
@@ -296,15 +296,17 @@ void SettingsPage::saveSettings()
 
 #ifdef Q_OS_WIN
     //autorun win
-    if(app->registrySttng->contains("pSync") != win->ui->checkBox_autorun->isChecked())
+    if(app->registrySttng->contains("pCloud") != win->ui->checkBox_autorun->isChecked())
     {
         if(win->ui->checkBox_autorun->isChecked())
         {
             QSettings appDir("HKEY_LOCAL_MACHINE\\SOFTWARE\\PCloud\\pCloud",QSettings::NativeFormat); //take app install ddir
-            app->registrySttng->setValue("pSync",appDir.value("Install_Dir").toString().append("\\pSync.exe"));
+            app->registrySttng->setValue("pCloud",appDir.value("Install_Dir").toString().append("\\pCloud.exe"));
         }
         else
-            app->registrySttng->remove("pSync");
+        {
+            app->registrySttng->remove("pCloud");
+        }
     }
     //context menu win
     if(app->settings->value("shellExt").toBool() != win->ui->checkBox_contxtMenu->isChecked())
@@ -339,7 +341,7 @@ void SettingsPage::setSaveBtnEnable()
     }
 
 #ifdef Q_OS_WIN
-    if(app->registrySttng->contains("pSync") != win->ui->checkBox_autorun->isChecked() ||
+    if(app->registrySttng->contains("pCloud") != win->ui->checkBox_autorun->isChecked() ||
             app->settings->value("shellExt").toBool() != win->ui->checkBox_contxtMenu->isChecked())
     {
         win->ui->btnSaveSttngs->setEnabled(true);
