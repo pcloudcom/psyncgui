@@ -162,10 +162,10 @@ void SharesPage::setTableProps(QTreeWidget *table)
     table->setMinimumWidth(450);
 #endif
     int tableWidth = table->width();
-    table->setColumnWidth(0,(int) tableWidth/3); //mail
-    table->setColumnWidth(1,(int) tableWidth/3); //name
-    table->setColumnWidth(2,(int) tableWidth/6); //perms
-    table->setColumnWidth(3,(int) tableWidth/6); //date
+    table->setColumnWidth(0,(int) 7* tableWidth/16); //mail
+    table->setColumnWidth(1,(int) 5* tableWidth/16); //name
+    table->setColumnWidth(2,(int) 3* tableWidth/16); //perms
+    table->setColumnWidth(3,(int) tableWidth/16); //date
 #if QT_VERSION>QT_VERSION_CHECK(5,0,0)
     table->header()->setSectionsMovable(false);
 #else

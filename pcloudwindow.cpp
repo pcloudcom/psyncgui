@@ -131,7 +131,7 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(unlinkSync()));
 
     this->setMinimumHeight(560);
-    //this->setMinimumWidth(1024);
+    //this->setMinimumWidth(ui->pagesWidget->widget(SYNC_PAGE_NUM)->width());
 
     updateGeometry();
 }
