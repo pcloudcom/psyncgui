@@ -1,15 +1,15 @@
-Source: pclsync
+Source: pCloud
 Section: unknown
 Priority: extra
-Maintainer: Vasil Kolev <vasil@mobileinno.com>
+Maintainer: pCloud <debian-maintainer@pcloud.com>
 Build-Depends: debhelper (>= 7.0.50~), libssl-dev, pkg-config, qt4-qmake, qt4-dev-tools
 Standards-Version: 3.8.4
 Homepage: http://pcloud.com
 #Vcs-Git: git://git.debian.org/collab-maint/pcloudfs-gui.git
 #Vcs-Browser: http://git.debian.org/?p=collab-maint/pcloudfs-gui.git;a=summary
 
-Package: pclsync
+Package: pCloud Drive client
 Architecture: any
 Depends: gdebi | qapt-deb-installer, ${shlibs:Depends}, ${misc:Depends}
-Description: pCloud syncer
- A QT-based pcloud sync client
+Description: pCloud Drive
+ A GUI client for pCloud Drive.
