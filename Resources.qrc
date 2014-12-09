@@ -101,7 +101,6 @@
         <file>images/32x32/empty-folder.png</file>
     </qresource>
     <qresource prefix="/welcomes">
-        <file>images/welcomes/welcomeFInish.png</file>
         <file>images/welcomes/welcomeOthers.png</file>
         <file>images/welcomes/welcomeShares.png</file>
         <file>images/welcomes/welcomeSync.png</file>
@@ -113,5 +112,6 @@
         <file>images/welcomes/welcomeSharesXP.png</file>
         <file>images/welcomes/welcomeSyncXP.png</file>
         <file>images/welcomes/welcomeOthersXP.png</file>
+        <file>images/welcomes/welcomeFinish.png</file>
     </qresource>
 </RCC>

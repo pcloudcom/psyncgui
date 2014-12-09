@@ -23,7 +23,7 @@ InfoScreensWin::InfoScreensWin(PCloudApp *a, QWidget *parent) :
     ui->label_sync->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeSync.png"));
     ui->label_shares->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeShares.png"));
     ui->label_othrs->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeOthers.png"));
-    ui->label_finish->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeFInish.png"));
+    ui->label_finish->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeFinish.png"));
 #else
     ui->label_intro->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeIntroXP.png"));
     ui->label_drive->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeDriveXP.png"));

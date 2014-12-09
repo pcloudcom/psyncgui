@@ -33,7 +33,7 @@
     <item>
      <widget class="QStackedWidget" name="pagesWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>5</number>
       </property>
       <widget class="QWidget" name="pageIntro">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -206,7 +206,7 @@
            <string/>
           </property>
           <property name="pixmap">
-           <pixmap resource="Resources.qrc">:/welcomes/images/welcomes/welcomeFInish.png</pixmap>
+           <pixmap resource="Resources.qrc">:/welcomes/images/welcomes/welcomeFinish.png</pixmap>
           </property>
           <property name="scaledContents">
            <bool>false</bool>
