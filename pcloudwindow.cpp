@@ -139,7 +139,9 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
 void PCloudWindow::setFrameProps(QFrame *frame)
 {
     QPalette Pal(palette());
-    Pal.setColor(QPalette::Background,Qt::white); //ui->tabSyncList->palette().background().color());
+    QColor frameColor(248,248,248);
+    Pal.setColor(QPalette::Background,frameColor);
+    //Pal.setColor(QPalette::Background,Qt::white); //ui->tabSyncList->palette().background().color());
     frame->setAutoFillBackground(true);
     frame->setPalette(Pal);
     frame->setFrameShadow(QFrame::Plain);
