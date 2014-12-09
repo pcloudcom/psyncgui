@@ -118,6 +118,7 @@ public:
     //signals are protected and can't be accessed by static vars
     //in case something in gui thread should change it can't be changed directly from another thread - use signals and slots
     void showLoginPublic();
+    void showMsgBoxPublic(QString title, QString msg, int msgIconVal);
     void sendTrayMsgTypePublic(const char* title, const char* msg, int msgtype);
     void changeSyncIconPublic(const QString &icon);
     void refreshSyncUIitemsPublic();
@@ -164,7 +165,7 @@ signals:
     void refreshSyncUIitemsSgnl();
     void logoutSignl();
 public slots:
-    void showMsgBox(QString title, QString msg, int msgIconVal); //for another threads
+    void showMsgBox(QString title, QString msg, int msgIconVal);
     void showTrayMessage(QString title, QString msg);
     void showTrayMsgType(const char* title, const char* msg, int msgtype);
     void trayClicked(QSystemTrayIcon::ActivationReason reason);

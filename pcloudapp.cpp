@@ -361,7 +361,7 @@ void PCloudApp::createMenus()
 #endif
     syncMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu 32x32/sync.png"),trUtf8("Sync"));
     syncedFldrsMenu = syncMenu->addMenu(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),trUtf8("Synced Folders"));
-   // this->createSyncFolderActions(); //loads sub menu with local synced folders
+    // this->createSyncFolderActions(); //loads sub menu with local synced folders
     syncMenu->addSeparator();
     syncMenu->addAction(syncAction);
     syncMenu->addAction(addSyncAction);
@@ -675,11 +675,12 @@ void status_callback(pstatus_t *status)
 
     case PSTATUS_BAD_LOGIN_TOKEN: //6
         qDebug()<<"PSTATUS_BAD_LOGIN_TOKEN";
-        if(previousStatus != PSTATUS_BAD_LOGIN_TOKEN && PCloudApp::appStatic->isLogedIn())
+        if(previousStatus != PSTATUS_BAD_LOGIN_TOKEN)
         {
-            PCloudApp::appStatic->logoutPublic();
+            if (PCloudApp::appStatic->isLogedIn())
+                PCloudApp::appStatic->logoutPublic();
             PCloudApp::appStatic->lastStatus = PSTATUS_BAD_LOGIN_TOKEN;
-            PCloudApp::appStatic->sendTrayMsgTypePublic("Session expired", "Your session has expired. Please login again.", -1);
+            PCloudApp::appStatic->showMsgBoxPublic("Session expired", "Your session has expired. Please login again.", QMessageBox::Critical);
         }
         break;
 
@@ -973,6 +974,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     tray=new QSystemTrayIcon(QIcon(OFFLINE_ICON),this);
     connect(this, SIGNAL(sendTrayMsgType(const char*,const char*,int)),
             this, SLOT(showTrayMsgType(const char*,const char*,int)));
+    connect(this, SIGNAL(showMsgBoxSgnl(QString,QString,int)), this, SLOT(showMsgBox(QString,QString,int)));
     this->setQuitOnLastWindowClosed(false); // if this is true app will close on every shown message with no shown parent
 #if defined(Q_OS_LINUX) && QT_VERSION<QT_VERSION_CHECK(5,0,0)
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8")); // for non-latin strings
@@ -1017,7 +1019,6 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     tray->setContextMenu(notloggedmenu);
     connect(tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayClicked(QSystemTrayIcon::ActivationReason)));
     connect(tray, SIGNAL(messageClicked()), this, SLOT(trayMsgClicked()));
-    connect(this, SIGNAL(showMsgBoxSgnl(QString,QString,int)), this, SLOT(showMsgBox(QString,QString,int)));
     connect(this, SIGNAL(showLoginSgnl()),this, SLOT(showLogin()));
     connect(this, SIGNAL(logoutSignl()), this, SLOT(logOut()));
     connect(this, SIGNAL(changeSyncIcon(QString)), this, SLOT(setTrayIcon(QString)));
@@ -1031,8 +1032,8 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     bool savedauth = psync_get_bool_value("saveauth"); //works when syns is paused also
 
     qDebug()<<"saveauth"<<savedauth << "username" <<psync_get_username()<< "auth"<< psync_get_auth_string();
-    if (!savedauth)
-        //if (!strcmp(psync_get_auth_string(), ""))
+    //if (!savedauth)
+    if (!strcmp(psync_get_auth_string(), ""))
     {
         //case not remembered
         //p othread=NULL;
@@ -1638,6 +1639,11 @@ void PCloudApp::sendTrayMsgTypePublic(const char *title, const char *msg, int ms
     emit this->sendTrayMsgType(title,msg,msgtype);
 }
 
+void PCloudApp::showMsgBoxPublic(QString title, QString msg, int msgIconVal)
+{
+    emit showMsgBoxSgnl(title,msg,msgIconVal);
+}
+
 void PCloudApp::changeCursorPublic(bool change)
 {
     emit this->changeCursor(change);
@@ -1713,11 +1719,14 @@ void PCloudApp::showTrayMsgType(const char *title, const char *msg, int msgtype)
 }
 
 void PCloudApp::showMsgBox(QString title, QString msg, int msgIconVal)
-{
+{    
     switch(msgIconVal)
     {
     case 2: //show warning msg
         QMessageBox::warning(NULL,title,msg);
+        break;
+    case QMessageBox::Critical:
+        QMessageBox::critical(NULL,title,msg);
         break;
     default:
         break;
@@ -1781,7 +1790,7 @@ void PCloudApp::clearSyncFolderActions()
 
 void PCloudApp::createSyncFolderActions() //refreshes menu when user rename/delete local root sync folder, add new folder through context menu..
 {
-   /* this->clearSyncFolderActions();
+    /* this->clearSyncFolderActions();
 
     psync_folder_list_t *fldrsList = psync_get_sync_list();
     if (fldrsList != NULL && fldrsList->foldercnt)
