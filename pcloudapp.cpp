@@ -1272,14 +1272,20 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     }
 #else
 */
-    // ++ create pclsyn default
-    if (isFirstLaunch || (this->settings->contains("showintrowin") && this->settings->value("showintrowin").toBool()))
+    //cases when: 1. After unlink 2. Show Welcomes again was left to be checked
+    //3. update to 2.0.0+ from version < 2.0.0 but haven't unlink and have never seen Welcomes (Welcomes introduced in 2.0.0).
+    if ((isFirstLaunch || (this->settings->contains("showintrowin") && this->settings->value("showintrowin").toBool()))
+            || !this->settings->contains("welcomesNeverShowed"))
     {
         if(introwin == NULL)
             introwin = new InfoScreensWin(this);
         this->showWindow(introwin);
-    }
 
+        if (!this->settings->contains("welcomesNeverShowed"))
+        {
+            this->settings->setValue("welcomesNeverShowed",true);
+        }
+    }    
 }
 
 void PCloudApp::getUserInfo()

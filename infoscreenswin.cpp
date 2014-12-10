@@ -12,12 +12,12 @@ InfoScreensWin::InfoScreensWin(PCloudApp *a, QWidget *parent) :
     app = a;
     ui->checkBox_showagain->setChecked(Qt::Checked);
     setWindowIcon(QIcon(WINDOW_ICON));
-    setWindowTitle("pCloud Drive");    
+    setWindowTitle("pCloud Drive");
     this->setWindowFlags(Qt::WindowTitleHint | Qt::CustomizeWindowHint);
     this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     this->layout()->setSizeConstraint(QLayout::SetFixedSize);
 
- #ifdef Q_OS_LINUX
+#ifdef Q_OS_LINUX
     ui->label_intro->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeIntro.png"));
     ui->label_drive->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeDrive.png"));
     ui->label_sync->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeSync.png"));
@@ -36,7 +36,7 @@ InfoScreensWin::InfoScreensWin(PCloudApp *a, QWidget *parent) :
     connect(ui->pagesWidget, SIGNAL(currentChanged(int)), this, SLOT(changePageContent(int)));
     connect(ui->btnPreviuos, SIGNAL(clicked()), this, SLOT(openPreviousPage()));
     connect(ui->btnNext, SIGNAL(clicked()), this, SLOT(openNextPage()));
-    connect(ui->btnOpenFldr, SIGNAL(clicked()), this, SLOT(finish()));      
+    connect(ui->btnOpenFldr, SIGNAL(clicked()), this, SLOT(finish()));
 }
 
 InfoScreensWin::~InfoScreensWin()
@@ -51,7 +51,10 @@ void InfoScreensWin::showEvent(QShowEvent *event)
     ui->btnPreviuos->setVisible(false);
     ui->btnNext->setVisible(true);
     if(app->isFirstLaunch)
+    {
         emit this->createDfltSync();
+        ui->checkBox_showagain->setChecked(Qt::Checked);
+    }
     event->accept();
 }
 
