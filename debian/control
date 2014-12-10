@@ -8,7 +8,7 @@ Homepage: http://pcloud.com
 #Vcs-Git: git://git.debian.org/collab-maint/pcloudfs-gui.git
 #Vcs-Browser: http://git.debian.org/?p=collab-maint/pcloudfs-gui.git;a=summary
 
-Package: pcloud-drive-client
+Package: pclsync
 Architecture: any
 Depends: gdebi | qapt-deb-installer, ${shlibs:Depends}, ${misc:Depends}
 Description: pCloud Drive
