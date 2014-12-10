@@ -43,6 +43,7 @@ private:
     QByteArray auth; // to del
     bool verifyClicked;
     void checkVerify();
+    void checkIsBusinessAccount();
     void closeEvent(QCloseEvent *event);    
     void fillAccountLoggedPage();    
     void fillAboutPage();

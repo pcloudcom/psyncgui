@@ -262,6 +262,7 @@ void PCloudWindow::refreshPage(int currentIndex)
     case ACCNT_LOGGED_PAGE_NUM:
         if(verifyClicked)                 // Account page, case when user just has clicked Verify Email
             checkVerify();
+        checkIsBusinessAccount();
         break;
     case SHARES_PAGE_NUM:
         sharesPage->loadAll();
@@ -336,7 +337,9 @@ void PCloudWindow::fillAccountLoggedPage()
     ui->btnVerify->setVisible(!app->isVerified);
     ui->label_space->setText(app->usedSpaceStr + " (" +  QString::number(100 - app->freeSpacePercentage) + "%)");
     ui->label_planVal->setText(app->planStr);
+    checkIsBusinessAccount();
 }
+
 void PCloudWindow::refreshUserinfo()
 {
     ui->label_email->setText(app->username);
@@ -367,7 +370,7 @@ void PCloudWindow::refreshPagePulbic(int pageindex, int param)
 
 void PCloudWindow::changePass()
 {
-    ChangePassDialog *dialog = new ChangePassDialog();    
+    ChangePassDialog *dialog = new ChangePassDialog();
     if (dialog->exec() == QDialog::Accepted)
     {
         char *err = NULL;
@@ -455,6 +458,27 @@ void PCloudWindow::checkVerify() // has the user verified after had clicked "Ver
         verifyClicked = false;
     }
 }
+
+void PCloudWindow::checkIsBusinessAccount()
+{
+    if( psync_get_bool_value("business"))
+    {
+        QFont boldfont;
+        boldfont.setBold(true);
+        boldfont.setPointSize(app->fontPointSize + 1);
+        ui->label_company->setFont(boldfont);
+        ui->label_company->setVisible(true);
+        ui->label_companyVal->setVisible(true);
+        ui->label_companyVal->setText(psync_get_string_value("company"));
+    }
+    else if(ui->label_company->isVisible())
+    {
+        ui->label_company->setVisible(false);
+        ui->label_companyVal->setVisible(false);
+    }
+
+}
+
 void PCloudWindow::updateVersion()
 {
     app->stopTimer();

@@ -32,6 +32,8 @@ SharesPage::SharesPage(PCloudWindow *w, PCloudApp *a,  QObject *parent) :
     connect(win->ui->btnDeclineReqst, SIGNAL(clicked()), this, SLOT(cancelRqst()));
     connect(win->ui->btnAcceptRqst, SIGNAL(clicked()), this, SLOT(acceptRqst()));
     connect(win->ui->btnShareFolder, SIGNAL(clicked()), app, SLOT(addNewShare()));
+    connect(win->ui->btnOpenBRequests, SIGNAL(clicked()), this, SLOT(openBRqsts()));
+    connect(win->ui->btnOpenBShares, SIGNAL(clicked()), this, SLOT(openBShares()));
     connect(win->ui->tabWidgetShares, SIGNAL(currentChanged(int)), this, SLOT(refreshTab(int))); // to del
     connect(win->ui->treeMyShares, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(openSharedFldr(QTreeWidgetItem*,int)));
     connect(win->ui->treeMyRequest, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(openSharedFldr(QTreeWidgetItem*,int)));
@@ -65,6 +67,21 @@ void SharesPage::loadAll()
     fillRequestsTable(0);
     fillSharesTable(1); // tab 1 - Shared with me
     fillRequestsTable(1);
+    checkIsBusinessAccnt();
+}
+
+void SharesPage::checkIsBusinessAccnt()
+{
+    if(psync_get_bool_value("business"))
+    {
+        win->ui->btnOpenBRequests->setVisible(true);
+        win->ui->btnOpenBShares->setVisible(true);
+    }
+    else
+    {
+        win->ui->btnOpenBRequests->setVisible(false);
+        win->ui->btnOpenBShares->setVisible(false);
+    }
 }
 
 QString SharesPage::getPermissions(quint8 perm)
@@ -371,4 +388,14 @@ void SharesPage::acceptRqst()
             free(err);
         }
     }
+}
+
+void SharesPage::openBRqsts()
+{
+    QDesktopServices::openUrl(QUrl("https://mybusiness.pcloud.com/#page=b_shares&sharetab=outshares"));
+}
+
+void SharesPage::openBShares()
+{
+    QDesktopServices::openUrl(QUrl("https://mybusiness.pcloud.com/#page=b_shares&sharetab=inshares"));
 }
