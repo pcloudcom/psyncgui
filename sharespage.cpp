@@ -392,10 +392,10 @@ void SharesPage::acceptRqst()
 
 void SharesPage::openBRqsts()
 {
-    QDesktopServices::openUrl(QUrl(QString("https://mybusiness.pcloud.com/#page=b_shares&sharetab=outshares&authtoken=").append(psync_get_auth_string())));
+    QDesktopServices::openUrl(QUrl(QString("https://mybusiness.pcloud.com/#page=b_shares&sharetab=inshares&authtoken=").append(psync_get_auth_string())));
 }
 
 void SharesPage::openBShares()
 {
-    QDesktopServices::openUrl(QUrl(QString("https://mybusiness.pcloud.com/#page=b_shares&sharetab=inshares&authtoken=").append(psync_get_auth_string())));
+    QDesktopServices::openUrl(QUrl(QString("https://mybusiness.pcloud.com/#page=b_shares&sharetab=outshares&authtoken=").append(psync_get_auth_string())));
 }
