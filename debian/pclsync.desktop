@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=pclsync
-GenericName=pclsync
-Comment=pCloud sync client
+Name=pCloud Drive
+GenericName=pCloud Drive
+Comment=pCloud Drive client
 Icon=/usr/share/pixmaps/pcloud.xpm
 Type=Application
 Categories=Network
