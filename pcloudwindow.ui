@@ -71,7 +71,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="pageAccntLogged">
        <property name="maximumSize">
@@ -1129,7 +1129,7 @@
             <property name="maximumSize">
              <size>
               <width>16777215</width>
-              <height>300</height>
+              <height>390</height>
              </size>
             </property>
             <property name="currentIndex">
