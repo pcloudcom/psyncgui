@@ -461,7 +461,7 @@ void PCloudWindow::checkVerify() // has the user verified after had clicked "Ver
 
 void PCloudWindow::checkIsBusinessAccount()
 {
-    if( psync_get_bool_value("business"))
+    if(psync_get_bool_value("business"))
     {
         QFont boldfont;
         boldfont.setBold(true);
@@ -469,7 +469,13 @@ void PCloudWindow::checkIsBusinessAccount()
         ui->label_company->setFont(boldfont);
         ui->label_company->setVisible(true);
         ui->label_companyVal->setVisible(true);
-        ui->label_companyVal->setText(psync_get_string_value("company"));
+        QString companyName = psync_get_string_value("company");
+        if (companyName.length() > 30)
+        {
+            ui->label_companyVal->setToolTip(companyName);
+            companyName = companyName.left(27).append("...");
+        }
+        ui->label_companyVal->setText(companyName);
     }
     else if(ui->label_company->isVisible())
     {
