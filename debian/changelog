@@ -1,4 +1,4 @@
-pcloud-client-stable (2.0.0) stable; urgency=low
+pclsync (2.0.0) stable; urgency=low
 
  * Introducing pCloud Drive - virtual drive functionality
  * New Share options and management
