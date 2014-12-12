@@ -1,20 +1,10 @@
-pclsync (0.102+nmu53) UNRELEASED; urgency=low
+pcloud-client-stable (2.0.0) stable; urgency=low
 
-  [ Damyanka Miteva ]
-  * Build with  FS
-  * rel 53
+ * Introducing pCloud Drive - virtual drive functionality
+ * New Share options and management
+ * New, more user friendly design
+ * Sync optimizations
+ * Various performance improvements and bug fixes
 
-  * debian/changelog
-  *  new design (branch slx-236)
-  * bug fixes
-  * update pcl info in package installer
-  * debian/changelog
-
- -- Damyanka Miteva <damyanka@iain.office.mobileinno.com>  Thu, 11 Dec 2014 18:28:52 +0200
-
-pclsync (0.102+nmu53) unstable; urgency=low
-
-  [ Damyanka Miteva ]
-  * Initial
-
- -- Damyanka Miteva <damyanka@iain.office.mobileinno.com>  Mon, 07 Apr 2014 17:51:28 +0300
+  -- Maintainer: pCloud <debian-maintainer@pcloud.com>  Mon, 07 Apr 2014 17:51:28 +0300
+	
