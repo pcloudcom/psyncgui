@@ -981,14 +981,14 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
 #endif
     tray->setToolTip("pCloud");
     tray->show();
-
+/*
     if (psync_init() == -1)
     {
         QMessageBox::critical(NULL, "pCloud Drive", tr("pCloud Drive has stopped. Please connect to our support"));
         qDebug()<<" psync-init returned -1 "<<psync_get_last_error();
         this->quit();
     }
-
+*/
     psync_start_sync(status_callback,event_callback); // if not started from context menu ++
     QApplication::setOverrideCursor(Qt::WaitCursor);
     for(;;)
