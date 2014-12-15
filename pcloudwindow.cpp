@@ -470,10 +470,16 @@ void PCloudWindow::checkIsBusinessAccount()
         ui->label_company->setVisible(true);
         ui->label_companyVal->setVisible(true);
         QString companyName = psync_get_string_value("company");
-        if (companyName.length() > 30)
+        int maxCmpnyNameLength;
+#ifdef Q_OS_WIN
+        maxCmpnyNameLength = 50;
+#else
+        maxCmpnyNameLength = 30;
+#endif
+        if (companyName.length() > maxCmpnyNameLength)
         {
             ui->label_companyVal->setToolTip(companyName);
-            companyName = companyName.left(27).append("...");
+            companyName = companyName.left(maxCmpnyNameLength - 3).append("...");
         }
         ui->label_companyVal->setText(companyName);
     }
