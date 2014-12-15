@@ -370,9 +370,9 @@ void PCloudApp::createMenus()
     sharesMenu->addAction(sharesAction);
     sharesMenu->addAction(shareFolderAction);
 
-    loggedmenu->addSeparator();
-    loggedmenu->addAction(settingsAction);
+    loggedmenu->addSeparator();    
     loggedmenu->addAction(accountAction);
+    loggedmenu->addAction(settingsAction);
     loggedmenu->addAction(userinfoAction);
     loggedmenu->addAction(helpAction);
     loggedmenu->addAction(aboutPCloudAction);
@@ -1631,7 +1631,8 @@ void PCloudApp::changeSyncIconPublic(const QString &icon)
     {
         noFreeSpaceMsgShownFlag = true;
         if(this->lastStatus == PSTATUS_DISK_FULL)    // no local disk space (according to settings)
-            emit this->showMsgBoxSgnl(trUtf8("Disk is full"),trUtf8("You have reached your minimum free disk space limit!"), 2);
+            emit this->showMsgBoxSgnl(trUtf8("pCloud Drive's free disk space quota reached"),
+                                      trUtf8("pCloud Drive might not behave properly, clean some space or edit Disk Usage settings to resume operations."), 2);
         else // pcloud account is full
             emit this->showMsgBoxSgnl(trUtf8("Account is full"),trUtf8("Your pCloud account is out of free space!"), 2); //++ get more space suggestion
     }
