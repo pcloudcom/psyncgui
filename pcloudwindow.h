@@ -25,16 +25,16 @@ class PCloudWindow : public QMainWindow
 public:
     friend class PCloudApp;
     friend class SettingsPage; // to access ui
-    friend class SharesPage;    
-    friend class SyncPage;    
+    friend class SharesPage;
+    friend class SyncPage;
     explicit PCloudWindow(PCloudApp *a, QWidget *parent = 0);
-    ~PCloudWindow();       
+    ~PCloudWindow();
     int getCurrentPage();
-    SyncPage* get_sync_page();
-    void refreshSettingsPage();
-    void refreshPagePulbic(int pageindex, int param);    
-private:    
-    Ui::PCloudWindow *ui;    
+    SyncPage* get_sync_page();    
+    void refreshPagePulbic(int pageindex, int param);
+    void setPageCurrentTab(int pageindex, int param);
+private:
+    Ui::PCloudWindow *ui;
     PCloudApp *app;
     VersionDwnldThread *vrsnDwnldThread;
     SettingsPage *settngsPage;

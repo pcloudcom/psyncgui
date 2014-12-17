@@ -370,7 +370,7 @@ void PCloudApp::createMenus()
     sharesMenu->addAction(sharesAction);
     sharesMenu->addAction(shareFolderAction);
 
-    loggedmenu->addSeparator();    
+    loggedmenu->addSeparator();
     loggedmenu->addAction(accountAction);
     loggedmenu->addAction(settingsAction);
     loggedmenu->addAction(userinfoAction);
@@ -981,7 +981,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
 #endif
     tray->setToolTip("pCloud");
     tray->show();
-/*
+    /*
     if (psync_init() == -1)
     {
         QMessageBox::critical(NULL, "pCloud Drive", tr("pCloud Drive has stopped. Please connect to our support"));
@@ -1226,7 +1226,7 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
         this->uplodInfo = QObject::trUtf8("Everything Uploaded");
         this->pCloudWin->get_sync_page()->load();
         this->pCloudWin->get_sync_page()->loadSettings();
-        this->pCloudWin->refreshSettingsPage();
+        this->pCloudWin->refreshPageSgnl(SETTINGS_PAGE_NUM, -1);
         this->unlinkFlag = false;
     }
     this->username = uname;
@@ -1285,7 +1285,7 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
         {
             this->settings->setValue("welcomesNeverShowed",true);
         }
-    }    
+    }
 }
 
 void PCloudApp::getUserInfo()
@@ -1632,7 +1632,7 @@ void PCloudApp::changeSyncIconPublic(const QString &icon)
         noFreeSpaceMsgShownFlag = true;
         if(this->lastStatus == PSTATUS_DISK_FULL)    // no local disk space (according to settings)
             emit this->showMsgBoxSgnl(trUtf8("pCloud Drive's free disk space quota reached"),
-                                      trUtf8("pCloud Drive might not behave properly, clean some space or edit Disk Usage settings to resume operations."), 2);
+                                      trUtf8("pCloud Drive might not behave properly, clean some space or edit Disk Usage settings to resume operations."), 5);
         else // pcloud account is full
             emit this->showMsgBoxSgnl(trUtf8("Account is full"),trUtf8("Your pCloud account is out of free space!"), 2); //++ get more space suggestion
     }
@@ -1735,6 +1735,26 @@ void PCloudApp::showMsgBox(QString title, QString msg, int msgIconVal)
     case QMessageBox::Critical:
         QMessageBox::critical(NULL,title,msg);
         break;
+    case  5:  //disk full , other cases are already defined in qt
+    {
+        QMessageBox msgBox;
+        msgBox.setWindowTitle(title);
+        msgBox.setText(msg);
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.addButton(trUtf8(" Edit Settings "), QMessageBox::AcceptRole);
+        if (msgBox.exec() == QMessageBox::AcceptRole)
+        {
+            this->showSettings();
+            int tabIndexSpace;
+#ifdef Q_OS_LINUX
+            tabIndexSpace = 1;
+#else
+            tabIndexSpace = 2;
+#endif
+            pCloudWin->setPageCurrentTab(SETTINGS_PAGE_NUM,tabIndexSpace);
+        }
+        break;
+    }
     default:
         break;
     }

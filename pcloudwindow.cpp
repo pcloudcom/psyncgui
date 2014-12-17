@@ -358,14 +358,16 @@ SyncPage* PCloudWindow::get_sync_page()
     return this->syncPage;
 }
 
-void PCloudWindow::refreshSettingsPage()
-{
-    this->settngsPage->initPublic();
-}
-
 void PCloudWindow::refreshPagePulbic(int pageindex, int param)
 {
     emit this->refreshPageSgnl(pageindex, param);
+}
+
+void PCloudWindow::setPageCurrentTab(int pageindex, int param)
+{
+    this->refreshPage(pageindex);
+    if(pageindex == SETTINGS_PAGE_NUM)
+        ui->tabWidgetSttngs->setCurrentIndex(param);
 }
 
 void PCloudWindow::changePass()
@@ -508,6 +510,10 @@ void PCloudWindow::refreshPageSlot(int pageindex, int param)
     //  this->fillDrivePage();
     case SHARES_PAGE_NUM:  // sharespage
         this->sharesPage->refreshTab(param);
+    case SETTINGS_PAGE_NUM:
+        this->settngsPage->initPublic();
+    default:
+        break;
     }
 }
 
