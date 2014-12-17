@@ -1741,8 +1741,10 @@ void PCloudApp::showMsgBox(QString title, QString msg, int msgIconVal)
         msgBox.setWindowTitle(title);
         msgBox.setText(msg);
         msgBox.setIcon(QMessageBox::Warning);
-        msgBox.addButton(trUtf8(" Edit Settings "), QMessageBox::AcceptRole);
-        if (msgBox.exec() == QMessageBox::AcceptRole)
+        QPushButton *editSettingsBtn = msgBox.addButton(trUtf8(" Edit Settings "), QMessageBox::AcceptRole);
+        msgBox.setDefaultButton(editSettingsBtn);
+        msgBox.setStandardButtons(QMessageBox::Cancel);
+        if (msgBox.exec()== QMessageBox::AcceptRole)
         {
             this->showSettings();
             int tabIndexSpace;
