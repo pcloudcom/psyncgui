@@ -131,7 +131,13 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     connect(ui->btnUnlink, SIGNAL(clicked()), this, SLOT(unlinkSync()));
 
     this->setMinimumHeight(560);
-    //this->setMinimumWidth(ui->pagesWidget->widget(SYNC_PAGE_NUM)->width());
+#ifdef Q_OS_WIN
+    //this->setMinimumWidth(724);
+    for (int i = 0; i < ui->pagesWidget->count(); i++)
+    {
+         ui->pagesWidget->widget(i)->setMinimumWidth(724);
+    }
+#endif
 
     updateGeometry();
 }
@@ -246,8 +252,7 @@ void PCloudWindow::changePage(QListWidgetItem *current, QListWidgetItem *previou
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
     updateGeometry();
     ui->pagesWidget->setCurrentIndex(currentIndex); // sets page
-    refreshPage(currentIndex);
-
+    refreshPage(currentIndex);    
 }
 void PCloudWindow::showEvent(QShowEvent *)
 {
