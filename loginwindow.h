@@ -22,8 +22,7 @@ public:
 private:
     PCloudApp *app;
     Ui::LoginWindow *ui;
-    QString username;
-    void closeEvent(QCloseEvent *event);
+    QString username;   
 protected:
     void showEvent(QShowEvent *);
 public slots:

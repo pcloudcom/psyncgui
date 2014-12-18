@@ -28,7 +28,7 @@ LoginWindow::LoginWindow(PCloudApp *a, QWidget *parent) :
     this->layout()->setSizeConstraint(QLayout::SetFixedSize);  //not resized
 #else
     this->setFixedSize(570,412);
-#endif
+#endif     
 }
 
 LoginWindow::~LoginWindow()
@@ -36,11 +36,6 @@ LoginWindow::~LoginWindow()
     delete ui;
 }
 
-void LoginWindow::closeEvent(QCloseEvent *event)
-{
-    hide();
-    event->ignore();
-}
 void LoginWindow::showEvent(QShowEvent *)
 {
     username = psync_get_username();

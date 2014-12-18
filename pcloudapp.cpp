@@ -23,8 +23,8 @@ QMutex mutex(QMutex::Recursive);
 void PCloudApp::hideAllWindows(){
     if (regwin && regwin->isVisible())
         regwin->hide();
-    if (logwin && logwin->isVisible())
-        logwin->hide();
+    if (logwin && logwin->isVisible())    
+        logwin->close();
     if (pCloudWin && pCloudWin->isVisible())
         pCloudWin->hide();
     if(welcomeWin && welcomeWin->isVisible())
@@ -1033,7 +1033,9 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
 
     qDebug()<<"saveauth"<<savedauth << "username" <<psync_get_username()<< "auth"<< psync_get_auth_string();
     //if (!savedauth)
-    if (!strcmp(psync_get_auth_string(), ""))
+    const char* auth = psync_get_auth_string();
+    //if (!strcmp(psync_get_auth_string(), ""))
+    if (!strcmp(auth, ""))
     {
         //case not remembered
         //p othread=NULL;
