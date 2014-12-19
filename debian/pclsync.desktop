@@ -2,7 +2,7 @@
 Name=pCloud Drive
 GenericName=pCloud Drive
 Comment=pCloud Drive client
-Icon=/usr/share/pixmaps/pcloud.xpm
+Icon=/usr/share/pixmaps/pcloud.png
 Type=Application
 Categories=Network
 Exec=psyncgui
