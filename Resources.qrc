@@ -43,6 +43,8 @@
         <file>images/128x128/info-w.png</file>
         <file>images/128x128/shares-w.png</file>
         <file>images/128x128/settings-w.png</file>
+        <file>images/128x128/crypto-w.png</file>
+        <file>images/128x128/crypto.png</file>
     </qresource>
     <qresource prefix="/48x48">
         <file>images/48x48/faq-modal.png</file>
@@ -114,5 +116,11 @@
         <file>images/welcomes/welcomeSyncXP.png</file>
         <file>images/welcomes/welcomeOthersXP.png</file>
         <file>images/welcomes/welcomeFinish.png</file>
+    </qresource>
+    <qresource prefix="/crypto">
+        <file>images/crypto/cryptoMainPage.png</file>
+        <file>images/crypto/cryptoWelcomePage.png</file>
+        <file>images/crypto/matchYes.png</file>
+        <file>images/crypto/matchNo.png</file>
     </qresource>
 </RCC>
