@@ -150,6 +150,13 @@ void PCloudApp::showShares()
     this->showWindow(pCloudWin);
 }
 
+void PCloudApp::showCrypto()
+{
+    hideAllWindows();
+    pCloudWin->setCurrntIndxPclWin(CRYPTO_PAGE_NUM);
+    this->showWindow(pCloudWin);
+}
+
 void PCloudApp::showSettings()
 {
     hideAllWindows();
@@ -325,6 +332,8 @@ void PCloudApp::createMenus()
     driveAction = new QAction(QIcon(":/menu/images/menu16x16/drive.png"),trUtf8("Open Drive"), this); //pDrive tab
     //connect(driveAction, SIGNAL(triggered()), this, SLOT(showDrive()));
     connect(driveAction, SIGNAL(triggered()), this, SLOT(openCloudDir()));
+    cryptoAction = new QAction(QIcon(":/menu/images/menu16x16/drive.png"),trUtf8("Crypto"), this); //Crypto tab
+    connect(cryptoAction, SIGNAL(triggered()), this, SLOT(showCrypto()));
     //p openAction=new QAction("&Open pCloud folder", this);
     //p connect(openAction, SIGNAL(triggered()), this, SLOT(openCloudDir()));
     settingsAction=new QAction(QIcon(":/menu/images/menu 32x32/settings.png"),trUtf8("Settings"), this); //Settings tab
@@ -357,6 +366,7 @@ void PCloudApp::createMenus()
     //p loggedmenu->addAction(openAction);
 #ifdef VFS
     loggedmenu->addAction(driveAction);
+    loggedmenu->addAction(cryptoAction);
     loggedmenu->addSeparator();
 #endif
     syncMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu 32x32/sync.png"),trUtf8("Sync"));
@@ -1110,6 +1120,7 @@ PCloudApp::~PCloudApp(){
     delete exitAction;
     delete settingsAction;
     delete sharesAction;
+    delete cryptoAction;
     delete userinfoAction;
     delete syncAction;
     delete helpAction;

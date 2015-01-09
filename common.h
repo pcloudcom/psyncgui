@@ -22,9 +22,10 @@
 #define ACCNT_LOGGED_PAGE_NUM 0
 #define SYNC_PAGE_NUM 1
 #define SHARES_PAGE_NUM 2
-#define SETTINGS_PAGE_NUM 3
-#define HELP_PAGE_NUM 4
-#define ABOUT_PAGE_NUM 5
+#define CRYPTO_PAGE_NUM 3
+#define SETTINGS_PAGE_NUM 4
+#define HELP_PAGE_NUM 5
+#define ABOUT_PAGE_NUM 6
 
 //first screens pages
 #define WELCOME_INTRO_PAGE_NUM 0

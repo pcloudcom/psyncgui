@@ -2,6 +2,7 @@
 #define PCLOUDWINDOW_H
 #include "sharespage.h"
 #include "syncpage.h"
+#include "cryptopage.h"
 #include "psynclib.h"
 #include "versiondwnldthread.h"
 #include <QMainWindow>
@@ -17,6 +18,7 @@ class PCloudApp;
 class SettingsPage;
 class SharesPage;
 class SyncPage;
+class CryptoPage;
 
 class PCloudWindow : public QMainWindow
 {
@@ -27,6 +29,7 @@ public:
     friend class SettingsPage; // to access ui
     friend class SharesPage;
     friend class SyncPage;
+    friend class CryptoPage;
     explicit PCloudWindow(PCloudApp *a, QWidget *parent = 0);
     ~PCloudWindow();
     int getCurrentPage();
@@ -40,7 +43,7 @@ private:
     SettingsPage *settngsPage;
     SharesPage *sharesPage;
     SyncPage *syncPage;
-    QByteArray auth; // to del
+    CryptoPage *cryptoPage;
     bool verifyClicked;
     void checkVerify();
     void checkIsBusinessAccount();

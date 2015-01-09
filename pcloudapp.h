@@ -36,6 +36,7 @@ private:
     QAction *accountAction, *userinfoAction;
     QAction *driveAction; // opens Drive folder
     QAction *sharesAction; // Shares page
+    QAction *cryptoAction; //Crypto page
     QAction *shareFolderAction; //opens share folderwin
     QAction *syncAction, *syncSttngsAction; //Sync Tab
     QAction *settingsAction;  //Settings page
@@ -174,6 +175,7 @@ public slots:
     void showAccount();
     void showDrive();
     void showShares();
+    void showCrypto();
     void showSync();
     void showSyncSttngs(); // sync page, second tab
     void showSettings();

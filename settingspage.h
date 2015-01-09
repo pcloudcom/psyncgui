@@ -21,7 +21,7 @@ public:
 private:
     PCloudWindow *win;
     PCloudApp *app;
-    bool p2p;
+    bool p2p, autoaskCryptoKey, lockCryptoFldr;
     int upldSpeed, upldSpeedNew, dwnldSpeed, dwnldSpeedNew;
     QString initFlrd;
     QString initCache;
@@ -31,6 +31,7 @@ private:
     void initMain();
     void initSpeed();
     void initSpace();
+    void initCrypto();
     void clearSpeedEditLines();
     qint32 getCacheSize();        
 public slots:        
@@ -39,6 +40,8 @@ public slots:
     void cancelSettings();
     void setNewDwnldSpeed();
     void setNewUpldSpeed();
+private slots:
+    void resetCryptoKey();
 };
 
 #endif // SETTINGSPAGE_H

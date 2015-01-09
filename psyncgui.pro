@@ -44,7 +44,9 @@ SOURCES += main.cpp\
     changepermissionsdialog.cpp \
     remotetreesdialog.cpp \
     acceptsharedialog.cpp \
-    infoscreenswin.cpp
+    infoscreenswin.cpp \
+    cryptokeydialog.cpp \
+    cryptopage.cpp
 
 HEADERS  += loginwindow.h \
     registerwindow.h \
@@ -68,7 +70,9 @@ HEADERS  += loginwindow.h \
     changepermissionsdialog.h \
     remotetreesdialog.h \
     acceptsharedialog.h \
-    infoscreenswin.h
+    infoscreenswin.h \
+    cryptokeydialog.h \
+    cryptopage.h
 
 FORMS    += loginwindow.ui \
     registerwindow.ui \
@@ -80,7 +84,8 @@ FORMS    += loginwindow.ui \
     sharefolderwindow.ui \
     changepermissionsdialog.ui \
     remotetreesdialog.ui \
-    infoscreenswin.ui
+    infoscreenswin.ui \
+    cryptokeydialog.ui
 win32:RC_FILE= pCloud.rc
 RESOURCES += \
     Resources.qrc

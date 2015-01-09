@@ -26,7 +26,7 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     ui->listButtonsWidget->setSpacing(12);
     ui->listButtonsWidget->setStyleSheet("background-color:transparent");
     ui->listButtonsWidget->setMovement(QListView::Static); //not to move items with the mouse
-    ui->listButtonsWidget->setMinimumWidth(450);
+    ui->listButtonsWidget->setMinimumWidth(450);  //++ for crypto
 #ifdef Q_OS_WIN
     ui->listButtonsWidget->setMaximumHeight(80);
     ui->listButtonsWidget->setMinimumHeight(79);
@@ -54,20 +54,25 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
         sharesicon.addPixmap(QPixmap(":/128x128/images/128x128/shares-w.png"), QIcon::Selected);
         new QListWidgetItem(sharesicon,trUtf8(" Shares "), ui->listButtonsWidget); //index 2
 
+        QIcon cryptoicon;
+        cryptoicon.addPixmap(QPixmap(":/128x128/images/128x128/crypto.png"), QIcon::Normal);
+        cryptoicon.addPixmap(QPixmap(":/128x128/images/128x128/crypto-w.png"), QIcon::Selected);
+        new QListWidgetItem(cryptoicon,trUtf8(" Crypto "), ui->listButtonsWidget); //index 3
+
         QIcon settingsicon;
         settingsicon.addPixmap(QPixmap(":/128x128/images/128x128/settings.png"), QIcon::Normal);
         settingsicon.addPixmap(QPixmap(":/128x128/images/128x128/settings-w.png"), QIcon::Selected);
-        new QListWidgetItem(settingsicon,trUtf8("Settings"), ui->listButtonsWidget); //index 3
+        new QListWidgetItem(settingsicon,trUtf8("Settings"), ui->listButtonsWidget); //index 4
 
         QIcon helpicon;
         helpicon.addPixmap(QPixmap(":/128x128/images/128x128/help.png"), QIcon::Normal);
         helpicon.addPixmap(QPixmap(":/128x128/images/128x128/help-w.png"), QIcon::Selected);
-        new QListWidgetItem(helpicon,trUtf8("  Help  "), ui->listButtonsWidget); //index 4
+        new QListWidgetItem(helpicon,trUtf8("  Help  "), ui->listButtonsWidget); //index 5
 
         QIcon abouticon;
         abouticon.addPixmap(QPixmap(":/128x128/images/128x128/info.png"), QIcon::Normal);
         abouticon.addPixmap(QPixmap(":/128x128/images/128x128/info-w.png"), QIcon::Selected);
-        new QListWidgetItem(abouticon,trUtf8(" About  "), ui->listButtonsWidget); //index 5
+        new QListWidgetItem(abouticon,trUtf8(" About  "), ui->listButtonsWidget); //index 6
 
     }
     else
@@ -75,18 +80,20 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
         new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 0
         new QListWidgetItem(QIcon(":/128x128/images/128x128/sync.png"),trUtf8("Sync"),ui->listButtonsWidget); //Sync Page index 1
         new QListWidgetItem(QIcon(":/128x128/images/128x128/shares.png"),trUtf8("Shares"),ui->listButtonsWidget); //index 2
-        new QListWidgetItem(QIcon(":/128x128/images/128x128/settings.png"),trUtf8("Settings"),ui->listButtonsWidget); //index 3
+        new QListWidgetItem(QIcon(":/128x128/images/128x128/crypto.png"),trUtf8("Crypto"),ui->listButtonsWidget); //index 3
+        new QListWidgetItem(QIcon(":/128x128/images/128x128/settings.png"),trUtf8("Settings"),ui->listButtonsWidget); //index 4
         new QListWidgetItem(QIcon(":/128x128/images/128x128//help.png"),trUtf8("Help"),ui->listButtonsWidget); //index 4
-        new QListWidgetItem(QIcon(":/128x128/images/128x128/info.png"),trUtf8("About"),ui->listButtonsWidget); //index 5
+        new QListWidgetItem(QIcon(":/128x128/images/128x128/info.png"),trUtf8("About"),ui->listButtonsWidget); //index 6
     }
 
 #else
     new QListWidgetItem(QIcon(":/128x128/images/128x128/user.png"),trUtf8("Account"),ui->listButtonsWidget); //index 0
     new QListWidgetItem(QIcon(":/128x128/images/128x128/sync.png"),trUtf8("Sync"),ui->listButtonsWidget); //Sync Page index 1
     new QListWidgetItem(QIcon(":/128x128/images/128x128/shares.png"),trUtf8("Shares"),ui->listButtonsWidget); //index 2
-    new QListWidgetItem(QIcon(":/128x128/images/128x128/settings.png"),trUtf8("Settings"),ui->listButtonsWidget); //index 3
-    new QListWidgetItem(QIcon(":/128x128/images/128x128//help.png"),trUtf8("Help"),ui->listButtonsWidget); //index 4
-    new QListWidgetItem(QIcon(":/128x128/images/128x128/info.png"),trUtf8("About"),ui->listButtonsWidget); //index 5
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/crypto.png"),trUtf8("Crypto"),ui->listButtonsWidget); //index 3
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/settings.png"),trUtf8("Settings"),ui->listButtonsWidget); //index 4
+    new QListWidgetItem(QIcon(":/128x128/images/128x128//help.png"),trUtf8("Help"),ui->listButtonsWidget); //index 5
+    new QListWidgetItem(QIcon(":/128x128/images/128x128/info.png"),trUtf8("About"),ui->listButtonsWidget); //index 6
 #endif
 
     fillAccountLoggedPage();
@@ -97,10 +104,14 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     this->setFrameProps(ui->frame_accnt);
     this->setFrameProps(ui->frame_help);
     this->setFrameProps(ui->frame);
+    this->setFrameProps(ui->frameCryptoWelcome);
+    this->setFrameProps(ui->frameCryptoKey);
+    this->setFrameProps(ui->frameCryptoMain);
 
     settngsPage = new SettingsPage(this, app);
     syncPage = new SyncPage(this, app);
     sharesPage = new SharesPage(this, app);
+    cryptoPage = new CryptoPage(this, app);
 
     // indexes of Items in listWidget and their coresponding pages in StackWidget are the same
     connect(ui->listButtonsWidget,
@@ -135,7 +146,7 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     //this->setMinimumWidth(724);
     for (int i = 0; i < ui->pagesWidget->count(); i++)
     {
-         ui->pagesWidget->widget(i)->setMinimumWidth(724);
+        ui->pagesWidget->widget(i)->setMinimumWidth(724);
     }
 #endif
 
@@ -252,7 +263,7 @@ void PCloudWindow::changePage(QListWidgetItem *current, QListWidgetItem *previou
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
     updateGeometry();
     ui->pagesWidget->setCurrentIndex(currentIndex); // sets page
-    refreshPage(currentIndex);    
+    refreshPage(currentIndex);
 }
 void PCloudWindow::showEvent(QShowEvent *)
 {
@@ -271,6 +282,9 @@ void PCloudWindow::refreshPage(int currentIndex)
         break;
     case SHARES_PAGE_NUM:
         sharesPage->loadAll();
+        break;
+    case CRYPTO_PAGE_NUM:
+        cryptoPage->showEventCrypto(); // check cases for active subscription, pass setted up
         break;
     case SETTINGS_PAGE_NUM:
         settngsPage->showEvent();
@@ -297,6 +311,7 @@ void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when
         ui->listButtonsWidget->setRowHidden(ACCNT_LOGGED_PAGE_NUM, false); //Account - logged
         ui->listButtonsWidget->setRowHidden(SYNC_PAGE_NUM, false); //Sync
         ui->listButtonsWidget->setRowHidden(SHARES_PAGE_NUM, false); //Shares
+        ui->listButtonsWidget->setRowHidden(CRYPTO_PAGE_NUM, false); //Crypto
         ui->listButtonsWidget->setRowHidden(SETTINGS_PAGE_NUM, false);       //setttings
     }
     else
@@ -304,6 +319,7 @@ void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when
         ui->listButtonsWidget->setRowHidden(ACCNT_LOGGED_PAGE_NUM, true);
         ui->listButtonsWidget->setRowHidden(SYNC_PAGE_NUM,true);
         ui->listButtonsWidget->setRowHidden(SHARES_PAGE_NUM,true);
+        ui->listButtonsWidget->setRowHidden(CRYPTO_PAGE_NUM, true);
         ui->listButtonsWidget->setRowHidden(SETTINGS_PAGE_NUM, true);
     }
     ui->label_upld->setVisible(online);

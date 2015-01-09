@@ -20,6 +20,7 @@ SettingsPage::SettingsPage(PCloudWindow *w, PCloudApp *a, QObject* parent):
     win->ui->tabWidgetSttngs->setTabText(0,trUtf8("General"));
     win->ui->tabWidgetSttngs->setTabText(1,trUtf8("Speed"));
     win->ui->tabWidgetSttngs->setTabText(2,trUtf8("Disk Usage"));
+    win->ui->tabWidgetSttngs->setTabText(3,trUtf8("Crypto"));
 #ifndef Q_OS_WIN
     win->ui->label_infoupld->setFont(app->smaller2pFont);
     win->ui->label_infodwld->setFont(app->smaller2pFont);
@@ -31,6 +32,8 @@ SettingsPage::SettingsPage(PCloudWindow *w, PCloudApp *a, QObject* parent):
     win->ui->line_settngsSpace->setVisible(false);
     win->ui->line_settngsSpeed1->setVisible(false);
     win->ui->line_settngsSpeed2->setVisible(false);
+    win->ui->line_crypto1->setVisible(false);
+    win->ui->line_crypto2->setVisible(false);
 #endif
     win->ui->label_infop2p->setText("pCloud Drive uses p2p (peer to peer), which is a computer-to-computer connection within your\nLocal Area Network (LAN),to speed up synchronization.");
 
@@ -54,6 +57,9 @@ SettingsPage::SettingsPage(PCloudWindow *w, PCloudApp *a, QObject* parent):
     connect(win->ui->edit_cache, SIGNAL(textEdited(QString)), this, SLOT(setSaveBtnEnable()));
     connect(win->ui->edit_minLocalSpace, SIGNAL(textEdited(QString)), this, SLOT(setSaveBtnEnable()));
     connect(win->ui->checkBox_autorun, SIGNAL(stateChanged(int)), this, SLOT(setSaveBtnEnable()));
+    connect(win->ui->checkBoxAutoAskCrypto, SIGNAL(stateChanged(int)), this, SLOT(setSaveBtnEnable()));
+    connect(win->ui->checkBoxLockCrypto, SIGNAL(stateChanged(int)), this, SLOT(setSaveBtnEnable()));
+    connect(win->ui->btnCryptoResetKey, SIGNAL(clicked()), this, SLOT(resetCryptoKey()));
 
 #ifdef Q_OS_WIN
     connect(win->ui->checkBox_contxtMenu, SIGNAL(stateChanged(int)), this, SLOT(setSaveBtnEnable()));
@@ -87,6 +93,8 @@ void SettingsPage::initSettingsPage()
     initMain();
     initSpeed();
     initSpace();
+    // if crypto flag
+    initCrypto();
     clearSpeedEditLines();
 
     win->ui->btnSaveSttngs->setEnabled(false);
@@ -166,6 +174,15 @@ void SettingsPage::initSpace()
     win->ui->edit_minLocalSpace->setText(QString::number(minLocalSpace));
 }
 
+void SettingsPage::initCrypto()
+{
+    autoaskCryptoKey = psync_get_bool_setting("sleepstopcrypto");
+    win->ui->groupBoxCryptoLock->setChecked(autoaskCryptoKey);
+
+    // lockCryptoFldr TO DO
+}
+
+//slots
 void SettingsPage::setNewDwnldSpeed()
 {
     QObject *obj = this->sender();
@@ -255,6 +272,16 @@ qint32 SettingsPage::getCacheSize()
     return 10; //temp
 }
 
+void SettingsPage::resetCryptoKey()
+{
+    if (QMessageBox::Yes == QMessageBox::warning(win, trUtf8("Resetting Crypto Key"), trUtf8("By resetting the Crypto Key you will delete all currently encrypted files. Are you sure?"),
+                                                 QMessageBox::Yes|QMessageBox::Cancel))
+    {
+        qDebug()<<"Crypto: reset settings";
+        // TO DO
+    }
+}
+
 void SettingsPage::saveSettings()
 {   
     if(p2p != win->ui->checkBoxp2p->isChecked())   //p2p
@@ -294,6 +321,13 @@ void SettingsPage::saveSettings()
         psync_set_uint_setting("minlocalfreespace", minLocalSpace << 20 );
     }
 
+    if (autoaskCryptoKey != win->ui->checkBoxAutoAskCrypto->isChecked())
+    {
+        autoaskCryptoKey = !autoaskCryptoKey;
+        psync_set_bool_setting("sleepstopcrypto", autoaskCryptoKey);
+    }
+
+    //lock crytpo TO DO
 #ifdef Q_OS_WIN
     //autorun win
     if(app->registrySttng->contains("pCloud") != win->ui->checkBox_autorun->isChecked())
@@ -330,7 +364,6 @@ void SettingsPage::saveSettings()
     win->ui->btnCancelSttngs->setEnabled(false);
 }
 
-// slots
 void SettingsPage::setSaveBtnEnable()
 {
     if (dwnldSpeedNew == -2 || upldSpeedNew == -2) // if one of speeds is choosen to be custom value but the value is not entered
@@ -352,7 +385,9 @@ void SettingsPage::setSaveBtnEnable()
     if ( upldSpeed != upldSpeedNew || dwnldSpeed != dwnldSpeedNew
          || p2p != win->ui->checkBoxp2p->isChecked()
          || minLocalSpace != win->ui->edit_minLocalSpace->text().toUInt()
-         || cacheSize != win->ui->edit_cache->text().toUInt())
+         || cacheSize != win->ui->edit_cache->text().toUInt()
+         || autoaskCryptoKey != win->ui->checkBoxAutoAskCrypto->isChecked()
+         || lockCryptoFldr != win->ui->checkBoxLockCrypto->isChecked())
     {
         win->ui->btnSaveSttngs->setEnabled(true);
         win->ui->btnCancelSttngs->setEnabled(true);
