@@ -18,6 +18,7 @@ public:
   explicit SettingsPage(PCloudWindow *w, PCloudApp *a, QObject *parent = 0);
   void showEvent(); // custom
   void initPublic();
+  //showcrypto //after setup
 private:
     PCloudWindow *win;
     PCloudApp *app;
@@ -33,7 +34,7 @@ private:
     void initSpace();
     void initCrypto();
     void clearSpeedEditLines();
-    qint32 getCacheSize();        
+    qint32 getCacheSize();
 public slots:        
     void saveSettings();
     void setSaveBtnEnable();

@@ -20,36 +20,45 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     win->ui->progressBarCryptoPass->setMaximum(6);
     win->ui->labelCryptoPassStrenth->setFont(app->smaller1pFont);
 
-    win->ui->pagedWidgetCrypto->setCurrentIndex(1); // TEEEMPPPP
+    //win->ui->pagedWidgetCrypto->setCurrentIndex(); // TEEEMPPPP
     connect(win->ui->btnNextTest, SIGNAL(clicked()),this, SLOT(changePage())); // TEMPPP
     connect(win->ui->btnNextTest2, SIGNAL(clicked()),this, SLOT(changePage()));
-    connect(win->ui->btnCryptoOpenFldr, SIGNAL(clicked()),this, SLOT(changePage()));
+    connect(win->ui->btnNextTest3, SIGNAL(clicked()),this, SLOT(changePage()));
+    win->ui->btnNextTest->setVisible(false); //test btns
+    win->ui->btnNextTest2->setVisible(false);
+    win->ui->btnNextTest3->setVisible(false);
 
     connect(win->ui->lineEditCryptoPass, SIGNAL(textChanged(QString)), this, SLOT(setProgressBar()));
     connect(win->ui->lineEditCryptoPass2, SIGNAL(textChanged(QString)), this, SLOT(checkPasswordsMatch()));
     connect(win->ui->btnCryptoTryTrial, SIGNAL(clicked()), this, SLOT(tryTrial()));
-    connect(win->ui->btnCryptoBuy, SIGNAL(clicked()), this, SLOT(buyCripto()));
+    connect(win->ui->btnCryptoBuy, SIGNAL(clicked()), this, SLOT(buyCrypto()));
     connect(win->ui->btnCryptoMoreInfo, SIGNAL(clicked()), this, SLOT(getMoreCryptoInfo()));
     connect(win->ui->btnCryptoCreateKey, SIGNAL(clicked()), this, SLOT(setupCrypto()));
     connect(win->ui->btnCryptoManageFldr, SIGNAL(clicked()), this, SLOT(manageCryptoFldr()));
     connect(win->ui->btnCryptoOpenFldr, SIGNAL(clicked()), this, SLOT(openCryptoFldr()));
 
-
     // set winxp images
 
-    this->showEventCrypto();
+    this->pageIndex = getCurrentPageIndex();
+    qDebug()<<"CryptoPage"<<this->pageIndex;
+    win->ui->pagedWidgetCrypto->setCurrentIndex(pageIndex);
+    if (this->pageIndex == 2 && app->settings->value("autostartcrypto").toBool())
+        this->requestCryptoKey();
+        //app->provideKeyonStartup = true;
 }
 
 void CryptoPage::showEventCrypto()
 {
     this->pageIndex = getCurrentPageIndex();
+    qDebug()<<this->pageIndex;
+    win->ui->pagedWidgetCrypto->setCurrentIndex(pageIndex);
 }
 
 int CryptoPage::getCurrentPageIndex()
 {
-    qDebug() << " CryptoPage::getCurrentPageIndex" << psync_crypto_isexpired() << psync_crypto_issetup() << psync_crypto_isstarted();
+    qDebug() << " CryptoPage::getCurrentPageIndex" << psync_crypto_isexpired() <<psync_crypto_expires()<< psync_crypto_issetup() << psync_crypto_isstarted();
 
-    int subscbtntTime = psync_crypto_isexpired();
+    int subscbtntTime = psync_crypto_expires();
     if ( !subscbtntTime || //trial
          QDateTime::fromTime_t(subscbtntTime) < QDateTime::currentDateTime()) // subscription expired
     {
@@ -58,7 +67,7 @@ int CryptoPage::getCurrentPageIndex()
         else
             win->ui->btnCryptoTryTrial->setVisible(false);
 
-        showCryptoSttngsFlag = false;
+        app->isCryptoExpired = true;
         return 0; //show welcome crypto page
     }
     else if (psync_crypto_issetup() == 0)  //show setup pass page
@@ -69,49 +78,51 @@ int CryptoPage::getCurrentPageIndex()
         win->ui->labelCryptoPassStrenth->setText("");
         win->ui->lineEditCryptoPass->setFocus();
 
-        showCryptoSttngsFlag = false;
+        app->isCryptoExpired = false;
         return 1;
     }
     else //show main crypto page
     {
         if(psync_crypto_isstarted())
-        {
-            win->ui->btnCryptoManageFldr->setText("Lock");
-            QPalette paletteRed;
-            paletteRed.setColor(QPalette::WindowText, Qt::red);
-            win->ui->label_cryptoStatus->setPalette(paletteRed);
-            win->ui->label_cryptoStatus->setText("Unlocked");
-            win->ui->labelCryptoFldrInfo->setText("Lock the Crypto Folder to keep your files protected.");
-            win->ui->btnCryptoOpenFldr->setEnabled(true);
-        }
+            setLockedFldrUI();
         else
-        {
-            win->ui->btnCryptoManageFldr->setText("Unlock");
-            QPalette paletteGreen;
-            paletteGreen.setColor(QPalette::WindowText, Qt::green);
-            win->ui->label_cryptoStatus->setPalette(paletteGreen);
-            win->ui->label_cryptoStatus->setText("Locked");
-            win->ui->labelCryptoFldrInfo->setText("Unlock the Crypto Folder to decrypt and manage your files.");
-            win->ui->btnCryptoOpenFldr->setEnabled(false);
-        }
+            setUnlockFldrUI();
 
         // ++ check if folder exists
-        showCryptoSttngsFlag = true;
+        app->isCryptoExpired = false;
+
         return 2;
     }
 }
 
-bool CryptoPage::getShowCryptoSettingsFlag()
+// slots
+void CryptoPage::setLockedFldrUI()
 {
-    return this->showCryptoSttngsFlag;
+    win->ui->btnCryptoManageFldr->setText("Lock");
+    QPalette paletteRed;
+    paletteRed.setColor(QPalette::WindowText, Qt::red);
+    win->ui->label_cryptoStatus->setPalette(paletteRed);
+    win->ui->label_cryptoStatus->setText("Unlocked");
+    win->ui->labelCryptoFldrInfo->setText("Lock the Crypto Folder to keep your files protected.");
+    win->ui->btnCryptoOpenFldr->setEnabled(true);
 }
 
-// slots
-void CryptoPage::changePage()
+void CryptoPage::setUnlockFldrUI()
+{
+    win->ui->btnCryptoManageFldr->setText("Unlock");
+    QPalette paletteGreen;
+    paletteGreen.setColor(QPalette::WindowText, Qt::green);
+    win->ui->label_cryptoStatus->setPalette(paletteGreen);
+    win->ui->label_cryptoStatus->setText("Locked");
+    win->ui->labelCryptoFldrInfo->setText("Unlock the Crypto Folder to decrypt and manage your files.");
+    win->ui->btnCryptoOpenFldr->setEnabled(false);
+}
+
+void CryptoPage::changePage() //temp, for tests
 {
     QObject *sender = QObject::sender();
     qDebug()<<sender->objectName();
-    if (sender->objectName() == "btnCryptoOpenFldr")
+    if (sender->objectName() == "btnNextTest3")
         win->ui->pagedWidgetCrypto->setCurrentIndex(0);
 
     if (sender->objectName() == "btnNextTest")
@@ -149,13 +160,11 @@ void CryptoPage::setProgressBar()
     default:
         break;
     }
-      win->ui->labelCryptoPassStrenth->setPalette(paletteLabel);
+    win->ui->labelCryptoPassStrenth->setPalette(paletteLabel);
 }
-
 
 void CryptoPage::checkPasswordsMatch()
 {
-    qDebug()<<"checkPasswordsMatch";
     if (win->ui->lineEditCryptoPass->text() == win->ui->lineEditCryptoPass2->text())
         win->ui->label_passMatchPic->setPixmap(QPixmap(":/crypto/images/crypto/matchYes.png"));
     else
@@ -164,11 +173,11 @@ void CryptoPage::checkPasswordsMatch()
 
 void CryptoPage::tryTrial()
 {
-    QUrl url("https://my.pcloud.com");
-    QDesktopServices::openUrl(url);
+    this->pageIndex = 1;
+    win->ui->pagedWidgetCrypto->setCurrentIndex(this->pageIndex);
 }
 
-void CryptoPage::buyCripto()
+void CryptoPage::buyCrypto()
 {
     QUrl url("https://my.pcloud.com");
     QDesktopServices::openUrl(url);
@@ -184,13 +193,25 @@ void CryptoPage::setupCrypto()
 {
     if(win->ui->lineEditCryptoPass->text().isEmpty() || win->ui->lineEditCryptoPass2->text().isEmpty())
     {
-        QMessageBox::critical(win, "pCloud","Please enter password!");
+        QMessageBox::critical(win, "pCloud","Please enter password in both fields!");
+        return;
+    }
+
+    if(win->ui->lineEditCryptoPass->text() != win->ui->lineEditCryptoPass2->text())
+    {
+        QMessageBox::critical(win, "Error","The two Crypto Keys should match!");
+        return;
+    }
+
+    if(win->ui->lineEditCryptoHint->text().isEmpty())
+    {
+        QMessageBox::critical(win, "Cryto Key Hint","There is no hint provided for the Crypto Key!");
         return;
     }
 
     if(passStrenth < 1)
     {
-        QMessageBox::critical(win, "pCloud","Password not strong enough!");
+        QMessageBox::critical(win, "Crypto Key not strong enough","The Crypto Key is too weak. You need to provide a sufficiant Crypto Key!");
         return;
     }
 
@@ -199,10 +220,28 @@ void CryptoPage::setupCrypto()
         QMessageBox::critical(win,"pCloud", "Please verify your email!");
         return;
     }
+
+
     int resSetup = psync_crypto_setup(win->ui->lineEditCryptoPass->text().toUtf8(),win->ui->lineEditCryptoHint->text().toUtf8());
-    qDebug()<< " setupCrypto res " << resSetup;
+    qDebug()<< "CRYPTO: setupCrypto res = " << resSetup;
     if (resSetup == PSYNC_CRYPTO_SETUP_SUCCESS)
-        win->ui->pagedWidgetCrypto->setCurrentIndex(2);
+    {
+        int resCryptoStart = psync_crypto_start(win->ui->lineEditCryptoPass->text().toUtf8());
+
+        const char *err = NULL;
+        psync_folderid_t* cryptoFldrId;
+        int mkDirRes = psync_crypto_mkdir(0,"Crypto Folder", &err, cryptoFldrId);
+
+        qDebug()<<"CRYPTO: startres "<<resCryptoStart<< "mkdir res = "<< mkDirRes<<err<<"cryptofldrId: "<<*cryptoFldrId;
+        if (mkDirRes)
+        {
+            this->getCurrentPageIndex();
+            //show settings set settings
+        }
+
+    }
+    else
+        qDebug()<< " setupCrypto res gle" << resSetup << psync_get_last_error();
 }
 
 void CryptoPage::manageCryptoFldr()
@@ -211,12 +250,26 @@ void CryptoPage::manageCryptoFldr()
     if(psync_crypto_isstarted())
     {
         resCryptoManageFLdr = psync_crypto_stop();
+        this->setLockedFldrUI();
         qDebug()<<"manageCryptoFldr res " << resCryptoManageFLdr;
+
     }
     else
     {
-        CryptoKeyDialog* requestCryptoKeyDialog = new CryptoKeyDialog();
-        requestCryptoKeyDialog->exec();
+       // CryptoKeyDialog* requestCryptoKeyDialog = new CryptoKeyDialog();
+        //requestCryptoKeyDialog->exec();
+        //this->setUnlockFldrUI();
+        emit this->requestCryptoKey();
+    }
+}
+
+void CryptoPage::requestCryptoKey()
+{
+    CryptoKeyDialog *requestCryptoKeyDialog = new CryptoKeyDialog();
+    if (requestCryptoKeyDialog->exec() == QDialog::Accepted)
+    {
+        //win->ui->pagedWidgetCrypto->setCurrentIndex(pageIndex);
+        emit this->setUnlockFldrUI();
     }
 }
 

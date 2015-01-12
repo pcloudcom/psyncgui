@@ -13,6 +13,15 @@ CryptoKeyDialog::CryptoKeyDialog(QWidget *parent) :
     ui->label_hintVal->setVisible(false);
     setStyleSheet("QToolButton{background-color:transparent; text-decoration: underline;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");
 
+    QPalette Pal(palette());
+    QColor frameColor(244,244,243);
+    Pal.setColor(QPalette::Background,frameColor);
+    ui->frame->setAutoFillBackground(true);
+    ui->frame->setPalette(Pal);
+    ui->frame->setFrameShadow(QFrame::Plain);
+    ui->frame->setFrameShape(QFrame::StyledPanel);
+    ui->frame->setMidLineWidth(3);
+
     connect(ui->btnUnlock, SIGNAL(clicked()), this, SLOT(unlockCrypto()));
     connect(ui->tbtnHint, SIGNAL(clicked()), this, SLOT(setHintLabel()));
     connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(close()));
@@ -36,8 +45,14 @@ void CryptoKeyDialog::unlockCrypto()
     else
     {
         int startres = psync_crypto_start(ui->line_cryptoKey->text().toUtf8()); // to check errs
-        qDebug()<<"CRYPTO: Unlock res  = " << startres;
-        this->accept();
+        qDebug()<<"CRYPTO: Unlock start crypto res  = " << startres;
+        if(!startres)
+            this->accept();
+        else if(startres == PSYNC_CRYPTO_START_BAD_PASSWORD)
+        {
+            QMessageBox::critical(this, "Error", "Incorrect Crypto Key!");
+            return;
+        }
     }
 }
 

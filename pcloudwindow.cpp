@@ -108,10 +108,10 @@ PCloudWindow::PCloudWindow(PCloudApp *a,QWidget *parent) :
     this->setFrameProps(ui->frameCryptoKey);
     this->setFrameProps(ui->frameCryptoMain);
 
-    settngsPage = new SettingsPage(this, app);
+    cryptoPage = new CryptoPage(this, app);
+    settngsPage = new SettingsPage(this, app); //needs cryptopage because of expired cryptocheck
     syncPage = new SyncPage(this, app);
     sharesPage = new SharesPage(this, app);
-    cryptoPage = new CryptoPage(this, app);
 
     // indexes of Items in listWidget and their coresponding pages in StackWidget are the same
     connect(ui->listButtonsWidget,

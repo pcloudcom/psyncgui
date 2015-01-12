@@ -966,6 +966,8 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     syncFldrsWin = NULL;
     introwin = NULL;
     isFirstLaunch = false;
+    isCryptoExpired = true;
+    provideKeyonStartup = false;
     //p mthread=NULL;
     loggedin=false;
     lastMessageType=-1;
@@ -1299,6 +1301,9 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
             this->settings->setValue("welcomesNeverShowed",true);
         }
     }
+
+   // if(this->provideKeyonStartup)
+        //emit CryptoPage::requestCryptoKey();
 }
 
 void PCloudApp::getUserInfo()

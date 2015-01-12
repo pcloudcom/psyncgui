@@ -1109,7 +1109,7 @@
         <item>
          <widget class="QStackedWidget" name="pagedWidgetCrypto">
           <property name="currentIndex">
-           <number>1</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="pageCryptoWelcome">
            <layout class="QHBoxLayout" name="horizontalLayout_52">
@@ -1339,12 +1339,12 @@
                     <widget class="QPushButton" name="btnNextTest">
                      <property name="maximumSize">
                       <size>
-                       <width>20</width>
+                       <width>60</width>
                        <height>16777215</height>
                       </size>
                      </property>
                      <property name="text">
-                      <string>NExt text</string>
+                      <string>TmpNext</string>
                      </property>
                     </widget>
                    </item>
@@ -1537,7 +1537,7 @@
                      <item row="7" column="1">
                       <widget class="QPushButton" name="btnNextTest2">
                        <property name="text">
-                        <string>PushButton</string>
+                        <string>TmpNext</string>
                        </property>
                       </widget>
                      </item>
@@ -1667,6 +1667,9 @@
                        <property name="text">
                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Crypto Frolder Status:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
                       </widget>
                      </item>
                      <item>
@@ -1697,6 +1700,13 @@
                       <widget class="QPushButton" name="btnCryptoManageFldr">
                        <property name="text">
                         <string>PushButton</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="btnNextTest3">
+                       <property name="text">
+                        <string>TmpNext</string>
                        </property>
                       </widget>
                      </item>
@@ -2557,6 +2567,20 @@
              </spacer>
             </item>
             <item>
+             <widget class="QPushButton" name="btnHideTabTEST">
+              <property name="text">
+               <string>Test Hide</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnShowTab">
+              <property name="text">
+               <string>Test Show</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QPushButton" name="btnSaveSttngs">
               <property name="text">
                <string>Apply</string>
@@ -3183,6 +3207,73 @@
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>lineEditCryptoPass</tabstop>
+  <tabstop>lineEditCryptoPass2</tabstop>
+  <tabstop>lineEditCryptoHint</tabstop>
+  <tabstop>btnCryptoCreateKey</tabstop>
+  <tabstop>btnForgotpass</tabstop>
+  <tabstop>btnUnlink</tabstop>
+  <tabstop>btnLgout</tabstop>
+  <tabstop>btnGetMoreSpace</tabstop>
+  <tabstop>tabWidgetSync</tabstop>
+  <tabstop>treeSyncList</tabstop>
+  <tabstop>btnSyncAdd</tabstop>
+  <tabstop>btnSyncModify</tabstop>
+  <tabstop>btnSyncStop</tabstop>
+  <tabstop>text_patterns</tabstop>
+  <tabstop>btnSyncSttngsSave</tabstop>
+  <tabstop>btnSyncSttngCancel</tabstop>
+  <tabstop>tabWidgetShares</tabstop>
+  <tabstop>btnShareFolder</tabstop>
+  <tabstop>btnOpenBShares</tabstop>
+  <tabstop>treeMyShares</tabstop>
+  <tabstop>btnMyShareMofidy</tabstop>
+  <tabstop>btnMySharesStop</tabstop>
+  <tabstop>treeMyRequest</tabstop>
+  <tabstop>btnCancelRqst</tabstop>
+  <tabstop>btnOpenBRequests</tabstop>
+  <tabstop>treeSharedWithMe</tabstop>
+  <tabstop>btnSharedWithMeStop</tabstop>
+  <tabstop>treeRequestsWithMe</tabstop>
+  <tabstop>btnAcceptRqst</tabstop>
+  <tabstop>btnDeclineReqst</tabstop>
+  <tabstop>btnCryptoMoreInfo</tabstop>
+  <tabstop>btnCryptoTryTrial</tabstop>
+  <tabstop>btnCryptoBuy</tabstop>
+  <tabstop>btnNextTest</tabstop>
+  <tabstop>btnMyPcloud</tabstop>
+  <tabstop>btnChangePass</tabstop>
+  <tabstop>listButtonsWidget</tabstop>
+  <tabstop>btnNextTest2</tabstop>
+  <tabstop>btnVerify</tabstop>
+  <tabstop>btnCryptoManageFldr</tabstop>
+  <tabstop>btnCryptoOpenFldr</tabstop>
+  <tabstop>tabWidgetSttngs</tabstop>
+  <tabstop>checkBox_autorun</tabstop>
+  <tabstop>checkBox_contxtMenu</tabstop>
+  <tabstop>rBtnSyncUpldUnlimit</tabstop>
+  <tabstop>rBtnSyncUpldAuto</tabstop>
+  <tabstop>rbtnSyncupldChoose</tabstop>
+  <tabstop>edit_UpldSpeed</tabstop>
+  <tabstop>rBtnSyncDwldUnlimit</tabstop>
+  <tabstop>rBtnSyncDwldAuto</tabstop>
+  <tabstop>rbtnSyncDwnlChoose</tabstop>
+  <tabstop>edit_DwnldSpeed</tabstop>
+  <tabstop>checkBoxp2p</tabstop>
+  <tabstop>edit_minLocalSpace</tabstop>
+  <tabstop>edit_cache</tabstop>
+  <tabstop>checkBoxLockCrypto</tabstop>
+  <tabstop>checkBoxAutoAskCrypto</tabstop>
+  <tabstop>btnCryptoResetKey</tabstop>
+  <tabstop>btnSaveSttngs</tabstop>
+  <tabstop>btnCancelSttngs</tabstop>
+  <tabstop>btnOnlineHelp</tabstop>
+  <tabstop>btnOnlineTutorial</tabstop>
+  <tabstop>btnFeedback</tabstop>
+  <tabstop>comboBox_versionReminder</tabstop>
+  <tabstop>btnUpdtVersn</tabstop>
+ </tabstops>
  <resources>
   <include location="Resources.qrc"/>
  </resources>

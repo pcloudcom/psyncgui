@@ -13,7 +13,6 @@ class CryptoPage : public QObject
 public:
     explicit CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent = 0);
     void showEventCrypto();
-    bool getShowCryptoSettingsFlag();
 private:
     PCloudApp* app;
     PCloudWindow* win;
@@ -27,14 +26,16 @@ signals:
 private slots:
     void changePage();
     void tryTrial();
-    void buyCripto();
+    void buyCrypto();
     void getMoreCryptoInfo();
+    void setupCrypto();
+    void requestCryptoKey();
+    void manageCryptoFldr();
+    void setLockedFldrUI();
+    void setUnlockFldrUI();
+    void openCryptoFldr();
     void setProgressBar();
     void checkPasswordsMatch();
-    void setupCrypto();
-    void manageCryptoFldr();
-    void openCryptoFldr();
-
 };
 
 #endif // CRYPTOPAGE_H

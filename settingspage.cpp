@@ -63,13 +63,16 @@ SettingsPage::SettingsPage(PCloudWindow *w, PCloudApp *a, QObject* parent):
 
 #ifdef Q_OS_WIN
     connect(win->ui->checkBox_contxtMenu, SIGNAL(stateChanged(int)), this, SLOT(setSaveBtnEnable()));
+#define SETTNGS_CRYPTO_TAB_NUM 3
 #else
     win->ui->tabWidgetSttngs->removeTab(0);
+    #define SETTNGS_CRYPTO_TAB_NUM 2
 #endif
     connect(win->ui->btnSaveSttngs, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(win->ui->btnCancelSttngs, SIGNAL(clicked()), this, SLOT(cancelSettings()));
 
     initSettingsPage();
+
 }
 
 void SettingsPage::initPublic()
@@ -86,6 +89,10 @@ void SettingsPage::showEvent()
         win->ui->btnCancelSttngs->setEnabled(false);
         this->initSettingsPage();
     }
+    if(!app->isCryptoExpired)
+        win->ui->tabWidgetSttngs->setTabEnabled(SETTNGS_CRYPTO_TAB_NUM, true);
+    else
+        win->ui->tabWidgetSttngs->setTabEnabled(SETTNGS_CRYPTO_TAB_NUM, false);
 }
 
 void SettingsPage::initSettingsPage()
@@ -93,8 +100,13 @@ void SettingsPage::initSettingsPage()
     initMain();
     initSpeed();
     initSpace();
-    // if crypto flag
-    initCrypto();
+    if(!app->isCryptoExpired)
+    {
+        initCrypto();
+        win->ui->tabWidgetSttngs->setTabEnabled(SETTNGS_CRYPTO_TAB_NUM, true);
+    }
+    else
+        win->ui->tabWidgetSttngs->setTabEnabled(SETTNGS_CRYPTO_TAB_NUM, false);
     clearSpeedEditLines();
 
     win->ui->btnSaveSttngs->setEnabled(false);
@@ -176,10 +188,19 @@ void SettingsPage::initSpace()
 
 void SettingsPage::initCrypto()
 {
-    autoaskCryptoKey = psync_get_bool_setting("sleepstopcrypto");
-    win->ui->groupBoxCryptoLock->setChecked(autoaskCryptoKey);
+    qDebug()<<"SettingsPage::initCrypto";
+    lockCryptoFldr = psync_get_bool_setting("sleepstopcrypto");
+    win->ui->checkBoxLockCrypto->setChecked(lockCryptoFldr);
 
-    // lockCryptoFldr TO DO
+    if(app->settings->contains("autostartcrypto"))
+        autoaskCryptoKey = app->settings->value("autostartcrypto").toBool();
+    else
+    {
+        autoaskCryptoKey = true;
+        app->settings->setValue("autostartcrypto",true);
+    }
+    win->ui->checkBoxAutoAskCrypto->setChecked(autoaskCryptoKey);
+
 }
 
 //slots
@@ -278,7 +299,8 @@ void SettingsPage::resetCryptoKey()
                                                  QMessageBox::Yes|QMessageBox::Cancel))
     {
         qDebug()<<"Crypto: reset settings";
-        // TO DO
+        int resetCrRes = psync_crypto_reset();
+        qDebug()<<"CRYPTO: Reset res = " << resetCrRes;
     }
 }
 
@@ -321,13 +343,18 @@ void SettingsPage::saveSettings()
         psync_set_uint_setting("minlocalfreespace", minLocalSpace << 20 );
     }
 
+    if(lockCryptoFldr != win->ui->checkBoxLockCrypto->isChecked())
+    {
+        lockCryptoFldr = !lockCryptoFldr;
+        psync_set_bool_setting("sleepstopcrypto", lockCryptoFldr);
+    }
+
     if (autoaskCryptoKey != win->ui->checkBoxAutoAskCrypto->isChecked())
     {
         autoaskCryptoKey = !autoaskCryptoKey;
-        psync_set_bool_setting("sleepstopcrypto", autoaskCryptoKey);
+        app->settings->setValue("autostartcrypto", autoaskCryptoKey);
     }
 
-    //lock crytpo TO DO
 #ifdef Q_OS_WIN
     //autorun win
     if(app->registrySttng->contains("pCloud") != win->ui->checkBox_autorun->isChecked())

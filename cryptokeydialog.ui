@@ -33,7 +33,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="line_cryptoKey"/>
+         <widget class="QLineEdit" name="line_cryptoKey">
+          <property name="echoMode">
+           <enum>QLineEdit::Password</enum>
+          </property>
+         </widget>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
