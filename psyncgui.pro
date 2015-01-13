@@ -99,11 +99,9 @@ INCLUDEPATH += $$PWD/../.. $$PWD/../../pclsync
 
 unix{
 LIBS += -lssl -lcrypto -lsqlite3 -lfuse
-LIBS += -L$$PWD/../../sync/pclsync -lpsync
-#LIBS += $$PWD/../pclsync/psynclib.a
+LIBS += $$PWD/../../sync/pclsync/psynclib.a
 
 INCLUDEPATH += $$PWD/../../sync/pclsync
-#INCLUDEPATH += $$PWD/../pclsync
 }
 QMAKE_CXXFLAGS += -g
 
