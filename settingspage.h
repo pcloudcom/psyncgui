@@ -17,8 +17,7 @@ public:
   friend class PCloudWindow;
   explicit SettingsPage(PCloudWindow *w, PCloudApp *a, QObject *parent = 0);
   void showEvent(); // custom
-  void initPublic();
-  //showcrypto //after setup
+  void initPublic();  
 private:
     PCloudWindow *win;
     PCloudApp *app;

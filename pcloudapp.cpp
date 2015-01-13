@@ -23,7 +23,7 @@ QMutex mutex(QMutex::Recursive);
 void PCloudApp::hideAllWindows(){
     if (regwin && regwin->isVisible())
         regwin->hide();
-    if (logwin && logwin->isVisible())    
+    if (logwin && logwin->isVisible())
         logwin->close();
     if (pCloudWin && pCloudWin->isVisible())
         pCloudWin->hide();
@@ -247,6 +247,7 @@ void PCloudApp::unlink()
     setFirstLaunch(true);   // to show suggestions
     if(noFreeSpaceMsgShownFlag)
         noFreeSpaceMsgShownFlag = false;
+    removeSetting("autostartcrypto");
     //clearAllSettings();
     //stopfs
 }
@@ -332,7 +333,7 @@ void PCloudApp::createMenus()
     driveAction = new QAction(QIcon(":/menu/images/menu16x16/drive.png"),trUtf8("Open Drive"), this); //pDrive tab
     //connect(driveAction, SIGNAL(triggered()), this, SLOT(showDrive()));
     connect(driveAction, SIGNAL(triggered()), this, SLOT(openCloudDir()));
-    cryptoAction = new QAction(QIcon(":/menu/images/menu16x16/drive.png"),trUtf8("Crypto"), this); //Crypto tab
+    cryptoAction = new QAction(QIcon(":/menu/images/menu16x16/crypto.png"),trUtf8("Crypto"), this); //Crypto tab
     connect(cryptoAction, SIGNAL(triggered()), this, SLOT(showCrypto()));
     //p openAction=new QAction("&Open pCloud folder", this);
     //p connect(openAction, SIGNAL(triggered()), this, SLOT(openCloudDir()));
@@ -967,7 +968,6 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     introwin = NULL;
     isFirstLaunch = false;
     isCryptoExpired = true;
-    provideKeyonStartup = false;
     //p mthread=NULL;
     loggedin=false;
     lastMessageType=-1;
@@ -1239,9 +1239,9 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
         pauseSyncAction->setVisible(true);
         this->downldInfo = QObject::trUtf8("Everything Downloaded");
         this->uplodInfo = QObject::trUtf8("Everything Uploaded");
-        this->pCloudWin->get_sync_page()->load();
-        this->pCloudWin->get_sync_page()->loadSettings();
-        this->pCloudWin->refreshPageSgnl(SETTINGS_PAGE_NUM, -1);
+        //  this->pCloudWin->get_sync_page()->load();
+        //this->pCloudWin->get_sync_page()->loadSettings();
+        //this->pCloudWin->refreshPageSgnl(SETTINGS_PAGE_NUM, -1);
         this->unlinkFlag = false;
     }
     this->username = uname;
@@ -1256,7 +1256,6 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
 
     userinfoAction->setText(this->usedSpaceStr + " ("+
                             QString::number(100 - this->freeSpacePercentage) + "%) of " + this->planStr + " used");
-    pCloudWin->fillAccountLoggedPage();
 
     switch (this->lastStatus)
     {
@@ -1275,6 +1274,7 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     }
 
     pCloudWin->setOnlineItems(true);
+    pCloudWin->initOnlinePages();
     tray->setContextMenu(loggedmenu);
 
     // isFirstLaunch = true; // for test TEMP
@@ -1302,8 +1302,6 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
         }
     }
 
-   // if(this->provideKeyonStartup)
-        //emit CryptoPage::requestCryptoKey();
 }
 
 void PCloudApp::getUserInfo()

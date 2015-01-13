@@ -71,8 +71,6 @@ SettingsPage::SettingsPage(PCloudWindow *w, PCloudApp *a, QObject* parent):
     connect(win->ui->btnSaveSttngs, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(win->ui->btnCancelSttngs, SIGNAL(clicked()), this, SLOT(cancelSettings()));
 
-    initSettingsPage();
-
 }
 
 void SettingsPage::initPublic()
@@ -107,8 +105,8 @@ void SettingsPage::initSettingsPage()
     }
     else
         win->ui->tabWidgetSttngs->setTabEnabled(SETTNGS_CRYPTO_TAB_NUM, false);
-    clearSpeedEditLines();
 
+    clearSpeedEditLines();
     win->ui->btnSaveSttngs->setEnabled(false);
     win->ui->btnCancelSttngs->setEnabled(false);
 }
@@ -194,10 +192,10 @@ void SettingsPage::initCrypto()
 
     if(app->settings->contains("autostartcrypto"))
         autoaskCryptoKey = app->settings->value("autostartcrypto").toBool();
-    else
+    else //first init - by default this setting is off
     {
-        autoaskCryptoKey = true;
-        app->settings->setValue("autostartcrypto",true);
+        autoaskCryptoKey = false;
+        app->settings->setValue("autostartcrypto",false);
     }
     win->ui->checkBoxAutoAskCrypto->setChecked(autoaskCryptoKey);
 

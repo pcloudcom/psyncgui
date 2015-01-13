@@ -229,6 +229,7 @@ bool PCloudWindow::eventFilter(QObject *obj, QEvent *event)
                 this->setCurrntIndxPclWin(ABOUT_PAGE_NUM);
                 event->ignore();
                 return true;
+            case Qt::Key_C:
             case Qt::Key_D:
             case Qt::Key_S:
             case Qt::Key_Backspace:
@@ -326,6 +327,15 @@ void PCloudWindow::setOnlineItems(bool online) // change pcloud window menu when
     ui->label_upldpic->setVisible(online);
     ui->label_dwnld->setVisible(online);
     ui->label_dwldpic->setVisible(online);
+}
+
+void PCloudWindow::initOnlinePages()
+{
+    this->fillAccountLoggedPage();
+    this->cryptoPage->initCryptoPage();
+    this->syncPage->load();
+    this->syncPage->loadSettings();
+    this->settngsPage->initPublic();
 }
 
 /*void PCloudWindow::setOnlinePages()
@@ -454,7 +464,8 @@ void PCloudWindow::unlinkSync()
         app->unlink();
 }
 
-void PCloudWindow::verifyEmail(){    // not implemented
+void PCloudWindow::verifyEmail()
+{
     char *err = NULL;
     int res = psync_verify_email(&err);
     if (!res)

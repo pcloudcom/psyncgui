@@ -26,6 +26,9 @@ CryptoKeyDialog::CryptoKeyDialog(QWidget *parent) :
     connect(ui->tbtnHint, SIGNAL(clicked()), this, SLOT(setHintLabel()));
     connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(close()));
 
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    this->layout()->setSizeConstraint(QLayout::SetFixedSize);  //not resized
     this->setWindowTitle(trUtf8("Provide Crypto Key"));
     this->setWindowIcon(QIcon(WINDOW_ICON));
 }
