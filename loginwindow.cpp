@@ -71,6 +71,13 @@ void LoginWindow::logIn()
    // ui->error->setText("");
     QByteArray email=ui->email->text().toUtf8();
     QByteArray password=ui->password->text().toUtf8();
+
+    if(email.isEmpty() || password.isEmpty())
+    {
+        QMessageBox::critical(this,"pCloud", "Invalid user and password combination!");
+        return;
+    }
+
     int ischecked = ui->checkBox->isChecked()? 1: 0;
     QApplication::setOverrideCursor(Qt::WaitCursor); // or to add QSplashSCreen instead
 
