@@ -241,8 +241,8 @@ void CryptoPage::setupCrypto()
         psync_folderid_t* cryptoFldrId;
         int mkDirRes = psync_crypto_mkdir(0,"Crypto Folder", &err, cryptoFldrId);
 
-        qDebug()<<"CRYPTO: startres "<<resCryptoStart<< "mkdir res = "<< mkDirRes<<"cryptofldrId: "<<*cryptoFldrId;
-        if (mkDirRes)
+        qDebug()<<"CRYPTO: startres "<<resCryptoStart<< "mkdir res = "<<mkDirRes;
+        if (!mkDirRes)
         {
             this->showEventCrypto();
             if(tryTrialClickedFlag)
