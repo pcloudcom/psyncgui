@@ -689,10 +689,8 @@ void status_callback(pstatus_t *status)
     case PSTATUS_BAD_LOGIN_DATA:            //5
         qDebug()<<"PSTATUS_BAD_LOGIN_DATA";
         if(previousStatus != PSTATUS_BAD_LOGIN_DATA && PCloudApp::appStatic->isLogedIn())
-        {
             PCloudApp::appStatic->logoutPublic();
-            PCloudApp::appStatic->lastStatus = PSTATUS_BAD_LOGIN_DATA;
-        }
+        PCloudApp::appStatic->lastStatus = PSTATUS_BAD_LOGIN_DATA;
         break;
 
     case PSTATUS_BAD_LOGIN_TOKEN: //6

@@ -93,21 +93,18 @@ void LoginWindow::logIn()
     int times = 0;
     for(;;)
     {
-        times++;
-        pstatus_t status;
-        memset(&status, 0, sizeof(status));
-        psync_get_status(&status);
-        qDebug()<<"login btn "<< status.status<< times;
-        if (status.status == PSTATUS_CONNECTING || status.status == PSTATUS_SCANNING )
+        times++;     
+        qDebug()<<"login btn "<< app->lastStatus << times;
+        if (app->lastStatus == PSTATUS_CONNECTING || app->lastStatus == PSTATUS_SCANNING )
         {
             sleep(1);
             continue;
         }
         else
         {
-            if ((loginStatusLst.contains(status.status)))
+            if ((loginStatusLst.contains(app->lastStatus)))
             {
-                if (status.status != PSTATUS_OFFLINE)
+                if (app->lastStatus != PSTATUS_OFFLINE)
                 {
                     this->showError("Invalid user and password combination");
                     psync_set_bool_setting("saveauth",false);
@@ -120,7 +117,7 @@ void LoginWindow::logIn()
             else
             {
                 // PSTATUS_PAUSED is returned before and after PSTATUS_BAD_LOGIN_DATA
-                if (status.status == PSTATUS_PAUSED && times == 1)
+                if (app->lastStatus == PSTATUS_PAUSED && times == 1)
                 {
                     sleep(3);
                     continue;
