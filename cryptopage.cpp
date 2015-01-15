@@ -278,6 +278,7 @@ void CryptoPage::setupCrypto()
         win->ui->lineEditCryptoHint->clear();
         win->ui->lineEditCryptoPass->clear();
         win->ui->lineEditCryptoPass2->clear();
+        win->ui->label_passMatchPic->setPixmap(QPixmap(":/crypto/images/crypto/matchNo.png"));
     }
     else
         qDebug()<< " setupCrypto res gle" << resSetup << psync_get_last_error();

@@ -293,6 +293,12 @@ qint32 SettingsPage::getCacheSize()
 
 void SettingsPage::resetCryptoKey()
 {
+    if(psync_crypto_isstarted())
+    {
+        QMessageBox::critical(win,trUtf8("Resetting Crypto Key"), trUtf8("Please lock your folder first!"));
+        return;
+    }
+
     if (QMessageBox::Yes == QMessageBox::warning(win, trUtf8("Resetting Crypto Key"), trUtf8("By resetting the Crypto Key you will delete all currently encrypted files. Are you sure?"),
                                                  QMessageBox::Yes|QMessageBox::Cancel))
     {
