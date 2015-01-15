@@ -141,33 +141,42 @@ void CryptoPage::changePage() //temp, for tests
 
 void CryptoPage::setProgressBar()
 {
-    passStrenth = psync_password_quality(win->ui->lineEditCryptoPass->text().toUtf8());
-    qDebug()<<"setProgressBar "<<passStrenth ;
-    QPalette paletteLabel;
-    switch(passStrenth)
+    QString pass = win->ui->lineEditCryptoPass->text();
+    if(!pass.isEmpty())
     {
-    case 0:
-        win->ui->progressBarCryptoPass->setValue(2);
-        win->ui->progressBarCryptoPass->setStyleSheet("QProgressBar:chunk{background-color:#FF4D4D; width: 15px; margin: 0.5px;}");
-        paletteLabel.setColor(QPalette::WindowText, QColor("#FF4D4D"));
-        win->ui->labelCryptoPassStrenth->setText("Weak");
-        break;
-    case 1:
-        win->ui->progressBarCryptoPass->setValue(4);
-        win->ui->progressBarCryptoPass->setStyleSheet("QProgressBar:chunk{background-color:#FF9326; width: 15px; margin: 0.5px;}");
-        paletteLabel.setColor(QPalette::WindowText, QColor("#FF9326"));
-        win->ui->labelCryptoPassStrenth->setText("Medium");
-        break;
-    case 2:
-        win->ui->progressBarCryptoPass->setValue(6);
-        win->ui->progressBarCryptoPass->setStyleSheet("QProgressBar:chunk{background-color:#83C100; width: 15px; margin: 0.5px;}");
-        paletteLabel.setColor(QPalette::WindowText, QColor("#83C100"));
-        win->ui->labelCryptoPassStrenth->setText("Strong");
-        break;
-    default:
-        break;
+        passStrenth = psync_password_quality(pass.toUtf8());
+        qDebug()<<"setProgressBar "<<passStrenth;
+        QPalette paletteLabel;
+        switch(passStrenth)
+        {
+        case 0:
+            win->ui->progressBarCryptoPass->setValue(2);
+            win->ui->progressBarCryptoPass->setStyleSheet("QProgressBar:chunk{background-color:#FF4D4D; width: 15px; margin: 0.5px;}");
+            paletteLabel.setColor(QPalette::WindowText, QColor("#FF4D4D"));
+            win->ui->labelCryptoPassStrenth->setText("Weak");
+            break;
+        case 1:
+            win->ui->progressBarCryptoPass->setValue(4);
+            win->ui->progressBarCryptoPass->setStyleSheet("QProgressBar:chunk{background-color:#FF9326; width: 15px; margin: 0.5px;}");
+            paletteLabel.setColor(QPalette::WindowText, QColor("#FF9326"));
+            win->ui->labelCryptoPassStrenth->setText("Medium");
+            break;
+        case 2:
+            win->ui->progressBarCryptoPass->setValue(6);
+            win->ui->progressBarCryptoPass->setStyleSheet("QProgressBar:chunk{background-color:#83C100; width: 15px; margin: 0.5px;}");
+            paletteLabel.setColor(QPalette::WindowText, QColor("#83C100"));
+            win->ui->labelCryptoPassStrenth->setText("Strong");
+            break;
+        default:
+            break;
+        }
+        win->ui->labelCryptoPassStrenth->setPalette(paletteLabel);
     }
-    win->ui->labelCryptoPassStrenth->setPalette(paletteLabel);
+    else
+    {
+        win->ui->progressBarCryptoPass->setValue(0);
+        win->ui->labelCryptoPassStrenth->setText("");
+    }
 }
 
 void CryptoPage::checkPasswordsMatch()
@@ -183,7 +192,8 @@ void CryptoPage::tryTrial()
     if(!app->isVerified)
     {
         QMessageBox::StandardButton reply;
-        reply = QMessageBox::critical(win,"pCloud", "Please verify your email!", QMessageBox::Yes|QMessageBox::No);
+        reply = QMessageBox::critical(win,"pCloud", "This functionality is available for verified accounts only. Do you wish to very your account now?",
+                                      QMessageBox::Yes|QMessageBox::No);
         if (reply == QMessageBox::Yes)
             win->verifyEmail();
         return;
@@ -232,6 +242,17 @@ void CryptoPage::setupCrypto()
         return;
     }
 
+    if(win->ui->lineEditCryptoHint->text().contains(win->ui->lineEditCryptoPass->text()))
+    {
+        QMessageBox::critical(win,"Compromising Hint","Your Crypto Key Hint must not contain parts of or the entire Crypto Key!");
+        return;
+    }
+
+    if(win->ui->lineEditCryptoHint->text().length() > 141)
+    {
+        QMessageBox::critical(win,"Hint Too Long", "The Crypto Key Hint must not exceed 140 characters!");
+        return;
+    }
 
     int resSetup = psync_crypto_setup(win->ui->lineEditCryptoPass->text().toUtf8(),win->ui->lineEditCryptoHint->text().toUtf8());
     qDebug()<< "CRYPTO: setupCrypto res = " << resSetup;
@@ -253,6 +274,10 @@ void CryptoPage::setupCrypto()
         }
         else
             qDebug()<<"CRYPTO: Make dir:"<< err;
+
+        win->ui->lineEditCryptoHint->clear();
+        win->ui->lineEditCryptoPass->clear();
+        win->ui->lineEditCryptoPass2->clear();
     }
     else
         qDebug()<< " setupCrypto res gle" << resSetup << psync_get_last_error();

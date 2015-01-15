@@ -297,6 +297,8 @@ void SettingsPage::resetCryptoKey()
                                                  QMessageBox::Yes|QMessageBox::Cancel))
     {
         qDebug()<<"Crypto: reset settings";
+        QMessageBox::information(win,"Resetting Crypto Key",
+                                 trUtf8("An email with instructions has been sent to %1. Please, follow the steps to reset your Crypto Key.").arg(app->username));
         int resetCrRes = psync_crypto_reset();
         qDebug()<<"CRYPTO: Reset res = " << resetCrRes;
     }
