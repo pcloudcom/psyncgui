@@ -24,7 +24,7 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     connect(win->ui->btnNextTest, SIGNAL(clicked()),this, SLOT(changePage())); // TEMPPP
     connect(win->ui->btnNextTest2, SIGNAL(clicked()),this, SLOT(changePage()));
     connect(win->ui->btnNextTest3, SIGNAL(clicked()),this, SLOT(changePage()));
-      win->ui->btnNextTest->setVisible(false); //test btns
+    win->ui->btnNextTest->setVisible(false); //test btns
     win->ui->btnNextTest2->setVisible(false);
     win->ui->btnNextTest3->setVisible(false);
 
@@ -43,23 +43,21 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
 void CryptoPage::initCryptoPage() //called when user has just loggedin
 {
     tryTrialClickedFlag = false;
-    this->pageIndex = getCurrentPageIndex();
+    setCurrentPageIndex();
     qDebug()<<"CryptoPage"<<this->pageIndex;
-    win->ui->pagedWidgetCrypto->setCurrentIndex(pageIndex);
     if (this->pageIndex == 2 && app->settings->value("autostartcrypto").toBool())
         QTimer::singleShot(3000, this, SLOT(requestCryptoKey()));
 }
 
 void CryptoPage::showEventCrypto()
 {
-    this->pageIndex = getCurrentPageIndex();
+    setCurrentPageIndex();
     qDebug()<<this->pageIndex;
-    win->ui->pagedWidgetCrypto->setCurrentIndex(pageIndex);
 }
 
-int CryptoPage::getCurrentPageIndex()
+void CryptoPage::setCurrentPageIndex()
 {
-    qDebug() << " CryptoPage::getCurrentPageIndex" << psync_crypto_isexpired() <<psync_crypto_expires()<< psync_crypto_issetup() << psync_crypto_isstarted();
+    qDebug() << " CryptoPage::setCurrentPageIndex" << psync_crypto_isexpired() <<psync_crypto_expires()<< psync_crypto_issetup() << psync_crypto_isstarted();
 
     int subscbtntTime = psync_crypto_expires();
     if (!tryTrialClickedFlag &&                                                                         //for case when entered pass but hasn't already setup and went to another flag
@@ -71,7 +69,7 @@ int CryptoPage::getCurrentPageIndex()
             win->ui->btnCryptoTryTrial->setVisible(false);
 
         app->isCryptoExpired = true;
-        return 0; //show welcome crypto page
+        this->pageIndex = 0;  //show welcome crypto page
     }
     else if (psync_crypto_issetup() == 0)  //show setup pass page
     {
@@ -83,7 +81,7 @@ int CryptoPage::getCurrentPageIndex()
         }
 
         app->isCryptoExpired = false;
-        return 1;
+        this->pageIndex = 1; //show welcome crypto page
     }
     else //show main crypto page
     {
@@ -94,9 +92,14 @@ int CryptoPage::getCurrentPageIndex()
 
         // ++ check if folder exists
         app->isCryptoExpired = false;
-
-        return 2;
+        this->pageIndex = 2;
     }
+    win->ui->pagedWidgetCrypto->setCurrentIndex(pageIndex);
+}
+
+int CryptoPage::getCurrentCryptoPageIndex()
+{
+    return this->pageIndex;
 }
 
 // slots
@@ -256,18 +259,25 @@ void CryptoPage::setupCrypto()
 }
 
 void CryptoPage::manageCryptoFldr()
-{
-    int resCryptoManageFLdr;
+{    
     if(psync_crypto_isstarted())
-    {
-        resCryptoManageFLdr = psync_crypto_stop();
-        this->setLockedFldrUI();
-        qDebug()<<"manageCryptoFldr res " << resCryptoManageFLdr;
-
-    }
+        lock();
     else
-        emit this->requestCryptoKey();
+        unlock();
 }
+
+void CryptoPage::lock()
+{
+    int resCryptoManageFLdr = psync_crypto_stop();
+    this->setLockedFldrUI();
+    qDebug()<<"manageCryptoFldr res " << resCryptoManageFLdr;
+}
+
+void CryptoPage::unlock()
+{
+    emit this->requestCryptoKey();
+}
+
 
 void CryptoPage::requestCryptoKey()
 {

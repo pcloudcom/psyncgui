@@ -36,7 +36,11 @@ private:
     QAction *accountAction, *userinfoAction;
     QAction *driveAction; // opens Drive folder
     QAction *sharesAction; // Shares page
-    QAction *cryptoAction; //Crypto page
+    QAction *cryptoWelcomeAction; //Crypto page, no subscribtion
+    QAction *cryptoFldrLockedAction; //Crypto page, folder is Locked
+    QAction *cryptoFldrUnlockedAction; // Crypto page, folder is unlocked
+    QAction *cryptoOpenFldrAction;
+    QAction *cryptoUnlockedMenuAction;
     QAction *shareFolderAction; //opens share folderwin
     QAction *syncAction, *syncSttngsAction; //Sync Tab
     QAction *settingsAction;  //Settings page
@@ -50,7 +54,7 @@ private:
     QAction *dbgPipeHlprActn; //TEMP
     QMenu *notloggedmenu;
     QMenu *loggedmenu;
-    QMenu * syncMenu, *syncedFldrsMenu, *sharesMenu; //submenus in the tray menu
+    QMenu * syncMenu, *syncedFldrsMenu, *sharesMenu, *cryptoUnlockedMenu; //submenus in the tray menu
     QSystemTrayIcon *tray;
     RegisterWindow *regwin;
     LoginWindow *logwin;     
@@ -189,11 +193,16 @@ public slots:
     void trayMsgClicked(); //show shares and new version
     //p void setOnlineStatus(bool online);
     void setTrayIcon(const QString &icon);
+    void refreshTray();
+    void setCryptoAction();
     void setCursor(bool change);
     void setErrText(int win, const char *err);
     void pauseSync();
     void resumeSync();
     void openLocalDir(); // for local sync folder
+    void lockCryptoFldr();
+    void unlockCryptoFldr();
+    void openCryptoFldr();
     void addNewShare();
     void addNewShare(QString fldrPath); //void addNewShare(const char* fldrPath); //from context menu
     void addNewSync();

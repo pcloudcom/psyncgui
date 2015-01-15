@@ -333,10 +333,17 @@ void PCloudApp::createMenus()
     driveAction = new QAction(QIcon(":/menu/images/menu16x16/drive.png"),trUtf8("Open Drive"), this); //pDrive tab
     //connect(driveAction, SIGNAL(triggered()), this, SLOT(showDrive()));
     connect(driveAction, SIGNAL(triggered()), this, SLOT(openCloudDir()));
-    cryptoAction = new QAction(QIcon(":/menu/images/menu16x16/crypto.png"),trUtf8("Crypto"), this); //Crypto tab
-    connect(cryptoAction, SIGNAL(triggered()), this, SLOT(showCrypto()));
-    //p openAction=new QAction("&Open pCloud folder", this);
-    //p connect(openAction, SIGNAL(triggered()), this, SLOT(openCloudDir()));
+
+    //crypto
+    cryptoWelcomeAction = new QAction(QIcon(":/menu/images/menu16x16/crypto.png"),trUtf8("Crypto"), this); //Crypto tab
+    connect(cryptoWelcomeAction, SIGNAL(triggered()), this, SLOT(showCrypto()));
+    cryptoFldrLockedAction = new QAction(QIcon(":/menu/images/menu16x16/crypto-unclk.png"),trUtf8("Unlock"), this);
+    connect(cryptoFldrLockedAction, SIGNAL(triggered()), this, SLOT(unlockCryptoFldr()));
+    cryptoFldrUnlockedAction =  new QAction(trUtf8("Lock"), this);
+    connect(cryptoFldrUnlockedAction, SIGNAL(triggered()), this, SLOT(lockCryptoFldr()));
+    cryptoOpenFldrAction = new QAction(trUtf8("Open Folder"),this);
+    connect(cryptoOpenFldrAction, SIGNAL(triggered()), this, SLOT(openCryptoFldr()));
+
     settingsAction=new QAction(QIcon(":/menu/images/menu 32x32/settings.png"),trUtf8("Settings"), this); //Settings tab
     connect(settingsAction, SIGNAL(triggered()), this, SLOT(showSettings()));
     pauseSyncAction = new QAction(QIcon(":/menu/images/menu 48x48/pause.png"),trUtf8("Pause"),this);
@@ -345,6 +352,7 @@ void PCloudApp::createMenus()
     connect(resumeSyncAction, SIGNAL(triggered()), this, SLOT(resumeSync()));
     syncDownldAction = new QAction(QIcon(":/menu/images/menu 48x48/download.png"),trUtf8("Everything downloaded"),this);
     syncUpldAction = new QAction(QIcon(":/menu/images/menu 48x48/upload.png"),trUtf8("Everything uploaded"),this);
+
 
     //sync actions
     syncAction = new QAction(QIcon(":/menu/images/menu16x16/manage.png"),trUtf8("Manage"),this);
@@ -364,12 +372,15 @@ void PCloudApp::createMenus()
 
     //create tray menu and it's submenus and add actions
     loggedmenu = new QMenu();
-    //p loggedmenu->addAction(openAction);
-#ifdef VFS
     loggedmenu->addAction(driveAction);
-    loggedmenu->addAction(cryptoAction);
+    loggedmenu->addAction(cryptoWelcomeAction);
+    loggedmenu->addAction(cryptoFldrLockedAction);
+    cryptoUnlockedMenu = new QMenu(trUtf8("Crypto"));
+    cryptoUnlockedMenuAction = loggedmenu->addMenu(cryptoUnlockedMenu);
+    cryptoUnlockedMenu->addAction(cryptoOpenFldrAction);
+    cryptoUnlockedMenu->addAction(cryptoFldrUnlockedAction);
     loggedmenu->addSeparator();
-#endif
+
     syncMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu 32x32/sync.png"),trUtf8("Sync"));
     syncedFldrsMenu = syncMenu->addMenu(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),trUtf8("Synced Folders"));
     // this->createSyncFolderActions(); //loads sub menu with local synced folders
@@ -409,7 +420,7 @@ void PCloudApp::createMenus()
         // pCloudWin->ui->btnPauseSync->setVisible(false);
     }
 
-    connect(loggedmenu, SIGNAL(aboutToShow()), this, SLOT(updateSyncStatus()));
+    connect(loggedmenu, SIGNAL(aboutToShow()), this, SLOT(refreshTray()));
     connect(syncedFldrsMenu, SIGNAL(aboutToShow()),this,SLOT(createSyncFolderActions())); //delete old if exist, adds new
     //connect(syncMenu, SIGNAL(aboutToShow()),this,SLOT(createSyncFolderActions())); //fu4ur version
     userinfoAction->setEnabled(false);
@@ -1122,7 +1133,11 @@ PCloudApp::~PCloudApp(){
     delete exitAction;
     delete settingsAction;
     delete sharesAction;
-    delete cryptoAction;
+    delete cryptoWelcomeAction;
+    delete cryptoFldrLockedAction;
+    delete cryptoFldrUnlockedAction;
+    delete cryptoOpenFldrAction;
+    delete cryptoUnlockedMenuAction;
     delete userinfoAction;
     delete syncAction;
     delete helpAction;
@@ -1884,6 +1899,22 @@ void PCloudApp::openLocalDir()
     QString path = menuItem->property("path").toString();
     QDesktopServices::openUrl(QUrl::fromLocalFile(path));
 }
+
+void PCloudApp::lockCryptoFldr()
+{
+    pCloudWin->getCryptoPage()->lock();
+}
+
+void PCloudApp::unlockCryptoFldr()
+{
+    pCloudWin->getCryptoPage()->unlock();
+}
+
+void PCloudApp::openCryptoFldr()
+{
+    pCloudWin->getCryptoPage()->openCryptoFldr();
+}
+
 void PCloudApp::addNewFolderInMenu(QAction *fldrAction) //for add new sync case
 {
     this->syncedFldrsMenu->addAction(fldrAction);
@@ -1953,6 +1984,35 @@ void PCloudApp::refreshSyncUIitems()
 {
     this->createSyncFolderActions();
     this->pCloudWin->get_sync_page()->load();
+}
+
+void PCloudApp::refreshTray()
+{
+    this->updateSyncStatus();
+    this->setCryptoAction();
+}
+
+void PCloudApp::setCryptoAction()
+{
+    int cryptoInx = pCloudWin->getCryptoPage()->getCurrentCryptoPageIndex();
+    if(!cryptoInx)
+    {
+        cryptoWelcomeAction->setVisible(true);
+        cryptoFldrLockedAction->setVisible(false);
+        cryptoUnlockedMenuAction->setVisible(false);
+    }
+    else if(psync_crypto_isstarted()) // folder is unlocked
+    {
+        cryptoWelcomeAction->setVisible(false);
+        cryptoFldrLockedAction->setVisible(false);
+        cryptoUnlockedMenuAction->setVisible(true);
+    }
+    else
+    {
+        cryptoWelcomeAction->setVisible(false);
+        cryptoFldrLockedAction->setVisible(true);
+        cryptoUnlockedMenuAction->setVisible(false);
+    }
 }
 
 void PCloudApp::updateUserInfo(const char* &param)

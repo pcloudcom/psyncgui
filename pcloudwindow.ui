@@ -52,7 +52,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="pageAccntLogged">
        <property name="maximumSize">
@@ -1109,7 +1109,7 @@
         <item>
          <widget class="QStackedWidget" name="pagedWidgetCrypto">
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="pageCryptoWelcome">
            <layout class="QHBoxLayout" name="horizontalLayout_52">

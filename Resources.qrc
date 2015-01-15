@@ -87,6 +87,7 @@
         <file>images/menu 32x32/user.png</file>
         <file>images/menu 32x32/info.png</file>
         <file>images/menu16x16/crypto.png</file>
+        <file>images/menu16x16/crypto-unlck.png</file>
     </qresource>
     <qresource prefix="/debian">
         <file>images/pcloud.xpm</file>

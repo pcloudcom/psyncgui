@@ -377,6 +377,8 @@ void PCloudWindow::refreshUserinfo()
     ui->btnVerify->setVisible(!app->isVerified);
     ui->label_space->setText(app->usedSpaceStr + " (" +  QString::number(100 - app->freeSpacePercentage) + "%)");
     ui->label_planVal->setText(app->planStr);
+    if(ui->pagesWidget->currentIndex() == CRYPTO_PAGE_NUM)
+        cryptoPage->showEventCrypto(); //check if crypto subsribtion changed
 }
 
 int PCloudWindow::getCurrentPage()
@@ -387,6 +389,11 @@ int PCloudWindow::getCurrentPage()
 SyncPage* PCloudWindow::get_sync_page()
 {
     return this->syncPage;
+}
+
+CryptoPage* PCloudWindow::getCryptoPage()
+{
+    return this->cryptoPage;
 }
 
 void PCloudWindow::refreshPagePulbic(int pageindex, int param)

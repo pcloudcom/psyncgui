@@ -33,7 +33,8 @@ public:
     explicit PCloudWindow(PCloudApp *a, QWidget *parent = 0);
     ~PCloudWindow();
     int getCurrentPage();
-    SyncPage* get_sync_page();    
+    SyncPage* get_sync_page();
+    CryptoPage* getCryptoPage();
     void refreshPagePulbic(int pageindex, int param);
     void setPageCurrentTab(int pageindex, int param);
 private:
