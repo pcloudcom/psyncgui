@@ -72,7 +72,7 @@ void CryptoKeyDialog::setHintLabel()
             ui->label_hintVal->setText(QString("Hint: ").append(hint));
         else
         {
-            ui->label_hintVal->setText(QString("hint: ").append(QString(hint).left(40) + "..."));
+            ui->label_hintVal->setText(QString("Hint: ").append(QString(hint).left(40) + "..."));
             ui->label_hintVal->setToolTip(QString("Hint: ").append(hint));
         }
 
