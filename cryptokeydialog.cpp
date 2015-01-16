@@ -5,11 +5,13 @@
 #include <QMessageBox>
 #include <QDebug>
 
-CryptoKeyDialog::CryptoKeyDialog(QWidget *parent) :
+CryptoKeyDialog::CryptoKeyDialog(CryptoPage *cp, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CryptoKeyDialog)
 {
     ui->setupUi(this);
+    this->cryptoPage = cp;
+
     ui->label_hintVal->setVisible(false);
     setStyleSheet("QToolButton{background-color:transparent; text-decoration: underline;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");
 
@@ -37,6 +39,7 @@ CryptoKeyDialog::CryptoKeyDialog(QWidget *parent) :
 CryptoKeyDialog::~CryptoKeyDialog()
 {
     delete ui;
+    delete cryptoPage;
 }
 
 void CryptoKeyDialog::unlockCrypto()
@@ -49,13 +52,15 @@ void CryptoKeyDialog::unlockCrypto()
     {
         int startres = psync_crypto_start(ui->line_cryptoKey->text().toUtf8()); // to check errs
         qDebug()<<"CRYPTO: Unlock start crypto res  = " << startres;
-        if(!startres)
+        if(!startres || startres == PSYNC_CRYPTO_START_ALREADY_STARTED)
             this->accept();
         else if(startres == PSYNC_CRYPTO_START_BAD_PASSWORD)
         {
             QMessageBox::critical(this, "Error", "Incorrect Crypto Key!");
             return;
         }
+        else
+            cryptoPage->showStartCryptoError(startres);
     }
 }
 
@@ -79,5 +84,30 @@ void CryptoKeyDialog::setHintLabel()
         free(hint);
     }
     else
-        qDebug()<<"CRYPTO: getHintRes = " << getHintRes;
+       this->showCryptoHintError(getHintRes);
+}
+
+void CryptoKeyDialog::showCryptoHintError(int resHint)
+{
+    qDebug()<<"CRYPTO: hint error = "<<resHint;
+    switch(resHint)
+    {
+    case PSYNC_CRYPTO_HINT_NOT_SUPPORTED:
+        QMessageBox::critical(this, "Crypto Error", "Crypto Hint not supported!");
+        break;
+    case PSYNC_CRYPTO_HINT_NOT_PROVIDED:
+        QMessageBox::critical(this, "Crypto Error", "Crypto Hint not provided!");
+        break;
+    case PSYNC_CRYPTO_HINT_CANT_CONNECT:
+        QMessageBox::critical(this, "Crypto Error", "Unable to connect to server.");
+        break;
+    case PSYNC_CRYPTO_HINT_NOT_LOGGED_IN:
+        QMessageBox::critical(this, "Crypto Error", "Your are not logged in!");
+        break;
+    case PSYNC_CRYPTO_HINT_UNKNOWN_ERROR:
+        QMessageBox::critical(this, "Crypto Error", "Unknown error.");
+        break;
+    default:
+        break;
+    }
 }

@@ -33,6 +33,7 @@ private:
     void initSpace();
     void initCrypto();
     void clearSpeedEditLines();
+    void showResetError(int resetRes);
     qint32 getCacheSize();
 public slots:        
     void saveSettings();

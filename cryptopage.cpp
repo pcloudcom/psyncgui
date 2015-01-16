@@ -2,7 +2,6 @@
 #include "pcloudwindow.h"
 #include "ui_pcloudwindow.h"
 #include "pcloudapp.h"
-#include "cryptokeydialog.h"
 #include "psynclib.h"
 #include <QDateTime>
 #include <QUrl>
@@ -75,12 +74,13 @@ void CryptoPage::setCurrentPageIndex()
     {
         if(win->ui->lineEditCryptoPass->text().isEmpty())
         {
-            win->ui->progressBarCryptoPass->setValue(0);
+            win->ui->progressBarCryptoPass->setValue(-1);
+            //win->ui->progressBarCryptoPass->setStyleSheet("QProgressBar:chunk{background-color:#FF4D4D; width: 0.1px;");
             win->ui->labelCryptoPassStrenth->setText("");
             win->ui->lineEditCryptoPass->setFocus();
         }
 
-        app->isCryptoExpired = false;
+        app->isCryptoExpired = true;
         this->pageIndex = 1; //show welcome crypto page
     }
     else //show main crypto page
@@ -255,25 +255,30 @@ void CryptoPage::setupCrypto()
     }
 
     int resSetup = psync_crypto_setup(win->ui->lineEditCryptoPass->text().toUtf8(),win->ui->lineEditCryptoHint->text().toUtf8());
-    qDebug()<< "CRYPTO: setupCrypto res = " << resSetup;
-    if (resSetup == PSYNC_CRYPTO_SETUP_SUCCESS)
+    if (resSetup == PSYNC_CRYPTO_SETUP_SUCCESS || resSetup == PSYNC_CRYPTO_SETUP_ALREADY_SETUP)
     {
+        qDebug()<< "CRYPTO: setted up successfully or already setted up";
+
         int resCryptoStart = psync_crypto_start(win->ui->lineEditCryptoPass->text().toUtf8());
-        qDebug()<<"CRYPTO: startres "<<resCryptoStart;
+        if(!resCryptoStart || resCryptoStart != PSYNC_CRYPTO_START_ALREADY_STARTED)
+        {
+            showStartCryptoError(resCryptoStart);
+            return;
+        }
+        qDebug()<< "CRYPTO: started successfully or already started";
 
         const char *err = NULL;
         psync_folderid_t* cryptoFldrId;
         int mkDirRes = psync_crypto_mkdir(0,"Crypto Folder", &err, cryptoFldrId);
-
-        qDebug()<<"CRYPTO: startres "<<resCryptoStart<< "mkdir res = "<<mkDirRes;
         if (!mkDirRes)
         {
+            qDebug()<<"CRYPTO: crypto dir created successfully";
             this->showEventCrypto();
             if(tryTrialClickedFlag)
                 tryTrialClickedFlag = false;
         }
         else
-            qDebug()<<"CRYPTO: Make dir:"<< err;
+            this->showMkDirWrror(mkDirRes,err);
 
         win->ui->lineEditCryptoHint->clear();
         win->ui->lineEditCryptoPass->clear();
@@ -281,7 +286,7 @@ void CryptoPage::setupCrypto()
         win->ui->label_passMatchPic->setPixmap(QPixmap(":/crypto/images/crypto/matchNo.png"));
     }
     else
-        qDebug()<< " setupCrypto res gle" << resSetup << psync_get_last_error();
+        showSetupCryptoError(resSetup);
 }
 
 void CryptoPage::manageCryptoFldr()
@@ -295,8 +300,10 @@ void CryptoPage::manageCryptoFldr()
 void CryptoPage::lock()
 {
     int resCryptoManageFLdr = psync_crypto_stop();
-    this->setLockedFldrUI();
-    qDebug()<<"manageCryptoFldr res " << resCryptoManageFLdr;
+    if (!resCryptoManageFLdr)
+        this->setLockedFldrUI();
+    else
+        this->showStopCryptoError(resCryptoManageFLdr);
 }
 
 void CryptoPage::unlock()
@@ -304,15 +311,12 @@ void CryptoPage::unlock()
     emit this->requestCryptoKey();
 }
 
-
 void CryptoPage::requestCryptoKey()
 {
     qDebug()<<"requestCryptoKey";
-    CryptoKeyDialog *requestCryptoKeyDialog = new CryptoKeyDialog();
+    CryptoKeyDialog *requestCryptoKeyDialog = new CryptoKeyDialog(this);
     if (requestCryptoKeyDialog->exec() == QDialog::Accepted) // also starts the crypto if pass is ok
-    {
         emit this->setUnlockedFldrUI();
-    }
 }
 
 void CryptoPage::openCryptoFldr()
@@ -325,5 +329,118 @@ void CryptoPage::openCryptoFldr()
     {
         QDesktopServices::openUrl(QUrl::fromLocalFile(path));
         free(path);
+    }
+}
+
+
+// show crypto errors
+void CryptoPage::showSetupCryptoError(int setupRes)
+{
+    qDebug()<<"CRYPTO: setup error = "<<setupRes;
+    switch(setupRes)
+    {
+    case PSYNC_CRYPTO_SETUP_NOT_SUPPORTED:
+        QMessageBox::critical(win,"Crypto Error", "Not supported.");
+        break;
+    case PSYNC_CRYPTO_SETUP_KEYGEN_FAILED:
+        QMessageBox::critical(win,"Crypto Error", "Keygen failed.");
+        break;
+    case PSYNC_CRYPTO_SETUP_CANT_CONNECT:
+        QMessageBox::critical(win,"Crypto Error", "Unable to connect to server.");
+        break;
+    case PSYNC_CRYPTO_SETUP_NOT_LOGGED_IN:
+        QMessageBox::critical(win,"Crypto Error", "Your are not logged in!");
+        if(app->isLogedIn())
+            emit app->logOut();
+        break;
+    case PSYNC_CRYPTO_SETUP_UNKNOWN_ERROR:
+        QMessageBox::critical(win,"Crypto Error", "Unknown error.");
+        break;
+    default:
+        break;
+    }
+}
+
+void CryptoPage::showStartCryptoError(int startRes)
+{
+    qDebug()<<"CRYPTO: startres "<<startRes;
+    switch(startRes)
+    {
+    case PSYNC_CRYPTO_START_NOT_SUPPORTED:
+        QMessageBox::critical(win,"Crypto Error", "Not supported.");
+        break;
+    case PSYNC_CRYPTO_START_CANT_CONNECT:
+        QMessageBox::critical(win,"Crypto Error", "Unable to connect to server.");
+        break;
+    case PSYNC_CRYPTO_START_NOT_LOGGED_IN:
+        QMessageBox::critical(win,"Crypto Error", "Your are not logged in!");
+        if(app->isLogedIn())
+            emit app->logOut();
+        break;
+    case PSYNC_CRYPTO_START_NOT_SETUP:
+        QMessageBox::critical(win,"Crypto Error", "The Crypto Folder is not setted up.");
+        break;
+    case PSYNC_CRYPTO_START_UNKNOWN_KEY_FORMAT:
+        QMessageBox::critical(win,"Crypto Error", "Unknown Crypto Key format!");
+        break;
+    case PSYNC_CRYPTO_START_BAD_PASSWORD:
+        QMessageBox::critical(win,"Crypto Error", "Incorrect Crypto Key!");
+        break;
+    case PSYNC_CRYPTO_START_KEYS_DONT_MATCH:
+        QMessageBox::critical(win,"Crypto Error", "The two Crypto Keys should match.");
+        break;
+    case PSYNC_CRYPTO_START_UNKNOWN_ERROR:
+        QMessageBox::critical(win,"Crypto Error", "Unknown error.");
+        break;
+    default:
+        break;
+    }
+}
+
+void CryptoPage::showMkDirWrror(int mkdirRes, const char* err)
+{
+    qDebug()<<"CRYPTO: mkdir "<<mkdirRes;
+    switch(mkdirRes)
+    {
+    case PSYNC_CRYPTO_NOT_STARTED:
+        QMessageBox::critical(win,"Crypto Error", "The Crypto service is not started!");
+        break;
+    case PSYNC_CRYPTO_RSA_ERROR:
+        QMessageBox::critical(win,"Crypto Error", "Can't create a Crypto Folder. RSA error.");
+        break;
+    case PSYNC_CRYPTO_FOLDER_NOT_FOUND:
+        break;
+    case PSYNC_CRYPTO_FILE_NOT_FOUND:
+        break;
+    case PSYNC_CRYPTO_INVALID_KEY:
+        QMessageBox::critical(win,"Crypto Error", "Can't create a Crypto Folder. Invalid Key!");
+        break;
+    case PSYNC_CRYPTO_CANT_CONNECT:
+        QMessageBox::critical(win,"Crypto Error", "Can't create a Crypto Folder. Unable to connect to server.");
+        break;
+    case PSYNC_CRYPTO_FOLDER_NOT_ENCRYPTED:
+        break;
+    case PSYNC_CRYPTO_INTERNAL_ERROR:
+        QMessageBox::critical(win,"Crypto Error", "Can't create a Crypto Folder. Internal error.");
+        break;
+    default:
+        QMessageBox::critical(win,"Crypto Error", trUtf8(err));
+        break;
+    }
+}
+
+void CryptoPage::showStopCryptoError(int stopRes)
+{
+    qDebug()<<"CRYPTO: stop crypto "<<stopRes;
+    switch(stopRes)
+    {
+    case PSYNC_CRYPTO_STOP_NOT_SUPPORTED:
+        QMessageBox::critical(win,"Crypto Error", "Stop not supported!");
+        break;
+    case PSYNC_CRYPTO_STOP_NOT_STARTED:
+        QMessageBox::critical(win,"Crypto Error", "The Crypto service is not started!");
+        break;
+    default:
+        break;
     }
 }

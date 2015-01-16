@@ -66,7 +66,7 @@ SettingsPage::SettingsPage(PCloudWindow *w, PCloudApp *a, QObject* parent):
 #define SETTNGS_CRYPTO_TAB_NUM 3
 #else
     win->ui->tabWidgetSttngs->removeTab(0);
-    #define SETTNGS_CRYPTO_TAB_NUM 2
+#define SETTNGS_CRYPTO_TAB_NUM 2
 #endif
     connect(win->ui->btnSaveSttngs, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(win->ui->btnCancelSttngs, SIGNAL(clicked()), this, SLOT(cancelSettings()));
@@ -303,10 +303,22 @@ void SettingsPage::resetCryptoKey()
                                                  QMessageBox::Yes|QMessageBox::Cancel))
     {
         qDebug()<<"Crypto: reset settings";
-        QMessageBox::information(win,"Resetting Crypto Key",
-                                 trUtf8("An email with instructions has been sent to %1. Please, follow the steps to reset your Crypto Key.").arg(app->username));
+
         int resetCrRes = psync_crypto_reset();
-        qDebug()<<"CRYPTO: Reset res = " << resetCrRes;
+        if(!resetCrRes)
+        {
+            QMessageBox::information(win,"Resetting Crypto Key",
+                                     trUtf8("An email with instructions has been sent to %1. Please, follow the steps to reset your Crypto Key.").arg(app->username));
+
+            if (app->settings->value("autostartcrypto").toBool())
+            {
+                autoaskCryptoKey = false;
+                app->settings->setValue("autostartcrypto", autoaskCryptoKey);
+                win->ui->checkBoxAutoAskCrypto->setChecked(false);
+            }
+        }
+        else
+            showResetError(resetCrRes);
     }
 }
 
@@ -440,4 +452,29 @@ void SettingsPage::clearSpeedEditLines()
         win->ui->edit_DwnldSpeed->clear();
     if((upldSpeedNew == 0 || upldSpeedNew == -1)  && !win->ui->edit_UpldSpeed->text().isNull())
         win->ui->edit_UpldSpeed->clear();
+}
+
+void SettingsPage::showResetError(int resetRes)
+{
+    qDebug()<<"CRYPTO: Reset res = " << resetRes;
+    switch(resetRes)
+    {
+    case PSYNC_CRYPTO_RESET_CRYPTO_IS_STARTED:
+        //QMessageBox::critical(win,"Crypto Error", "Not supported."); TO DISCUSS this case behavior!!!!
+        break;
+    case PSYNC_CRYPTO_RESET_CANT_CONNECT:
+        QMessageBox::critical(win,"Crypto Error", "Unable to connect to server.");
+        break;
+    case PSYNC_CRYPTO_RESET_NOT_LOGGED_IN:
+        QMessageBox::critical(win,"Crypto Error", "Your are not logged in!");
+        break;
+    case PSYNC_CRYPTO_RESET_NOT_SETUP:
+        QMessageBox::critical(win,"Crypto Error", "The Crypto Folder is not setted up.");
+        break;
+    case PSYNC_CRYPTO_RESET_UNKNOWN_ERROR:
+        QMessageBox::critical(win,"Crypto Error", "Unknown error.");
+        break;
+    default:
+        break;
+    }
 }

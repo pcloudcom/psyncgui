@@ -1993,7 +1993,7 @@ void PCloudApp::refreshTray()
 void PCloudApp::setCryptoAction()
 {
     int cryptoInx = pCloudWin->getCryptoPage()->getCurrentCryptoPageIndex();
-    if(!cryptoInx)
+    if(!cryptoInx || cryptoInx == 1) // crypto hasn't setup
     {
         cryptoWelcomeAction->setVisible(true);
         cryptoFldrLockedAction->setVisible(false);
