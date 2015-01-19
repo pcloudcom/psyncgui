@@ -1129,7 +1129,7 @@
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_49">
                <property name="spacing">
-                <number>18</number>
+                <number>28</number>
                </property>
                <property name="topMargin">
                 <number>21</number>
@@ -1261,11 +1261,7 @@
                     <enum>Qt::RightToLeft</enum>
                    </property>
                    <property name="text">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
-&lt;ul&gt;
-&lt;li style = &quot;margin: -15px;&quot;&gt;Secure place for private/business use&lt;/li&gt;
-&lt;li  style = &quot;margin: -15px;&quot;&gt;Zero-Knowledge Privacy&lt;/li&gt;
-&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:-20px; margin-left:-35px; margin-right:-20px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Secure place for private/business use&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:-35px; margin-right:-20px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Zero-Knowledge Privacy&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                   </widget>
                  </item>
@@ -1430,7 +1426,7 @@
                   <number>6</number>
                  </property>
                  <property name="topMargin">
-                  <number>12</number>
+                  <number>28</number>
                  </property>
                  <property name="bottomMargin">
                   <number>6</number>
@@ -1441,6 +1437,19 @@
                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Setting Up Crypto Folder&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                   </widget>
+                 </item>
+                 <item>
+                  <spacer name="verticalSpacer_12">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
                  </item>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_40">
@@ -1457,7 +1466,7 @@
                     <number>12</number>
                    </property>
                    <property name="bottomMargin">
-                    <number>30</number>
+                    <number>20</number>
                    </property>
                    <item>
                     <layout class="QVBoxLayout" name="verticalLayout_30">
@@ -1669,6 +1678,19 @@
                    </item>
                   </layout>
                  </item>
+                 <item>
+                  <spacer name="verticalSpacer_7">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
                 </layout>
                </item>
               </layout>
@@ -1832,6 +1854,19 @@
                  <item>
                   <layout class="QVBoxLayout" name="verticalLayout_46">
                    <item>
+                    <spacer name="verticalSpacer_2">
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>20</width>
+                       <height>40</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
                     <widget class="QLabel" name="label_25">
                      <property name="text">
                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;View Crypto Folder&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -1880,6 +1915,19 @@
                       </spacer>
                      </item>
                     </layout>
+                   </item>
+                   <item>
+                    <spacer name="verticalSpacer_3">
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>20</width>
+                       <height>40</height>
+                      </size>
+                     </property>
+                    </spacer>
                    </item>
                   </layout>
                  </item>
@@ -1996,6 +2044,19 @@
                   </layout>
                  </item>
                  <item>
+                  <spacer name="verticalSpacer_5">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_43">
                    <item>
                     <spacer name="horizontalSpacer_34">
@@ -2034,6 +2095,19 @@
                     </spacer>
                    </item>
                   </layout>
+                 </item>
+                 <item>
+                  <spacer name="verticalSpacer_6">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
                  </item>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_46">
