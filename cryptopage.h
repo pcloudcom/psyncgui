@@ -23,6 +23,7 @@ private:
     bool tryTrialClickedFlag;
     int pageIndex, passStrenth;
     void setCurrentPageIndex();
+    void setTrialUI(bool hasSubscriptoin, uint expTime);
     void showSetupCryptoError(int setupRes);
     void showStartCryptoError(int startRes);
     void showMkDirWrror(int mkdirRes, const char* err);

@@ -15,9 +15,29 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     this->win = w;
     passStrenth = -1;
 
+      //win->ui->btnCryptoBuy->setStyleSheet("QPushButton {background-color: #A3C1DA; color: red;}");
+
     win->ui->progressBarCryptoPass->setMinimum(0);
     win->ui->progressBarCryptoPass->setMaximum(6);
     win->ui->labelCryptoPassStrenth->setFont(app->smaller1pFont);
+
+    //main page
+    win->ui->labelWhatisCrFldr->setFont(app->bigger1pFont);
+    win->ui->tbtnMoreInfo->setStyleSheet("QToolButton{background-color:transparent; text-decoration: underline; color:#17BED0}"
+                                         "QToolButton:hover{text-decoration: underline; background-color: transparent;}");
+
+
+    QPalette *btnBuyPalelle = new QPalette(); //win->ui->btnCryptoBuy->palette();
+    btnBuyPalelle->setColor(QPalette::ButtonText, Qt::white);
+    btnBuyPalelle->setColor(QPalette::Background, Qt::green);
+    win->ui->btnCryptoBuy->setPalette(*btnBuyPalelle);
+    win->ui->btnCryptoBuy->setAutoFillBackground(true);
+
+
+    QFont boldfont;
+    boldfont.setBold(true);
+    ui->labelCryptoMainPayInfo->setFont(boldfont);
+
 
     //win->ui->pagedWidgetCrypto->setCurrentIndex(); // TEEEMPPPP
     connect(win->ui->btnNextTest, SIGNAL(clicked()),this, SLOT(changePage())); // TEMPPP
@@ -35,6 +55,8 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     connect(win->ui->btnCryptoCreateKey, SIGNAL(clicked()), this, SLOT(setupCrypto()));
     connect(win->ui->btnCryptoManageFldr, SIGNAL(clicked()), this, SLOT(manageCryptoFldr()));
     connect(win->ui->btnCryptoOpenFldr, SIGNAL(clicked()), this, SLOT(openCryptoFldr()));
+    connect(win->ui->btnCryptoMainPagePay, SIGNAL(clicked()), this, SLOT(buyCrypto()));
+    connect(win->ui->tbtnMoreInfo, SIGNAL(clicked()), this, SLOT(getMoreCryptoInfo()));
 
     // set winxp images
 }
@@ -56,9 +78,11 @@ void CryptoPage::showEventCrypto()
 
 void CryptoPage::setCurrentPageIndex()
 {
-    qDebug() << " CryptoPage::setCurrentPageIndex" << psync_crypto_isexpired() <<psync_crypto_expires()<< psync_crypto_issetup() << psync_crypto_isstarted();
+    qDebug() << " CryptoPage::setCurrentPageIndex" << psync_crypto_isexpired() <<psync_crypto_expires()<< psync_crypto_issetup()
+             << psync_crypto_isstarted() <<psync_crypto_hassubscription();
 
-    int subscbtntTime = psync_crypto_expires();
+    uint subscbtntTime = psync_crypto_expires();
+    qDebug()<<QDateTime::fromTime_t(subscbtntTime);
     if (!tryTrialClickedFlag &&                                                                         //for case when entered pass but hasn't already setup and went to another flag
             (!subscbtntTime || QDateTime::fromTime_t(subscbtntTime) < QDateTime::currentDateTime()))    // trail or subscription expired
     {
@@ -74,11 +98,12 @@ void CryptoPage::setCurrentPageIndex()
     {
         if(win->ui->lineEditCryptoPass->text().isEmpty())
         {
-            win->ui->progressBarCryptoPass->setValue(-1);
-            //win->ui->progressBarCryptoPass->setStyleSheet("QProgressBar:chunk{background-color:#FF4D4D; width: 0.1px;");
+            win->ui->progressBarCryptoPass->setVisible(false);
             win->ui->labelCryptoPassStrenth->setText("");
             win->ui->lineEditCryptoPass->setFocus();
         }
+        else
+            win->ui->progressBarCryptoPass->setVisible(true);
 
         app->isCryptoExpired = true;
         this->pageIndex = 1; //show welcome crypto page
@@ -89,8 +114,8 @@ void CryptoPage::setCurrentPageIndex()
             setUnlockedFldrUI();
         else
             setLockedFldrUI();
+        setTrialUI(psync_crypto_hassubscription(), subscbtntTime);
 
-        // ++ check if folder exists
         app->isCryptoExpired = false;
         this->pageIndex = 2;
     }
@@ -102,10 +127,29 @@ int CryptoPage::getCurrentCryptoPageIndex()
     return this->pageIndex;
 }
 
+void CryptoPage::setTrialUI(bool hasSubscriptoin, uint expTime)
+{
+    if (!hasSubscriptoin) // trial
+    {
+        QDateTime expDtTime =  QDateTime::fromTime_t(expTime);
+        int daysLeft = QDateTime::currentDateTime().daysTo(expDtTime);
+        win->ui->labelCryptoMainPayInfo->setText(QString("Your Free Trial for Crypto expires in %1 days").arg(daysLeft));
+        win->ui->btnCryptoMainPagePay->setText("  Buy Now  ");
+        win->ui->labelCryptoPrice->setVisible(true);
+    }
+    else
+    {
+        win->ui->labelCryptoMainPayInfo->setText("Change Your Payment Method");
+        win->ui->btnCryptoMainPagePay->setText(" Change Subscription ");
+        win->ui->labelCryptoPrice->setVisible(false);
+    }
+}
+
 // slots
 void CryptoPage::setUnlockedFldrUI()
 {
-    win->ui->btnCryptoManageFldr->setText("Lock");
+    win->ui->btnCryptoManageFldr->setText("  Lock  ");
+    win->ui->btnCryptoManageFldr->setIcon(QIcon(":/crypto/images/crypto/crypto.png"));
     QPalette paletteRed;
     paletteRed.setColor(QPalette::WindowText, Qt::red);
     win->ui->label_cryptoStatus->setPalette(paletteRed);
@@ -116,7 +160,8 @@ void CryptoPage::setUnlockedFldrUI()
 
 void CryptoPage::setLockedFldrUI()
 {
-    win->ui->btnCryptoManageFldr->setText("Unlock");
+    win->ui->btnCryptoManageFldr->setText("  Unlock  ");
+    win->ui->btnCryptoManageFldr->setIcon(QIcon(":/crypto/images/crypto/crypto-unlck.png"));
     QPalette paletteGreen;
     paletteGreen.setColor(QPalette::WindowText, Qt::green);
     win->ui->label_cryptoStatus->setPalette(paletteGreen);
@@ -144,6 +189,7 @@ void CryptoPage::setProgressBar()
     QString pass = win->ui->lineEditCryptoPass->text();
     if(!pass.isEmpty())
     {
+        win->ui->progressBarCryptoPass->setVisible(true);
         passStrenth = psync_password_quality(pass.toUtf8());
         qDebug()<<"setProgressBar "<<passStrenth;
         QPalette paletteLabel;
@@ -174,7 +220,7 @@ void CryptoPage::setProgressBar()
     }
     else
     {
-        win->ui->progressBarCryptoPass->setValue(0);
+        win->ui->progressBarCryptoPass->setVisible(false);
         win->ui->labelCryptoPassStrenth->setText("");
     }
 }
@@ -206,13 +252,13 @@ void CryptoPage::tryTrial()
 
 void CryptoPage::buyCrypto()
 {
-    QUrl url("https://my.pcloud.com");
+    QUrl url("https://www.pcloud.com/pricing-cryptо ");
     QDesktopServices::openUrl(url);
 }
 
 void CryptoPage::getMoreCryptoInfo()
 {
-    QUrl url("https://my.pcloud.com");
+    QUrl url("https://www.pcloud.com/cryptо");
     QDesktopServices::openUrl(url);
 }
 

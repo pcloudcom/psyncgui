@@ -124,5 +124,7 @@
         <file>images/crypto/cryptoWelcomePage.png</file>
         <file>images/crypto/matchYes.png</file>
         <file>images/crypto/matchNo.png</file>
+        <file>images/crypto/crypto.png</file>
+        <file>images/crypto/crypto-unlck.png</file>
     </qresource>
 </RCC>
