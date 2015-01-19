@@ -38,6 +38,12 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     boldfont.setBold(true);
     win->ui->labelCryptoMainPayInfo->setFont(boldfont);
 
+#ifdef Q_OS_LINUX
+    win->ui->pagedWidgetCrypto->setMinimumHeight(400);
+#else
+    win->ui->labelCryptoWelcmPic->setPixmap(QPixmap(":/crypto/images/crypto/cryptoWelcomePageXP.png"));
+    win->ui->labelCryptoMainFldrPic->setPixmap(QPixmap(":/crypto/images/crypto/cryptoMainPageXP.png"));
+#endif
 
     //win->ui->pagedWidgetCrypto->setCurrentIndex(); // TEEEMPPPP
     connect(win->ui->btnNextTest, SIGNAL(clicked()),this, SLOT(changePage())); // TEMPPP
