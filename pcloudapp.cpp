@@ -337,11 +337,11 @@ void PCloudApp::createMenus()
     //crypto
     cryptoWelcomeAction = new QAction(QIcon(":/menu/images/menu16x16/crypto.png"),trUtf8("Crypto"), this); //Crypto tab
     connect(cryptoWelcomeAction, SIGNAL(triggered()), this, SLOT(showCrypto()));
-    cryptoFldrLockedAction = new QAction(QIcon(":/menu/images/menu16x16/crypto-unclk.png"),trUtf8("Unlock"), this);
+    cryptoFldrLockedAction = new QAction(QIcon(":/menu/images/menu16x16/crypto-unlck.png"),trUtf8("Unlock"), this);
     connect(cryptoFldrLockedAction, SIGNAL(triggered()), this, SLOT(unlockCryptoFldr()));
-    cryptoFldrUnlockedAction =  new QAction(trUtf8("Lock"), this);
+    cryptoFldrUnlockedAction =  new QAction(QIcon(":/menu/images/menu16x16/crypto.png"),trUtf8("Lock"), this);
     connect(cryptoFldrUnlockedAction, SIGNAL(triggered()), this, SLOT(lockCryptoFldr()));
-    cryptoOpenFldrAction = new QAction(trUtf8("Open Folder"),this);
+    cryptoOpenFldrAction = new QAction(QIcon(":/menu/images/menu16x16/cryptoFldr.png"),trUtf8("Open Folder"),this);
     connect(cryptoOpenFldrAction, SIGNAL(triggered()), this, SLOT(openCryptoFldr()));
 
     settingsAction=new QAction(QIcon(":/menu/images/menu 32x32/settings.png"),trUtf8("Settings"), this); //Settings tab
@@ -376,6 +376,7 @@ void PCloudApp::createMenus()
     loggedmenu->addAction(cryptoWelcomeAction);
     loggedmenu->addAction(cryptoFldrLockedAction);
     cryptoUnlockedMenu = new QMenu(trUtf8("Crypto"));
+    cryptoUnlockedMenu->setIcon(QIcon(":/menu/images/menu16x16/crypto.png"));
     cryptoUnlockedMenuAction = loggedmenu->addMenu(cryptoUnlockedMenu);
     cryptoUnlockedMenu->addAction(cryptoOpenFldrAction);
     cryptoUnlockedMenu->addAction(cryptoFldrUnlockedAction);

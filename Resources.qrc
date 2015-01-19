@@ -88,6 +88,7 @@
         <file>images/menu 32x32/info.png</file>
         <file>images/menu16x16/crypto.png</file>
         <file>images/menu16x16/crypto-unlck.png</file>
+        <file>images/menu16x16/cryptoFldr.png</file>
     </qresource>
     <qresource prefix="/debian">
         <file>images/pcloud.xpm</file>
@@ -126,5 +127,7 @@
         <file>images/crypto/matchNo.png</file>
         <file>images/crypto/crypto.png</file>
         <file>images/crypto/crypto-unlck.png</file>
+        <file>images/crypto/cryptoMainPageXP.png</file>
+        <file>images/crypto/cryptoWelcomePageXP.png</file>
     </qresource>
 </RCC>
