@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_49">
+   <layout class="QVBoxLayout" name="verticalLayout_50">
     <item>
      <widget class="QListWidget" name="listButtonsWidget">
       <property name="sizePolicy">
@@ -1109,7 +1109,7 @@
         <item>
          <widget class="QStackedWidget" name="pagedWidgetCrypto">
           <property name="currentIndex">
-           <number>2</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="pageCryptoWelcome">
            <layout class="QHBoxLayout" name="horizontalLayout_52">
@@ -1127,241 +1127,278 @@
               <property name="frameShadow">
                <enum>QFrame::Raised</enum>
               </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_51">
+              <layout class="QVBoxLayout" name="verticalLayout_49">
+               <property name="spacing">
+                <number>18</number>
+               </property>
+               <property name="topMargin">
+                <number>21</number>
+               </property>
+               <property name="bottomMargin">
+                <number>18</number>
+               </property>
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
                  <item>
-                  <widget class="QLabel" name="label_29">
+                  <widget class="QLabel" name="labelCryptoWlcmInfo1">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>27</height>
+                    </size>
+                   </property>
                    <property name="text">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;Encrypt Your Files in pCloud&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br/&gt;&lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;The best way to keep files safe and secure! &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Encrypt Your Files in pCloud&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br/&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_47">
-                   <property name="topMargin">
-                    <number>6</number>
+                  <widget class="QLabel" name="labelCryptoWlcmInfo2">
+                   <property name="text">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;The best way to keep files safe and secure!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
-                   <item>
-                    <spacer name="horizontalSpacer_36">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
+                   <property name="alignment">
+                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_47">
+                 <property name="topMargin">
+                  <number>6</number>
+                 </property>
+                 <item>
+                  <spacer name="horizontalSpacer_36">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="labelCryptoWelcmPic">
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="pixmap">
+                    <pixmap resource="Resources.qrc">:/crypto/images/crypto/cryptoWelcomePage.png</pixmap>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="horizontalSpacer_37">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QGridLayout" name="gridLayout_6" columnstretch="1,1,1">
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_30">
+                   <property name="maximumSize">
+                    <size>
+                     <width>240</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="layoutDirection">
+                    <enum>Qt::RightToLeft</enum>
+                   </property>
+                   <property name="text">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
+&lt;ul&gt;
+&lt;li style = &quot;margin: -15px;&quot;&gt;Client-side encryption&lt;/li&gt;
+&lt;li  style = &quot;margin: -15px;&quot;&gt;Easiest way to encrypt/decrypt&lt;/li&gt;
+&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QLabel" name="label_31">
+                   <property name="maximumSize">
+                    <size>
+                     <width>230</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="layoutDirection">
+                    <enum>Qt::RightToLeft</enum>
+                   </property>
+                   <property name="text">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
+&lt;ul&gt;
+&lt;li&gt;Unlimited file size&lt;/li&gt;
+&lt;li&gt;Unlimited number of files&lt;/li&gt;
+&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="2">
+                  <widget class="QLabel" name="label_32">
+                   <property name="layoutDirection">
+                    <enum>Qt::RightToLeft</enum>
+                   </property>
+                   <property name="text">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
+&lt;ul&gt;
+&lt;li style = &quot;margin: -15px;&quot;&gt;Secure place for private/business use&lt;/li&gt;
+&lt;li  style = &quot;margin: -15px;&quot;&gt;Zero-Knowledge Privacy&lt;/li&gt;
+&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_37">
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <spacer name="horizontalSpacer_20">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,0">
+                   <property name="verticalSpacing">
+                    <number>0</number>
+                   </property>
+                   <item row="1" column="2">
+                    <widget class="QLabel" name="label_13">
+                     <property name="enabled">
+                      <bool>false</bool>
                      </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>40</width>
-                       <height>20</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="label_15">
                      <property name="text">
-                      <string/>
+                      <string>About Crypto</string>
                      </property>
-                     <property name="pixmap">
-                      <pixmap resource="Resources.qrc">:/crypto/images/crypto/cryptoWelcomePage.png</pixmap>
+                     <property name="alignment">
+                      <set>Qt::AlignHCenter|Qt::AlignTop</set>
                      </property>
                     </widget>
                    </item>
-                   <item>
-                    <spacer name="horizontalSpacer_37">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_11">
+                     <property name="enabled">
+                      <bool>false</bool>
                      </property>
-                     <property name="sizeHint" stdset="0">
+                     <property name="text">
+                      <string>7-days free trial</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignHCenter|Qt::AlignTop</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="2">
+                    <widget class="QPushButton" name="btnCryptoMoreInfo">
+                     <property name="minimumSize">
                       <size>
-                       <width>40</width>
-                       <height>20</height>
+                       <width>140</width>
+                       <height>0</height>
                       </size>
                      </property>
-                    </spacer>
+                     <property name="text">
+                      <string>More Info</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0">
+                    <widget class="QPushButton" name="btnCryptoTryTrial">
+                     <property name="minimumSize">
+                      <size>
+                       <width>140</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>     Try for Free    </string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QPushButton" name="btnCryptoBuy">
+                     <property name="minimumSize">
+                      <size>
+                       <width>140</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Buy Now</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QLabel" name="label_12">
+                     <property name="enabled">
+                      <bool>false</bool>
+                     </property>
+                     <property name="text">
+                      <string>$ 4.99/month</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignHCenter|Qt::AlignTop</set>
+                     </property>
+                    </widget>
                    </item>
                   </layout>
                  </item>
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_48">
-                   <property name="spacing">
-                    <number>6</number>
+                  <widget class="QPushButton" name="btnNextTest">
+                   <property name="maximumSize">
+                    <size>
+                     <width>60</width>
+                     <height>16777215</height>
+                    </size>
                    </property>
-                   <item>
-                    <widget class="QLabel" name="label_30">
-                     <property name="maximumSize">
-                      <size>
-                       <width>240</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
-&lt;ul&gt;
-&lt;li style = &quot;margin: -20px;&quot;&gt;Client-side encryption&lt;/li&gt;
-&lt;li  style = &quot;margin: -20px;&quot;&gt;Easiest way to encrypt/decrypt&lt;/li&gt;
-&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="label_31">
-                     <property name="maximumSize">
-                      <size>
-                       <width>230</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
-&lt;ul&gt;
-&lt;li style = &quot;margin: -20px;&quot;&gt;Unlimited file size&lt;/li&gt;
-&lt;li  style = &quot;margin: -20px;&quot;&gt;Unlimited number of files&lt;/li&gt;
-&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="label_32">
-                     <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
-&lt;ul&gt;
-&lt;li style = &quot;margin: -20px;&quot;&gt;Secure place for private/business use&lt;/li&gt;
-&lt;li  style = &quot;margin: -20px;&quot;&gt;Zero-Knowledge Privacy&lt;/li&gt;
-&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
+                   <property name="text">
+                    <string>TmpNext</string>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_37">
-                   <property name="topMargin">
-                    <number>24</number>
+                  <spacer name="horizontalSpacer_22">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
                    </property>
-                   <item>
-                    <spacer name="horizontalSpacer_20">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>40</width>
-                       <height>20</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                   <item>
-                    <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,0">
-                     <property name="verticalSpacing">
-                      <number>0</number>
-                     </property>
-                     <item row="1" column="2">
-                      <widget class="QLabel" name="label_13">
-                       <property name="enabled">
-                        <bool>false</bool>
-                       </property>
-                       <property name="text">
-                        <string>About Crypto</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignCenter</set>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="0">
-                      <widget class="QLabel" name="label_11">
-                       <property name="enabled">
-                        <bool>false</bool>
-                       </property>
-                       <property name="text">
-                        <string>7-days free trial</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignHCenter|Qt::AlignTop</set>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="2">
-                      <widget class="QPushButton" name="btnCryptoMoreInfo">
-                       <property name="minimumSize">
-                        <size>
-                         <width>140</width>
-                         <height>0</height>
-                        </size>
-                       </property>
-                       <property name="text">
-                        <string>More Info</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="0">
-                      <widget class="QPushButton" name="btnCryptoTryTrial">
-                       <property name="minimumSize">
-                        <size>
-                         <width>140</width>
-                         <height>0</height>
-                        </size>
-                       </property>
-                       <property name="text">
-                        <string>     Try for Free    </string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="1">
-                      <widget class="QPushButton" name="btnCryptoBuy">
-                       <property name="minimumSize">
-                        <size>
-                         <width>140</width>
-                         <height>0</height>
-                        </size>
-                       </property>
-                       <property name="text">
-                        <string>Buy Now</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="1">
-                      <widget class="QLabel" name="label_12">
-                       <property name="enabled">
-                        <bool>false</bool>
-                       </property>
-                       <property name="text">
-                        <string>$ 4.99/month</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignCenter</set>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="btnNextTest">
-                     <property name="maximumSize">
-                      <size>
-                       <width>60</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string>TmpNext</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <spacer name="horizontalSpacer_22">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>40</width>
-                       <height>20</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                  </layout>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
                  </item>
                 </layout>
                </item>
@@ -1395,10 +1432,13 @@
                  <property name="topMargin">
                   <number>12</number>
                  </property>
+                 <property name="bottomMargin">
+                  <number>6</number>
+                 </property>
                  <item>
-                  <widget class="QLabel" name="label_16">
+                  <widget class="QLabel" name="labelCryptoSetup">
                    <property name="text">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Setting Up Crypto Folder&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Setting Up Crypto Folder&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                   </widget>
                  </item>
@@ -1411,13 +1451,13 @@
                     <number>12</number>
                    </property>
                    <property name="topMargin">
-                    <number>36</number>
+                    <number>30</number>
                    </property>
                    <property name="rightMargin">
                     <number>12</number>
                    </property>
                    <property name="bottomMargin">
-                    <number>12</number>
+                    <number>30</number>
                    </property>
                    <item>
                     <layout class="QVBoxLayout" name="verticalLayout_30">
@@ -1971,7 +2011,7 @@
                     </spacer>
                    </item>
                    <item>
-                    <widget class="QLabel" name="label_cryptomainpic">
+                    <widget class="QLabel" name="labelCryptoMainFldrPic">
                      <property name="text">
                       <string/>
                      </property>

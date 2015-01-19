@@ -15,8 +15,20 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     this->win = w;
     passStrenth = -1;
 
-      //win->ui->btnCryptoBuy->setStyleSheet("QPushButton {background-color: #A3C1DA; color: red;}");
+    //win->ui->btnCryptoBuy->setStyleSheet("QPushButton {background-color: #A3C1DA; color: red;}");
+    //welcome page
+    win->ui->labelCryptoWlcmInfo1->setFont(app->bigger3pFont);
+    win->ui->labelCryptoWlcmInfo2->setFont(app->bigger1pFont);
 
+    QPalette *btnBuyPalelle = new QPalette(); //win->ui->btnCryptoBuy->palette();
+    btnBuyPalelle->setColor(QPalette::ButtonText, Qt::white);
+    btnBuyPalelle->setColor(QPalette::Background, Qt::green);
+    win->ui->btnCryptoBuy->setPalette(*btnBuyPalelle);
+    win->ui->btnCryptoBuy->setAutoFillBackground(true);
+
+
+    //setuppage
+    win->ui->labelCryptoSetup->setFont(app->bigger3pFont);
     win->ui->progressBarCryptoPass->setMinimum(0);
     win->ui->progressBarCryptoPass->setMaximum(6);
     win->ui->labelCryptoPassStrenth->setFont(app->smaller1pFont);
@@ -25,14 +37,6 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     win->ui->labelWhatisCrFldr->setFont(app->bigger1pFont);
     win->ui->tbtnMoreInfo->setStyleSheet("QToolButton{background-color:transparent; text-decoration: underline; color:#17BED0}"
                                          "QToolButton:hover{text-decoration: underline; background-color: transparent;}");
-
-
-    QPalette *btnBuyPalelle = new QPalette(); //win->ui->btnCryptoBuy->palette();
-    btnBuyPalelle->setColor(QPalette::ButtonText, Qt::white);
-    btnBuyPalelle->setColor(QPalette::Background, Qt::green);
-    win->ui->btnCryptoBuy->setPalette(*btnBuyPalelle);
-    win->ui->btnCryptoBuy->setAutoFillBackground(true);
-
 
     QFont boldfont;
     boldfont.setBold(true);
@@ -45,7 +49,6 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     win->ui->labelCryptoMainFldrPic->setPixmap(QPixmap(":/crypto/images/crypto/cryptoMainPageXP.png"));
 #endif
 
-    //win->ui->pagedWidgetCrypto->setCurrentIndex(); // TEEEMPPPP
     connect(win->ui->btnNextTest, SIGNAL(clicked()),this, SLOT(changePage())); // TEMPPP
     connect(win->ui->btnNextTest2, SIGNAL(clicked()),this, SLOT(changePage()));
     connect(win->ui->btnNextTest3, SIGNAL(clicked()),this, SLOT(changePage()));
@@ -64,7 +67,6 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     connect(win->ui->btnCryptoMainPagePay, SIGNAL(clicked()), this, SLOT(buyCrypto()));
     connect(win->ui->tbtnMoreInfo, SIGNAL(clicked()), this, SLOT(getMoreCryptoInfo()));
 
-    // set winxp images
 }
 
 void CryptoPage::initCryptoPage() //called when user has just loggedin
@@ -79,7 +81,7 @@ void CryptoPage::initCryptoPage() //called when user has just loggedin
 void CryptoPage::showEventCrypto()
 {
     setCurrentPageIndex();
-    qDebug()<<this->pageIndex;
+    qDebug()<<this->pageIndex<<win->ui->pagedWidgetCrypto->height();
 }
 
 void CryptoPage::setCurrentPageIndex()
@@ -179,7 +181,7 @@ void CryptoPage::setLockedFldrUI()
 void CryptoPage::changePage() //temp, for tests
 {
     QObject *sender = QObject::sender();
-    qDebug()<<sender->objectName();
+    qDebug()<<sender->objectName()<<win->ui->pagedWidgetCrypto->height();
     if (sender->objectName() == "btnNextTest3")
         win->ui->pagedWidgetCrypto->setCurrentIndex(0);
 
@@ -368,7 +370,10 @@ void CryptoPage::requestCryptoKey()
     qDebug()<<"requestCryptoKey";
     CryptoKeyDialog *requestCryptoKeyDialog = new CryptoKeyDialog(this);
     if (requestCryptoKeyDialog->exec() == QDialog::Accepted) // also starts the crypto if pass is ok
+    {
         emit this->setUnlockedFldrUI();
+        emit this->openCryptoFldr();
+    }
 }
 
 void CryptoPage::openCryptoFldr()
