@@ -19,7 +19,7 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     win->ui->labelCryptoWlcmInfo1->setFont(app->bigger3pFont);
     win->ui->labelCryptoWlcmInfo2->setFont(app->bigger1pFont);
     win->ui->btnCryptoBuy->setStyleSheet("QPushButton {background-color: #83c41a; color: white; border-radius:3px; border:1x solid #83c41a;}");
-    win->ui->btnCryptoBuy->setMinimumHeight(win->ui->btnCryptoTryTrial->height());
+    win->ui->btnCryptoBuy->setMaximumHeight(win->ui->btnCryptoTryTrial->height());
 
     //setuppage
     win->ui->labelCryptoSetup->setFont(app->bigger3pFont);
@@ -266,7 +266,7 @@ void CryptoPage::getMoreCryptoInfo()
 
 void CryptoPage::setupCrypto()
 {
-    if(app->lastStatus == PSTATUS_OFFLINE)
+    if(app->nointernetFlag)
     {
         QMessageBox::critical(win, "pCloud","No Internet Connection!");
         return;
