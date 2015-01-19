@@ -272,6 +272,12 @@ void CryptoPage::getMoreCryptoInfo()
 
 void CryptoPage::setupCrypto()
 {
+    if(app->lastStatus == PSTATUS_OFFLINE)
+    {
+        QMessageBox::critical(win, "pCloud","No Internet Connection!");
+        return;
+    }
+
     if(win->ui->lineEditCryptoPass->text().isEmpty() || win->ui->lineEditCryptoPass2->text().isEmpty())
     {
         QMessageBox::critical(win, "pCloud","Please enter password in both fields!");
