@@ -36,7 +36,7 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
 
     QFont boldfont;
     boldfont.setBold(true);
-    ui->labelCryptoMainPayInfo->setFont(boldfont);
+    win->ui->labelCryptoMainPayInfo->setFont(boldfont);
 
 
     //win->ui->pagedWidgetCrypto->setCurrentIndex(); // TEEEMPPPP
