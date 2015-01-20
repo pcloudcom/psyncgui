@@ -421,7 +421,7 @@ void PCloudApp::createMenus()
         // pCloudWin->ui->btnPauseSync->setVisible(false);
     }
 
-    connect(loggedmenu, SIGNAL(aboutToShow()), this, SLOT(refreshTray()));
+   // connect(loggedmenu, SIGNAL(aboutToShow()), this, SLOT(refreshTray()));
     connect(syncedFldrsMenu, SIGNAL(aboutToShow()),this,SLOT(createSyncFolderActions())); //delete old if exist, adds new
     //connect(syncMenu, SIGNAL(aboutToShow()),this,SLOT(createSyncFolderActions())); //fu4ur version
     userinfoAction->setEnabled(false);

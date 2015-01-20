@@ -23,15 +23,19 @@ public:
     ~RemoteTreesDialog();
     quint64 getFldrid();       
     QString getFldrPath();
+    psync_folderid_t test();
     void init();
+    psync_folderid_t cryptoFldrId;
 protected:
     Ui::RemoteTreesDialog *ui;   
     quint64 fldrid;
     QString fldrPath;
+
     void showEvent(QShowEvent *event); 
 private:
     QTreeWidgetItem* root;
     QString currentItemPath;
+
 public slots:
     QString newRemoteFldr();
     virtual void setSelectedFolder();

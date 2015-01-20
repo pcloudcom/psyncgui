@@ -1215,6 +1215,12 @@
                </item>
                <item>
                 <layout class="QGridLayout" name="gridLayout_6" columnstretch="1,1,1">
+                 <property name="horizontalSpacing">
+                  <number>4</number>
+                 </property>
+                 <property name="verticalSpacing">
+                  <number>2</number>
+                 </property>
                  <item row="0" column="0">
                   <widget class="QLabel" name="label_30">
                    <property name="maximumSize">
@@ -1547,7 +1553,7 @@
                      <item row="1" column="1">
                       <layout class="QVBoxLayout" name="verticalLayout_42">
                        <property name="spacing">
-                        <number>2</number>
+                        <number>0</number>
                        </property>
                        <item>
                         <widget class="QProgressBar" name="progressBarCryptoPass">
@@ -1562,6 +1568,9 @@
                          </property>
                          <property name="value">
                           <number>0</number>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
                          </property>
                          <property name="textVisible">
                           <bool>false</bool>
@@ -1578,6 +1587,9 @@
                          </property>
                          <property name="text">
                           <string/>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
                          </property>
                         </widget>
                        </item>

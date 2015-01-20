@@ -8,6 +8,8 @@ RemoteTreesDialog::RemoteTreesDialog(QString curritem, QWidget *parent) :
     ui(new Ui::RemoteTreesDialog)
 {
     ui->setupUi(this);
+    cryptoFldrId = PSYNC_CRYPTO_INVALID_FOLDERID;
+
     if (parent != NULL)
         this->setParent(parent);       
     if(!curritem.isNull())
@@ -20,6 +22,10 @@ RemoteTreesDialog::RemoteTreesDialog(QString curritem, QWidget *parent) :
     this->setWindowIcon(QIcon(WINDOW_ICON));
     this->setWindowTitle("Choose pCloud Drive Folder");
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+}
+psync_folderid_t RemoteTreesDialog::test()
+{
+    return 1;
 }
 
 static QList<QTreeWidgetItem *> listRemoteFldrs(QString parentPath)
@@ -36,6 +42,8 @@ static QList<QTreeWidgetItem *> listRemoteFldrs(QString parentPath)
                 path.append("/").append(res->entries[i].name);
             else
                 path.append(res->entries[i].name);
+        //    if(res->entries[i].folder.folderid == RemoteTreesDialog::test())
+          //    continue;
 
             QTreeWidgetItem *item = new QTreeWidgetItem((QTreeWidgetItem*)0, QStringList(res->entries[i].name));
             item->setIcon(0, QIcon(":images/images/folder-p.png"));
@@ -54,6 +62,7 @@ void RemoteTreesDialog::init()
 {
     if(ui->treeRemoteFldrs->topLevelItemCount())
         ui->treeRemoteFldrs->clear();    
+    cryptoFldrId = psync_crypto_folderid();
 
     QList<QTreeWidgetItem *> items;   
     ui->treeRemoteFldrs->setColumnCount(1);
