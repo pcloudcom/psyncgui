@@ -1699,8 +1699,7 @@ void PCloudApp::updateSyncStatusPublic()
 
 void PCloudApp::updateUserInfoPublic(const char* param)
 {
-    emit updateUserInfoSgnl(param);
-    emit this->pCloudWin->refreshUserinfo();
+    emit updateUserInfoSgnl(param);   
 }
 
 void PCloudApp::addNewSharePublic(QString fldrPath)
@@ -2024,6 +2023,7 @@ void PCloudApp::updateUserInfo(const char* &param)
 
     userinfoAction->setText(this->usedSpaceStr + " ("+
                             QString::number(100 - this->freeSpacePercentage) + "%) of " + this->planStr + " used");
+     emit this->pCloudWin->refreshUserinfo();
 }
 void PCloudApp::changeOnlineItems(bool logged)
 {
