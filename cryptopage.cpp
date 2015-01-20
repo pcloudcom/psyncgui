@@ -15,7 +15,6 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     this->win = w;
     passStrenth = -1;
 
-
     //welcome page
     win->ui->labelCryptoWlcmInfo1->setFont(app->bigger3pFont);
     win->ui->labelCryptoWlcmInfo2->setFont(app->bigger1pFont);
@@ -47,9 +46,9 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     connect(win->ui->btnNextTest, SIGNAL(clicked()),this, SLOT(changePage())); // TEMPPP
     connect(win->ui->btnNextTest2, SIGNAL(clicked()),this, SLOT(changePage()));
     connect(win->ui->btnNextTest3, SIGNAL(clicked()),this, SLOT(changePage()));
-    // win->ui->btnNextTest->setVisible(false); //test btns
-    //win->ui->btnNextTest2->setVisible(false);
-    //win->ui->btnNextTest3->setVisible(false);
+    win->ui->btnNextTest->setVisible(false); //test btns
+    win->ui->btnNextTest2->setVisible(false);
+    win->ui->btnNextTest3->setVisible(false);
 
     connect(win->ui->lineEditCryptoPass, SIGNAL(textChanged(QString)), this, SLOT(setProgressBar()));
     connect(win->ui->lineEditCryptoPass2, SIGNAL(textChanged(QString)), this, SLOT(checkPasswordsMatch()));
