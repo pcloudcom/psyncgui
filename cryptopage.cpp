@@ -314,33 +314,36 @@ void CryptoPage::setupCrypto()
         qDebug()<< "CRYPTO: setted up successfully or already setted up";
 
         int resCryptoStart = psync_crypto_start(win->ui->lineEditCryptoPass->text().toUtf8());
-        if(resCryptoStart || resCryptoStart != PSYNC_CRYPTO_START_ALREADY_STARTED)
+        if(!resCryptoStart || resCryptoStart == PSYNC_CRYPTO_START_ALREADY_STARTED)
+        {
+            qDebug()<< "CRYPTO: started successfully or already started";
+
+            const char *err = NULL;
+            psync_folderid_t* cryptoFldrId;
+            int mkDirRes = psync_crypto_mkdir(0,"Crypto Folder", &err, cryptoFldrId);
+            if (!mkDirRes)
+            {
+                qDebug()<<"CRYPTO: crypto dir created successfully";
+                this->showEventCrypto();
+                if(tryTrialClickedFlag)
+                    tryTrialClickedFlag = false;
+            }
+            else
+            {
+                this->showMkDirError(mkDirRes,err);
+                return;
+            }
+
+            win->ui->lineEditCryptoHint->clear();
+            win->ui->lineEditCryptoPass->clear();
+            win->ui->lineEditCryptoPass2->clear();
+            win->ui->label_passMatchPic->setPixmap(QPixmap(":/crypto/images/crypto/matchNo.png"));
+        }
+        else
         {
             showStartCryptoError(resCryptoStart);
             return;
         }
-        qDebug()<< "CRYPTO: started successfully or already started";
-
-        const char *err = NULL;
-        psync_folderid_t* cryptoFldrId;
-        int mkDirRes = psync_crypto_mkdir(0,"Crypto Folder", &err, cryptoFldrId);
-        if (!mkDirRes)
-        {
-            qDebug()<<"CRYPTO: crypto dir created successfully";
-            this->showEventCrypto();
-            if(tryTrialClickedFlag)
-                tryTrialClickedFlag = false;
-        }
-        else
-        {
-            this->showMkDirError(mkDirRes,err);
-            return;
-        }
-
-        win->ui->lineEditCryptoHint->clear();
-        win->ui->lineEditCryptoPass->clear();
-        win->ui->lineEditCryptoPass2->clear();
-        win->ui->label_passMatchPic->setPixmap(QPixmap(":/crypto/images/crypto/matchNo.png"));
     }
     else
         showSetupCryptoError(resSetup);
