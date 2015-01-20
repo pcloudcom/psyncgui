@@ -26,7 +26,7 @@ private:
     void setTrialUI(bool hasSubscriptoin, uint expTime);
     void showSetupCryptoError(int setupRes);
     void showStartCryptoError(int startRes);
-    void showMkDirWrror(int mkdirRes, const char* err);
+    void showMkDirError(int mkdirRes, const char* err);
     void showStopCryptoError(int stopRes);
 public slots:
     void lock();

@@ -314,7 +314,7 @@ void CryptoPage::setupCrypto()
         qDebug()<< "CRYPTO: setted up successfully or already setted up";
 
         int resCryptoStart = psync_crypto_start(win->ui->lineEditCryptoPass->text().toUtf8());
-        if(!resCryptoStart || resCryptoStart != PSYNC_CRYPTO_START_ALREADY_STARTED)
+        if(resCryptoStart || resCryptoStart != PSYNC_CRYPTO_START_ALREADY_STARTED)
         {
             showStartCryptoError(resCryptoStart);
             return;
@@ -332,7 +332,10 @@ void CryptoPage::setupCrypto()
                 tryTrialClickedFlag = false;
         }
         else
-            this->showMkDirWrror(mkDirRes,err);
+        {
+            this->showMkDirError(mkDirRes,err);
+            return;
+        }
 
         win->ui->lineEditCryptoHint->clear();
         win->ui->lineEditCryptoPass->clear();
@@ -454,7 +457,7 @@ void CryptoPage::showStartCryptoError(int startRes)
     }
 }
 
-void CryptoPage::showMkDirWrror(int mkdirRes, const char* err)
+void CryptoPage::showMkDirError(int mkdirRes, const char* err)
 {
     qDebug()<<"CRYPTO: mkdir "<<mkdirRes;
     switch(mkdirRes)
