@@ -240,7 +240,7 @@ void CryptoPage::tryTrial()
     if(!app->isVerified)
     {
         QMessageBox::StandardButton reply;
-        reply = QMessageBox::critical(win,"pCloud", "This functionality is available for verified accounts only. Do you wish to very your account now?",
+        reply = QMessageBox::critical(win,"pCloud", "This functionality is available for verified accounts only.\nDo you want to verify your account now?",
                                       QMessageBox::Yes|QMessageBox::No);
         if (reply == QMessageBox::Yes)
             win->verifyEmail();
@@ -254,7 +254,7 @@ void CryptoPage::tryTrial()
 
 void CryptoPage::buyCrypto()
 {
-    QUrl url("https://www.pcloud.com/pricing-cryptо ");
+    QUrl url("https://www.pcloud.com/pricing-cryptо");
     QDesktopServices::openUrl(url);
 }
 
