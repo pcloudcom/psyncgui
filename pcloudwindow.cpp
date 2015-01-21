@@ -377,6 +377,7 @@ void PCloudWindow::refreshUserinfo()
     ui->btnVerify->setVisible(!app->isVerified);
     ui->label_space->setText(app->usedSpaceStr + " (" +  QString::number(100 - app->freeSpacePercentage) + "%)");
     ui->label_planVal->setText(app->planStr);
+    ui->progressBar_storage->setValue(100-app->freeSpacePercentage);
     if(ui->pagesWidget->currentIndex() == CRYPTO_PAGE_NUM)
         cryptoPage->showEventCrypto(); //check if crypto subsribtion changed
 }
