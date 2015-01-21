@@ -1924,7 +1924,7 @@ void PCloudApp::addNewShare()
 {
     QApplication::setOverrideCursor(Qt::WaitCursor);
     if (!sharefolderwin)
-        sharefolderwin = new ShareFolderWindow(pCloudWin,NULL);
+        sharefolderwin = new ShareFolderWindow(this, pCloudWin, NULL);
     else
         sharefolderwin->setContextMenuFlag(false);
     showWindow(sharefolderwin);
@@ -1937,7 +1937,7 @@ void PCloudApp::addNewShare(QString fldrPath) // from context menu
     this->hideAllWindows();
     QApplication::setOverrideCursor(Qt::WaitCursor);
     if (!sharefolderwin)
-        sharefolderwin = new ShareFolderWindow(pCloudWin,fldrPath);
+        sharefolderwin = new ShareFolderWindow(this, pCloudWin, fldrPath);
     else
     {
         sharefolderwin->setFldrbyMenu(fldrPath);

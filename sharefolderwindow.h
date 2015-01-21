@@ -14,18 +14,20 @@ class ShareFolderWindow;
 }
 
 class PCloudWindow;
+class PCloudApp;
 
 class ShareFolderWindow : public QMainWindow
 {
     Q_OBJECT
     
 public:    
-    explicit ShareFolderWindow(PCloudWindow *w, QString path, QWidget *parent = 0);
+    explicit ShareFolderWindow(PCloudApp *a,PCloudWindow *w, QString path, QWidget *parent = 0);
     ~ShareFolderWindow();
     void setContextMenuFlag(bool flag);   
     void setFldrbyMenu(QString path); // for contex menu only
 private:
     Ui::ShareFolderWindow *ui;
+    PCloudApp *app;
     bool contxMenuFlag;
     QString fldrPath;
     quint64 fldrid;

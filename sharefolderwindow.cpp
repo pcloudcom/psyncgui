@@ -3,11 +3,12 @@
 #include "ui_sharefolderwindow.h"
 #include "pcloudwindow.h"
 
-ShareFolderWindow::ShareFolderWindow(PCloudWindow *w,QString path, QWidget *parent) :
+ShareFolderWindow::ShareFolderWindow(PCloudApp *a, PCloudWindow *w, QString path, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ShareFolderWindow)
 {
     ui->setupUi(this);
+    app = a;
     pclwin = w;   
     remoteFldrsDialog = new RemoteTreesDialog("", this);
     if(path == NULL)
@@ -119,6 +120,17 @@ void ShareFolderWindow::shareFolder()
         showError("No email is specified.");
         return;
     }    
+
+    if (!app->isVerified)
+    {
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::critical(pclwin,"Your Account is not Verified", "This functionality is available for verified accounts only.\nDo you want to verify your account now?",
+                                      QMessageBox::Yes|QMessageBox::No);
+        if (reply == QMessageBox::Yes)
+            pclwin->verifyEmail();
+        return;
+    }
+
     QStringList mails = ui->email->text().remove(" ").split(",");
     mails.removeDuplicates();
 

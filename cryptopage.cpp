@@ -240,7 +240,7 @@ void CryptoPage::tryTrial()
     if(!app->isVerified)
     {
         QMessageBox::StandardButton reply;
-        reply = QMessageBox::critical(win,"pCloud", "This functionality is available for verified accounts only.\nDo you want to verify your account now?",
+        reply = QMessageBox::critical(win,"Your Account is not Verified", "This functionality is available for verified accounts only.\nDo you want to verify your account now?",
                                       QMessageBox::Yes|QMessageBox::No);
         if (reply == QMessageBox::Yes)
             win->verifyEmail();
