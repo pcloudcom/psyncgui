@@ -316,6 +316,7 @@ void SettingsPage::resetCryptoKey()
                 app->settings->setValue("autostartcrypto", autoaskCryptoKey);
                 win->ui->checkBoxAutoAskCrypto->setChecked(false);
             }
+            win->getCryptoPage()->clearSetupUI();
         }
         else
             showResetError(resetCrRes);

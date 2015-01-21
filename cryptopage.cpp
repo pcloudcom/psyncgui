@@ -172,6 +172,20 @@ void CryptoPage::setLockedFldrUI()
     win->ui->btnCryptoOpenFldr->setEnabled(false);
 }
 
+void CryptoPage::clearSetupUI()
+{
+    if(!win->ui->lineEditCryptoPass->text().isEmpty())
+        win->ui->lineEditCryptoPass->clear();
+    win->ui->lineEditCryptoPass->setFocus();
+    if(!win->ui->lineEditCryptoPass2->text().isEmpty())
+        win->ui->lineEditCryptoPass2->clear();
+    if(!win->ui->lineEditCryptoHint->text().isEmpty())
+        win->ui->lineEditCryptoHint->clear();
+    win->ui->progressBarCryptoPass->setVisible(false);
+    win->ui->labelCryptoPassStrenth->clear();
+    win->ui->label_passMatchPic->setPixmap(QPixmap(":/crypto/images/crypto/matchNo.png"));
+}
+
 void CryptoPage::changePage() //temp, for tests
 {
     QObject *sender = QObject::sender();

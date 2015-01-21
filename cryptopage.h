@@ -32,6 +32,7 @@ public slots:
     void lock();
     void unlock();
     void openCryptoFldr();
+    void clearSetupUI();
 private slots:
     void changePage();
     void tryTrial();
