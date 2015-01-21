@@ -13,9 +13,9 @@ LoginWindow::LoginWindow(PCloudApp *a, QWidget *parent) :
     app = a;
     ui->setupUi(this);
     setWindowIcon(QIcon(WINDOW_ICON));
-    setWindowTitle("pCloud Drive");  
+    setWindowTitle("pCloud Drive");
     ui->forgotPassBtn->setStyleSheet("QToolButton{background-color:transparent; text-decoration: underline;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");
-    ui->tbtnReg->setStyleSheet("QToolButton{background-color:transparent; text-decoration: underline;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");    
+    ui->tbtnReg->setStyleSheet("QToolButton{background-color:transparent; text-decoration: underline;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");
     ui->loginButton->setDefault(true);
     connect(ui->loginButton, SIGNAL(clicked()), this, SLOT(logIn()));
     connect(ui->password, SIGNAL(returnPressed()), this, SLOT(logIn()));
@@ -39,7 +39,7 @@ LoginWindow::~LoginWindow()
 void LoginWindow::showEvent(QShowEvent *)
 {
     username = psync_get_username();
-   // ui->error->setText("");
+    // ui->error->setText("");
     if (username == "")
     {
         ui->btnUnlink->setVisible(false);
@@ -68,7 +68,7 @@ void LoginWindow::showError(const char *err)
 
 void LoginWindow::logIn()
 {
-   // ui->error->setText("");
+    // ui->error->setText("");
     QByteArray email=ui->email->text().toUtf8();
     QByteArray password=ui->password->text().toUtf8();
 
@@ -88,23 +88,27 @@ void LoginWindow::logIn()
         psync_set_pass(password,ischecked);
 
     QList<quint32> loginStatusLst;
-    loginStatusLst << PSTATUS_BAD_LOGIN_DATA << PSTATUS_LOGIN_REQUIRED<< PSTATUS_BAD_LOGIN_TOKEN <<PSTATUS_USER_MISMATCH << PSTATUS_OFFLINE;
+    loginStatusLst << PSTATUS_BAD_LOGIN_DATA <<PSTATUS_LOGIN_REQUIRED<< PSTATUS_BAD_LOGIN_TOKEN <<PSTATUS_USER_MISMATCH << PSTATUS_OFFLINE;
 
     int times = 0;
     for(;;)
     {
-        times++;     
-        qDebug()<<"login btn "<< app->lastStatus << times;
-        if (app->lastStatus == PSTATUS_CONNECTING || app->lastStatus == PSTATUS_SCANNING )
+        times++;
+        pstatus_t status;
+        psync_get_status(&status);
+        quint32 lastStatus = status.status;
+        qDebug()<<"login btn "<< app->lastStatus << lastStatus<< status.status<<times;
+
+        if (lastStatus == PSTATUS_CONNECTING || lastStatus == PSTATUS_SCANNING )
         {
             sleep(1);
             continue;
         }
         else
         {
-            if ((loginStatusLst.contains(app->lastStatus)))
+            if ((loginStatusLst.contains(lastStatus)))
             {
-                if (app->lastStatus != PSTATUS_OFFLINE)
+                if (lastStatus != PSTATUS_OFFLINE)
                 {
                     this->showError("Invalid user and password combination");
                     psync_set_bool_setting("saveauth",false);
@@ -117,7 +121,7 @@ void LoginWindow::logIn()
             else
             {
                 // PSTATUS_PAUSED is returned before and after PSTATUS_BAD_LOGIN_DATA
-                if (app->lastStatus == PSTATUS_PAUSED && times == 1)
+                if (lastStatus == PSTATUS_PAUSED && times == 1)
                 {
                     sleep(3);
                     continue;
@@ -130,7 +134,7 @@ void LoginWindow::logIn()
 
     app->logIn(email, ischecked); // thisway quoa won't be 0
     QApplication::restoreOverrideCursor();
-    ui->password->clear();    
+    ui->password->clear();
     this->close();
     //p app->openCloudDir();
 
@@ -161,13 +165,13 @@ void LoginWindow::forgotPassword()
         }
         else
         {
-             showError(err);
+            showError(err);
             QApplication::restoreOverrideCursor();
             return;
         }
     }
     QApplication::restoreOverrideCursor();
-    free(err);    
+    free(err);
 }
 void LoginWindow::unlinkSync() // to be moved in sync class
 {    
@@ -180,7 +184,7 @@ void LoginWindow::unlinkSync() // to be moved in sync class
         ui->email->setText("");
         ui->email->setEnabled(true);
         ui->email->setFocus();
-        ui->btnUnlink->setVisible(false); 
+        ui->btnUnlink->setVisible(false);
         app->unlink();
     }
 }

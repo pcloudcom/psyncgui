@@ -964,6 +964,8 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
 #ifdef Q_OS_WIN
     notifythread = NULL;
 #endif */
+
+    ////setLayoutDirection(tr("LTR")=="RTL" ? Qt::RightToLeft : Qt::LeftToRight); //арабик фучур
     appStatic = this;
     fontPointSize = this->font().pointSize();
     smaller1pFont.setPointSize(fontPointSize - 1);
@@ -1699,7 +1701,7 @@ void PCloudApp::updateSyncStatusPublic()
 
 void PCloudApp::updateUserInfoPublic(const char* param)
 {
-    emit updateUserInfoSgnl(param);   
+    emit updateUserInfoSgnl(param);
 }
 
 void PCloudApp::addNewSharePublic(QString fldrPath)
@@ -2023,7 +2025,7 @@ void PCloudApp::updateUserInfo(const char* &param)
 
     userinfoAction->setText(this->usedSpaceStr + " ("+
                             QString::number(100 - this->freeSpacePercentage) + "%) of " + this->planStr + " used");
-     emit this->pCloudWin->refreshUserinfo();
+    emit this->pCloudWin->refreshUserinfo();
 }
 void PCloudApp::changeOnlineItems(bool logged)
 {
