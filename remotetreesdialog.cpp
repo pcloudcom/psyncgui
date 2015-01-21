@@ -3,11 +3,15 @@
 #include "pcloudwindow.h"
 #include <QInputDialog>
 
+psync_folderid_t cryptoFldrId;
+
 RemoteTreesDialog::RemoteTreesDialog(QString curritem, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::RemoteTreesDialog)
 {
     ui->setupUi(this);
+    cryptoFldrId = psync_crypto_folderid();
+    qDebug()<<"RemoteTreesDialog"<<cryptoFldrId;
     if (parent != NULL)
         this->setParent(parent);       
     if(!curritem.isNull())
@@ -31,6 +35,9 @@ static QList<QTreeWidgetItem *> listRemoteFldrs(QString parentPath)
     {
         for(uint i = 0; i < res->entrycnt; i++)
         {
+            if(cryptoFldrId != PSYNC_CRYPTO_INVALID_FOLDERID && res->entries[i].folder.folderid == cryptoFldrId)
+                continue;
+
             QString path = parentPath;
             if (parentPath != "/")
                 path.append("/").append(res->entries[i].name);

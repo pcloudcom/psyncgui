@@ -248,6 +248,7 @@ void CryptoPage::tryTrial()
     }
 
     this->pageIndex = 1;
+    win->ui->progressBarCryptoPass->setVisible(false);
     win->ui->pagedWidgetCrypto->setCurrentIndex(this->pageIndex);
     tryTrialClickedFlag = true;
 }
@@ -321,7 +322,7 @@ void CryptoPage::setupCrypto()
             const char *err = NULL;
             psync_folderid_t* cryptoFldrId;
             int mkDirRes = psync_crypto_mkdir(0,"Crypto Folder", &err, cryptoFldrId);
-            if (!mkDirRes)
+            if (!mkDirRes && err == NULL)
             {
                 qDebug()<<"CRYPTO: crypto dir created successfully";
                 this->showEventCrypto();
