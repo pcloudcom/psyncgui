@@ -269,13 +269,13 @@ void CryptoPage::tryTrial()
 
 void CryptoPage::buyCrypto()
 {
-    QUrl url("https://www.pcloud.com/pricing-cryptо");
+    QUrl url("https://www.pcloud.com/pricing-crypto");
     QDesktopServices::openUrl(url);
 }
 
 void CryptoPage::getMoreCryptoInfo()
 {
-    QUrl url("https://www.pcloud.com/cryptо");
+    QUrl url("https://www.pcloud.com/crypto");
     QDesktopServices::openUrl(url);
 }
 
