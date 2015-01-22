@@ -27,6 +27,8 @@ SettingsPage::SettingsPage(PCloudWindow *w, PCloudApp *a, QObject* parent):
     win->ui->label_infop2p->setFont(app->smaller2pFont);
     win->ui->label_infominspace->setFont(app->smaller1pFont);
     win->ui->label_infocache->setFont(app->smaller1pFont);
+    win->ui->groupBoxCryptoLock->setTitle("Lock Crypto Folder on Suspend mode");
+    win->ui->checkBoxLockCrypto->setText("Automatically lock the Crypto Folder when your device goes to Suspend or Hibernate mode.");
 #else
     win->ui->line_settngsGeneral->setVisible(false);
     win->ui->line_settngsSpace->setVisible(false);
