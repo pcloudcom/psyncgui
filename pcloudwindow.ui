@@ -52,7 +52,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="pageAccntLogged">
        <property name="maximumSize">
@@ -1112,7 +1112,7 @@
         <item>
          <widget class="QStackedWidget" name="pagedWidgetCrypto">
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="pageCryptoWelcome">
            <layout class="QHBoxLayout" name="horizontalLayout_52">
@@ -2783,7 +2783,7 @@
               <item>
                <widget class="QGroupBox" name="groupBoxCryptoAsk">
                 <property name="title">
-                 <string>Ask for the Crypto Key on pCloud Drive starting</string>
+                 <string>Ask for Crypto Key on pCloud Drive start</string>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_38">
                  <item>
