@@ -68,7 +68,7 @@ void CryptoPage::initCryptoPage() //called when user has just loggedin
     tryTrialClickedFlag = false;
     setCurrentPageIndex();
     qDebug()<<"CryptoPage"<<this->pageIndex;
-    if (this->pageIndex == 2 && app->settings->value("autostartcrypto").toBool())
+    if (this->pageIndex == 2 && app->settings->value("autostartcrypto").toBool() && !app->settings->value("showintrowin").toBool())
         QTimer::singleShot(3000, this, SLOT(requestCryptoKey()));
 }
 

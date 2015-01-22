@@ -1901,6 +1901,11 @@ void PCloudApp::openLocalDir()
     QDesktopServices::openUrl(QUrl::fromLocalFile(path));
 }
 
+void PCloudApp::requestCryptoKey()
+{
+    pCloudWin->cryptoPage->requestCryptoKey();
+}
+
 void PCloudApp::lockCryptoFldr()
 {
     pCloudWin->getCryptoPage()->lock();

@@ -32,14 +32,14 @@ public slots:
     void lock();
     void unlock();
     void openCryptoFldr();
+    void requestCryptoKey();
     void clearSetupUI();
 private slots:
     void changePage();
     void tryTrial();
     void buyCrypto();
     void getMoreCryptoInfo();
-    void setupCrypto();
-    void requestCryptoKey();
+    void setupCrypto();   
     void manageCryptoFldr();
     void setUnlockedFldrUI();
     void setLockedFldrUI();    

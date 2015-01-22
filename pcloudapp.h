@@ -200,6 +200,7 @@ public slots:
     void pauseSync();
     void resumeSync();
     void openLocalDir(); // for local sync folder
+    void requestCryptoKey();
     void lockCryptoFldr();
     void unlockCryptoFldr();
     void openCryptoFldr();
