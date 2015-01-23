@@ -52,7 +52,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="pageAccntLogged">
        <property name="maximumSize">
@@ -1112,7 +1112,7 @@
         <item>
          <widget class="QStackedWidget" name="pagedWidgetCrypto">
           <property name="currentIndex">
-           <number>2</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="pageCryptoWelcome">
            <layout class="QHBoxLayout" name="horizontalLayout_52">
@@ -1429,16 +1429,28 @@
                <enum>QFrame::Raised</enum>
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_49">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <property name="margin">
+                <number>0</number>
+               </property>
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout_43">
                  <property name="spacing">
-                  <number>6</number>
-                 </property>
-                 <property name="topMargin">
                   <number>28</number>
                  </property>
+                 <property name="leftMargin">
+                  <number>9</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>21</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>9</number>
+                 </property>
                  <property name="bottomMargin">
-                  <number>6</number>
+                  <number>28</number>
                  </property>
                  <item>
                   <widget class="QLabel" name="labelCryptoSetup">
@@ -1448,34 +1460,12 @@
                   </widget>
                  </item>
                  <item>
-                  <spacer name="verticalSpacer_12">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_40">
+                  <layout class="QHBoxLayout" name="horizontalLayout_40" stretch="1,0,1">
                    <property name="spacing">
                     <number>6</number>
                    </property>
-                   <property name="leftMargin">
+                   <property name="margin">
                     <number>12</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>30</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>12</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>20</number>
                    </property>
                    <item>
                     <layout class="QVBoxLayout" name="verticalLayout_30">
@@ -1520,7 +1510,7 @@
                     </widget>
                    </item>
                    <item>
-                    <layout class="QGridLayout" name="gridLayout_5" columnstretch="0,0">
+                    <layout class="QGridLayout" name="gridLayout_5" columnstretch="4,1">
                      <property name="leftMargin">
                       <number>12</number>
                      </property>
@@ -1530,26 +1520,23 @@
                      <item row="5" column="0">
                       <widget class="QLineEdit" name="lineEditCryptoHint"/>
                      </item>
-                     <item row="7" column="0">
-                      <widget class="QPushButton" name="btnCryptoCreateKey">
-                       <property name="font">
-                        <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                        </font>
-                       </property>
+                     <item row="2" column="0">
+                      <widget class="QLabel" name="label_19">
                        <property name="text">
-                        <string>Create Crypto Folder</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Repeat Crypto Key:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
                        </property>
                       </widget>
                      </item>
-                     <item row="1" column="0">
-                      <widget class="QLineEdit" name="lineEditCryptoPass">
-                       <property name="inputMethodHints">
-                        <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText</set>
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="label_17">
+                       <property name="text">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Create Crypto Key:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
-                       <property name="echoMode">
-                        <enum>QLineEdit::Password</enum>
+                       <property name="alignment">
+                        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
                        </property>
                       </widget>
                      </item>
@@ -1598,25 +1585,22 @@
                        </item>
                       </layout>
                      </item>
-                     <item row="7" column="1">
-                      <widget class="QPushButton" name="btnNextTest2">
+                     <item row="4" column="1">
+                      <widget class="QLabel" name="label_15">
                        <property name="text">
-                        <string>TmpNext</string>
+                        <string/>
                        </property>
                       </widget>
                      </item>
-                     <item row="2" column="0">
-                      <widget class="QLabel" name="label_19">
+                     <item row="6" column="0">
+                      <widget class="QLabel" name="label_foremptyspace">
                        <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Repeat Crypto Key:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                        <string/>
                        </property>
                       </widget>
                      </item>
-                     <item row="3" column="0">
-                      <widget class="QLineEdit" name="lineEditCryptoPass2">
+                     <item row="1" column="0">
+                      <widget class="QLineEdit" name="lineEditCryptoPass">
                        <property name="inputMethodHints">
                         <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText</set>
                        </property>
@@ -1632,6 +1616,19 @@
                        </property>
                        <property name="pixmap">
                         <pixmap resource="Resources.qrc">:/crypto/images/crypto/matchNo.png</pixmap>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="7" column="0">
+                      <widget class="QPushButton" name="btnCryptoCreateKey">
+                       <property name="font">
+                        <font>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="text">
+                        <string>Create Crypto Folder</string>
                        </property>
                       </widget>
                      </item>
@@ -1672,39 +1669,26 @@
                        </item>
                       </layout>
                      </item>
-                     <item row="0" column="0">
-                      <widget class="QLabel" name="label_17">
-                       <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Create Crypto Key:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     <item row="3" column="0">
+                      <widget class="QLineEdit" name="lineEditCryptoPass2">
+                       <property name="inputMethodHints">
+                        <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText</set>
                        </property>
-                       <property name="alignment">
-                        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                       <property name="echoMode">
+                        <enum>QLineEdit::Password</enum>
                        </property>
                       </widget>
                      </item>
-                     <item row="6" column="0">
-                      <widget class="QLabel" name="label_foremptyspace">
+                     <item row="7" column="1">
+                      <widget class="QPushButton" name="btnNextTest2">
                        <property name="text">
-                        <string/>
+                        <string>TmpNext</string>
                        </property>
                       </widget>
                      </item>
                     </layout>
                    </item>
                   </layout>
-                 </item>
-                 <item>
-                  <spacer name="verticalSpacer_7">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                  </spacer>
                  </item>
                 </layout>
                </item>
@@ -3539,7 +3523,6 @@
   <tabstop>btnMyPcloud</tabstop>
   <tabstop>btnChangePass</tabstop>
   <tabstop>listButtonsWidget</tabstop>
-  <tabstop>btnNextTest2</tabstop>
   <tabstop>btnVerify</tabstop>
   <tabstop>btnCryptoManageFldr</tabstop>
   <tabstop>btnCryptoOpenFldr</tabstop>
