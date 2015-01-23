@@ -400,14 +400,24 @@ void CryptoPage::requestCryptoKey()
 void CryptoPage::openCryptoFldr()
 {
     psync_folderid_t cryptoFldrId = psync_crypto_folderid();
-    char *path = psync_fs_get_path_by_folderid(cryptoFldrId);
-    qDebug()<<"CRYPTO: openCryptoFldr"<<path<<cryptoFldrId;
-
-    if(path != NULL)
+    if(cryptoFldrId != PSYNC_CRYPTO_INVALID_FOLDERID)
     {
-        QDesktopServices::openUrl(QUrl::fromLocalFile(path));
-        free(path);
+        char *path = psync_fs_get_path_by_folderid(cryptoFldrId);
+        qDebug()<<"CRYPTO: openCryptoFldr"<<path<<cryptoFldrId;
+
+        if(path != NULL)
+        {
+            QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+            free(path);
+        }
+        else
+            QMessageBox::critical(NULL,"Crypto Folder Not Found",
+                                  "The Crypto Folder was either moved or deleted. You can either move it back, restore it from your Trash or re-create it by resetting the Crypto Key from pCloud Drive's settings.");
+
     }
+    else
+        QMessageBox::critical(NULL,"Crypto Folder Not Found",
+                              "The Crypto Folder was either moved or deleted. You can either move it back, restore it from your Trash or re-create it by resetting the Crypto Key from pCloud Drive's settings.");
 }
 
 
