@@ -56,6 +56,7 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     win->ui->btnNextTest2->setVisible(false);
     win->ui->btnNextTest3->setVisible(false);
 
+    connect(win->ui->pagedWidgetCrypto, SIGNAL(currentChanged(int)), this, SLOT(autoResize()));
     connect(win->ui->lineEditCryptoPass, SIGNAL(textChanged(QString)), this, SLOT(setProgressBar()));
     connect(win->ui->lineEditCryptoPass2, SIGNAL(textChanged(QString)), this, SLOT(checkPasswordsMatch()));
     connect(win->ui->btnCryptoTryTrial, SIGNAL(clicked()), this, SLOT(tryTrial()));
