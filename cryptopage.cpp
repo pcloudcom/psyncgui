@@ -128,7 +128,7 @@ void CryptoPage::setCurrentPageIndex()
         app->isCryptoExpired = false;
         this->pageIndex = 2;
     }
-   win->ui->pagedWidgetCrypto->setCurrentIndex(pageIndex);
+    win->ui->pagedWidgetCrypto->setCurrentIndex(pageIndex);
 }
 
 void CryptoPage::autoResize()
@@ -174,10 +174,7 @@ void CryptoPage::setUnlockedFldrUI()
 {
     win->ui->btnCryptoManageFldr->setText("  Lock  ");
     win->ui->btnCryptoManageFldr->setIcon(QIcon(":/crypto/images/crypto/crypto.png"));
-    QPalette paletteRed;
-    paletteRed.setColor(QPalette::WindowText, Qt::red);
-    win->ui->label_cryptoStatus->setPalette(paletteRed);
-    win->ui->label_cryptoStatus->setText("Unlocked");
+    win->ui->label_cryptoStatus->setText("Crypto Folder is accessible");
     win->ui->labelCryptoFldrInfo->setText("Lock the Crypto Folder to keep your files protected.");
     win->ui->btnCryptoOpenFldr->setEnabled(true);
 }
@@ -186,10 +183,7 @@ void CryptoPage::setLockedFldrUI()
 {
     win->ui->btnCryptoManageFldr->setText("  Unlock  ");
     win->ui->btnCryptoManageFldr->setIcon(QIcon(":/crypto/images/crypto/crypto-unlck.png"));
-    QPalette paletteGreen;
-    paletteGreen.setColor(QPalette::WindowText, Qt::green);
-    win->ui->label_cryptoStatus->setPalette(paletteGreen);
-    win->ui->label_cryptoStatus->setText("Locked");
+    win->ui->label_cryptoStatus->setText("Crypto Folder is <b>not</b> accessible");
     win->ui->labelCryptoFldrInfo->setText("Unlock the Crypto Folder to decrypt and manage your files.");
     win->ui->btnCryptoOpenFldr->setEnabled(false);
 }
@@ -352,6 +346,18 @@ void CryptoPage::setupCrypto()
         return;
     }
 
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("pCloud Crypto");
+    msgBox.setText("Did you memorize your Crypto Key? Once forgotten it cannot be restored!");
+    msgBox.setIcon(QMessageBox::Warning);
+    QPushButton *okBtn = msgBox.addButton(trUtf8("I got it"), QMessageBox::AcceptRole);
+    msgBox.setDefaultButton(okBtn);
+    msgBox.setStandardButtons(QMessageBox::Cancel);
+    if (msgBox.exec() != QMessageBox::AcceptRole)
+        return;
+
+
+    QApplication::setOverrideCursor(Qt::WaitCursor);
     int resSetup = psync_crypto_setup(win->ui->lineEditCryptoPass->text().toUtf8(),win->ui->lineEditCryptoHint->text().toUtf8());
     if (resSetup == PSYNC_CRYPTO_SETUP_SUCCESS || resSetup == PSYNC_CRYPTO_SETUP_ALREADY_SETUP)
     {
@@ -373,6 +379,7 @@ void CryptoPage::setupCrypto()
             }
             else
             {
+                QApplication::restoreOverrideCursor();
                 this->showMkDirError(mkDirRes,err);
                 return;
             }
@@ -381,15 +388,20 @@ void CryptoPage::setupCrypto()
             win->ui->lineEditCryptoPass->clear();
             win->ui->lineEditCryptoPass2->clear();
             win->ui->label_passMatchPic->setPixmap(QPixmap(":/crypto/images/crypto/matchNo.png"));
+            QApplication::restoreOverrideCursor();
         }
         else
         {
+            QApplication::restoreOverrideCursor();
             showStartCryptoError(resCryptoStart);
             return;
         }
     }
     else
+    {
+        QApplication::restoreOverrideCursor();
         showSetupCryptoError(resSetup);
+    }
 }
 
 void CryptoPage::manageCryptoFldr()

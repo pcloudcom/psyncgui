@@ -13,6 +13,7 @@ CryptoKeyDialog::CryptoKeyDialog(CryptoPage *cp, QWidget *parent) :
     this->cryptoPage = cp;
 
     ui->label_hintVal->setVisible(false);
+    ui->line_cryptoKey->setAlignment(Qt::AlignHCenter);
     setStyleSheet("QToolButton{background-color:transparent; text-decoration: underline;} QToolButton:hover{text-decoration: underline; background-color: transparent;}");
 
     QPalette Pal(palette());

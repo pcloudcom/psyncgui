@@ -339,7 +339,7 @@ void PCloudApp::createMenus()
     connect(cryptoWelcomeAction, SIGNAL(triggered()), this, SLOT(showCrypto()));
     cryptoFldrLockedAction = new QAction(QIcon(":/menu/images/menu16x16/crypto-unlck.png"),trUtf8("Unlock"), this);
     connect(cryptoFldrLockedAction, SIGNAL(triggered()), this, SLOT(unlockCryptoFldr()));
-    cryptoFldrUnlockedAction =  new QAction(QIcon(":/menu/images/menu16x16/crypto.png"),trUtf8("Lock"), this);
+    cryptoFldrUnlockedAction =  new QAction(QIcon(":/menu/images/menu16x16/crypto.png"),trUtf8("Lock Crypto"), this);
     connect(cryptoFldrUnlockedAction, SIGNAL(triggered()), this, SLOT(lockCryptoFldr()));
     cryptoOpenFldrAction = new QAction(QIcon(":/menu/images/menu16x16/cryptoFldr.png"),trUtf8("Open Folder"),this);
     connect(cryptoOpenFldrAction, SIGNAL(triggered()), this, SLOT(openCryptoFldr()));

@@ -1118,7 +1118,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="pageCryptoWelcome">
            <layout class="QHBoxLayout" name="horizontalLayout_52">
@@ -1755,19 +1755,9 @@
                       </spacer>
                      </item>
                      <item>
-                      <widget class="QLabel" name="label_23">
-                       <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Crypto Frolder Status:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
                       <widget class="QLabel" name="label_cryptoStatus">
                        <property name="text">
-                        <string>Locked</string>
+                        <string>Crypto Folder is not accessible</string>
                        </property>
                       </widget>
                      </item>
@@ -1809,6 +1799,12 @@
                      </item>
                      <item>
                       <widget class="QPushButton" name="btnCryptoManageFldr">
+                       <property name="minimumSize">
+                        <size>
+                         <width>105</width>
+                         <height>0</height>
+                        </size>
+                       </property>
                        <property name="font">
                         <font>
                          <weight>75</weight>
@@ -1850,6 +1846,9 @@
                     <widget class="QLabel" name="labelCryptoFldrInfo">
                      <property name="text">
                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;dfs&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
                      </property>
                     </widget>
                    </item>
@@ -3267,7 +3266,7 @@
              <item>
               <widget class="QLabel" name="label_copyright">
                <property name="text">
-                <string>© 2014 pCloud AG. All rights reserved.</string>
+                <string>© 2015 pCloud AG. All rights reserved.</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignBottom|Qt::AlignHCenter</set>
