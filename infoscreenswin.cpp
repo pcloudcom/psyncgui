@@ -105,9 +105,9 @@ void InfoScreensWin::finish()
     else if(app->settings->contains("showintrowin"))
         app->settings->remove("showintrowin");
     app->openCloudDir();
+    this->close();
     if(app->settings->contains("autostartcrypto") && app->settings->value("autostartcrypto").toBool())
         app->requestCryptoKey();
-    this->close();
 }
 
 void InfoScreensWin::createDfltSync()
