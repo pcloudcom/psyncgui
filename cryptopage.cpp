@@ -47,6 +47,7 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     win->ui->labelCryptoWelcmPic->setPixmap(QPixmap(":/crypto/images/crypto/cryptoWelcomePageXP.png"));
     win->ui->labelCryptoMainFldrPic->setPixmap(QPixmap(":/crypto/images/crypto/cryptoMainPageXP.png"));
     win->ui->progressBarCryptoPass->setMaximumHeight(9);
+    win->ui->pagedWidgetCrypto->setMinimumHeight(300);
 #endif
 
     connect(win->ui->btnNextTest, SIGNAL(clicked()),this, SLOT(changePage())); // TEMPPP
@@ -77,6 +78,7 @@ void CryptoPage::initCryptoPage() //called when user has just loggedin
     qDebug()<<"CryptoPage"<<this->pageIndex;
     if (this->pageIndex == 2 && app->settings->value("autostartcrypto").toBool() && !app->settings->value("showintrowin").toBool())
         QTimer::singleShot(3000, this, SLOT(requestCryptoKey()));
+    this->autoResize();
 }
 
 void CryptoPage::showEventCrypto()

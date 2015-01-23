@@ -1118,7 +1118,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="pageCryptoWelcome">
            <layout class="QHBoxLayout" name="horizontalLayout_52">
@@ -1524,7 +1524,11 @@
                       <number>4</number>
                      </property>
                      <item row="5" column="0">
-                      <widget class="QLineEdit" name="lineEditCryptoHint"/>
+                      <widget class="QLineEdit" name="lineEditCryptoHint">
+                       <property name="alignment">
+                        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                       </property>
+                      </widget>
                      </item>
                      <item row="2" column="0">
                       <widget class="QLabel" name="label_19">
@@ -1613,6 +1617,9 @@
                        <property name="echoMode">
                         <enum>QLineEdit::Password</enum>
                        </property>
+                       <property name="alignment">
+                        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                       </property>
                       </widget>
                      </item>
                      <item row="3" column="1">
@@ -1645,6 +1652,9 @@
                          <property name="text">
                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Key Hint:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                          </property>
+                         <property name="alignment">
+                          <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                         </property>
                         </widget>
                        </item>
                        <item>
@@ -1669,7 +1679,7 @@
                           <string>Must not contain the key</string>
                          </property>
                          <property name="alignment">
-                          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                          <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
                          </property>
                         </widget>
                        </item>
@@ -1682,6 +1692,9 @@
                        </property>
                        <property name="echoMode">
                         <enum>QLineEdit::Password</enum>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
                        </property>
                       </widget>
                      </item>
