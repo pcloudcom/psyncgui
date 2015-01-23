@@ -26,12 +26,11 @@ CryptoKeyDialog::CryptoKeyDialog(CryptoPage *cp, QWidget *parent) :
 
     connect(ui->btnUnlock, SIGNAL(clicked()), this, SLOT(unlockCrypto()));
     connect(ui->tbtnHint, SIGNAL(clicked()), this, SLOT(setHintLabel()));
-    connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(close()));
 
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
     this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     this->layout()->setSizeConstraint(QLayout::SetFixedSize);  //not resized
-    this->setWindowTitle(trUtf8("Provide Crypto Key"));
+    this->setWindowTitle(trUtf8("Unlock Crypto Folder"));
     this->setWindowIcon(QIcon(WINDOW_ICON));
 }
 
@@ -73,11 +72,11 @@ void CryptoKeyDialog::setHintLabel()
     if (!getHintRes)
     {
         ui->label_hintVal->setVisible(true);
-        if(strlen(hint) < 40)
+        if(strlen(hint) < 80)
             ui->label_hintVal->setText(QString("Hint: ").append(hint));
         else
         {
-            ui->label_hintVal->setText(QString("Hint: ").append(QString(hint).left(40) + "..."));
+            ui->label_hintVal->setText(QString("Hint: ").append(QString(hint).left(80) + "..."));
             ui->label_hintVal->setToolTip(QString("Hint: ").append(hint));
         }
 

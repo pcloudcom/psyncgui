@@ -65,6 +65,7 @@ SettingsPage::SettingsPage(PCloudWindow *w, PCloudApp *a, QObject* parent):
 
 #ifdef Q_OS_WIN
     connect(win->ui->checkBox_contxtMenu, SIGNAL(stateChanged(int)), this, SLOT(setSaveBtnEnable()));
+    win->ui->tabWidgetSttngs->setMaximumHeight(300);
 #define SETTNGS_CRYPTO_TAB_NUM 3
 #else
     win->ui->tabWidgetSttngs->removeTab(0);
