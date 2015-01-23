@@ -127,7 +127,22 @@ void CryptoPage::setCurrentPageIndex()
         app->isCryptoExpired = false;
         this->pageIndex = 2;
     }
-    win->ui->pagedWidgetCrypto->setCurrentIndex(pageIndex);
+   win->ui->pagedWidgetCrypto->setCurrentIndex(pageIndex);
+}
+
+void CryptoPage::autoResize()
+{
+    // auto resize
+    qDebug()<<"autoresize";
+    for(int i = 0; i < win->ui->pagedWidgetCrypto->count(); i++)
+    {
+        if (i != this->pageIndex)
+            win->ui->pagedWidgetCrypto->widget(i)->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Ignored);
+    }
+    win->ui->pagedWidgetCrypto->widget(this->pageIndex)->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+
+    win->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
+    win->updateGeometry();
 }
 
 int CryptoPage::getCurrentCryptoPageIndex()
@@ -194,40 +209,22 @@ void CryptoPage::clearSetupUI()
 
 void CryptoPage::changePage() //temp, for tests
 {
-    int currentIndex;
     QObject *sender = QObject::sender();
     qDebug()<<sender->objectName()<<win->ui->pagedWidgetCrypto->height();
     if (sender->objectName() == "btnNextTest3")
-    { currentIndex = 0;
+    {
         win->ui->pagedWidgetCrypto->setCurrentIndex(0);
     }
     if (sender->objectName() == "btnNextTest")
     {
-        currentIndex = 1;
         win->ui->pagedWidgetCrypto->setCurrentIndex(1);
         win->ui->progressBarCryptoPass->setVisible(false);
     }
 
     if (sender->objectName() == "btnNextTest2")
     {
-        currentIndex = 2;
         win->ui->pagedWidgetCrypto->setCurrentIndex(2);
     }
-
-
-
-    // auto resize
-    for(int i = 0; i < win->ui->pagedWidgetCrypto->count(); i++)
-    {
-        if ( i != currentIndex)
-            win->ui->pagedWidgetCrypto->widget(i)->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Ignored); //hoz vert
-    }
-    win->ui->pagedWidgetCrypto->widget(currentIndex)->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred); //+
-
-    win->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
-    win->updateGeometry();
-
-
 }
 
 void CryptoPage::setProgressBar()
@@ -395,7 +392,7 @@ void CryptoPage::setupCrypto()
 }
 
 void CryptoPage::manageCryptoFldr()
-{    
+{
     if(psync_crypto_isstarted())
         lock();
     else

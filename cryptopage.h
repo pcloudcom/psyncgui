@@ -36,6 +36,7 @@ public slots:
     void clearSetupUI();
 private slots:
     void changePage();
+    void autoResize();
     void tryTrial();
     void buyCrypto();
     void getMoreCryptoInfo();
