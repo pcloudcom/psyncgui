@@ -334,8 +334,7 @@ void CryptoPage::setupCrypto()
             qDebug()<< "CRYPTO: started successfully or already started";
 
             const char *err = NULL;
-            psync_folderid_t* cryptoFldrId;
-            int mkDirRes = psync_crypto_mkdir(0,"Crypto Folder", &err, cryptoFldrId);
+            int mkDirRes = psync_crypto_mkdir(0,"Crypto Folder", &err, NULL);
             if (!mkDirRes && err == NULL)
             {
                 qDebug()<<"CRYPTO: crypto dir created successfully";
