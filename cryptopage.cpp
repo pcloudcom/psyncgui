@@ -28,6 +28,11 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     win->ui->labelCryptoPassStrenth->setFont(app->smaller1pFont);
 
     //main page
+    int maxbtnw = qMax(win->ui->btnCryptoOpenFldr->width(), qMax(win->ui->btnCryptoManageFldr->width(), win->ui->btnCryptoMainPagePay->width()));
+    win->ui->btnCryptoOpenFldr->setMinimumWidth(maxbtnw);
+    win->ui->btnCryptoManageFldr->setMinimumWidth(maxbtnw);
+    win->ui->btnCryptoMainPagePay->setMinimumWidth(maxbtnw);
+
     win->ui->labelWhatisCrFldr->setFont(app->bigger1pFont);
     win->ui->tbtnMoreInfo->setStyleSheet("QToolButton{background-color:transparent; text-decoration: underline; color:#17BED0}"
                                          "QToolButton:hover{text-decoration: underline; background-color: transparent;}");
@@ -41,6 +46,7 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
 #else
     win->ui->labelCryptoWelcmPic->setPixmap(QPixmap(":/crypto/images/crypto/cryptoWelcomePageXP.png"));
     win->ui->labelCryptoMainFldrPic->setPixmap(QPixmap(":/crypto/images/crypto/cryptoMainPageXP.png"));
+    win->ui->progressBarCryptoPass->setMaximumHeight(9);
 #endif
 
     connect(win->ui->btnNextTest, SIGNAL(clicked()),this, SLOT(changePage())); // TEMPPP
@@ -287,6 +293,7 @@ void CryptoPage::tryTrial()
 
     this->pageIndex = 1;
     win->ui->progressBarCryptoPass->setVisible(false);
+    win->ui->labelCryptoPassStrenth->setText("");
     win->ui->pagedWidgetCrypto->setCurrentIndex(this->pageIndex);
     tryTrialClickedFlag = true;
 }

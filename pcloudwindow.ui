@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_50">
+   <layout class="QVBoxLayout" name="verticalLayout_51">
     <item>
      <widget class="QListWidget" name="listButtonsWidget">
       <property name="sizePolicy">
@@ -1111,8 +1111,14 @@
        <layout class="QVBoxLayout" name="verticalLayout_36">
         <item>
          <widget class="QStackedWidget" name="pagedWidgetCrypto">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>450</height>
+           </size>
+          </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="pageCryptoWelcome">
            <layout class="QHBoxLayout" name="horizontalLayout_52">
@@ -1370,7 +1376,7 @@
                       <bool>false</bool>
                      </property>
                      <property name="text">
-                      <string>$ 4.99/month</string>
+                      <string>$ 3.99/month</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignHCenter|Qt::AlignTop</set>
@@ -1713,9 +1719,9 @@
               <property name="frameShadow">
                <enum>QFrame::Raised</enum>
               </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_54">
+              <layout class="QHBoxLayout" name="horizontalLayout_53">
                <item>
-                <layout class="QVBoxLayout" name="verticalLayout_47" stretch="1,1,1,1,1">
+                <layout class="QVBoxLayout" name="verticalLayout_50" stretch="1,1,1,1,1">
                  <property name="spacing">
                   <number>12</number>
                  </property>
@@ -1803,6 +1809,12 @@
                      </item>
                      <item>
                       <widget class="QPushButton" name="btnCryptoManageFldr">
+                       <property name="font">
+                        <font>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
                        <property name="text">
                         <string>  Unlock </string>
                        </property>
@@ -1895,6 +1907,12 @@
                      </item>
                      <item>
                       <widget class="QPushButton" name="btnCryptoOpenFldr">
+                       <property name="font">
+                        <font>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
                        <property name="text">
                         <string>Open Folder</string>
                        </property>
@@ -1938,7 +1956,7 @@
                   </widget>
                  </item>
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_53">
+                  <layout class="QHBoxLayout" name="horizontalLayout_51">
                    <item>
                     <spacer name="horizontalSpacer_43">
                      <property name="orientation">
@@ -1954,35 +1972,95 @@
                    </item>
                    <item>
                     <layout class="QVBoxLayout" name="verticalLayout_48">
-                     <property name="topMargin">
-                      <number>0</number>
-                     </property>
-                     <property name="bottomMargin">
-                      <number>0</number>
-                     </property>
                      <item>
-                      <widget class="QLabel" name="labelCryptoMainPayInfo">
-                       <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <spacer name="verticalSpacer_7">
+                       <property name="orientation">
+                        <enum>Qt::Vertical</enum>
                        </property>
-                       <property name="alignment">
-                        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>20</width>
+                         <height>40</height>
+                        </size>
                        </property>
-                      </widget>
+                      </spacer>
                      </item>
                      <item>
-                      <widget class="QPushButton" name="btnCryptoMainPagePay">
-                       <property name="text">
-                        <string>Change Subscription</string>
-                       </property>
-                      </widget>
+                      <layout class="QVBoxLayout" name="verticalLayout_47">
+                       <item>
+                        <widget class="QLabel" name="labelCryptoMainPayInfo">
+                         <property name="text">
+                          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_48">
+                         <item>
+                          <spacer name="horizontalSpacer_45">
+                           <property name="orientation">
+                            <enum>Qt::Horizontal</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>40</width>
+                             <height>20</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                         <item>
+                          <widget class="QPushButton" name="btnCryptoMainPagePay">
+                           <property name="font">
+                            <font>
+                             <weight>75</weight>
+                             <bold>true</bold>
+                            </font>
+                           </property>
+                           <property name="text">
+                            <string>Change Subscription</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <spacer name="horizontalSpacer_46">
+                           <property name="orientation">
+                            <enum>Qt::Horizontal</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>40</width>
+                             <height>20</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                        </layout>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="labelCryptoPrice">
+                         <property name="text">
+                          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;$ 3.99/month&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
                      </item>
                      <item>
-                      <widget class="QLabel" name="labelCryptoPrice">
-                       <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;$ 4.99/month&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <spacer name="verticalSpacer_12">
+                       <property name="orientation">
+                        <enum>Qt::Vertical</enum>
                        </property>
-                      </widget>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>20</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                      </spacer>
                      </item>
                     </layout>
                    </item>
