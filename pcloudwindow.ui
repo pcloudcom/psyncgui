@@ -52,7 +52,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="pageAccntLogged">
        <property name="maximumSize">
@@ -1666,7 +1666,7 @@
                      <item row="1" column="0">
                       <widget class="QLineEdit" name="lineEditCryptoPass">
                        <property name="inputMethodHints">
-                        <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhSensitiveData</set>
+                        <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText</set>
                        </property>
                        <property name="echoMode">
                         <enum>QLineEdit::Password</enum>
@@ -1742,7 +1742,7 @@
                      <item row="3" column="0">
                       <widget class="QLineEdit" name="lineEditCryptoPass2">
                        <property name="inputMethodHints">
-                        <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhSensitiveData</set>
+                        <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText</set>
                        </property>
                        <property name="echoMode">
                         <enum>QLineEdit::Password</enum>
@@ -2322,7 +2322,7 @@
              </size>
             </property>
             <property name="currentIndex">
-             <number>3</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="tabGeneral">
              <attribute name="title">
