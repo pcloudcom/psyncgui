@@ -841,16 +841,7 @@
                <property name="spacing">
                 <number>6</number>
                </property>
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
+               <property name="margin">
                 <number>0</number>
                </property>
                <item>
@@ -1042,16 +1033,7 @@
                <property name="spacing">
                 <number>6</number>
                </property>
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
+               <property name="margin">
                 <number>0</number>
                </property>
                <item>
@@ -1136,23 +1118,14 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="pageCryptoWelcome">
            <layout class="QHBoxLayout" name="horizontalLayout_52">
             <property name="spacing">
              <number>0</number>
             </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
+            <property name="margin">
              <number>0</number>
             </property>
             <item>
@@ -1330,7 +1303,7 @@
                  <item>
                   <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,0">
                    <property name="verticalSpacing">
-                    <number>0</number>
+                    <number>3</number>
                    </property>
                    <item row="1" column="2">
                     <widget class="QLabel" name="label_13">
@@ -1450,16 +1423,7 @@
             <property name="spacing">
              <number>0</number>
             </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
+            <property name="margin">
              <number>0</number>
             </property>
             <item>
@@ -1474,16 +1438,7 @@
                <property name="spacing">
                 <number>0</number>
                </property>
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
+               <property name="margin">
                 <number>0</number>
                </property>
                <item>
@@ -1515,16 +1470,7 @@
                    <property name="spacing">
                     <number>6</number>
                    </property>
-                   <property name="leftMargin">
-                    <number>12</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>12</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>12</number>
-                   </property>
-                   <property name="bottomMargin">
+                   <property name="margin">
                     <number>12</number>
                    </property>
                    <item>
@@ -1775,16 +1721,7 @@
             <property name="spacing">
              <number>0</number>
             </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
+            <property name="margin">
              <number>0</number>
             </property>
             <item>
@@ -1832,6 +1769,12 @@
                      </item>
                      <item>
                       <widget class="QLabel" name="label_cryptoStatus">
+                       <property name="font">
+                        <font>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
                        <property name="text">
                         <string>Crypto Folder is not accessible</string>
                        </property>
@@ -1883,8 +1826,8 @@
                        </property>
                        <property name="font">
                         <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
+                         <weight>50</weight>
+                         <bold>false</bold>
                         </font>
                        </property>
                        <property name="text">
@@ -1984,8 +1927,8 @@
                       <widget class="QPushButton" name="btnCryptoOpenFldr">
                        <property name="font">
                         <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
+                         <weight>50</weight>
+                         <bold>false</bold>
                         </font>
                        </property>
                        <property name="text">
@@ -2091,8 +2034,8 @@
                           <widget class="QPushButton" name="btnCryptoMainPagePay">
                            <property name="font">
                             <font>
-                             <weight>75</weight>
-                             <bold>true</bold>
+                             <weight>50</weight>
+                             <bold>false</bold>
                             </font>
                            </property>
                            <property name="text">
@@ -3638,7 +3581,7 @@
      <x>0</x>
      <y>0</y>
      <width>838</width>
-     <height>21</height>
+     <height>27</height>
     </rect>
    </property>
   </widget>
