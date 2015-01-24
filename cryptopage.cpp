@@ -47,7 +47,7 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     win->ui->labelCryptoWelcmPic->setPixmap(QPixmap(":/crypto/images/crypto/cryptoWelcomePageXP.png"));
     win->ui->labelCryptoMainFldrPic->setPixmap(QPixmap(":/crypto/images/crypto/cryptoMainPageXP.png"));
     win->ui->progressBarCryptoPass->setMaximumHeight(9);
-    win->ui->pagedWidgetCrypto->setMinimumHeight(300);
+    win->ui->pagedWidgetCrypto->setMaximumHeight(350);
 #endif
 
     connect(win->ui->btnNextTest, SIGNAL(clicked()),this, SLOT(changePage())); // TEMPPP
