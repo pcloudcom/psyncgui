@@ -1223,7 +1223,7 @@
                 </layout>
                </item>
                <item>
-                <layout class="QGridLayout" name="gridLayout_6" columnstretch="1,1,1">
+                <layout class="QGridLayout" name="gridLayout_6">
                  <property name="horizontalSpacing">
                   <number>4</number>
                  </property>
@@ -1234,7 +1234,7 @@
                   <widget class="QLabel" name="label_30">
                    <property name="maximumSize">
                     <size>
-                     <width>240</width>
+                     <width>250</width>
                      <height>16777215</height>
                     </size>
                    </property>
@@ -1276,7 +1276,11 @@
                     <enum>Qt::RightToLeft</enum>
                    </property>
                    <property name="text">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:-20px; margin-left:-35px; margin-right:-20px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Secure place for private/business use&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:-35px; margin-right:-20px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Zero-Knowledge Privacy&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
+&lt;ul&gt;
+&lt;li style = &quot;margin: -15px;&quot;&gt;Secure place for private/business use&lt;/li&gt;
+&lt;li  style = &quot;margin: -15px;&quot;&gt;Zero-Knowledge Privacy&lt;/li&gt;
+&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                   </widget>
                  </item>
@@ -1319,7 +1323,7 @@
                     </widget>
                    </item>
                    <item row="1" column="0">
-                    <widget class="QLabel" name="label_11">
+                    <widget class="QLabel" name="label_trialdays">
                      <property name="enabled">
                       <bool>false</bool>
                      </property>
@@ -1679,7 +1683,7 @@
                           <string>Must not contain the key</string>
                          </property>
                          <property name="alignment">
-                          <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+                          <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
                          </property>
                         </widget>
                        </item>
