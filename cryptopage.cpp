@@ -263,6 +263,8 @@ void CryptoPage::setProgressBar()
             break;
         }
         win->ui->labelCryptoPassStrenth->setPalette(paletteLabel);
+        if(!win->ui->lineEditCryptoPass2->text().isEmpty())
+            checkPasswordsMatch();
     }
     else
     {
