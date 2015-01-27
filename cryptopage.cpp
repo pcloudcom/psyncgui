@@ -98,9 +98,15 @@ void CryptoPage::setCurrentPageIndex()
             (!subscbtntTime || QDateTime::fromTime_t(subscbtntTime) < QDateTime::currentDateTime()))    // trail or subscription expired
     {
         if(!subscbtntTime)
+        {
             win->ui->btnCryptoTryTrial->setVisible(true);
+            win->ui->label_trialdays->setVisible(true);
+        }
         else
+        {
             win->ui->btnCryptoTryTrial->setVisible(false);
+            win->ui->label_trialdays->setVisible(false);
+        }
 
         app->isCryptoExpired = true;
         this->pageIndex = 0;  //show welcome crypto page
