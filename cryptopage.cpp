@@ -370,7 +370,7 @@ void CryptoPage::setupCrypto()
     QDir localDir(QString(psync_fs_getmountpoint()).append(OSPathSeparator).append("Crypto Folder")); // temp hardcode according to the specification (pfs-13)
     if(localDir.exists())
     {
-        QMessageBox::critical(win,"Folder with the name \"Crypto Folder\" already exisits",
+        QMessageBox::critical(win,"Folder with the name \"Crypto Folder\" already exists",
                               "pCloud Drive was unable to create the Crypto Folder because there is another folder with the same name. You need to rename it and try again.");
         return;
     }
