@@ -276,7 +276,7 @@ void CryptoPage::setProgressBar()
 
 void CryptoPage::checkPasswordsMatch()
 {
-    if (win->ui->lineEditCryptoPass->text() == win->ui->lineEditCryptoPass2->text())
+    if ((win->ui->lineEditCryptoPass->text() == win->ui->lineEditCryptoPass2->text()) && !win->ui->lineEditCryptoPass->text().isEmpty())
         win->ui->label_passMatchPic->setPixmap(QPixmap(":/crypto/images/crypto/matchYes.png"));
     else
         win->ui->label_passMatchPic->setPixmap(QPixmap(":/crypto/images/crypto/matchNo.png"));
