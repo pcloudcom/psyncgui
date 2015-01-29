@@ -302,7 +302,7 @@ void SettingsPage::resetCryptoKey()
         return;
     }
 
-    if (QMessageBox::Yes == QMessageBox::warning(win, trUtf8("Resetting Passphrase"), trUtf8("By resetting the Passphrase you will delete all currently encrypted files. Are you sure?"),
+    if (QMessageBox::Yes == QMessageBox::warning(win, trUtf8("Resetting Passphrase"), trUtf8("By resetting your Passphrase you will delete all currently encrypted files. Are you sure?"),
                                                  QMessageBox::Yes|QMessageBox::Cancel))
     {
         qDebug()<<"Crypto: reset settings";

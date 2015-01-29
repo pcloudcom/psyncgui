@@ -162,17 +162,17 @@ int CryptoPage::getCurrentCryptoPageIndex()
 
 void CryptoPage::setTrialUI(bool hasSubscriptoin, uint expTime)
 {
+    QDateTime expDtTime =  QDateTime::fromTime_t(expTime);
+    int daysLeft = QDateTime::currentDateTime().daysTo(expDtTime);
+    win->ui->labelCryptoMainPayInfo->setText(QString("Your subcription for pCloud Crypto expires in %1 days").arg(daysLeft));
+
     if (!hasSubscriptoin) // trial
-    {
-        QDateTime expDtTime =  QDateTime::fromTime_t(expTime);
-        int daysLeft = QDateTime::currentDateTime().daysTo(expDtTime);
-        win->ui->labelCryptoMainPayInfo->setText(QString("Your Free Trial for Crypto expires in %1 days").arg(daysLeft));
+    {      
         win->ui->btnCryptoMainPagePay->setText("  Buy Now  ");
         win->ui->labelCryptoPrice->setVisible(true);
     }
     else
-    {
-        win->ui->labelCryptoMainPayInfo->setText("Change Your Payment Method");
+    {    
         win->ui->btnCryptoMainPagePay->setText(" Change Subscription ");
         win->ui->labelCryptoPrice->setVisible(false);
     }
@@ -302,8 +302,8 @@ void CryptoPage::tryTrial()
 }
 
 void CryptoPage::buyCrypto()
-{
-    QUrl url("https://www.pcloud.com/pricing-crypto");
+{    
+    QUrl url(QString("https://www.pcloud.com/payment.html?product=crypto#authtoken=").append(psync_get_auth_string()));
     QDesktopServices::openUrl(url);
 }
 
@@ -335,13 +335,13 @@ void CryptoPage::setupCrypto()
 
     if(win->ui->lineEditCryptoHint->text().isEmpty())
     {
-        QMessageBox::critical(win, "Cryto Key Hint","There is no hint provided for the Passphrase!");
+        QMessageBox::critical(win, "No Key Hint","There is no hint provided for the Passphrase!");
         return;
     }
 
     if(passStrenth < 1)
     {
-        QMessageBox::critical(win, "Passphrase not strong enough","The Passphrase is too weak. You need to provide a sufficiant Passphrase!");
+        QMessageBox::critical(win, "Passphrase not strong enough","Your Passphrase is too weak. You need to provide a sufficiant Passphrase!");
         return;
     }
 

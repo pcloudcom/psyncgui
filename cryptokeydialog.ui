@@ -71,7 +71,7 @@
         <item>
          <widget class="QToolButton" name="tbtnHint">
           <property name="text">
-           <string>See Key Hint</string>
+           <string>See Hint</string>
           </property>
          </widget>
         </item>

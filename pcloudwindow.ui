@@ -52,7 +52,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="pageAccntLogged">
        <property name="maximumSize">
@@ -1485,7 +1485,7 @@
                      <item>
                       <widget class="QLabel" name="label_24">
                        <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set up Passphrase so that &lt;span style=&quot; text-decoration: underline;&quot;&gt;only you can decrypt &lt;/span&gt;&lt;br/&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;and view&lt;/span&gt; the files in the Crypto Folder&lt;br/&gt;Your Passphrase should be: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set up your Passphrase so that &lt;span style=&quot; text-decoration: underline;&quot;&gt;only you can decrypt &lt;/span&gt;&lt;br/&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;and view&lt;/span&gt; the files in the Crypto Folder&lt;br/&gt;Your Passphrase should be: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                       </widget>
                      </item>
@@ -1654,7 +1654,7 @@
                        <item>
                         <widget class="QLabel" name="label_20">
                          <property name="text">
-                          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Passphrase Hint:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Hint:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
@@ -1680,7 +1680,7 @@
                           <bool>false</bool>
                          </property>
                          <property name="text">
-                          <string>Must not contain the key</string>
+                          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Must not contain the Passphrase&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
@@ -2136,7 +2136,7 @@
                    <item>
                     <widget class="QLabel" name="label_2">
                      <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Add your most important files to the Crypto&lt;br/&gt;Folder to safety store them in the cloud as a&lt;br/&gt;highly-secured encrypted information, which&lt;br/&gt;only you can decrypt and view with your &lt;br/&gt;Crypto Key.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Add your most important files to the Crypto&lt;br/&gt;Folder to safety store them in the cloud as a&lt;br/&gt;highly-secured encrypted information, which&lt;br/&gt;only you can decrypt and view with your &lt;br/&gt;Passphrase.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -2904,7 +2904,7 @@
                    <item>
                     <widget class="QLabel" name="label_18">
                      <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Resetting Passphrase will delete all currently encrypted files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Resetting your Passphrase will delete all currently encrypted files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
