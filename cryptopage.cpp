@@ -329,37 +329,37 @@ void CryptoPage::setupCrypto()
 
     if(win->ui->lineEditCryptoPass->text() != win->ui->lineEditCryptoPass2->text())
     {
-        QMessageBox::critical(win, "Error","The two Crypto Keys should match!");
+        QMessageBox::critical(win, "Error","The two Passphrases should match!");
         return;
     }
 
     if(win->ui->lineEditCryptoHint->text().isEmpty())
     {
-        QMessageBox::critical(win, "Cryto Key Hint","There is no hint provided for the Crypto Key!");
+        QMessageBox::critical(win, "Cryto Key Hint","There is no hint provided for the Passphrase!");
         return;
     }
 
     if(passStrenth < 1)
     {
-        QMessageBox::critical(win, "Crypto Key not strong enough","The Crypto Key is too weak. You need to provide a sufficiant Crypto Key!");
+        QMessageBox::critical(win, "Passphrase not strong enough","The Passphrase is too weak. You need to provide a sufficiant Passphrase!");
         return;
     }
 
     if(win->ui->lineEditCryptoHint->text().contains(win->ui->lineEditCryptoPass->text()))
     {
-        QMessageBox::critical(win,"Compromising Hint","Your Crypto Key Hint must not contain parts of or the entire Crypto Key!");
+        QMessageBox::critical(win,"Compromising Hint","Your Passphrase Hint must not contain parts of or the entire Passphrase!");
         return;
     }
 
     if(win->ui->lineEditCryptoHint->text().length() > 141)
     {
-        QMessageBox::critical(win,"Hint Too Long", "The Crypto Key Hint must not exceed 140 characters!");
+        QMessageBox::critical(win,"Hint Too Long", "The Passphrase Hint must not exceed 140 characters!");
         return;
     }
 
     QMessageBox msgBox;
     msgBox.setWindowTitle("pCloud Crypto");
-    msgBox.setText("Did you memorize your Crypto Key? Once forgotten it cannot be restored!");
+    msgBox.setText("Did you memorize your Passphrase? Once forgotten it cannot be restored!");
     msgBox.setIcon(QMessageBox::Warning);
     QPushButton *okBtn = msgBox.addButton(trUtf8("I got it"), QMessageBox::AcceptRole);
     msgBox.setDefaultButton(okBtn);
@@ -470,12 +470,12 @@ void CryptoPage::openCryptoFldr()
         }
         else
             QMessageBox::critical(NULL,"Crypto Folder Not Found",
-                                  "The Crypto Folder was either moved or deleted. You can either move it back, restore it from your Trash or re-create it by resetting the Crypto Key from pCloud Drive's settings.");
+                                  "The Crypto Folder was either moved or deleted. You can either move it back, restore it from your Trash or re-create it by resetting the Passphrase from pCloud Drive's settings.");
 
     }
     else
         QMessageBox::critical(NULL,"Crypto Folder Not Found",
-                              "The Crypto Folder was either moved or deleted. You can either move it back, restore it from your Trash or re-create it by resetting the Crypto Key from pCloud Drive's settings.");
+                              "The Crypto Folder was either moved or deleted. You can either move it back, restore it from your Trash or re-create it by resetting the Passphrase from pCloud Drive's settings.");
 }
 
 
@@ -527,13 +527,13 @@ void CryptoPage::showStartCryptoError(int startRes)
         QMessageBox::critical(win,"Crypto Error", "The Crypto Folder is not setted up.");
         break;
     case PSYNC_CRYPTO_START_UNKNOWN_KEY_FORMAT:
-        QMessageBox::critical(win,"Crypto Error", "Unknown Crypto Key format!");
+        QMessageBox::critical(win,"Crypto Error", "Unknown Passphrase format!");
         break;
     case PSYNC_CRYPTO_START_BAD_PASSWORD:
-        QMessageBox::critical(win,"Crypto Error", "Incorrect Crypto Key!");
+        QMessageBox::critical(win,"Crypto Error", "Incorrect Passphrase!");
         break;
     case PSYNC_CRYPTO_START_KEYS_DONT_MATCH:
-        QMessageBox::critical(win,"Crypto Error", "The two Crypto Keys should match.");
+        QMessageBox::critical(win,"Crypto Error", "The two Passphrase should match.");
         break;
     case PSYNC_CRYPTO_START_UNKNOWN_ERROR:
         QMessageBox::critical(win,"Crypto Error", "Unknown error.");

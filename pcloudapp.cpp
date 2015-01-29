@@ -1056,7 +1056,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     connect(this, SIGNAL(addNewShareSgnl(QString)), this, SLOT(addNewShare(QString)));
     bool savedauth = psync_get_bool_value("saveauth"); //works when syns is paused also
 
-    qDebug()<<"saveauth"<<savedauth << "username" <<psync_get_username()<< "auth"<< psync_get_auth_string();
+    qDebug()<<"saveauth"<<savedauth << "username" <<psync_get_username();
     //if (!savedauth)
     const char* auth = psync_get_auth_string();
     //if (!strcmp(psync_get_auth_string(), ""))

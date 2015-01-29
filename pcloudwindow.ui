@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>838</width>
+    <width>859</width>
     <height>507</height>
    </rect>
   </property>
@@ -1118,7 +1118,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="pageCryptoWelcome">
            <layout class="QHBoxLayout" name="horizontalLayout_52">
@@ -1485,7 +1485,7 @@
                      <item>
                       <widget class="QLabel" name="label_24">
                        <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set up Crypto Key so that &lt;span style=&quot; text-decoration: underline;&quot;&gt;only you can decrypt &lt;/span&gt;&lt;br/&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;and view&lt;/span&gt; the files in the Crypto Folder&lt;br/&gt;Your Key should be: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set up Passphrase so that &lt;span style=&quot; text-decoration: underline;&quot;&gt;only you can decrypt &lt;/span&gt;&lt;br/&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;and view&lt;/span&gt; the files in the Crypto Folder&lt;br/&gt;Your Passphrase should be: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                       </widget>
                      </item>
@@ -1503,7 +1503,7 @@
                      <item>
                       <widget class="QLabel" name="label_28">
                        <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Important:&lt;/span&gt; We don't have access to your Crypto Key,&lt;br/&gt;therefore once forgotten it cannot be restored!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Important:&lt;/span&gt; We don't have access to your Passphrase,&lt;br/&gt;therefore once forgotten it cannot be restored!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                        <property name="alignment">
                         <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
@@ -1537,7 +1537,7 @@
                      <item row="2" column="0">
                       <widget class="QLabel" name="label_19">
                        <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Repeat Crypto Key:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Repeat Passphrase:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                        <property name="alignment">
                         <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
@@ -1547,7 +1547,7 @@
                      <item row="0" column="0">
                       <widget class="QLabel" name="label_17">
                        <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Create Crypto Key:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Create Passphrase:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                        <property name="alignment">
                         <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
@@ -1654,7 +1654,7 @@
                        <item>
                         <widget class="QLabel" name="label_20">
                          <property name="text">
-                          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Key Hint:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Passphrase Hint:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
@@ -2269,7 +2269,7 @@
              </size>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>3</number>
             </property>
             <widget class="QWidget" name="tabGeneral">
              <attribute name="title">
@@ -2867,7 +2867,7 @@
               <item>
                <widget class="QGroupBox" name="groupBoxCryptoAsk">
                 <property name="title">
-                 <string>Ask for Crypto Key on pCloud Drive start</string>
+                 <string>Ask for Passphrase on pCloud Drive start</string>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_38">
                  <item>
@@ -2879,7 +2879,7 @@
                     </font>
                    </property>
                    <property name="text">
-                    <string>Automatically ask for the Crypto Key when pCloud Drive app starts</string>
+                    <string>Automatically ask for the Passphrase when pCloud Drive app starts</string>
                    </property>
                   </widget>
                  </item>
@@ -2896,7 +2896,7 @@
               <item>
                <widget class="QGroupBox" name="groupBoxCryptoReset">
                 <property name="title">
-                 <string>Reset Crypto Key</string>
+                 <string>Reset Passphrase</string>
                 </property>
                 <layout class="QHBoxLayout" name="horizontalLayout_38">
                  <item>
@@ -2904,7 +2904,7 @@
                    <item>
                     <widget class="QLabel" name="label_18">
                      <property name="text">
-                      <string>Resetting Crypto Key will delete all currently encrypted files.</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Resetting Passphrase will delete all currently encrypted files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -3584,7 +3584,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>838</width>
+     <width>859</width>
      <height>27</height>
     </rect>
    </property>

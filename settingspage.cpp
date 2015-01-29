@@ -298,11 +298,11 @@ void SettingsPage::resetCryptoKey()
 {
     if(psync_crypto_isstarted())
     {
-        QMessageBox::critical(win,trUtf8("Resetting Crypto Key"), trUtf8("Please lock your folder first!"));
+        QMessageBox::critical(win,trUtf8("Resetting Passphrase"), trUtf8("Please lock your folder first!"));
         return;
     }
 
-    if (QMessageBox::Yes == QMessageBox::warning(win, trUtf8("Resetting Crypto Key"), trUtf8("By resetting the Crypto Key you will delete all currently encrypted files. Are you sure?"),
+    if (QMessageBox::Yes == QMessageBox::warning(win, trUtf8("Resetting Passphrase"), trUtf8("By resetting the Passphrase you will delete all currently encrypted files. Are you sure?"),
                                                  QMessageBox::Yes|QMessageBox::Cancel))
     {
         qDebug()<<"Crypto: reset settings";
@@ -310,8 +310,8 @@ void SettingsPage::resetCryptoKey()
         int resetCrRes = psync_crypto_reset();
         if(!resetCrRes)
         {
-            QMessageBox::information(win,"Resetting Crypto Key",
-                                     trUtf8("An email with instructions has been sent to %1. Please, follow the steps to reset your Crypto Key.").arg(app->username));
+            QMessageBox::information(win,"Resetting Passphrase",
+                                     trUtf8("An email with instructions has been sent to %1. Please, follow the steps to reset your Passphrase.").arg(app->username));
 
             if (app->settings->value("autostartcrypto").toBool())
             {

@@ -46,7 +46,7 @@ void CryptoKeyDialog::unlockCrypto()
 {
     if (ui->line_cryptoKey->text().isEmpty())
     {
-        QMessageBox::critical(this,"pCloud Drive", "Please enter crypto key");
+        QMessageBox::critical(this,"pCloud Drive", "Please enter Passphrase");
     }
     else
     {
@@ -56,7 +56,7 @@ void CryptoKeyDialog::unlockCrypto()
             this->accept();
         else if(startres == PSYNC_CRYPTO_START_BAD_PASSWORD)
         {
-            QMessageBox::critical(this, "Error", "Incorrect Crypto Key!");
+            QMessageBox::critical(this, "Error", "Incorrect Passphrase!");
             return;
         }
         else
