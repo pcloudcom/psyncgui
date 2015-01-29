@@ -335,7 +335,7 @@ void CryptoPage::setupCrypto()
 
     if(win->ui->lineEditCryptoHint->text().isEmpty())
     {
-        QMessageBox::critical(win, "No Key Hint","There is no hint provided for the Passphrase!");
+        QMessageBox::critical(win, "Passphrase Hint","There is no hint provided for the Passphrase!");
         return;
     }
 
