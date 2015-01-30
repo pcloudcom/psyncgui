@@ -119,6 +119,7 @@ public:
     void showError(QString &err);
     void showOnClick();
     bool isLogedIn();
+    bool getIsCryptoExpired();
     void setLogWinError(const char *msg); // sets err in logwin; called from static function status_callback
     //Public functions ended with 'public' are made to be called from static function status_callback or another threads
     //signals are protected and can't be accessed by static vars
@@ -136,6 +137,8 @@ public:
     void addNewSharePublic(QString fldrPath); // from context menu
     void addNewSyncPublic();
     void addNewSyncLstPublic(bool addLocalFldrs); //are local or remote folders are selected
+    void lockCryptoFldrPublic();
+    void unlockCryptoFldrPublic();
     void setsyncSuggstLst(QStringList lst);
     void logoutPublic();
     void addNewFolderInMenu(QAction *fldrAction); // refresh menu when add new sync
@@ -168,6 +171,8 @@ signals:
     void addNewShareSgnl(QString fldrPath); //    void addNewShareSgnl(const char* fldrPath);
     void addNewSyncSgnl();
     void addNewSyncLstSgnl(bool addLocalFldrs);
+    void lockCryptoFldrSgnl();
+    void unlockCryptoFldrSgnl();
     void refreshSyncUIitemsSgnl();
     void logoutSignl();
 public slots:
@@ -199,8 +204,7 @@ public slots:
     void setErrText(int win, const char *err);
     void pauseSync();
     void resumeSync();
-    void openLocalDir(); // for local sync folder
-    void requestCryptoKey();
+    void openLocalDir(); // for local sync folder    
     void lockCryptoFldr();
     void unlockCryptoFldr();
     void openCryptoFldr();

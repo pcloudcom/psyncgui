@@ -435,7 +435,7 @@ void PCloudApp::createMenus()
 #endif
 
 }
-#ifdef Q_OS_WIN
+#ifdef Q_OS_WIM
 #define  PIPE_NAME L"\\\\.\\pipe\\shellextnpipe2"
 
 void PCloudApp::dbgPipeHlprSLot()
@@ -465,10 +465,13 @@ void PCloudApp::dbgPipeHlprSLot()
         }
     }
     //write
-    char buffer[100];
-    //strcpy(buffer, "sharefrP:\\shareFolder2");
-    strcpy(buffer, "addsyncD:\\newwww|");
-    //strcpy(buffer,"synclistl");
+    char buffer[270];
+    strcpy(buffer, "synclist*P:\\r(1)");
+    // strcpy(buffer, "addsyncD:\\newwww|");
+    //strcpy(buffer,"synclist");
+
+    //_tcscpy_s()
+
     DWORD size = (strlen(buffer))*sizeof(char);
 
     bool result = WriteFile(
@@ -1054,6 +1057,8 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     connect(this, SIGNAL(refreshSyncUIitemsSgnl()), this, SLOT(refreshSyncUIitems()));
     connect(this, SIGNAL(updateUserInfoSgnl(const char* &)), this, SLOT(updateUserInfo(const char* &)));
     connect(this, SIGNAL(addNewShareSgnl(QString)), this, SLOT(addNewShare(QString)));
+    connect(this, SIGNAL(unlockCryptoFldrSgnl()), this, SLOT(unlockCryptoFldr()));
+    connect(this, SIGNAL(lockCryptoFldrSgnl()), this, SLOT(lockCryptoFldr()));
     bool savedauth = psync_get_bool_value("saveauth"); //works when syns is paused also
 
     qDebug()<<"saveauth"<<savedauth << "username" <<psync_get_username();
@@ -1361,6 +1366,18 @@ void PCloudApp::getQuota()
             this->freeSpacePercentage = 100;
         }
     }
+}
+
+bool PCloudApp::getIsCryptoExpired()
+{
+    uint subscbtntTime = psync_crypto_expires();
+    if  (!subscbtntTime || QDateTime::fromTime_t(subscbtntTime).addDays(30) < QDateTime::currentDateTime()
+         || psync_crypto_issetup() == 0)
+        this->isCryptoExpired = true;
+    else
+        this->isCryptoExpired = false;
+
+    return this->isCryptoExpired;
 }
 
 void PCloudApp::trayMsgClicked()
@@ -1719,6 +1736,16 @@ void PCloudApp::addNewSyncLstPublic(bool addLocalFldrs)
     emit addNewSyncLstSgnl(addLocalFldrs);
 }
 
+void PCloudApp::unlockCryptoFldrPublic()
+{
+    emit this->unlockCryptoFldrSgnl();
+}
+
+void PCloudApp::lockCryptoFldrPublic()
+{
+    emit this->lockCryptoFldrSgnl();
+}
+
 void PCloudApp::setsyncSuggstLst(QStringList lst)
 {
     this->syncSuggstLst = lst;
@@ -1901,11 +1928,6 @@ void PCloudApp::openLocalDir()
     QDesktopServices::openUrl(QUrl::fromLocalFile(path));
 }
 
-void PCloudApp::requestCryptoKey()
-{
-    pCloudWin->cryptoPage->requestCryptoKey();
-}
-
 void PCloudApp::lockCryptoFldr()
 {
     pCloudWin->getCryptoPage()->lock();
@@ -1969,6 +1991,11 @@ void PCloudApp::addNewSyncLst(bool addLocalFldrs)
             syncFldrsWin->addLocalFldrs(&syncSuggstLst);
         else
             syncFldrsWin->addRemoteFldrs(&syncSuggstLst);
+    }
+    if(!syncFldrsWin->getItemsNum())
+    {
+        QMessageBox::information(NULL, "pCloud Drive", "Selected folders can not be synced. They are may be already synced or ecrypted!");
+        return;
     }
     this->showWindow(syncFldrsWin);
 }

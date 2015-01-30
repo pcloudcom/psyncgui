@@ -186,14 +186,17 @@ void SuggestnsBaseWin::addRemoteFldrs(QStringList *itemsLst)
     qDebug()<<"SuggestnsBaseWin::addRemoteFldrs";
     if(ui->treeWidget->topLevelItemCount())
         ui->treeWidget->clear();
-
+    bool hasCryptoSubscr = !app->getIsCryptoExpired();
     for(int i = 0; i < itemsLst->size(); i++)
     {
-        qDebug()<<"fill suggestions remote folders" << itemsLst->at(i);
+        QString remotepath = itemsLst->at(i);
+        if(hasCryptoSubscr && isCrypto(remotepath.toUtf8())) // don't suggest crypto fldr
+            continue;
+
+        qDebug()<<"fill suggestions remote folders" << remotepath;
         QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
         item->setCheckState(0,Qt::Checked);
         item->setData(0, Qt::UserRole, true);
-        QString remotepath = itemsLst->at(i);
         QString localpath, remoteFldrName = remotepath.section("/",1);
         if(!dfltDir->exists(remoteFldrName))
             localpath = dfltDir->path().append("/" + remoteFldrName);
@@ -207,7 +210,24 @@ void SuggestnsBaseWin::addRemoteFldrs(QStringList *itemsLst)
         item->setIcon(2,QIcon(":/32x32/images/32x32/sync.png"));
         item->setText(3, remotepath);
         item->setData(3, Qt::UserRole, remotepath);
+    }    
+}
+
+int SuggestnsBaseWin::getItemsNum()
+{
+    return ui->treeWidget->topLevelItemCount();
+}
+
+bool SuggestnsBaseWin::isCrypto(const char *path)
+{
+    int res = false;
+    pentry_t* pfldr =  psync_stat_path(path);
+    if (pfldr != NULL)
+    {
+        res = pfldr->folder.isencrypted;
+        free(pfldr);
     }
+    return res;
 }
 
 SuggestnsBaseWin::~SuggestnsBaseWin()
@@ -331,7 +351,7 @@ void SuggestnsBaseWin::finish()
 */
             psync_syncid_t id = psync_add_sync_by_path(localpath.toUtf8(),
                                                        (*it)->data(3,Qt::UserRole).toString().toUtf8(),
-                                                       (*it)->data(2,Qt::UserRole).toInt());
+                                                       PSYNC_FULL);
             if (id == -1)
             {
                 app->check_error();

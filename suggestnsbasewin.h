@@ -35,6 +35,7 @@ public:
     void addNewItem(QString &localpath, QString &remotepath, int type);    
     void addLocalFldrs(QStringList *itemsLst);
     void addRemoteFldrs(QStringList *itemsLst);
+    int getItemsNum();
     bool getChangeItem();
     void setChangeItem(bool);
     QString checkRemoteName(QString &entryName);    
@@ -43,6 +44,7 @@ private:
     bool addLocalFldrsFlag;
     QStringList *addFldrsLst;  //indicates if user adds a new sync or changes a suggested one
     QString getLocalName(QString &entryName);
+    bool isCrypto(const char* path);
 protected:        
     Ui::SuggestnsBaseWin *ui;
     void closeEvent(QCloseEvent *event);

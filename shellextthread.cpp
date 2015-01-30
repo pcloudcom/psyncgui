@@ -7,12 +7,11 @@
 
 
 #define  PIPE_NAME L"\\\\.\\pipe\\shellextnpipe2"
-#define BUFSIZE 8192
+#define BUFSIZE 8192 + MAX_PATH + 10 //crypto
 
 ShellExtThread::ShellExtThread(PCloudApp *a)
 {
     app = a;
-
     PSID pEveryoneSID = NULL;
     PACL pACL = NULL;
     PSECURITY_DESCRIPTOR pSD = NULL;
@@ -107,54 +106,103 @@ void ShellExtThread::run()
             {
                 qDebug() << "Qt: read pipe: request the synclist case" << bufferStr;
                 //send synclist to the client
+
+                bool isCrypto = false, canShare = false, multiselect = false;
                 char msgCopyFldrs[BUFSIZE];
                 if (app->isLogedIn())
                 {
-                    if(bufferStr[8] == '\0')
+                    QString remoteFldr("");
+                    if(bufferStr[8] != '\0') // clicked in drive
+                    {
                         localFldrsFlag = false;
+                        if(bufferStr[8] == '*') //check crypto
+                        {
+                            if(bufferStr[9] == '*')
+                            {
+                                multiselect = true;
+                                remoteFldr = bufferStr.replace("\\","/").remove(0,12);
+                            }
+                            else
+                                remoteFldr = bufferStr.replace("\\","/").remove(0,11);
+
+                            int i = -1;
+                            //check is selected in crypto subfodler
+                            while(remoteFldr.contains("/"))
+                            {
+                                remoteFldr = remoteFldr.section("/", 0, i);
+                                pentry_t* pfldr =  psync_stat_path(remoteFldr.toUtf8());
+                                if (pfldr != NULL && pfldr->folder.isencrypted)
+                                {
+                                    isCrypto = true;
+                                    break;
+                                    qDebug()<<"Qt is crypto" <<isCrypto<<multiselect;
+                                }
+                                i--;
+                            }
+                        }
+                    }
                     else
                         localFldrsFlag = true;
 
                     strcpy(msgCopyFldrs, "synclist");
-
-                    psync_folder_list_t *fldrsList = psync_get_sync_list();
-                    if (fldrsList != NULL && fldrsList->foldercnt)
+                    if (isCrypto && (bufferStr == remoteFldr) && !multiselect)  //crypto folder is selected
                     {
-                        if(localFldrsFlag)
-                        {
-                            char msgDwnldOnlyFldrs[260*fldrsList->foldercnt];
-                            strcpy(msgDwnldOnlyFldrs,"");
+                        canShare = false;
+                        strcat(msgCopyFldrs,"0"); //canshare
+                        strcat(msgCopyFldrs,":");
 
-                            for (uint i = 0; i< fldrsList->foldercnt; i++)
+                        if(psync_crypto_isstarted())
+                            strcat(msgCopyFldrs,"0"); //folder is unlocked
+                        else
+                            strcat(msgCopyFldrs,"1");
+
+                        strcat(msgCopyFldrs,"?"); //separator for crypto locked status
+                    }
+                    else if (isCrypto && (bufferStr != remoteFldr)) //selection in crypto folder
+                    {
+                        canShare = false;
+                        strcat(msgCopyFldrs,">");
+                    }
+                    else // no crypto selection
+                    {
+                        psync_folder_list_t *fldrsList = psync_get_sync_list();
+                        if (fldrsList != NULL && fldrsList->foldercnt)
+                        {
+                            if(localFldrsFlag)
                             {
-                                if(fldrsList->folders[i].synctype != PSYNC_DOWNLOAD_ONLY)
+                                char msgDwnldOnlyFldrs[260*fldrsList->foldercnt];
+                                strcpy(msgDwnldOnlyFldrs,"");
+
+                                for (uint i = 0; i< fldrsList->foldercnt; i++)
                                 {
-                                    strcat(msgCopyFldrs,fldrsList->folders[i].localpath);
+                                    if(fldrsList->folders[i].synctype != PSYNC_DOWNLOAD_ONLY)
+                                    {
+                                        strcat(msgCopyFldrs,fldrsList->folders[i].localpath);
+                                        strcat(msgCopyFldrs,"|");
+                                    }
+                                    else
+                                    {
+                                        strcat(msgDwnldOnlyFldrs,fldrsList->folders[i].localpath);
+                                        strcat(msgDwnldOnlyFldrs,"*");
+                                    }
+                                }
+                                strcat(msgCopyFldrs, msgDwnldOnlyFldrs); //concatenate folders lists
+                                qDebug() << "Qt: whole sync list for send locals :" << msgCopyFldrs;
+                            }
+                            else
+                            {
+                                for (uint i = 0; i< fldrsList->foldercnt; i++)
+                                {
+                                    QString remotePathStr = fldrsList->folders[i].remotepath;
+                                    qDebug()<<"Qt: read pipe: add remote folder to send" <<remotePathStr.toUtf8().constData();
+                                    strcat(msgCopyFldrs, remotePathStr.toUtf8().constData());
                                     strcat(msgCopyFldrs,"|");
                                 }
-                                else
-                                {
-                                    strcat(msgDwnldOnlyFldrs,fldrsList->folders[i].localpath);
-                                    strcat(msgDwnldOnlyFldrs,"*");
-                                }
                             }
-                            qDebug() << "Qt: read pipe: request the synclist case after build list";
-                            strcat(msgCopyFldrs, msgDwnldOnlyFldrs); //concatenate folders lists
-                            qDebug() << "Qt: whole sync list for send locals :" << msgCopyFldrs;
-                        }
-                        else
-                        {
-                            for (uint i = 0; i< fldrsList->foldercnt; i++)
-                            {
-                                QString remotePathStr = fldrsList->folders[i].remotepath;
-                                qDebug()<<"Qt: read pipe: add remote folder to send" <<remotePathStr.toUtf8().constData();
-                                strcat(msgCopyFldrs, remotePathStr.toUtf8().constData());
-                                strcat(msgCopyFldrs,"|");
-                            }
-                            qDebug() << "Qt: whole sync list for send remote :" << msgCopyFldrs;
                         }
                         free(fldrsList);
                     }
+                    qDebug() << "Qt: whole sync list for send remote :" << msgCopyFldrs;
                 }
                 else
                     strcpy(msgCopyFldrs,"notlogged");
@@ -242,6 +290,14 @@ void ShellExtThread::run()
             {
                 qDebug()<<"Qt: share folder case"<< bufferStr;
                 app->addNewSharePublic(bufferStr.remove(0,9).replace("\\","/")); // removes p: also
+            }
+            //MANAGE CRYPTO FLDR
+            else if(bufferStr.startsWith("managecryptofldr"))
+            {
+                if(psync_crypto_isstarted())
+                    app->lockCryptoFldrPublic();
+                else
+                    app->unlockCryptoFldrPublic();
             }
         }
         else

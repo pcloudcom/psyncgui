@@ -26,7 +26,7 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     win->ui->labelCryptoSetup->setFont(app->bigger3pFont);
     win->ui->progressBarCryptoPass->setMinimum(0);
     win->ui->progressBarCryptoPass->setMaximum(6);
-    win->ui->labelCryptoPassStrenth->setFont(app->smaller1pFont);
+    win->ui->labelCryptoPassStrenth->setFont(app->smaller1pFont);    
 
     //main page
     int maxbtnw = qMax(win->ui->btnCryptoOpenFldr->width(), qMax(win->ui->btnCryptoManageFldr->width(), win->ui->btnCryptoMainPagePay->width()));
@@ -47,7 +47,7 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
 #else
     win->ui->labelCryptoWelcmPic->setPixmap(QPixmap(":/crypto/images/crypto/cryptoWelcomePageXP.png"));
     win->ui->labelCryptoMainFldrPic->setPixmap(QPixmap(":/crypto/images/crypto/cryptoMainPageXP.png"));
-    win->ui->progressBarCryptoPass->setMaximumHeight(9);
+    win->ui->progressBarCryptoPass->setMaximumHeight(10);
     win->ui->pagedWidgetCrypto->setMaximumHeight(350);
 #endif
 
@@ -124,7 +124,7 @@ void CryptoPage::setCurrentPageIndex()
             win->ui->progressBarCryptoPass->setVisible(true);
 
         app->isCryptoExpired = true;
-        this->pageIndex = 1; //show welcome crypto page
+        this->pageIndex = 1; //show welcome crypto page        
     }
     else //show main crypto page
     {
@@ -242,9 +242,9 @@ void CryptoPage::setProgressBar()
     QString pass = win->ui->lineEditCryptoPass->text();
     if(!pass.isEmpty())
     {
-        win->ui->progressBarCryptoPass->setVisible(true);
+        win->ui->progressBarCryptoPass->setVisible(true);        
         passStrenth = psync_password_quality(pass.toUtf8());
-        qDebug()<<"setProgressBar "<<passStrenth;
+        qDebug()<<"setProgressBar "<<passStrenth<<win->ui->progressBarCryptoPass->height();
         QPalette paletteLabel;
         switch(passStrenth)
         {
