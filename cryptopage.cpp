@@ -76,7 +76,6 @@ void CryptoPage::initCryptoPage() //called when user has just loggedin
 {
     tryTrialClickedFlag = false;
     setCurrentPageIndex();
-    qDebug()<<"CryptoPage"<<this->pageIndex;
     if (this->pageIndex == 2 && app->settings->value("autostartcrypto").toBool() && !app->settings->value("showintrowin").toBool())
         QTimer::singleShot(3000, this, SLOT(requestCryptoKey()));
     this->autoResize();
@@ -96,7 +95,8 @@ void CryptoPage::setCurrentPageIndex()
     uint subscbtntTime = psync_crypto_expires();
     qDebug()<<QDateTime::fromTime_t(subscbtntTime);
     if (!tryTrialClickedFlag &&                                                                         //for case when entered pass but hasn't already setup and went to another flag
-            (!subscbtntTime || QDateTime::fromTime_t(subscbtntTime) < QDateTime::currentDateTime()))    // trail or subscription expired
+            (!subscbtntTime ||  //trial
+             QDateTime::fromTime_t(subscbtntTime).addDays(30) < QDateTime::currentDateTime()))    // in active subscription or 30 days read only mode
     {
         if(!subscbtntTime)
         {
@@ -164,15 +164,20 @@ void CryptoPage::setTrialUI(bool hasSubscriptoin, uint expTime)
 {
     QDateTime expDtTime =  QDateTime::fromTime_t(expTime);
     int daysLeft = QDateTime::currentDateTime().daysTo(expDtTime);
-    win->ui->labelCryptoMainPayInfo->setText(QString("Your subcription for pCloud Crypto expires in %1 days").arg(daysLeft));
+    if(daysLeft>1)
+        win->ui->labelCryptoMainPayInfo->setText(QString("pCloud Crypto expires in %1 days").arg(daysLeft));
+    else if(!daysLeft)
+        win->ui->labelCryptoMainPayInfo->setText(QString("pCloud Crypto expires today."));
+    else
+        win->ui->labelCryptoMainPayInfo->setText(QString("pCloud Crypto has expired."));
 
     if (!hasSubscriptoin) // trial
-    {      
+    {
         win->ui->btnCryptoMainPagePay->setText("  Buy Now  ");
         win->ui->labelCryptoPrice->setVisible(true);
     }
     else
-    {    
+    {
         win->ui->btnCryptoMainPagePay->setText(" Change Subscription ");
         win->ui->labelCryptoPrice->setVisible(false);
     }
@@ -229,6 +234,7 @@ void CryptoPage::changePage() //temp, for tests
     {
         win->ui->pagedWidgetCrypto->setCurrentIndex(2);
     }
+    qDebug()<<sender->objectName()<<win->ui->pagedWidgetCrypto->height()<<win->ui->pagedWidgetCrypto->width();
 }
 
 void CryptoPage::setProgressBar()
