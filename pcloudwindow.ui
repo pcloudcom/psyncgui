@@ -52,7 +52,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="pageAccntLogged">
        <property name="maximumSize">
@@ -1118,7 +1118,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="pageCryptoWelcome">
            <layout class="QHBoxLayout" name="horizontalLayout_52">
@@ -1388,19 +1388,6 @@
                     </widget>
                    </item>
                   </layout>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="btnNextTest">
-                   <property name="maximumSize">
-                    <size>
-                     <width>60</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>TmpNext</string>
-                   </property>
-                  </widget>
                  </item>
                  <item>
                   <spacer name="horizontalSpacer_22">
@@ -1702,13 +1689,6 @@
                        </property>
                       </widget>
                      </item>
-                     <item row="7" column="1">
-                      <widget class="QPushButton" name="btnNextTest2">
-                       <property name="text">
-                        <string>TmpNext</string>
-                       </property>
-                      </widget>
-                     </item>
                     </layout>
                    </item>
                   </layout>
@@ -1840,13 +1820,6 @@
                        <property name="icon">
                         <iconset resource="Resources.qrc">
                          <normaloff>:/crypto/images/crypto/crypto-unlck.png</normaloff>:/crypto/images/crypto/crypto-unlck.png</iconset>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="btnNextTest3">
-                       <property name="text">
-                        <string>TmpNext</string>
                        </property>
                       </widget>
                      </item>
@@ -3632,7 +3605,6 @@
   <tabstop>btnCryptoMoreInfo</tabstop>
   <tabstop>btnCryptoTryTrial</tabstop>
   <tabstop>btnCryptoBuy</tabstop>
-  <tabstop>btnNextTest</tabstop>
   <tabstop>btnMyPcloud</tabstop>
   <tabstop>btnChangePass</tabstop>
   <tabstop>listButtonsWidget</tabstop>

@@ -25,6 +25,13 @@ CryptoKeyDialog::CryptoKeyDialog(CryptoPage *cp, QWidget *parent) :
     ui->frame->setFrameShape(QFrame::StyledPanel);
     ui->frame->setMidLineWidth(3);
 
+    char *hint = NULL;
+    int getHintRes = psync_crypto_get_hint(&hint);
+    if (!strcmp(hint,"") || getHintRes)
+        ui->tbtnHint->setVisible(false);
+    else
+        free(hint);
+
     connect(ui->btnUnlock, SIGNAL(clicked()), this, SLOT(unlockCrypto()));
     connect(ui->tbtnHint, SIGNAL(clicked()), this, SLOT(setHintLabel()));
 
@@ -84,7 +91,7 @@ void CryptoKeyDialog::setHintLabel()
         free(hint);
     }
     else
-       this->showCryptoHintError(getHintRes);
+        this->showCryptoHintError(getHintRes);
 }
 
 void CryptoKeyDialog::showCryptoHintError(int resHint)

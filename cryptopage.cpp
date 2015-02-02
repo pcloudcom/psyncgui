@@ -50,14 +50,6 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     win->ui->progressBarCryptoPass->setMaximumHeight(10);
     win->ui->pagedWidgetCrypto->setMaximumHeight(350);
 #endif
-
-    connect(win->ui->btnNextTest, SIGNAL(clicked()),this, SLOT(changePage())); // TEMPPP
-    connect(win->ui->btnNextTest2, SIGNAL(clicked()),this, SLOT(changePage()));
-    connect(win->ui->btnNextTest3, SIGNAL(clicked()),this, SLOT(changePage()));
-    win->ui->btnNextTest->setVisible(false); //test btns
-    // win->ui->btnNextTest2->setVisible(false);
-    //win->ui->btnNextTest3->setVisible(false);
-
     connect(win->ui->pagedWidgetCrypto, SIGNAL(currentChanged(int)), this, SLOT(autoResize()));
     connect(win->ui->lineEditCryptoPass, SIGNAL(textChanged(QString)), this, SLOT(setProgressBar()));
     connect(win->ui->lineEditCryptoPass2, SIGNAL(textChanged(QString)), this, SLOT(checkPasswordsMatch()));
@@ -215,27 +207,6 @@ void CryptoPage::clearSetupUI()
     win->ui->label_passMatchPic->setPixmap(QPixmap(":/crypto/images/crypto/matchNo.png"));
 }
 
-void CryptoPage::changePage() //temp, for tests
-{
-    QObject *sender = QObject::sender();
-    qDebug()<<sender->objectName()<<win->ui->pagedWidgetCrypto->height();
-    if (sender->objectName() == "btnNextTest3")
-    {
-        win->ui->pagedWidgetCrypto->setCurrentIndex(0);
-    }
-    if (sender->objectName() == "btnNextTest")
-    {
-        win->ui->pagedWidgetCrypto->setCurrentIndex(1);
-        win->ui->progressBarCryptoPass->setVisible(false);
-    }
-
-    if (sender->objectName() == "btnNextTest2")
-    {
-        win->ui->pagedWidgetCrypto->setCurrentIndex(2);
-    }
-    qDebug()<<sender->objectName()<<win->ui->pagedWidgetCrypto->height()<<win->ui->pagedWidgetCrypto->width();
-}
-
 void CryptoPage::setProgressBar()
 {
     QString pass = win->ui->lineEditCryptoPass->text();
@@ -334,12 +305,6 @@ void CryptoPage::setupCrypto()
     if(win->ui->lineEditCryptoPass->text() != win->ui->lineEditCryptoPass2->text())
     {
         QMessageBox::critical(win, "Error","The two Passphrases should match!");
-        return;
-    }
-
-    if(win->ui->lineEditCryptoHint->text().isEmpty())
-    {
-        QMessageBox::critical(win, "Passphrase Hint","There is no hint provided for the Passphrase!");
         return;
     }
 
@@ -450,7 +415,7 @@ void CryptoPage::unlock()
 
 void CryptoPage::requestCryptoKey()
 {    
-    CryptoKeyDialog *requestCryptoKeyDialog = new CryptoKeyDialog(this);
+        CryptoKeyDialog *requestCryptoKeyDialog = new CryptoKeyDialog(this);
     if (requestCryptoKeyDialog->exec() == QDialog::Accepted) // also starts the crypto if pass is ok
     {
         emit this->setUnlockedFldrUI();

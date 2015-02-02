@@ -34,8 +34,7 @@ public slots:
     void openCryptoFldr();
     void requestCryptoKey();
     void clearSetupUI();
-private slots:
-    void changePage();
+private slots:    
     void autoResize();
     void tryTrial();
     void buyCrypto();
