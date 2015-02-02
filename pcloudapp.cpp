@@ -394,8 +394,8 @@ void PCloudApp::createMenus()
     sharesMenu->addAction(shareFolderAction);
 
     loggedmenu->addSeparator();
-    loggedmenu->addAction(accountAction);
     loggedmenu->addAction(settingsAction);
+    loggedmenu->addAction(accountAction);    
     loggedmenu->addAction(userinfoAction);
     loggedmenu->addAction(helpAction);
     loggedmenu->addAction(aboutPCloudAction);
