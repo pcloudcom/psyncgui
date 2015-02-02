@@ -55,8 +55,8 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     connect(win->ui->btnNextTest2, SIGNAL(clicked()),this, SLOT(changePage()));
     connect(win->ui->btnNextTest3, SIGNAL(clicked()),this, SLOT(changePage()));
     win->ui->btnNextTest->setVisible(false); //test btns
-    win->ui->btnNextTest2->setVisible(false);
-    win->ui->btnNextTest3->setVisible(false);
+    // win->ui->btnNextTest2->setVisible(false);
+    //win->ui->btnNextTest3->setVisible(false);
 
     connect(win->ui->pagedWidgetCrypto, SIGNAL(currentChanged(int)), this, SLOT(autoResize()));
     connect(win->ui->lineEditCryptoPass, SIGNAL(textChanged(QString)), this, SLOT(setProgressBar()));
@@ -82,7 +82,7 @@ void CryptoPage::initCryptoPage() //called when user has just loggedin
 }
 
 void CryptoPage::showEventCrypto()
-{
+{    
     setCurrentPageIndex();
     qDebug()<<this->pageIndex<<win->ui->pagedWidgetCrypto->height();
 }
@@ -143,7 +143,6 @@ void CryptoPage::setCurrentPageIndex()
 void CryptoPage::autoResize()
 {
     // auto resize
-    qDebug()<<"autoresize";
     for(int i = 0; i < win->ui->pagedWidgetCrypto->count(); i++)
     {
         if (i != this->pageIndex)
@@ -244,7 +243,6 @@ void CryptoPage::setProgressBar()
     {
         win->ui->progressBarCryptoPass->setVisible(true);        
         passStrenth = psync_password_quality(pass.toUtf8());
-        qDebug()<<"setProgressBar "<<passStrenth<<win->ui->progressBarCryptoPass->height();
         QPalette paletteLabel;
         switch(passStrenth)
         {
@@ -451,8 +449,7 @@ void CryptoPage::unlock()
 }
 
 void CryptoPage::requestCryptoKey()
-{
-    qDebug()<<"requestCryptoKey";
+{    
     CryptoKeyDialog *requestCryptoKeyDialog = new CryptoKeyDialog(this);
     if (requestCryptoKeyDialog->exec() == QDialog::Accepted) // also starts the crypto if pass is ok
     {
