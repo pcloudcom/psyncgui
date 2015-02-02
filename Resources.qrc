@@ -119,6 +119,8 @@
         <file>images/welcomes/welcomeSyncXP.png</file>
         <file>images/welcomes/welcomeOthersXP.png</file>
         <file>images/welcomes/welcomeFinish.png</file>
+        <file>images/welcomes/welcomeCrypto.png</file>
+        <file>images/welcomes/welcomeCryptoXP.png</file>
     </qresource>
     <qresource prefix="/crypto">
         <file>images/crypto/cryptoMainPage.png</file>

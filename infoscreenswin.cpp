@@ -22,14 +22,14 @@ InfoScreensWin::InfoScreensWin(PCloudApp *a, QWidget *parent) :
     ui->label_drive->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeDrive.png"));
     ui->label_sync->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeSync.png"));
     ui->label_shares->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeShares.png"));
-    ui->label_othrs->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeOthers.png"));
+    ui->label_crypto->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeCrypto.png"));
     ui->label_finish->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeFinish.png"));
 #else
     ui->label_intro->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeIntroXP.png"));
     ui->label_drive->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeDriveXP.png"));
     ui->label_sync->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeSyncXP.png"));
     ui->label_shares->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeSharesXP.png"));
-    ui->label_othrs->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeOthersXP.png"));
+    ui->label_crypto->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeCryptoXP.png"));
     ui->label_finish->setPixmap(QPixmap(":/welcomes/images/welcomes/welcomeFinishXP.png"));
 #endif
 
@@ -71,8 +71,8 @@ void InfoScreensWin::changePageContent(int index)
         qDebug()<<DRIVE_INFO_PAGE_NUM<<"DRIVE_INFO_PAGE_NUM";
         ui->btnPreviuos->setVisible(true);
         break;
-    case OTHERS_PLATFORMS_PAGE_NUM:
-        qDebug()<<OTHERS_PLATFORMS_PAGE_NUM<<"OTHERS_PLATFORMS_PAGE_NUM";
+    case CRYPTO_INTRO_PAGE_NUM:
+        qDebug()<<CRYPTO_INTRO_PAGE_NUM<<"CRYPTO_INTRO_PAGE_NUM";
         ui->btnOpenFldr->setVisible(false); //if was on last page
         ui->btnNext->setVisible(true);
         break;
