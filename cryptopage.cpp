@@ -298,7 +298,7 @@ void CryptoPage::setupCrypto()
 
     if(win->ui->lineEditCryptoPass->text().isEmpty() || win->ui->lineEditCryptoPass2->text().isEmpty())
     {
-        QMessageBox::critical(win, "pCloud","Please enter password in both fields!");
+        QMessageBox::critical(win, "pCloud","Please enter passphrase in both fields!");
         return;
     }
 
