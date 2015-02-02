@@ -1,4 +1,4 @@
-pclsync (2.0.0) stable; urgency=low
+pclsync (3.0.0) stable; urgency=low
 
  * Introducing pCloud Drive - virtual drive functionality
  * New Share options and management
@@ -6,5 +6,5 @@ pclsync (2.0.0) stable; urgency=low
  * Sync optimizations
  * Various performance improvements and bug fixes
 
-  -- Maintainer: pCloud <debian-maintainer@pcloud.com>  Mon, 07 Apr 2014 17:51:28 +0300
+  -- Maintainer pCloud <debian-maintainer@pcloud.com>  Mon, 07 Apr 2014 17:51:28 +0300
 	
