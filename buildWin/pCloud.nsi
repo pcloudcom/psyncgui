@@ -76,23 +76,13 @@ Section "Install"
   IfFileExists "$INSTDIR\pCloud.exe" Installed
 
   ReadRegStr $R3 HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\PSync" "UninstallString"
-;  MessageBox MB_OK "psync installer found: $R3"
 	StrCpy $R4 $R3 "" 1
 	StrCpy $R5 $R4 -1
- ;MessageBox MB_OK "psync installer found: r4 $R4 r5 $R5"
-/*${If} ${FileExists} "$R3"
-	nsExec::Exec $R3
-	MessageBox MB_OK "psync installer found $R3"
-${Else}
-	MessageBox MB_OK "psync installer not found $R3"
-${EndIf}
-*/
-
  IfFileExists $R5 UninstPsync	
-
+	
   WriteRegStr HKLM "SOFTWARE\PCloud\pCloud" "Install_Dir" "$INSTDIR"
 
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\PCloud" "DisplayName" "pCloud Drive
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\PCloud" "DisplayName" "pCloud Drive"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\PCloud" "UninstallString" '"$INSTDIR\pcloud-uninst.exe"'
   WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\PCloud" "NoModify" 1
   WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\PCloud" "NoRepair" 1
@@ -112,7 +102,8 @@ ${EndIf}
   File SimpleExt.dll 
   File MSVCR100D.dll
   File MSVCP100D.dll
-  File pcloud.ico
+  File CbFS32.lib
+  File pcloud.ico  
 	
   
   ${If} ${IsWinXP}
@@ -121,17 +112,20 @@ ${EndIf}
     nsExec::Exec '"$INSTDIR\VCRedist.exe" /q'
   ${EndIf}
   
-  File DokanInstall.exe
+  ;File DokanInstall.exe
+  File cbfsinstall.exe
   File pCloud.exe
   
   ClearErrors
-  nsExec::Exec '"$INSTDIR\DokanInstall.exe" /S'
+  ;nsExec::Exec '"$INSTDIR\DokanInstall.exe" /S'
+  nsExec::Exec '"$INSTDIR\cbfsinstall.exe" /S'
   IfErrors 0 noError
-    MessageBox MB_OK|MB_ICONEXCLAMATION "There is a problem installing Dokan driver."
+    MessageBox MB_OK|MB_ICONEXCLAMATION "There is a problem installing CBFS driver."
     Quit
   noError:
 	
-  Delete  "$INSTDIR\DokanInstall.exe"
+  ;Delete  "$INSTDIR\DokanInstall.exe"
+  Delete  "$INSTDIR\cbfsinstall.exe"
 
   CreateDirectory "$SMPROGRAMS\pCloud Drive"
   CreateShortCut "$SMPROGRAMS\pCloud Drive\pCloud Drive.lnk" "$INSTDIR\pCloud.exe" "" ""
@@ -148,25 +142,30 @@ ${EndIf}
 !endif
 
   MessageBox MB_YESNO|MB_ICONQUESTION "A computer restart is required. Do you want to restart now?" IDNO NoReboot
+    ${nsProcess::FindProcess} "explorer.exe" $R6
+    ${nsProcess::KillProcess} "explorer.exe" $R6
+   Exec "explorer.exe"	
     Reboot
   NoReboot:
   Quit
 
   UninstPsync:
-  MessageBox MB_YESNO|MB_ICONQUESTION "There is a pSync already installed on your system. Uninstall old version now?" IDNO NoReboot
-  nsExec::Exec $R5
+   MessageBox MB_YESNO|MB_ICONQUESTION "There is a pSync already installed on your system. Uninstall old version now?" IDNO NoReboot
+   MessageBox MB_OK|MB_ICONEXCLAMATION "IMPORTANT! In case uninstall wizard freezes in the end, please ignore it and return to this installer to continue."
+   nsExec::Exec $R5      
    Exec "$EXEPATH"
    Quit
 
   Installed:
-    MessageBox MB_YESNO|MB_ICONQUESTION "There is a pCloud already installed on your system. Uninstall old version now?" IDNO NoReboot
+    MessageBox MB_YESNO|MB_ICONQUESTION "There is a pCloud already installed on your system.Uninstall old version now?" IDNO NoReboot
+	
     nsExec::Exec $INSTDIR\pcloud-uninst.exe
     Exec "$EXEPATH"
     Quit
 
 SectionEnd ; end the section
 
-UninstallText "This will uninstall pCloud. Hit next to continue."
+UninstallText "This will uninstall pCloud Drive. Hit Uninstall to continue."
 
 !ifdef INNER
 Section "Uninstall"
@@ -198,7 +197,7 @@ Section "Uninstall"
 
   Delete "$INSTDIR\*.*"
   RMDir "$INSTDIR"
-  Exec '"$PROGRAMFILES\Dokan\DokanLibrary\DokanUninstall.exe" /S'
+  ;Exec '"$PROGRAMFILES\Dokan\DokanLibrary\DokanUninstall.exe" /S'
   ;nsExec::Exec "explorer.exe"	
   System::Call "explorer.exe"
 
