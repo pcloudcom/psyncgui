@@ -17,7 +17,7 @@ INSTALLS += target
 
 VERSION = 3.0.0
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
-DEFINES += DEBUG_LEVEL=D_NOTICE
+DEFINES += DEBUG_LEVEL=D_ERROR
 DEFINES += P_OS_WINDOWS
 DEFINES += _FILE_OFFSET_BITS=64
 DEFINES +=VFS
@@ -90,11 +90,18 @@ win32:RC_FILE= pCloud.rc
 RESOURCES += \
     Resources.qrc
 win32{
-LIBS += -L$$PWD/../.. -lpsync
-LIBS += -lssl -lcrypto -lsqlite -liphlpapi
 
-INCLUDEPATH += $$PWD/../.. $$PWD/../../pclsync
+#INCLUDEPATH += -LC:/Windows/System32
+
+#LIBS+= -lkernel32 -lmsvcrt -lsetupapi -lntdll -lversion -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lshell32 -lole32 -loleaut32 -luuid -lsetupapi #-lobbccp32 -lodbc32 -lsw2_32
+#LIBS += -LC:/Windows/System32/ -lkernel32 -ladvapi32 #-llibgcc_s_dw2-1
+LIBS += -L$$PWD/../..  -lpsync -lcbfs
+LIBS += -lssl -lcrypto -lsqlite -liphlpapi
+LIBS += -lversion -lsetupapi -lnetapi32
+
+INCLUDEPATH += $$PWD/../.. $$PWD/../../pclsync  -LC:/Windows/System32/
 #INCLUDEPATH += $$PWD/.. $$PWD/../.. $$PWD/../../sync/pclsync
+
 }
 
 unix{
@@ -102,6 +109,7 @@ LIBS += -lssl -lcrypto -lsqlite3 -lfuse
 LIBS += $$PWD/../../sync/pclsync/psynclib.a
 
 INCLUDEPATH += $$PWD/../../sync/pclsync
+
 }
 QMAKE_CXXFLAGS += -g
 
