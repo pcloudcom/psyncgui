@@ -9,8 +9,13 @@ ShareFolderWindow::ShareFolderWindow(PCloudApp *a, PCloudWindow *w, QString path
 {
     ui->setupUi(this);
     app = a;
-    pclwin = w;   
+    pclwin = w;
+    ui->rbtnView->setChecked(true);
+    ui->rbtnManage->setChecked(false);
+    ui->rbtnView->setChecked(false);
+
     remoteFldrsDialog = new RemoteTreesDialog("", this);
+
     if(path == NULL)
         this->contxMenuFlag = false;
     else
@@ -37,7 +42,7 @@ ShareFolderWindow::~ShareFolderWindow()
 
 void ShareFolderWindow::showEvent(QShowEvent *event)
 {
-    qDebug()<<"ShareFolderWindow::showEvent";    
+    qDebug()<<"ShareFolderWindow::showEvent";
     ui->email->clear();
     if(!contxMenuFlag)
     {
@@ -53,10 +58,13 @@ void ShareFolderWindow::showEvent(QShowEvent *event)
         ui->btnOpenRemoteDialog->setVisible(false);
     }
 
-    ui->permCreate->setChecked(false);
-    ui->permModify->setChecked(false);
-    ui->permDelete->setChecked(false);
+    ui->rbtnView->setChecked(true);
     ui->text_msg->clear();
+
+    if(psync_get_bool_value("business"))
+        ui->rbtnManage->setVisible(true);
+    else
+        ui->rbtnManage->setVisible(false);
 
     event->accept();
 }
@@ -86,7 +94,7 @@ void ShareFolderWindow::displayShareName()
     else
         ui->editline_sharename->setText(QString(fldrname.left(40) + "..."));
 
-    pentry_t *pfldr = psync_stat_path(this->fldrPath.toUtf8());    
+    pentry_t *pfldr = psync_stat_path(this->fldrPath.toUtf8());
     fldrid = pfldr->folder.folderid;
 }
 
@@ -119,7 +127,7 @@ void ShareFolderWindow::shareFolder()
     {
         showError("No email is specified.");
         return;
-    }    
+    }
 
     if (!app->isVerified)
     {
@@ -135,9 +143,8 @@ void ShareFolderWindow::shareFolder()
     mails.removeDuplicates();
 
     QByteArray name = ui->editline_sharename->text().toUtf8(), msg = ui->text_msg->toPlainText().toUtf8();
-    quint64 perms = 1 + (ui->permCreate->isChecked()? PSYNC_PERM_CREATE:0)+
-            (ui->permModify->isChecked()? PSYNC_PERM_MODIFY :0)+
-            (ui->permDelete->isChecked()? PSYNC_PERM_DELETE :0);
+    quint64 perms = 1 + (ui->rbtnEdit->isChecked()? PSYNC_PERM_CREATE + PSYNC_PERM_MODIFY + PSYNC_PERM_DELETE :0); //+
+             // (ui->rbtnManage->isChecked()? MANAGE_FLAG :0); // TO DO
 
     while (!mails.empty())
     {

@@ -86,17 +86,15 @@ void SharesPage::checkIsBusinessAccnt()
 
 QString SharesPage::getPermissions(quint8 perm)
 {
-    QString res;
-    res.append("Read, ");
-    if(perm & PSYNC_PERM_CREATE)
-        res.append("Create, ");
-    if(perm & PSYNC_PERM_MODIFY)
-        res.append("Modify, ");
-    if (perm & PSYNC_PERM_DELETE)
-        res.append("Delete, ");
-
-    res.remove(res.length()-2,2);
-    return res;
+    // if (!psync_get_bool_value("business"))
+    // {
+    if ((perm & PSYNC_PERM_CREATE) || (perm & PSYNC_PERM_DELETE) || (perm & PSYNC_PERM_MODIFY))
+        return QString("Edit");
+    else
+        return QString("View");
+    //}
+    //else
+    //  return QString("Manage"); // ++take manage flags cases
 }
 
 void SharesPage::addSharesRow(QTreeWidget *table, QStringList data, quint64 id, quint64 fldrid, quint8 perms, int index)
