@@ -107,7 +107,7 @@ void ShellExtThread::run()
                 qDebug() << "Qt: read pipe: request the synclist case" << bufferStr;
                 //send synclist to the client
 
-                bool isCrypto = false, canShare = false, multiselect = false;
+                bool isCrypto = false, canShare = true, multiselect = false;
                 char msgCopyFldrs[BUFSIZE];
                 if (app->isLogedIn())
                 {

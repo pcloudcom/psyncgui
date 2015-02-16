@@ -91,17 +91,11 @@ RESOURCES += \
     Resources.qrc
 win32{
 
-#INCLUDEPATH += -LC:/Windows/System32
-
-#LIBS+= -lkernel32 -lmsvcrt -lsetupapi -lntdll -lversion -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lshell32 -lole32 -loleaut32 -luuid -lsetupapi #-lobbccp32 -lodbc32 -lsw2_32
-#LIBS += -LC:/Windows/System32/ -lkernel32 -ladvapi32 #-llibgcc_s_dw2-1
 LIBS += -L$$PWD/../..  -lpsync -lcbfs
 LIBS += -lssl -lcrypto -lsqlite -liphlpapi
 LIBS += -lversion -lsetupapi -lnetapi32
 
 INCLUDEPATH += $$PWD/../.. $$PWD/../../pclsync  -LC:/Windows/System32/
-#INCLUDEPATH += $$PWD/.. $$PWD/../.. $$PWD/../../sync/pclsync
-
 }
 
 unix{

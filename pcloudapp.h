@@ -222,7 +222,7 @@ public slots:
     void setTimerInterval(int index);
     void networkConnectionChanged(QNetworkSession::State state);
 #ifdef Q_OS_WIN
-    void dbgPipeHlprSLot();
+   // void dbgPipeHlprSLot();
 #endif
 };
 
