@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>259</width>
-    <height>398</height>
+    <width>326</width>
+    <height>536</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -114,46 +114,30 @@
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <widget class="QCheckBox" name="permRead">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
+         <widget class="QRadioButton" name="rbtnView">
           <property name="text">
-           <string>Read</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
+           <string>View</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="permCreate">
+         <widget class="QRadioButton" name="rbtnEdit">
           <property name="text">
-           <string>Create</string>
+           <string>Edit</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="permModify">
+         <widget class="QRadioButton" name="rbtnManage">
           <property name="text">
-           <string>Modify</string>
+           <string>Manage</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="permDelete">
-          <property name="text">
-           <string>Delete</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_2">
+         <spacer name="horizontalSpacer_3">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>

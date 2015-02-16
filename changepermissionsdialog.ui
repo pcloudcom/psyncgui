@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>322</width>
-    <height>111</height>
+    <height>141</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -56,39 +56,23 @@
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="permRead">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
+      <widget class="QRadioButton" name="rbtnEdit">
        <property name="text">
-        <string>Read</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
+        <string>Edit</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="permCreate">
+      <widget class="QRadioButton" name="rbtnView">
        <property name="text">
-        <string>Create</string>
+        <string>View</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="permModify">
+      <widget class="QRadioButton" name="rbtnManage">
        <property name="text">
-        <string>Modify</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="permDelete">
-       <property name="text">
-        <string>Delete</string>
+        <string>Manage</string>
        </property>
       </widget>
      </item>
