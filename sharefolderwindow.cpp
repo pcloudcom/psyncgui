@@ -61,10 +61,10 @@ void ShareFolderWindow::showEvent(QShowEvent *event)
     ui->rbtnView->setChecked(true);
     ui->text_msg->clear();
 
-    if(psync_get_bool_value("business"))
-        ui->rbtnManage->setVisible(true);
-    else
-        ui->rbtnManage->setVisible(false);
+    //if(psync_get_bool_value("business")) //TEMP SPECIFICATION ....
+    //   ui->rbtnManage->setVisible(true);
+    //else
+    ui->rbtnManage->setVisible(false);
 
     event->accept();
 }
@@ -144,7 +144,7 @@ void ShareFolderWindow::shareFolder()
 
     QByteArray name = ui->editline_sharename->text().toUtf8(), msg = ui->text_msg->toPlainText().toUtf8();
     quint64 perms = 1 + (ui->rbtnEdit->isChecked()? PSYNC_PERM_CREATE + PSYNC_PERM_MODIFY + PSYNC_PERM_DELETE :0); //+
-             // (ui->rbtnManage->isChecked()? MANAGE_FLAG :0); // TO DO
+    // (ui->rbtnManage->isChecked()? MANAGE_FLAG :0); // TO DO
 
     while (!mails.empty())
     {
