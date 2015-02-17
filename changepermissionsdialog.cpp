@@ -19,6 +19,8 @@ ChangePermissionsDialog::ChangePermissionsDialog(quint32 perms, QString folderNa
     connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(hide()));
     connect(ui->btnSave,SIGNAL(clicked()),this,SLOT(setNewPermissions()));
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding); // to have min size for diff OSs
+    this->layout()->setSizeConstraint(QLayout::SetFixedSize);  //not resized
 }
 
 ChangePermissionsDialog::~ChangePermissionsDialog()
