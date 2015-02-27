@@ -124,6 +124,8 @@ void ShellExtThread::run()
                             }
                             else
                                 remoteFldr = bufferStr.replace("\\","/").remove(0,11);
+                            if(remoteFldr.startsWith("pCloud/pCloud Drive"))
+                                remoteFldr.remove(0,12);
 
                             int i = -1;
                             //check is selected in crypto subfodler
