@@ -231,7 +231,7 @@ void addSyncDialog::addSync()
 #ifdef Q_OS_WIN
     if (this->localpath.startsWith("\\\\pCloud\\pCloud Drive",Qt::CaseInsensitive))
     {
-        QMessageBox::critical(this, "pCloud Drive", trUtf8("Can not add new sync: The selected local folder is from pDrive!\nPlease select correct local folder!"));
+        QMessageBox::critical(this, "pCloud Drive", trUtf8("The local folder should not be selected from a network share!\nPlease select a folder from your local drives."));
         return;
     }
 #endif
