@@ -124,8 +124,11 @@ void ShellExtThread::run()
                             }
                             else
                                 remoteFldr = bufferStr.replace("\\","/").remove(0,11);
-                            if(remoteFldr.startsWith("pCloud/pCloud Drive"))
+                            if(remoteFldr.startsWith("pCloud/pCloud Drive")) //remove network preffix
+                            {
                                 remoteFldr.remove(0,19);
+                                bufferStr.remove(0,19);
+                            }
 
                             int i = -1;
                             //check is selected in crypto subfodler
