@@ -124,7 +124,7 @@ void ShellExtThread::run()
                             }
                             else
                                 remoteFldr = bufferStr.replace("\\","/").remove(0,11);
-                            if(remoteFldr.startsWith("pCloud/pCloud Drive")) //remove network preffix
+                            if(remoteFldr.startsWith("pCloud/pCloud Drive",Qt::CaseInsensitive)) //remove network preffix
                             {
                                 remoteFldr.remove(0,19);
                                 bufferStr.remove(0,19);
