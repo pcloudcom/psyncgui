@@ -2,8 +2,8 @@ pclsync (3.0.1) stable; urgency=low
  
  [ Damyanka Miteva ]
  
- *Introducing pCloud Crypto - client-side data encryption
- *Minor bug fixes
+ *Various bug fixes and stability improvement
+ *Share permissions re-design and optimization
 
 -- Maintainer pCloud <debian-maintainer@pcloud.com>  Mon, 07 Apr 2014 17:51:28 +0300
 	
