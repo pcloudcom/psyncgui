@@ -130,19 +130,24 @@ void ShellExtThread::run()
                                 bufferStr.remove(0,19);
                             }
 
-                            int i = -1;
                             //check is selected in crypto subfodler
-                            while(remoteFldr.contains("/"))
+                            pentry_t* pfldr =  psync_stat_path(remoteFldr.toUtf8());
+                            if (pfldr != NULL && pfldr->folder.isencrypted)
+                                isCrypto = true;
+                            else
                             {
-                                remoteFldr = remoteFldr.section("/", 0, i);
-                                pentry_t* pfldr =  psync_stat_path(remoteFldr.toUtf8());
-                                if (pfldr != NULL && pfldr->folder.isencrypted)
+                                int count = remoteFldr.count("/")-1;
+                                while (count)
                                 {
-                                    isCrypto = true;
-                                    break;
-                                    qDebug()<<"Qt is crypto" <<isCrypto<<multiselect;
+                                    remoteFldr = remoteFldr.section("/", 0, -2);
+                                    pentry_t* pfldr =  psync_stat_path(remoteFldr.toUtf8());
+                                    if (pfldr != NULL && pfldr->folder.isencrypted)
+                                    {
+                                        isCrypto = true;
+                                        break;
+                                    }
+                                    count--;
                                 }
-                                i--;
                             }
                         }
                     }
