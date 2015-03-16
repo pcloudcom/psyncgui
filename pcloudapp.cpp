@@ -344,6 +344,8 @@ void PCloudApp::createMenus()
     cryptoOpenFldrAction = new QAction(QIcon(":/menu/images/menu16x16/cryptoFldr.png"),trUtf8("Open Folder"),this);
     connect(cryptoOpenFldrAction, SIGNAL(triggered()), this, SLOT(openCryptoFldr()));
 
+    notfctnsAction = new QAction (QIcon(":/menu/images/menu 32x32/settings.png"),trUtf8("Notifications"), this); // to update Icon
+    connect(notfctnsAction, SIGNAL(triggered()), notificationsMngr, SLOT(showNotificationsWin()));
     settingsAction=new QAction(QIcon(":/menu/images/menu 32x32/settings.png"),trUtf8("Settings"), this); //Settings tab
     connect(settingsAction, SIGNAL(triggered()), this, SLOT(showSettings()));
     pauseSyncAction = new QAction(QIcon(":/menu/images/menu 48x48/pause.png"),trUtf8("Pause"),this);
@@ -394,8 +396,9 @@ void PCloudApp::createMenus()
     sharesMenu->addAction(shareFolderAction);
 
     loggedmenu->addSeparator();
+    loggedmenu->addAction(notfctnsAction);
     loggedmenu->addAction(settingsAction);
-    loggedmenu->addAction(accountAction);    
+    loggedmenu->addAction(accountAction);
     loggedmenu->addAction(userinfoAction);
     loggedmenu->addAction(helpAction);
     loggedmenu->addAction(aboutPCloudAction);
@@ -1043,8 +1046,10 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     pCloudWin = new PCloudWindow(this);  //needs settings to be created
     pCloudWin->layout()->setSizeConstraint(QLayout::SetFixedSize); //for auto resize
     pCloudWin->setOnlineItems(false);
+    notificationsMngr = new NotificationsManager();
     createMenus(); //needs sync to be started
-    tray->setContextMenu(notloggedmenu);
+    tray->setContextMenu(notloggedmenu);    
+    connect(loggedmenu, SIGNAL(triggered(QAction*)), this, SLOT(refreshTray()));
     connect(tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayClicked(QSystemTrayIcon::ActivationReason)));
     connect(tray, SIGNAL(messageClicked()), this, SLOT(trayMsgClicked()));
     connect(this, SIGNAL(showLoginSgnl()),this, SLOT(showLogin()));

@@ -10,6 +10,7 @@
 #include "shellextthread.h"
 #include "versiontimerthread.h"
 #include "pcloudwindow.h"
+#include "notificationsmanager.h"
 #include "sharefolderwindow.h"
 #include "welcomewin.h"
 #include "suggestnsbasewin.h"
@@ -51,6 +52,7 @@ private:
     QAction *addSyncAction;
     QAction *syncDownldAction;
     QAction *syncUpldAction;
+    QAction *notfctnsAction;
     QAction *dbgPipeHlprActn; //TEMP
     QMenu *notloggedmenu;
     QMenu *loggedmenu;
@@ -60,6 +62,7 @@ private:
     LoginWindow *logwin;     
     ShareFolderWindow *sharefolderwin;
     InfoScreensWin *introwin;
+    NotificationsManager *notificationsMngr;
     //MonitoringThread *mthread;
    // VersionTimerThread *versnThread;
     bool newVersionFlag;

@@ -46,7 +46,9 @@ SOURCES += main.cpp\
     acceptsharedialog.cpp \
     infoscreenswin.cpp \
     cryptokeydialog.cpp \
-    cryptopage.cpp
+    cryptopage.cpp \
+    notificationsmanager.cpp \
+    notifydelegate.cpp
 
 HEADERS  += loginwindow.h \
     registerwindow.h \
@@ -72,7 +74,9 @@ HEADERS  += loginwindow.h \
     acceptsharedialog.h \
     infoscreenswin.h \
     cryptokeydialog.h \
-    cryptopage.h
+    cryptopage.h \
+    notificationsmanager.h \
+    notifydelegate.h
 
 FORMS    += loginwindow.ui \
     registerwindow.ui \
