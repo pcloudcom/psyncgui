@@ -234,6 +234,7 @@ void PCloudApp::logOut(){
     this->hideAllWindows();
     if(!this->unlinkFlag)
         this->isFirstLaunch = false;
+    notificationsMngr->clear();
     this->showLogin();
     //p unmount
 }
@@ -1312,6 +1313,7 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     pCloudWin->setOnlineItems(true);
     pCloudWin->initOnlinePages();
     tray->setContextMenu(loggedmenu);
+    notificationsMngr->init();
 
     // isFirstLaunch = true; // for test TEMP
     /*

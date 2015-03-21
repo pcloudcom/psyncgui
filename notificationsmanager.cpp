@@ -95,20 +95,27 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     table->setModel(notificationsModel);
     notifyDelegate = new NotifyDelegate(table);
     table->setItemDelegate(notifyDelegate);
-    this->init();
+    //this->init();
     layout = new QVBoxLayout();
     hlayout = new QHBoxLayout();
     QLabel *label = new QLabel(), *icon = new QLabel();
     label->setText("pCloud Notifications");
+#ifdef Q_OS_LINUX
     label->setFont(app->bigger3pFont);
+#else
+    label->setFont(app->bigger1pFont);
+#endif
     label->setAlignment(Qt::AlignLeft);
     icon->setPixmap(QPixmap(":/48x34/images/48x34/notify.png"));
     icon->setMaximumWidth(68);
-    icon->setAlignment(Qt::AlignCenter);
+    icon->setMaximumHeight(80);
+    icon->setAlignment(Qt::AlignHCenter);
     hlayout->addWidget(icon);
     hlayout->addWidget(label);
     layout->addLayout(hlayout);
-    noNtfctnsLabel = new QLabel("No notifications available");
+    noNtfctnsLabel = new QLabel("No notifications available.");
+    noNtfctnsLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    noNtfctnsLabel->setMargin(50);
     layout->addWidget(noNtfctnsLabel);
     layout->addWidget(table);
     table->resizeColumnsToContents();
@@ -142,10 +149,14 @@ void NotificationsManager::loadModel(psync_notification_list_t* notifications)
 {
     qDebug()<<"loadmodel"<<notifications->newnotificationcnt <<notifications->notificationcnt<<notifications->notifications;
 
+     int ntfCnt = notifications->notificationcnt;
+     notificationsModel->setRowCount(ntfCnt);
+     actnsMngrArr = new actionsManager[ntfCnt];
+
     this->notifyDelegate->setNumNew(notifications->newnotificationcnt);
     lastNtfctId = notifications->notifications[0].notificationid;
 
-    for (int i = 0; i < notifications->notificationcnt; i++)
+    for (int i = 0; i < ntfCnt; i++)
     {
         qDebug()<< notifications->notifications[i].actiondata.folderid <<notifications->notifications[i].actionid <<
                    notifications->notifications[i].iconid<<notifications->notifications[i].isnew<<
@@ -160,7 +171,7 @@ void NotificationsManager::loadModel(psync_notification_list_t* notifications)
         actnsMngrArr[i].actionId = notifications->notifications[i].actionid;
         if(actnsMngrArr[i].actionId)
             actnsMngrArr[i].actionData = notifications->notifications[i].actiondata;
-//        qDebug()<<"actnsMngrArr"<<actnsMngrArr[i].actionId<<actnsMngrArr[i].actionData.folderid;
+        //        qDebug()<<"actnsMngrArr"<<actnsMngrArr[i].actionId<<actnsMngrArr[i].actionData.folderid;
 
         QModelIndex indexIcon = notificationsModel->index(i, 0, QModelIndex());
         QString iconpath = "/home/damyanka/git/psyncguiSeptm/psyncgui/images/testNtf.png";  //notifications->notifications[i].iconid
@@ -173,17 +184,16 @@ void NotificationsManager::loadModel(psync_notification_list_t* notifications)
     }
 }
 
-void NotificationsManager::clearModel(int rowscount)
+void NotificationsManager::clearModel()
 {
     notificationsModel->removeRows(0, notificationsModel->rowCount());
-    notificationsModel->setRowCount(rowscount);
 
     if (actnsMngrArr != NULL)
     {
         free(actnsMngrArr);
         actnsMngrArr = NULL;
     }
-    actnsMngrArr = new actionsManager[rowscount];
+    this->resetNums();
 }
 
 void NotificationsManager::init()
@@ -191,11 +201,6 @@ void NotificationsManager::init()
     psync_notification_list_t* notifications = psync_get_notifications();
     if(notifications != NULL && notifications->notificationcnt)
     {
-        if(noNtfctnsLabel->isVisible())
-            noNtfctnsLabel->setVisible(false);
-
-        this->notificationsModel->setRowCount(notifications->notificationcnt);
-        actnsMngrArr = new actionsManager[notifications->notificationcnt];
         this->loadModel(notifications);
         // ++ newcheck CASE ++ tray
         free(notifications);
@@ -205,6 +210,7 @@ void NotificationsManager::init()
     {
         qDebug()<<"initmodel no notif";
         this->table->setVisible(false);
+        this->noNtfctnsLabel->setVisible(true);
     }
 
     /*
@@ -242,6 +248,10 @@ void NotificationsManager::init()
     */
 }
 
+void NotificationsManager::clear()
+{
+    this->clearModel();
+}
 
 void NotificationsManager::updateNotfctnsModel(int newcnt)
 {
@@ -252,15 +262,16 @@ void NotificationsManager::updateNotfctnsModel(int newcnt)
 
         //numread = new
         qDebug()<<"updateNotfctnsModel"<< notifications->newnotificationcnt << notifications->notificationcnt;
-        if (notifications != NULL && notifications->newnotificationcnt)
+        if (notifications != NULL && notifications->newnotificationcnt) //first notifications
         {
             if(!table->isVisible())
+            {
+                noNtfctnsLabel->setVisible(false);
                 table->setVisible(true);
+            }
 
-            int cnt = notifications->notificationcnt;
-            this->clearModel(cnt);
+            this->clearModel();
             this->loadModel(notifications);
-
 
             /*     for (int i = 0; i < cnt; i++)
         {
