@@ -16,11 +16,13 @@ public:
                       const QModelIndex &index) const;
     void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    void setNumNew(quint32 newcnt);
 protected:
-    virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
+    //virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
 private:
     int minColumnHeight;
-    QColor mouseOverColor;
+    quint32 numNew;
+    QColor mouseOverColor, redNtfColor, newNtfColor, separatorColor;
 };
 
 #endif // NOTIFYDELEGATE_H

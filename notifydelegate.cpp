@@ -10,21 +10,27 @@
 #include <QMouseEvent>
 
 
-NotifyDelegate::NotifyDelegate(QObject *parent)
+NotifyDelegate::NotifyDelegate(QObject *parent) //++ numRed
     : QStyledItemDelegate(parent)
 {
     qDebug()<<"NotifyDelegate create";
     //++ calc size hint width - min(desktop/6 150)
     //iconmargin
     minColumnHeight = 60;
-    mouseOverColor = "#F3F6F3";
+    numNew = 0;
+    separatorColor = "#EEEEEE";
+    mouseOverColor = "#F3FBFE";
+    redNtfColor = "#F4F4F4";
 
 }
 
+void NotifyDelegate::setNumNew(quint32 newcnt)
+{
+    this->numNew = newcnt;
+}
 
 void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-
     if (!index.isValid())
         QStyledItemDelegate::paint(painter, option, index);
 
@@ -42,18 +48,18 @@ void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         painter->drawPixmap(rect, pixmap, rect);
 
         QPen bottomLine;
-        bottomLine.setColor(Qt::gray);
+        bottomLine.setColor(separatorColor);
         bottomLine.setWidth(1);
         painter->setPen(bottomLine);
 
-        if(option.state & QStyle::State_Selected) //--
-            painter->fillRect(option.rect, option.palette.color(QPalette::Background));
+        //  if(option.state & QStyle::State_Selected)
+        //    painter->fillRect(option.rect, option.palette.color(QPalette::Background));
 
         bool hovered = false;
         if(option.state & QStyle::State_MouseOver)
         {
             hovered = true;
-            QBrush brush(QColor("#F3FBF3"));
+            QBrush brush(mouseOverColor);
             painter->fillRect(option.rect, brush);
         }
         else
@@ -65,8 +71,7 @@ void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
                 if(hoveredIndex.row() == index.row())
                 {
                     hovered = true;
-                    QColor mouseoverClr("#F3FBF3");
-                    QBrush brush(mouseoverClr);
+                    QBrush brush(mouseOverColor);
                     painter->fillRect(option.rect, brush);
                     table->update(hoveredIndex);
                 }
@@ -87,22 +92,22 @@ void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         options.text = "";
 
         QSize size = doc.size().toSize();
-        size.setHeight(68);
+        size.setHeight(72);
         painter->translate(options.rect.left(), options.rect.top());
         QRect clip(0,0, options.rect.width(), options.rect.height());
 
         QPen bottomLine;
-        bottomLine.setColor(Qt::gray);
+        bottomLine.setColor(separatorColor);
         bottomLine.setWidth(1);
         painter->setPen(bottomLine);
 
-        if(option.state & QStyle::State_Selected)
-            painter->fillRect(clip, option.palette.color(QPalette::Background));
+        // if(option.state & QStyle::State_Selected)
+        //   painter->fillRect(clip, option.palette.color(QPalette::Background));
 
         bool hovered;
         if(option.state & QStyle::State_MouseOver )
         {
-            QBrush brush(QColor("#F3FBF3")); // const
+            QBrush brush(mouseOverColor);
             painter->fillRect(clip, brush);
         }
         else
@@ -114,7 +119,7 @@ void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
                 if(hoveredIndex.row() == index.row())
                 {
                     hovered = true;
-                    QBrush brush(QColor("#F3FBF3"));
+                    QBrush brush(mouseOverColor);
                     painter->fillRect(clip, brush);
                     table->update(hoveredIndex);
                 }
@@ -131,6 +136,7 @@ void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 
 QSize NotifyDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    //qDebug()<<"sizeHint";
     if (!index.isValid())
         return QStyledItemDelegate::sizeHint(option, index);
 
@@ -139,14 +145,20 @@ QSize NotifyDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelI
 
     if (index.column() == 0)
     {
-        return QSize(60,60);
+        return QSize(60,72);
     }
     else
     {
         QTextDocument doc;
+        // QTextOption opt(Qt::AlignVCenter);
+        //opt.setWrapMode(QTextOption::WordWrap);
+        doc.setDefaultTextOption(QTextOption(Qt::AlignVCenter));
+        //doc.setDefaultTextOption(opt);
         doc.setHtml(options.text);
-        //qDebug()<<"sizeHint 1"<< index.column()<< index.row()<< doc.size().height() <<option.rect.height() <<doc.size().width();
+        doc.setTextWidth(320.0);
+        qDebug()<<"sizeHint 1"<< index.column()<< index.row()<< doc.size().height() <<option.rect.height() <<doc.size().width();
         return QSize(doc.size().width(), ((minColumnHeight>  doc.size().height()) ? minColumnHeight :  doc.size().height()));
+        //return QSize(, ((minColumnHeight>  doc.size().height()) ? minColumnHeight :  doc.size().height()));
     }
 }
 
@@ -158,13 +170,14 @@ QWidget *NotifyDelegate::createEditor(QWidget *parent, const QStyleOptionViewIte
     {
         QLabel *iconLabel = new QLabel(parent);
         iconLabel->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
-        iconLabel->setMargin(10); // to specify
+        iconLabel->setMargin(10);
         iconLabel->setMouseTracking(true);
         return iconLabel;
     }
     else if (index.column() == 1)
     {
         QLabel *textLabel = new QLabel(parent);
+        //textLabel->setMargin(12);
         textLabel->setMouseTracking(true);
         return textLabel;
     }
@@ -175,7 +188,7 @@ QWidget *NotifyDelegate::createEditor(QWidget *parent, const QStyleOptionViewIte
 
 void NotifyDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-   // qDebug()<<"setEditorData"<<index.model()->data(index, Qt::DisplayRole).toString();
+    //qDebug()<<"setEditorData"<<index.model()->data(index, Qt::DisplayRole).toString();
 
     if (index.column() == 0 )
     {
@@ -197,27 +210,28 @@ void NotifyDelegate::setEditorData(QWidget *editor, const QModelIndex &index) co
 
 void NotifyDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
- //   qDebug()<< "setModelData";
+    //qDebug()<< "setModelData"<<index;
     if(index.column() == 1)
     {
         QLabel *label = static_cast<QLabel*>(editor);
         model->setData(index,label->text(),Qt::EditRole);
-       // qDebug()<< "setModelData" << model->data(index,Qt::DisplayRole);
+        // qDebug()<< "setModelData" << model->data(index,Qt::DisplayRole);
     }
     else
         QStyledItemDelegate::setModelData(editor, model, index);
 }
 
 
-void NotifyDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &/* index */) const
+void NotifyDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex & index ) const
 {
+    //  qDebug()<<"updateEditorGeometry"<<index;
     editor->setGeometry(option.rect);
 }
-
+/*
 bool NotifyDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
 {
     qDebug()<<"editorEvent"<<index;
 
     return QStyledItemDelegate::editorEvent(event,model,option,index);
 }
-
+*/

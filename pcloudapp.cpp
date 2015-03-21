@@ -344,7 +344,7 @@ void PCloudApp::createMenus()
     cryptoOpenFldrAction = new QAction(QIcon(":/menu/images/menu16x16/cryptoFldr.png"),trUtf8("Open Folder"),this);
     connect(cryptoOpenFldrAction, SIGNAL(triggered()), this, SLOT(openCryptoFldr()));
 
-    notfctnsAction = new QAction (QIcon(":/menu/images/menu 32x32/settings.png"),trUtf8("Notifications"), this); // to update Icon
+    notfctnsAction = new QAction (QIcon(":/menu/images/menu 32x32/notifications.png"),trUtf8("Notifications"), this); // to update Icon
     connect(notfctnsAction, SIGNAL(triggered()), notificationsMngr, SLOT(showNotificationsWin()));
     settingsAction=new QAction(QIcon(":/menu/images/menu 32x32/settings.png"),trUtf8("Settings"), this); //Settings tab
     connect(settingsAction, SIGNAL(triggered()), this, SLOT(showSettings()));
@@ -354,7 +354,6 @@ void PCloudApp::createMenus()
     connect(resumeSyncAction, SIGNAL(triggered()), this, SLOT(resumeSync()));
     syncDownldAction = new QAction(QIcon(":/menu/images/menu 48x48/download.png"),trUtf8("Everything downloaded"),this);
     syncUpldAction = new QAction(QIcon(":/menu/images/menu 48x48/upload.png"),trUtf8("Everything uploaded"),this);
-
 
     //sync actions
     syncAction = new QAction(QIcon(":/menu/images/menu16x16/manage.png"),trUtf8("Manage"),this);
@@ -963,6 +962,13 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
     mutex.unlock();
 }
 
+void notification_callback(quint32 notificationcnt, quint32 newnotificationcnt)
+{
+    qDebug()<<"notification_callback"<<notificationcnt<<newnotificationcnt;
+    //if (newnotificationcnt)
+        PCloudApp::appStatic->updateNotfctnsModelPublic(newnotificationcnt);
+}
+
 PCloudApp::PCloudApp(int &argc, char **argv) :
     QApplication(argc, argv)
 {
@@ -1020,6 +1026,8 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
         this->quit();
     }
 */
+*/    
+    psync_set_notification_callback(notification_callback,"48x48"); //have to be called between init and start
     psync_start_sync(status_callback,event_callback); // if not started from context menu ++
     QApplication::setOverrideCursor(Qt::WaitCursor);
     for(;;)
@@ -1046,7 +1054,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     pCloudWin = new PCloudWindow(this);  //needs settings to be created
     pCloudWin->layout()->setSizeConstraint(QLayout::SetFixedSize); //for auto resize
     pCloudWin->setOnlineItems(false);
-    notificationsMngr = new NotificationsManager();
+    notificationsMngr = new NotificationsManager(this);
     createMenus(); //needs sync to be started
     tray->setContextMenu(notloggedmenu);    
     connect(loggedmenu, SIGNAL(triggered(QAction*)), this, SLOT(refreshTray()));
@@ -1064,6 +1072,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     connect(this, SIGNAL(addNewShareSgnl(QString)), this, SLOT(addNewShare(QString)));
     connect(this, SIGNAL(unlockCryptoFldrSgnl()), this, SLOT(unlockCryptoFldr()));
     connect(this, SIGNAL(lockCryptoFldrSgnl()), this, SLOT(lockCryptoFldr()));
+    connect(this, SIGNAL(updateNotfctnsModelSgnl(int)), notificationsMngr, SLOT(updateNotfctnsModel(int)));
     bool savedauth = psync_get_bool_value("saveauth"); //works when syns is paused also
 
     qDebug()<<"saveauth"<<savedauth << "username" <<psync_get_username();
@@ -1749,6 +1758,12 @@ void PCloudApp::unlockCryptoFldrPublic()
 void PCloudApp::lockCryptoFldrPublic()
 {
     emit this->lockCryptoFldrSgnl();
+}
+
+void PCloudApp::updateNotfctnsModelPublic(int newcnt)
+{    
+    emit this->updateNotfctnsModelSgnl(newcnt);
+    //++ change tray
 }
 
 void PCloudApp::setsyncSuggstLst(QStringList lst)

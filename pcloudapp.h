@@ -142,6 +142,7 @@ public:
     void addNewSyncLstPublic(bool addLocalFldrs); //are local or remote folders are selected
     void lockCryptoFldrPublic();
     void unlockCryptoFldrPublic();
+    void updateNotfctnsModelPublic(int newcnt);
     void setsyncSuggstLst(QStringList lst);
     void logoutPublic();
     void addNewFolderInMenu(QAction *fldrAction); // refresh menu when add new sync
@@ -177,6 +178,7 @@ signals:
     void lockCryptoFldrSgnl();
     void unlockCryptoFldrSgnl();
     void refreshSyncUIitemsSgnl();
+    void updateNotfctnsModelSgnl(int newcnt);
     void logoutSignl();
 public slots:
     void showMsgBox(QString title, QString msg, int msgIconVal);
@@ -218,7 +220,7 @@ public slots:
     void updateSyncStatus();
     void refreshSyncUIitems();
     void createSyncFolderActions();
-    void updateUserInfo(const char* &param);
+    void updateUserInfo(const char* &param);    
     void changeOnlineItems(bool logged);
     void check_version();
     void showPopupNewVersion();
