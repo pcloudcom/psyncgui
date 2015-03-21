@@ -27,6 +27,7 @@
         <file>images/sync-w.png</file>
         <file>images/sync_XP.png</file>
         <file>images/sync_XP_146x226.png</file>
+        <file>images/testNtf.png</file>
     </qresource>
     <qresource prefix="/128x128">
         <file>images/128x128/FolderIconX.png</file>
@@ -105,6 +106,7 @@
         <file>images/32x32/sync.png</file>
         <file>images/32x32/pcl-folder.png</file>
         <file>images/32x32/empty-folder.png</file>
+        <file>images/32x32/notifications.png</file>
     </qresource>
     <qresource prefix="/welcomes">
         <file>images/welcomes/welcomeOthers.png</file>
@@ -131,5 +133,8 @@
         <file>images/crypto/crypto-unlck.png</file>
         <file>images/crypto/cryptoMainPageXP.png</file>
         <file>images/crypto/cryptoWelcomePageXP.png</file>
+    </qresource>
+    <qresource prefix="/48x34">
+        <file>images/48x34/notify.png</file>
     </qresource>
 </RCC>
