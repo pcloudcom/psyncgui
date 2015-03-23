@@ -256,7 +256,8 @@ void NotificationsManager::clear()
 void NotificationsManager::updateNotfctnsModel(int newcnt)
 {
     // if(!notifywin->isVisible())
-    if(this->lastNtfctId != -1 && newcnt) // callbacked is called after marking red
+    //  if(this->lastNtfctId != -1 && newcnt) // callbacked is called after marking red
+    if(newcnt) // callbacked is called after marking red
     {
         psync_notification_list_t* notifications = psync_get_notifications();
 

@@ -19,6 +19,7 @@ NotifyDelegate::NotifyDelegate(QObject *parent) //++ numRed
     minColumnHeight = 60;
     numNew = 0;
     separatorColor = "#EEEEEE";
+    separatorColor = "#E0E0E0"; //eeeeee
     mouseOverColor = "#F3FBFE";
     redNtfColor = "#F4F4F4";
 
@@ -54,6 +55,12 @@ void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 
         //  if(option.state & QStyle::State_Selected)
         //    painter->fillRect(option.rect, option.palette.color(QPalette::Background));
+
+        if(index.row() < numNew) //new notification
+        {
+            QBrush brush(newNtfColor);
+            painter->fillRect(option.rect, brush);
+        }
 
         bool hovered = false;
         if(option.state & QStyle::State_MouseOver)
@@ -103,6 +110,12 @@ void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 
         // if(option.state & QStyle::State_Selected)
         //   painter->fillRect(clip, option.palette.color(QPalette::Background));
+
+        if(index.row() < numNew) //new notification
+        {
+            QBrush brush(newNtfColor);
+            painter->fillRect(clip, brush);
+        }
 
         bool hovered;
         if(option.state & QStyle::State_MouseOver )
