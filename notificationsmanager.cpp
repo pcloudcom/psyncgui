@@ -172,8 +172,14 @@ void NotificationsManager::loadModel(psync_notification_list_t* notifications)
             actnsMngrArr[i].actionData = notifications->notifications[i].actiondata;
         //        qDebug()<<"actnsMngrArr"<<actnsMngrArr[i].actionId<<actnsMngrArr[i].actionData.folderid;
 
-        QModelIndex indexIcon = notificationsModel->index(i, 0, QModelIndex());
-        QString iconpath = "/home/damyanka/git/psyncguiSeptm/psyncgui/images/testNtf.png";  //notifications->notifications[i].iconid
+        QModelIndex indexIcon = notificationsModel->index(i, 0, QModelIndex());        
+        QString iconpath;
+        //if(strcmp(notifications->notifications[i].thumb, ""))
+        if (notifications->notifications[i].thumb != NULL)
+            iconpath = notifications->notifications[i].thumb;
+        else
+             //iconpath = dfltname+ notifications->notifications[i].iconid
+            iconpath = "/home/damyanka/git/psyncguiSeptm/psyncgui/images/testNtf.png";
         notificationsModel->setData(indexIcon, QVariant(iconpath));
 
         table->openPersistentEditor(notificationsModel->index(i, 1));
