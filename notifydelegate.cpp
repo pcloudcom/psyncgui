@@ -91,7 +91,9 @@ void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
     {
         painter->save();
         QTextDocument doc;
-        doc.setDefaultTextOption(QTextOption(Qt::AlignVCenter));
+        QTextOption opt(Qt::AlignVCenter);
+        opt.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+        doc.setDefaultTextOption(opt);
         doc.setHtml(options.text);
         doc.setPageSize(QSize(options.rect.size()));
         // !!!doc.setDocumentMargin(12.0);
@@ -162,10 +164,9 @@ QSize NotifyDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelI
     else
     {
         QTextDocument doc;
-        // QTextOption opt(Qt::AlignVCenter);
-        //opt.setWrapMode(QTextOption::WordWrap);
-        doc.setDefaultTextOption(QTextOption(Qt::AlignVCenter));
-        //doc.setDefaultTextOption(opt);
+        QTextOption opt(Qt::AlignVCenter);
+        opt.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+        doc.setDefaultTextOption(opt);
         doc.setHtml(options.text);
         doc.setTextWidth(320.0);
         qDebug()<<"sizeHint 1"<< index.column()<< index.row()<< doc.size().height() <<option.rect.height() <<doc.size().width();
