@@ -18,11 +18,10 @@ NotifyDelegate::NotifyDelegate(QObject *parent) //++ numRed
     //iconmargin
     minColumnHeight = 60;
     numNew = 0;
-    separatorColor = "#EEEEEE";
     separatorColor = "#E0E0E0"; //eeeeee
     mouseOverColor = "#F3FBFE";
     redNtfColor = "#F4F4F4";
-
+    newNtfColor = Qt::white;
 }
 
 void NotifyDelegate::setNumNew(quint32 newcnt)

@@ -11,7 +11,7 @@ NotificationsWidget::NotificationsWidget(NotificationsManager *mngr, QWidget *pa
 {
     setFocusPolicy(Qt::ClickFocus);
     this->setWindowFlags(Qt::Dialog);
-    ////this->setWindowFlags(Qt::FramelessWindowHint);
+    this->setWindowFlags(Qt::FramelessWindowHint);
     this->setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
     this->setMinimumWidth(420);
     this->mngrParent = mngr;
@@ -95,7 +95,6 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     table->setModel(notificationsModel);
     notifyDelegate = new NotifyDelegate(table);
     table->setItemDelegate(notifyDelegate);
-    //this->init();
     layout = new QVBoxLayout();
     hlayout = new QHBoxLayout();
     QLabel *label = new QLabel(), *icon = new QLabel();
@@ -116,10 +115,10 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     noNtfctnsLabel = new QLabel("No notifications available.");
     noNtfctnsLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     noNtfctnsLabel->setMargin(50);
+    noNtfctnsLabel->setVisible(false);
     layout->addWidget(noNtfctnsLabel);
     layout->addWidget(table);
-    table->resizeColumnsToContents();
-    table->resizeRowsToContents();
+    table->setStyleSheet("QTableView{background-color:#F3F3F3;}");
     notifywin = new NotificationsWidget(this);
     notifywin->setLayout(layout);
     notifywin->show(); //temp
@@ -149,9 +148,9 @@ void NotificationsManager::loadModel(psync_notification_list_t* notifications)
 {
     qDebug()<<"loadmodel"<<notifications->newnotificationcnt <<notifications->notificationcnt<<notifications->notifications;
 
-     int ntfCnt = notifications->notificationcnt;
-     notificationsModel->setRowCount(ntfCnt);
-     actnsMngrArr = new actionsManager[ntfCnt];
+    int ntfCnt = notifications->notificationcnt;
+    notificationsModel->setRowCount(ntfCnt);
+    actnsMngrArr = new actionsManager[ntfCnt];
 
     this->notifyDelegate->setNumNew(notifications->newnotificationcnt);
     lastNtfctId = notifications->notifications[0].notificationid;
@@ -202,7 +201,6 @@ void NotificationsManager::init()
     if(notifications != NULL && notifications->notificationcnt)
     {
         this->loadModel(notifications);
-        // ++ newcheck CASE ++ tray
         free(notifications);
         notifications = NULL;
     }
@@ -212,6 +210,8 @@ void NotificationsManager::init()
         this->table->setVisible(false);
         this->noNtfctnsLabel->setVisible(true);
     }
+    table->resizeColumnsToContents();
+    table->resizeRowsToContents();
 
     /*
      * OLD INIT TESTING MODEL
