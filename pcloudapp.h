@@ -65,7 +65,7 @@ private:
     NotificationsManager *notificationsMngr;
     //MonitoringThread *mthread;
    // VersionTimerThread *versnThread;
-    bool newVersionFlag;
+    bool newVersionFlag, newNtfFLag;
     QTimer *updateNtfctnTimer;
     QNetworkConfigurationManager manager;
     QNetworkConfiguration cfg;

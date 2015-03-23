@@ -293,7 +293,15 @@ void PCloudApp::showOnClick(){
     if(!loggedin)
         showLogin();
     else
-        this->openCloudDir();
+    {
+        if(this->newNtfFLag)
+        {
+            notificationsMngr->showNotificationsWin();
+            this->newNtfFLag = false;
+        }
+        else
+            this->openCloudDir();
+    }
 }
 
 void PCloudApp::trayClicked(QSystemTrayIcon::ActivationReason reason)
@@ -966,8 +974,7 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
 void notification_callback(quint32 notificationcnt, quint32 newnotificationcnt)
 {
     qDebug()<<"notification_callback"<<notificationcnt<<newnotificationcnt;
-    //if (newnotificationcnt)
-        PCloudApp::appStatic->updateNotfctnsModelPublic(newnotificationcnt);
+    PCloudApp::appStatic->updateNotfctnsModelPublic(newnotificationcnt);
 }
 
 PCloudApp::PCloudApp(int &argc, char **argv) :
@@ -996,6 +1003,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     isCryptoExpired = true;
     //p mthread=NULL;
     loggedin=false;
+    newNtfFLag = false;
     lastMessageType=-1;
     //settings=new PSettings(this);
     settings=new QSettings("pCloud","pCloud");
@@ -1057,7 +1065,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     pCloudWin->setOnlineItems(false);
     notificationsMngr = new NotificationsManager(this);
     createMenus(); //needs sync to be started
-    tray->setContextMenu(notloggedmenu);    
+    tray->setContextMenu(notloggedmenu);
     connect(loggedmenu, SIGNAL(triggered(QAction*)), this, SLOT(refreshTray()));
     connect(tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayClicked(QSystemTrayIcon::ActivationReason)));
     connect(tray, SIGNAL(messageClicked()), this, SLOT(trayMsgClicked()));
@@ -1765,6 +1773,8 @@ void PCloudApp::lockCryptoFldrPublic()
 void PCloudApp::updateNotfctnsModelPublic(int newcnt)
 {    
     emit this->updateNotfctnsModelSgnl(newcnt);
+    this->newNtfFLag = newcnt ? true : false;
+    qDebug()<<"updateNotfctnsModelPublic"<<this->newNtfFLag;
     //++ change tray
 }
 
