@@ -1070,7 +1070,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
         this->quit();
     }
 */
-*/    
+
     psync_set_notification_callback(notification_callback,"48x48"); //have to be called between init and start
     psync_start_sync(status_callback,event_callback); // if not started from context menu ++
     QApplication::setOverrideCursor(Qt::WaitCursor);
