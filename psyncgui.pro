@@ -15,7 +15,7 @@ target.path = /usr/bin
 INSTALLS += target
 
 
-VERSION = 3.0.1
+VERSION = 3.1.0
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += DEBUG_LEVEL=D_NOTICE
 DEFINES += P_OS_WINDOWS

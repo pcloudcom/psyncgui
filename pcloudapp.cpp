@@ -388,7 +388,7 @@ void PCloudApp::createMenus()
     cryptoOpenFldrAction = new QAction(QIcon(":/menu/images/menu16x16/cryptoFldr.png"),trUtf8("Open Folder"),this);
     connect(cryptoOpenFldrAction, SIGNAL(triggered()), this, SLOT(openCryptoFldr()));
 
-    notfctnsAction = new QAction (QIcon(":/images/images/32x32/notifications.png"),trUtf8("Notifications"), this); // to update Icon
+    notfctnsAction = new QAction (QIcon(":/32x32/images/32x32/notifications.png"),trUtf8("Notifications"), this); // to update Icon
     connect(notfctnsAction, SIGNAL(triggered()), notificationsMngr, SLOT(showNotificationsWin()));
     settingsAction=new QAction(QIcon(":/menu/images/menu 32x32/settings.png"),trUtf8("Settings"), this); //Settings tab
     connect(settingsAction, SIGNAL(triggered()), this, SLOT(showSettings()));
