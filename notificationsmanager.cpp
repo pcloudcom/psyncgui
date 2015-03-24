@@ -121,7 +121,7 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     table->setStyleSheet("QTableView{background-color:#F3F3F3;}");
     notifywin = new NotificationsWidget(this);
     notifywin->setLayout(layout);
-    notifywin->show(); //temp
+    //notifywin->show(); //for dbg
     notifywin->setFocus();
 
     connect(table, SIGNAL(clicked(QModelIndex)), notifywin, SLOT(setFocus()));
@@ -179,7 +179,8 @@ void NotificationsManager::loadModel(psync_notification_list_t* notifications)
             iconpath = notifications->notifications[i].thumb;
         else
              //iconpath = dfltname+ notifications->notifications[i].iconid
-            iconpath = "/home/damyanka/git/psyncguiSeptm/psyncgui/images/testNtf.png";
+           // iconpath = "/home/damyanka/git/psyncguiSeptm/psyncgui/images/testNtf.png";
+             iconpath = ":/images/images/testNtf.png";
         notificationsModel->setData(indexIcon, QVariant(iconpath));
 
         table->openPersistentEditor(notificationsModel->index(i, 1));
