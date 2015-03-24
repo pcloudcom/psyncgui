@@ -177,6 +177,41 @@ void PCloudApp::showpCloudAbout(){
     this->showWindow(pCloudWin);
 }
 
+const QPoint PCloudApp::calcWinNextToTrayCoords(const int winWidth, const int winHeigh)
+{
+    QDesktopWidget *desktop = QApplication::desktop();
+    int xres, yres, avlbGeomW = desktop->availableGeometry().width();
+    QPoint trayBL = this->tray->geometry().bottomLeft();
+    QPoint avlbGeomBL = desktop->availableGeometry().bottomLeft();
+    int trayx = trayBL.x(), trayy = trayBL.y();
+
+    qDebug()<<"calcWinNextToTrayCoords" << trayBL << avlbGeomBL << avlbGeomW;
+             qDebug()<<"coords"<< trayx<<trayy << winHeigh;
+
+    //calc x
+    if(trayx < avlbGeomW/2) // I or IV quadrant (left vertical half of the screen)
+    {
+        xres = qMax(trayx, avlbGeomBL.x());
+    }
+        else //II or III quadrant
+    {
+        xres = qMin(trayx,avlbGeomW - winWidth);
+    }
+
+    //calc y
+    if(trayy < desktop->availableGeometry().height()/2) //I or II quadrant
+    {
+        yres = qMax(trayy, desktop->availableGeometry().left());
+    }
+    else // III or IV quadrant
+    {
+        yres = qMin(trayy, desktop->availableGeometry().bottom() - winHeigh);
+    }
+
+    qDebug()<<"calcWinNextToTrayCoords res"<<xres<<yres;
+    return QPoint(xres,yres);
+
+}
 
 void PCloudApp::openCloudDir()
 {

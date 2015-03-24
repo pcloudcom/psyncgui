@@ -124,6 +124,7 @@ public:
     bool isLogedIn();
     bool getIsCryptoExpired();
     void setLogWinError(const char *msg); // sets err in logwin; called from static function status_callback
+    const QPoint calcWinNextToTrayCoords(const int winWidth, const int winHeigh); //returns TopLeft
     //Public functions ended with 'public' are made to be called from static function status_callback or another threads
     //signals are protected and can't be accessed by static vars
     //in case something in gui thread should change it can't be changed directly from another thread - use signals and slots

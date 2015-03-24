@@ -335,13 +335,16 @@ void NotificationsManager::updateNotfctnsModel(int newcnt)
 
 void NotificationsManager::showNotificationsWin()
 {
-    notifywin->show();
     notifywin->setFocus();
+    // notifywin->show();
 
     //if !num - set dflt text, hide table
-    //notifywin->raise();
-    //notifywin->activateWindow();
-    //notifywin->showNormal();
+    notifywin->raise();
+    notifywin->activateWindow();
+    notifywin->showNormal();
+    QPoint topLeft = app->calcWinNextToTrayCoords(notifywin->width(), notifywin->height());
+    notifywin->move(topLeft);
+    //notifywin->move();
     //notifywin->setWindowState(Qt::WindowActive);
     //a.setActiveWindow(notifywin);
 }
