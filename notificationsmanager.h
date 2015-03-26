@@ -12,7 +12,7 @@
 #include <QLabel>
 //#include <QHideEvent>
 //#include <QMouseEvent>
-#include <QFocusEvent>
+//#include <QFocusEvent>
 
 class PCloudApp;
 class NotificationsManager;
@@ -23,10 +23,10 @@ class NotificationsWidget : public QWidget
 public:
     explicit NotificationsWidget(NotificationsManager *mngr, QWidget *parent = 0);
 protected:
-   // virtual bool eventFilter(QObject *watched, QEvent *event);
+    virtual bool eventFilter(QObject *watched, QEvent *event);
     //virtual void leaveEvent();
     //virtual void hideEvent(QHideEvent *event);
-    virtual void focusOutEvent(QFocusEvent *event);
+    //virtual void focusOutEvent(QFocusEvent *event);
     //virtual void mouseEvent(QMouseEvent *event);
 private:
     NotificationsManager *mngrParent;
@@ -79,6 +79,7 @@ signals:
 private slots:
 
 public slots:
+    void setWinFocus();
     void showNotificationsWin();
     void updateNotfctnsModel(int newcnt);
     void actionExecSlot(const QModelIndex &index);

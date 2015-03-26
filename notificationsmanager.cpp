@@ -9,12 +9,14 @@
 
 NotificationsWidget::NotificationsWidget(NotificationsManager *mngr, QWidget *parent) : QWidget(parent)
 {
-    setFocusPolicy(Qt::ClickFocus);
+    //setFocusPolicy(Qt::ClickFocus);
+    //setFocusPolicy((Qt::FocusPolicy)(Qt::TabFocus|Qt::ClickFocus));
     this->setWindowFlags(Qt::Dialog);
     this->setWindowFlags(Qt::FramelessWindowHint);
     this->setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
     this->setMinimumWidth(420);
     this->mngrParent = mngr;
+    this->installEventFilter(this);
 }
 
 /*
@@ -30,19 +32,27 @@ void NotificationsWidget::hideEvent(QHideEvent *event)
      qDebug()<<res;
      event->accept();
 }
+*/
 
 bool NotificationsWidget::eventFilter(QObject *watched, QEvent *event)
 {
-    qDebug()<<"eventFilter"<<watched->objectName()<<event->type() << QCursor::pos();
-    if (event->type() ==QEvent::FocusIn)
-        flagFocus = true;
-    //if (event->type() == QEvent::WindowDeactivate)
-        //this->close();
-    //if (flagFocus && (event->type() ==  QEvent::Leave || event->type() ==  QEvent::FocusOut )) //9 11
-    //    this->close();
-    //77 repaint
+    // paint repaint show(51) actChange(99)
+    if(event->type() == QEvent::WindowDeactivate) //25
+    {
+        qDebug()<<"eventFilter win deactivate";
+        this->close();
+
+        if(mngrParent->getLastNtfctId() != -1)
+        {
+            psync_mark_notificaitons_read(mngrParent->getLastNtfctId()); //++ check errors
+            mngrParent->resetNums();
+        }
+    }
+
+    QWidget::eventFilter(watched, event);
 }
 
+/*
 void NotificationsWidget::mouseEvent(QMouseEvent *event)
 {
     qDebug()<<"mousePressEvent";
@@ -54,15 +64,15 @@ void NotificationsWidget::mouseEvent(QMouseEvent *event)
   // hideTip();
    QWidget::mouseMoveEvent(event);
 }
-*/
 
-void NotificationsWidget::focusOutEvent(QFocusEvent *event)
+void NotificationsWidget::focusOutEvent(QFocusEvent *event) // doesn't work when alt+tab and the mouse is over ttable item
 {
-    QPoint pos = QCursor::pos();
+   // qDebug()<<"focusOutEvent"<< this->isVisible();
+    QPoint pos = QCursor::pos(); //25 QEvent::WindowDeactivate
     if (this)
         pos = this->mapFromGlobal(pos);
 
-    if (!this->rect().contains(pos))
+    if (!this->rect().contains(pos) || !this->isVisible())
     {
         this->close();
 
@@ -74,7 +84,7 @@ void NotificationsWidget::focusOutEvent(QFocusEvent *event)
     }
     event->accept();
 }
-
+*/
 
 NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     QObject(parent)
@@ -95,6 +105,7 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     table->setModel(notificationsModel);
     notifyDelegate = new NotifyDelegate(table);
     table->setItemDelegate(notifyDelegate);
+
     layout = new QVBoxLayout();
     hlayout = new QHBoxLayout();
     QLabel *label = new QLabel(), *icon = new QLabel();
@@ -104,6 +115,7 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
 #else
     label->setFont(app->bigger1pFont);
 #endif
+
     label->setAlignment(Qt::AlignLeft);
     icon->setPixmap(QPixmap(":/48x34/images/48x34/notify.png"));
     icon->setMaximumWidth(68);
@@ -122,12 +134,16 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     notifywin = new NotificationsWidget(this);
     notifywin->setLayout(layout);
     //notifywin->show(); //for dbg
-    notifywin->setFocus();
+    //notifywin->setFocus();
 
-    connect(table, SIGNAL(clicked(QModelIndex)), notifywin, SLOT(setFocus()));
+    // connect(table, SIGNAL(viewportEntered()), this, SLOT(setWinFocus()));
+    //connect(table, SIGNAL(clicked(QModelIndex)), this, SLOT(setWinFocus()));
     connect(table, SIGNAL(clicked(QModelIndex)), this, SLOT(actionExecSlot(QModelIndex)));
+    //connect(table, SIGNAL(entered(QModelIndex)), this, SLOT(setWinFocus()));
 
-    //connect(table->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(actionExecSlot()));
+    //connect(table->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(setWinFocus()));
+    //connect(table->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(setWinFocus()));
+
 }
 
 void NotificationsManager::setTableProps()
@@ -336,7 +352,8 @@ void NotificationsManager::updateNotfctnsModel(int newcnt)
 
 void NotificationsManager::showNotificationsWin()
 {
-    notifywin->setFocus();
+    //
+    //  notifywin->setFocus((Qt::FocusReason)(Qt::MouseFocusReason | Qt::TabFocusReason));
     // notifywin->show();
 
     //if !num - set dflt text, hide table
@@ -372,12 +389,19 @@ void NotificationsManager::actionExecSlot(const QModelIndex &index)
         {
             QDesktopServices::openUrl(QUrl::fromLocalFile(path));
             free(path);
+            notifywin->close();
         }
         break;
     }
     default:
         break;
     }
+}
+
+void NotificationsManager::setWinFocus()
+{
+    //qDebug()<<"setWinFocus";
+    // notifywin->setFocus((Qt::FocusReason)(Qt::MouseFocusReason | Qt::TabFocusReason));
 }
 
 quint32 NotificationsManager::getLastNtfctId()
