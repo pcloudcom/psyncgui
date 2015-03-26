@@ -265,7 +265,7 @@ void PCloudApp::logOut(){
     tray->setContextMenu(notloggedmenu);
     tray->setToolTip("pCloud");
     pCloudWin->setOnlineItems(false);
-    emit changeSyncIcon(OFFLINE_ICON);
+    emit changeSyncIcon(0);
     this->hideAllWindows();
     if(!this->unlinkFlag)
         this->isFirstLaunch = false;
@@ -554,7 +554,7 @@ void status_callback(pstatus_t *status)
         {
             if(PCloudApp::appStatic->isLogedIn())
             {
-                PCloudApp::appStatic->changeSyncIconPublic(SYNCED_ICON);
+                PCloudApp::appStatic->changeSyncIconPublic(1);
                 if(PCloudApp::appStatic->nointernetFlag)
                 {
                     PCloudApp::appStatic->changeOnlineItemsPublic(true);
@@ -586,7 +586,7 @@ void status_callback(pstatus_t *status)
             break;
 
         if(!(previousStatus == PSTATUS_DOWNLOADING || previousStatus == PSTATUS_DOWNLOADINGANDUPLOADING || previousStatus == PSTATUS_UPLOADING))
-            PCloudApp::appStatic->changeSyncIconPublic(SYNCING_ICON);
+            PCloudApp::appStatic->changeSyncIconPublic(2);
 
         if (PCloudApp::appStatic->isMenuorWinActive() || previousStatus != PSTATUS_DOWNLOADING)
         {
@@ -626,7 +626,7 @@ void status_callback(pstatus_t *status)
             break;
 
         if(!(previousStatus == PSTATUS_DOWNLOADING || previousStatus == PSTATUS_DOWNLOADINGANDUPLOADING || previousStatus == PSTATUS_UPLOADING))
-            PCloudApp::appStatic->changeSyncIconPublic(SYNCING_ICON);
+            PCloudApp::appStatic->changeSyncIconPublic(2);
         qDebug()<<"UPLOAD bytes    bytesuploaded=  "<<status->bytesuploaded << " bytestoupload = "<<status->bytestoupload << " current= "<<status->bytestouploadcurrent<<" speed" <<status->uploadspeed
                <<"UPLOAD filesuploading=  "<<status->filesuploading<< " filestoupload= "<<status->filestoupload<<"is full: "<< status->localisfull<<status->remoteisfull;
 
@@ -671,7 +671,7 @@ void status_callback(pstatus_t *status)
 
         if(!(previousStatus == PSTATUS_DOWNLOADING || previousStatus == PSTATUS_DOWNLOADINGANDUPLOADING
              || previousStatus == PSTATUS_UPLOADING))
-            PCloudApp::appStatic->changeSyncIconPublic(SYNCING_ICON);
+            PCloudApp::appStatic->changeSyncIconPublic(2);
 
         if (PCloudApp::appStatic->isMenuorWinActive() || previousStatus != PSTATUS_DOWNLOADINGANDUPLOADING)
         {
@@ -759,7 +759,7 @@ void status_callback(pstatus_t *status)
         if(previousStatus != PSTATUS_ACCOUNT_FULL)
         {
             PCloudApp::appStatic->lastStatus = PSTATUS_ACCOUNT_FULL;
-            PCloudApp::appStatic->changeSyncIconPublic(SYNC_FULL_ICON);
+            PCloudApp::appStatic->changeSyncIconPublic(4);
         }
         break;
 
@@ -768,7 +768,7 @@ void status_callback(pstatus_t *status)
         if(previousStatus != PSTATUS_DISK_FULL)
         {
             PCloudApp::appStatic->lastStatus = PSTATUS_DISK_FULL;
-            PCloudApp::appStatic->changeSyncIconPublic(SYNC_FULL_ICON);
+            PCloudApp::appStatic->changeSyncIconPublic(4);
             if (PCloudApp::appStatic->isLogedIn())
                 PCloudApp::appStatic->changeOnlineItems(true);
         }
@@ -777,14 +777,14 @@ void status_callback(pstatus_t *status)
     case PSTATUS_PAUSED:
         qDebug()<<"PSTATUS_PAUSED";
         if (PCloudApp::appStatic->isLogedIn() && previousStatus != PSTATUS_PAUSED)
-            PCloudApp::appStatic->changeSyncIconPublic(PAUSED_ICON);
+            PCloudApp::appStatic->changeSyncIconPublic(3);
         PCloudApp::appStatic->lastStatus = PSTATUS_PAUSED;
         //update menu -> start sync for initial login
         break;
 
     case PSTATUS_STOPPED:
         qDebug()<<"PSTATUS_STOPPED";
-        PCloudApp::appStatic->changeSyncIconPublic(OFFLINE_ICON);
+        PCloudApp::appStatic->changeSyncIconPublic(0);
         PCloudApp::appStatic->lastStatus = PSTATUS_STOPPED;
         break;
 
@@ -792,7 +792,7 @@ void status_callback(pstatus_t *status)
         qDebug()<<"PSTATUS_OFFLINE";
         if(previousStatus != PSTATUS_OFFLINE)
         {
-            PCloudApp::appStatic->changeSyncIconPublic(OFFLINE_ICON);
+            PCloudApp::appStatic->changeSyncIconPublic(0);
             //PCloudApp::appStatic->changeOnlineItemsPublic(false);
             PCloudApp::appStatic->nointernetFlag = true;
             PCloudApp::appStatic->lastStatus = PSTATUS_OFFLINE;
@@ -1009,7 +1009,7 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
 void notification_callback(quint32 notificationcnt, quint32 newnotificationcnt)
 {
     qDebug()<<"notification_callback"<<notificationcnt<<newnotificationcnt;
-    PCloudApp::appStatic->updateNotfctnsModelPublic(newnotificationcnt);
+    PCloudApp::appStatic->updateNotfctnsPublic(newnotificationcnt);
 }
 
 PCloudApp::PCloudApp(int &argc, char **argv) :
@@ -1051,8 +1051,11 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     uplodInfo = QObject::trUtf8("Everything Uploaded");
     unlinkFlag = false;
     isCursorChanged = false;
+
+
     lastStatus = PSTATUS_CONNECTING;
     tray=new QSystemTrayIcon(QIcon(OFFLINE_ICON),this);
+    this->lastTrayIconIndex = 0;
     connect(this, SIGNAL(sendTrayMsgType(const char*,const char*,int)),
             this, SLOT(showTrayMsgType(const char*,const char*,int)));
     connect(this, SIGNAL(showMsgBoxSgnl(QString,QString,int)), this, SLOT(showMsgBox(QString,QString,int)));
@@ -1106,7 +1109,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     connect(tray, SIGNAL(messageClicked()), this, SLOT(trayMsgClicked()));
     connect(this, SIGNAL(showLoginSgnl()),this, SLOT(showLogin()));
     connect(this, SIGNAL(logoutSignl()), this, SLOT(logOut()));
-    connect(this, SIGNAL(changeSyncIcon(QString)), this, SLOT(setTrayIcon(QString)));
+    connect(this, SIGNAL(changeSyncIcon(int)), this, SLOT(setTrayIcon(int)));
     connect(this, SIGNAL(changeOnlineItemsSgnl(bool)), this, SLOT(changeOnlineItems(bool)));
     connect(this, SIGNAL(changeCursor(bool)), this, SLOT(setCursor(bool)));
     connect(this, SIGNAL(sendErrText(int, const char*)), this, SLOT(setErrText(int,const char*)));
@@ -1136,6 +1139,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     }
     else
         logIn(psync_get_username(),true);
+
     cfg = manager.defaultConfiguration();
     session = new QNetworkSession(cfg);
     session->open();
@@ -1341,16 +1345,16 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     {
     case PSTATUS_ACCOUNT_FULL:
     case PSTATUS_DISK_FULL:
-        tray->setIcon(QIcon(SYNC_FULL_ICON));
+        emit changeSyncIcon(4);
         break;
     case PSTATUS_PAUSED:
-        tray->setIcon(QIcon(PAUSED_ICON));
+        emit changeSyncIcon(3);
         break;
     case PSTATUS_OFFLINE:
-        tray->setIcon(QIcon(OFFLINE_ICON));
+        emit changeSyncIcon(0);
         break;
     default:
-        tray->setIcon(QIcon(SYNCED_ICON));
+        emit changeSyncIcon(1);
     }
 
     pCloudWin->setOnlineItems(true);
@@ -1733,10 +1737,10 @@ void PCloudApp::logoutPublic()
     emit this->logoutSignl();
 }
 
-void PCloudApp::changeSyncIconPublic(const QString &icon)
+void PCloudApp::changeSyncIconPublic(int index)
 {
-    emit this->changeSyncIcon(icon);
-    if(icon == SYNC_FULL_ICON && !noFreeSpaceMsgShownFlag)
+    emit this->changeSyncIcon(index);
+    if(index == 4 && !noFreeSpaceMsgShownFlag)
     {
         noFreeSpaceMsgShownFlag = true;
         if(this->lastStatus == PSTATUS_DISK_FULL)    // no local disk space (according to settings)
@@ -1805,12 +1809,11 @@ void PCloudApp::lockCryptoFldrPublic()
     emit this->lockCryptoFldrSgnl();
 }
 
-void PCloudApp::updateNotfctnsModelPublic(int newcnt)
+void PCloudApp::updateNotfctnsPublic(int newcnt)
 {    
     emit this->updateNotfctnsModelSgnl(newcnt);
     this->newNtfFLag = newcnt ? true : false;
-    qDebug()<<"updateNotfctnsModelPublic"<<this->newNtfFLag;
-    //++ change tray
+    changeSyncIconPublic(this->lastTrayIconIndex);
 }
 
 void PCloudApp::setsyncSuggstLst(QStringList lst)
@@ -1841,9 +1844,15 @@ void PCloudApp::setLogWinError(const char *msg)
     if (this->logwin)
         this->logwin->showError(msg);
 }
-void PCloudApp::setTrayIcon(const QString &icon)
-{
-    tray->setIcon(QIcon(icon));
+
+void PCloudApp::setTrayIcon(int index)
+{    
+    if(this->newNtfFLag && this->isLogedIn())
+        tray->setIcon(QIcon(icons[index][1]));
+    else
+        tray->setIcon(QIcon(icons[index][0]));
+
+    this->lastTrayIconIndex = index;
 }
 void PCloudApp::showTrayMsgType(const char *title, const char *msg, int msgtype)
 {
@@ -2192,7 +2201,7 @@ void PCloudApp::networkConnectionChanged(QNetworkSession::State state)
         nointernetFlag = false;
         if(isLogedIn())
         {
-            changeSyncIconPublic(SYNCED_ICON);
+            changeSyncIconPublic(1);
             changeOnlineItems(true);
         }
         else

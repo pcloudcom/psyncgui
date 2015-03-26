@@ -12,6 +12,12 @@
 #define PAUSED_ICON ":/24x24/images/24x24/sync-paused.png"
 #define SYNC_FULL_ICON ":/24x24/images/24x24/sync-full.png"
 
+#define OFFLINE_ICON_NTF ":/tray/images/tray/tray-ntf/offline-ntf.png"
+#define SYNCED_ICON_NTF      ":/tray/images/tray/tray-ntf/synced-ntf.png"
+#define SYNCING_ICON_NTF ":/tray/images/tray/tray-ntf/syncing-ntf.png"
+#define PAUSED_ICON_NTF ":/tray/images/tray/tray-ntf/sync-paused-ntf.png"
+#define SYNC_FULL_ICON_NTF ":/tray/images/tray/tray-ntf/sync-full-ntf.png"
+
 #define HELP_ICON ":/128x128/images/128x128/help.png"
 #define INFO_ICON ":/128x128/images/128x128/info.png"
 #define USER_ICON ":/128x128/images/128x128/user.png"

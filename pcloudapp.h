@@ -33,7 +33,7 @@ class PCloudApp : public QApplication
 private:
     QAction *registerAction;
     QAction *loginAction;
-    QAction *exitAction;        
+    QAction *exitAction;
     QAction *accountAction, *userinfoAction;
     QAction *driveAction; // opens Drive folder
     QAction *sharesAction; // Shares page
@@ -59,17 +59,23 @@ private:
     QMenu * syncMenu, *syncedFldrsMenu, *sharesMenu, *cryptoUnlockedMenu; //submenus in the tray menu
     QSystemTrayIcon *tray;
     RegisterWindow *regwin;
-    LoginWindow *logwin;     
+    LoginWindow *logwin;
     ShareFolderWindow *sharefolderwin;
     InfoScreensWin *introwin;
     NotificationsManager *notificationsMngr;
     //MonitoringThread *mthread;
-   // VersionTimerThread *versnThread;
+    // VersionTimerThread *versnThread;
     bool newVersionFlag, newNtfFLag;
     QTimer *updateNtfctnTimer;
     QNetworkConfigurationManager manager;
     QNetworkConfiguration cfg;
     QNetworkSession *session;
+    const char* icons[5][2] = {{OFFLINE_ICON, OFFLINE_ICON_NTF},
+                              {SYNCED_ICON,SYNCED_ICON_NTF},
+                              {SYNCING_ICON, SYNCING_ICON_NTF},
+                              {PAUSED_ICON, PAUSED_ICON_NTF},
+                              {SYNC_FULL_ICON, SYNC_FULL_ICON_NTF}};
+    int lastTrayIconIndex;
     void getQuota();
     void getUserInfo();
 #ifdef Q_OS_WIN
@@ -131,7 +137,7 @@ public:
     void showLoginPublic();
     void showMsgBoxPublic(QString title, QString msg, int msgIconVal);
     void sendTrayMsgTypePublic(const char* title, const char* msg, int msgtype);
-    void changeSyncIconPublic(const QString &icon);
+    void changeSyncIconPublic(int index);
     void refreshSyncUIitemsPublic();
     void changeCursorPublic(bool change);
     void updateSyncStatusPublic();
@@ -143,7 +149,7 @@ public:
     void addNewSyncLstPublic(bool addLocalFldrs); //are local or remote folders are selected
     void lockCryptoFldrPublic();
     void unlockCryptoFldrPublic();
-    void updateNotfctnsModelPublic(int newcnt);
+    void updateNotfctnsPublic(int newcnt);
     void setsyncSuggstLst(QStringList lst);
     void logoutPublic();
     void addNewFolderInMenu(QAction *fldrAction); // refresh menu when add new sync
@@ -165,7 +171,7 @@ public:
     void clearAllSettings();
 signals:
     void showLoginSgnl();
-    void changeSyncIcon(const QString &icon);
+    void changeSyncIcon(int index);
     void showMsgBoxSgnl(QString title, QString msg, int msgIconVal);
     void sendTrayMsgType(const char* title, const char* msg, int msgtype);
     void changeCursor(bool change);
@@ -203,14 +209,14 @@ public slots:
     void doExit();
     void trayMsgClicked(); //show shares and new version
     //p void setOnlineStatus(bool online);
-    void setTrayIcon(const QString &icon);
+    void setTrayIcon(int index);
     void refreshTray();
     void setCryptoAction();
     void setCursor(bool change);
     void setErrText(int win, const char *err);
     void pauseSync();
     void resumeSync();
-    void openLocalDir(); // for local sync folder    
+    void openLocalDir(); // for local sync folder
     void lockCryptoFldr();
     void unlockCryptoFldr();
     void openCryptoFldr();
@@ -221,14 +227,14 @@ public slots:
     void updateSyncStatus();
     void refreshSyncUIitems();
     void createSyncFolderActions();
-    void updateUserInfo(const char* &param);    
+    void updateUserInfo(const char* &param);
     void changeOnlineItems(bool logged);
     void check_version();
     void showPopupNewVersion();
     void setTimerInterval(int index);
     void networkConnectionChanged(QNetworkSession::State state);
 #ifdef Q_OS_WIN
-   // void dbgPipeHlprSLot();
+    // void dbgPipeHlprSLot();
 #endif
 };
 

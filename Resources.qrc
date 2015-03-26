@@ -137,4 +137,11 @@
     <qresource prefix="/48x34">
         <file>images/48x34/notify.png</file>
     </qresource>
+    <qresource prefix="/tray">
+        <file>images/tray/tray-ntf/syncing-ntf.png</file>
+        <file>images/tray/tray-ntf/sync-paused-ntf.png</file>
+        <file>images/tray/tray-ntf/sync-full-ntf.png</file>
+        <file>images/tray/tray-ntf/offline-ntf.png</file>
+        <file>images/tray/tray-ntf/synced-ntf.png</file>
+    </qresource>
 </RCC>
