@@ -6,11 +6,18 @@
 #define WINDOW_ICON ":/images/images/logo.png"
 //#define WINDOW_ICON ":/16x16/images/16x16/logo.png"
 #define ONLINE_ICON ":/24x24/images/24x24/online.png"
-#define OFFLINE_ICON ":/24x24/images/24x24/offline.png"
+/*#define OFFLINE_ICON ":/24x24/images/24x24/offline.png"
 #define SYNCED_ICON ":/24x24/images/24x24/synced.png"
 #define SYNCING_ICON ":/24x24/images/24x24/syncing.png"
 #define PAUSED_ICON ":/24x24/images/24x24/sync-paused.png"
 #define SYNC_FULL_ICON ":/24x24/images/24x24/sync-full.png"
+*/
+
+#define OFFLINE_ICON ":/tray/images/tray/offline.png"
+#define SYNCED_ICON ":/tray/images/tray/synced.png"
+#define SYNCING_ICON ":/tray/images/tray/syncing.png"
+#define PAUSED_ICON ":/tray/images/tray/sync-paused.png"
+#define SYNC_FULL_ICON ":/tray/images/tray/sync-full.png"
 
 #define OFFLINE_ICON_NTF ":/tray/images/tray/tray-ntf/offline-ntf.png"
 #define SYNCED_ICON_NTF      ":/tray/images/tray/tray-ntf/synced-ntf.png"

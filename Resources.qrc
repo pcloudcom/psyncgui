@@ -143,5 +143,10 @@
         <file>images/tray/tray-ntf/sync-full-ntf.png</file>
         <file>images/tray/tray-ntf/offline-ntf.png</file>
         <file>images/tray/tray-ntf/synced-ntf.png</file>
+        <file>images/tray/sync-full.png</file>
+        <file>images/tray/sync-paused.png</file>
+        <file>images/tray/synced.png</file>
+        <file>images/tray/syncing.png</file>
+        <file>images/tray/offline.png</file>
     </qresource>
 </RCC>
