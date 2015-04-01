@@ -6,6 +6,7 @@
 #include <QDateTime>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QPainter>
 
 NotificationsWidget::NotificationsWidget(NotificationsManager *mngr, QWidget *parent) : QWidget(parent)
 {
@@ -86,6 +87,35 @@ void NotificationsWidget::focusOutEvent(QFocusEvent *event) // doesn't work when
 }
 */
 
+
+CntrWidget::CntrWidget(QWidget *parent) :QWidget(parent)
+{
+    this->numNew = 0;
+    this->setMaximumSize(QSize(24,24));
+}
+
+void CntrWidget::paintEvent(QPaintEvent *event)
+{
+    qDebug()<<"CntrWidget::paintEvent";
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setPen(Qt::red);
+    QBrush brush = painter.brush();
+    brush.setStyle(Qt::SolidPattern);
+    brush.setColor(Qt::red);
+    painter.setBrush(brush);
+    painter.drawEllipse(event->rect().center(),10,10);
+    //painter.drawArc(event->rect(),0,360*16);
+    painter.setPen(Qt::white);
+    //painter.setFont();
+    painter.drawText(event->rect(), Qt::AlignCenter, QString::number(this->numNew));
+}
+
+void CntrWidget::setNumNew(int newValue)
+{
+    this->numNew = newValue;
+}
+
 NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     QObject(parent)
 {
@@ -109,20 +139,22 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     layout = new QVBoxLayout();
     hlayout = new QHBoxLayout();
     QLabel *label = new QLabel(), *icon = new QLabel();
-    label->setText("pCloud Notifications");
+    cntrWid = new CntrWidget(this);
+    label->setText(" pCloud Notifications");
 #ifdef Q_OS_LINUX
     label->setFont(app->bigger3pFont);
 #else
     label->setFont(app->bigger1pFont);
 #endif
 
-    label->setAlignment(Qt::AlignLeft);
+    label->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     icon->setPixmap(QPixmap(":/48x34/images/48x34/notify.png"));
     icon->setMaximumWidth(68);
     icon->setMaximumHeight(80);
-    icon->setAlignment(Qt::AlignHCenter);
+    icon->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     hlayout->addWidget(icon);
     hlayout->addWidget(label);
+    hlayout->addWidget(cntrWid);
     layout->addLayout(hlayout);
     noNtfctnsLabel = new QLabel("No notifications available.");
     noNtfctnsLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
@@ -168,6 +200,8 @@ void NotificationsManager::loadModel(psync_notification_list_t* notifications)
     notificationsModel->setRowCount(ntfCnt);
     actnsMngrArr = new actionsManager[ntfCnt];
 
+    cntrWid->setNumNew(notifications->newnotificationcnt);
+    cntrWid->update();
     this->notifyDelegate->setNumNew(notifications->newnotificationcnt);
     lastNtfctId = notifications->notifications[0].notificationid;
 
@@ -362,7 +396,8 @@ void NotificationsManager::showNotificationsWin()
     notifywin->showNormal();
     QPoint topLeft = app->calcWinNextToTrayCoords(notifywin->width(), notifywin->height());
     notifywin->move(topLeft);
-    //notifywin->move();
+    table->scrollToTop();
+
     //notifywin->setWindowState(Qt::WindowActive);
     //a.setActiveWindow(notifywin);
 }
@@ -371,6 +406,7 @@ void NotificationsManager::resetNums()
 {
     notifyDelegate->setNumNew(0);
     this->lastNtfctId = -1;
+    cntrWid->setNumNew(0);
 }
 
 void NotificationsManager::actionExecSlot(const QModelIndex &index)

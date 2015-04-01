@@ -10,6 +10,7 @@
 #include <QLayout>
 #include <QMainWindow>
 #include <QLabel>
+#include <QPaintEvent>
 //#include <QHideEvent>
 //#include <QMouseEvent>
 //#include <QFocusEvent>
@@ -32,6 +33,20 @@ private:
     NotificationsManager *mngrParent;
     //NotifyDelegate *delegate;
 };
+
+
+class CntrWidget : public QWidget //orange icon
+{
+    Q_OBJECT
+public:
+    explicit CntrWidget(QWidget *parent = 0);
+    void setNumNew(int newValue);
+protected:
+    virtual void paintEvent(QPaintEvent *event);
+private:
+    int numNew;
+};
+
 
 struct actionsManager
 {
@@ -66,6 +81,7 @@ private:
     NotifyDelegate *notifyDelegate;
     QString dtHtmlBeginStr, dtHtmlEndStr;
     QLabel *noNtfctnsLabel;
+    CntrWidget *cntrWid;
     QTableView* table;
     NotificationsWidget *notifywin;
     QVBoxLayout *layout;
