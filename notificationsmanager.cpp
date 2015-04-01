@@ -139,7 +139,7 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     layout = new QVBoxLayout();
     hlayout = new QHBoxLayout();
     QLabel *label = new QLabel(), *icon = new QLabel();
-    cntrWid = new CntrWidget(this);
+    cntrWid = new CntrWidget();
     label->setText(" pCloud Notifications");
 #ifdef Q_OS_LINUX
     label->setFont(app->bigger3pFont);
