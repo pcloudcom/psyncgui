@@ -100,10 +100,10 @@ void CntrWidget::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
     QColor color("#FF7040");
-    painter.setPen(QColor(color));
+    painter.setPen(color);
     QBrush brush = painter.brush();
     brush.setStyle(Qt::SolidPattern);
-    brush.setColor(QColor(color));
+    brush.setColor(color);
     painter.setBrush(brush);
     painter.drawEllipse(event->rect().center(),10,10);
     //painter.drawArc(event->rect(),0,360*16);
