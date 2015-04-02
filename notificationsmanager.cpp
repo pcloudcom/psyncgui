@@ -96,13 +96,14 @@ CntrWidget::CntrWidget(QWidget *parent) :QWidget(parent)
 
 void CntrWidget::paintEvent(QPaintEvent *event)
 {
-    qDebug()<<"CntrWidget::paintEvent";
+    //   qDebug()<<"CntrWidget::paintEvent";
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(Qt::red);
+    QColor color("#FF7040");
+    painter.setPen(QColor(color));
     QBrush brush = painter.brush();
     brush.setStyle(Qt::SolidPattern);
-    brush.setColor(Qt::red);
+    brush.setColor(QColor(color));
     painter.setBrush(brush);
     painter.drawEllipse(event->rect().center(),10,10);
     //painter.drawArc(event->rect(),0,360*16);
