@@ -97,6 +97,9 @@ CntrWidget::CntrWidget(QWidget *parent) :QWidget(parent)
 void CntrWidget::paintEvent(QPaintEvent *event)
 {
     //   qDebug()<<"CntrWidget::paintEvent";
+    if(!this->numNew)
+        return;
+
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
     QColor color("#FF7040");
@@ -126,9 +129,17 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     actnsMngrArr = NULL;
     updateFlag = false;
     lastNtfctId = -1;
-    dtFontSize = app->fontPointSize -3;
-    dtHtmlBeginStr = QString("<p><span style=\" font-size:").append(QString::number(dtFontSize)).append("pt; color:#797979;\">  ");
-    dtHtmlEndStr = QString("</span></p>");
+
+    if(app->font().pointSize() > 10)
+        dtFontSize = app->fontPointSize -3;
+    else
+        dtFontSize = app->fontPointSize -1;
+
+    //Ü7 - for tests
+    textHtmlBeginStr = QString("<html></title><body><p style = \"margin:0px;\">");
+    textHtmlEndStr = QString("</p>");
+    dtHtmlBeginStr = QString("<p style = \"margin-top:12px;margin-bottom:0px;margin-left:0px;margin-right:0px;font-size:").append(QString::number(dtFontSize)).append("pt; color:#797979;\">");
+    dtHtmlEndStr = QString("</p></body></html>");
     table = new QTableView();
     this->setTableProps();
 
@@ -163,7 +174,6 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     noNtfctnsLabel->setVisible(false);
     layout->addWidget(noNtfctnsLabel);
     layout->addWidget(table);
-    table->setStyleSheet("QTableView{background-color:#F3F3F3;}");
     notifywin = new NotificationsWidget(this);
     notifywin->setLayout(layout);
     //notifywin->show(); //for dbg
@@ -183,6 +193,8 @@ void NotificationsManager::setTableProps()
 {
     table->setSelectionMode(QAbstractItemView::NoSelection);
     table->setSelectionBehavior(QTableView::SelectRows);
+    table->setContentsMargins(0,0,0,0);
+    table->setStyleSheet("QTableView{background-color:#F3F3F3;}");
     table->setShowGrid(false);
     table->viewport()->setAttribute(Qt::WA_Hover);
     table->setMouseTracking(true);
@@ -208,13 +220,13 @@ void NotificationsManager::loadModel(psync_notification_list_t* notifications)
 
     for (int i = 0; i < ntfCnt; i++)
     {
-        qDebug()<< notifications->notifications[i].actiondata.folderid <<notifications->notifications[i].actionid <<
-                   notifications->notifications[i].iconid<<notifications->notifications[i].isnew<<
-                   notifications->notifications[i].mtime << notifications->notifications[i].notificationid
-                <<notifications->notifications[i].text <<notifications->notifications[i].thumb;
+        //        qDebug()<< notifications->notifications[i].actiondata.folderid <<notifications->notifications[i].actionid <<
+        //                 "iconid="<< notifications->notifications[i].iconid<<"actionid"<<notifications->notifications[i].isnew<<
+        //               notifications->notifications[i].mtime << notifications->notifications[i].notificationid
+        //          <<notifications->notifications[i].text <<notifications->notifications[i].thumb;
 
         QModelIndex indexHtml = notificationsModel->index(i, 1, QModelIndex());
-        QString htmldata(notifications->notifications[i].text);
+        QString htmldata(textHtmlBeginStr + notifications->notifications[i].text + textHtmlEndStr);
         htmldata.append(dtHtmlBeginStr).append((QDateTime::fromTime_t(notifications->notifications[i].mtime).toString())).append(dtHtmlEndStr);
         notificationsModel->setData(indexHtml, QVariant(htmldata), Qt::EditRole); //displayrole
 
@@ -223,15 +235,13 @@ void NotificationsManager::loadModel(psync_notification_list_t* notifications)
             actnsMngrArr[i].actionData = notifications->notifications[i].actiondata;
         //        qDebug()<<"actnsMngrArr"<<actnsMngrArr[i].actionId<<actnsMngrArr[i].actionData.folderid;
 
-        QModelIndex indexIcon = notificationsModel->index(i, 0, QModelIndex());        
+        QModelIndex indexIcon = notificationsModel->index(i, 0, QModelIndex());
         QString iconpath;
-        //if(strcmp(notifications->notifications[i].thumb, ""))
         if (notifications->notifications[i].thumb != NULL)
             iconpath = notifications->notifications[i].thumb;
         else
-             //iconpath = dfltname+ notifications->notifications[i].iconid
-           // iconpath = "/home/damyanka/git/psyncguiSeptm/psyncgui/images/testNtf.png";
-             iconpath = ":/images/images/testNtf.png";
+            //iconpath = dfltname+ notifications->notifications[i].iconid
+            iconpath = ":/images/images/testNtf.png";
         notificationsModel->setData(indexIcon, QVariant(iconpath));
 
         table->openPersistentEditor(notificationsModel->index(i, 1));
@@ -250,7 +260,6 @@ void NotificationsManager::clearModel()
         free(actnsMngrArr);
         actnsMngrArr = NULL;
     }
-    this->resetNums();
 }
 
 void NotificationsManager::init()
@@ -309,6 +318,7 @@ void NotificationsManager::init()
 void NotificationsManager::clear()
 {
     this->clearModel();
+    this->resetNums();
 }
 
 void NotificationsManager::updateNotfctnsModel(int newcnt)
@@ -329,7 +339,7 @@ void NotificationsManager::updateNotfctnsModel(int newcnt)
                 table->setVisible(true);
             }
 
-            this->clearModel();
+            this->clear();
             this->loadModel(notifications);
 
             /*     for (int i = 0; i < cnt; i++)

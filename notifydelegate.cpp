@@ -8,6 +8,8 @@
 #include <QAbstractItemView>
 #include <QTextOption>
 #include <QMouseEvent>
+#include <QTextFrame>
+#include <QTextFrameFormat>
 
 
 NotifyDelegate::NotifyDelegate(QObject *parent) //++ numRed
@@ -17,6 +19,7 @@ NotifyDelegate::NotifyDelegate(QObject *parent) //++ numRed
     //++ calc size hint width - min(desktop/6 150)
     //iconmargin
     minColumnHeight = 60;
+    textDocWidth = 320.0; //table width - pic
     numNew = 0;
     separatorColor = "#E0E0E0"; //eeeeee
     mouseOverColor = "#F3FBFE";
@@ -44,7 +47,7 @@ void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 
         QPixmap pixmap = index.data(Qt::EditRole).value<QPixmap>();
         QRect rect = options.rect;
-        rect.setSize(QSize(options.rect.width()-6, options.rect.height() - 6));
+        //rect.setSize(QSize(options.rect.width()-6, options.rect.height() - 6));
         painter->drawPixmap(rect, pixmap, rect);
 
         QPen bottomLine;
@@ -94,14 +97,35 @@ void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         QTextOption opt(Qt::AlignVCenter);
         opt.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
         doc.setDefaultTextOption(opt);
+        doc.setDocumentMargin(0.0);
+
+        // QTextFrame *root = doc.rootFrame();
+        //QTextFrameFormat format;
+        //format.setMargin(30.0);
+        //format.setTopMargin(50.0);
+        //QBrush brush(Qt::red);
+        //format.setBorderBrush(brush);
+        //format.setBorder(23.0);
+        //root->setFrameFormat(format);
+
         doc.setHtml(options.text);
         doc.setPageSize(QSize(options.rect.size()));
-        // !!!doc.setDocumentMargin(12.0);
         options.text = "";
+
+        QTextFrameFormat fmt = doc.rootFrame()->frameFormat();
+        fmt.setMargin(12.0);
+        fmt.setLeftMargin(0.0);
+
+        //fmt.setBackground(QBrush(Qt::red));
+        //fmt.setBorder(1.0);
+        fmt.setBorderStyle(QTextFrameFormat::BorderStyle_None);
+        doc.rootFrame()->setFrameFormat(fmt);
+
+        //  qDebug()<<"paint doc size"<<index.row()<<doc.size()<<doc.pageSize();
 
         QSize size = doc.size().toSize();
         size.setHeight(72);
-        painter->translate(options.rect.left(), options.rect.top());
+        int l = options.rect.left(), t = options.rect.top();
         QRect clip(0,0, options.rect.width(), options.rect.height());
 
         QPen bottomLine;
@@ -112,6 +136,7 @@ void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         // if(option.state & QStyle::State_Selected)
         //   painter->fillRect(clip, option.palette.color(QPalette::Background));
 
+        painter->translate(options.rect.left(), options.rect.top());
         if(index.row() < numNew) //new notification
         {
             QBrush brush(newNtfColor);
@@ -141,16 +166,19 @@ void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         }
 
         doc.drawContents(painter, clip);
+
         painter->drawLine(QPoint(0,options.rect.height()-1),QPoint(options.rect.width(),options.rect.height()-1));
         painter->restore();
+        //qDebug()<<"paint options"<<option.rect.size() << option.rect.bottomLeft() << options.rect.size() << options.rect.bottomLeft();
+        //qDebug()<<"paint options"<< index.row()<< options.rect.size() << doc.size()<<doc.pageSize()<<clip.size();
     }
-    //qDebug()<<"paint options"<<option.rect.size() << option.rect.bottomLeft() << options.rect.size() << options.rect.bottomLeft();
+
 }
 
 
 QSize NotifyDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    //qDebug()<<"sizeHint";
+    // qDebug()<<"sizeHint";
     if (!index.isValid())
         return QStyledItemDelegate::sizeHint(option, index);
 
@@ -159,7 +187,7 @@ QSize NotifyDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelI
 
     if (index.column() == 0)
     {
-        return QSize(60,72);
+        return QSize(72,72);
     }
     else
     {
@@ -167,30 +195,34 @@ QSize NotifyDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelI
         QTextOption opt(Qt::AlignVCenter);
         opt.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
         doc.setDefaultTextOption(opt);
+        //QTextFrameFormat fmt = doc.rootFrame()->frameFormat();
+        //doc.rootFrame()->setFrameFormat(fmt);
         doc.setHtml(options.text);
-        doc.setTextWidth(320.0);
-        qDebug()<<"sizeHint 1"<< index.column()<< index.row()<< doc.size().height() <<option.rect.height() <<doc.size().width();
-        return QSize(doc.size().width(), ((minColumnHeight>  doc.size().height()) ? minColumnHeight :  doc.size().height()));
-        //return QSize(, ((minColumnHeight>  doc.size().height()) ? minColumnHeight :  doc.size().height()));
+        doc.setTextWidth(textDocWidth); //320
+        //doc.setPageSize(QSize(textDocWidth,options.rect.height()));
+        //  qDebug()<<"sizeHint 1"<< index.row()<< doc.size().height() <<option.rect.height() <<options.rect.height();
+        return QSize(doc.size().width(), (((minColumnHeight>  doc.size().height()) ? minColumnHeight :  doc.size().height())+24)); //24 is for margines from the specification
     }
 }
 
 QWidget *NotifyDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-
     //qDebug()<<"createEditor";
     if (index.column() == 0)
     {
         QLabel *iconLabel = new QLabel(parent);
         iconLabel->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
-        iconLabel->setMargin(10);
+        iconLabel->setMargin(12);
+        //iconLabel->setContentsMargins(12,12,0,12);
         iconLabel->setMouseTracking(true);
         return iconLabel;
     }
     else if (index.column() == 1)
     {
         QLabel *textLabel = new QLabel(parent);
-        //textLabel->setMargin(12);
+        //textLabel->setAlignment(Qt::AlignVCenter);
+        //textLabel->setMargin(12); //overriden dont work
+        //  textLabel->setContentsMargins(0,12,0,12);
         textLabel->setMouseTracking(true);
         return textLabel;
     }

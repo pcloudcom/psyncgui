@@ -21,6 +21,7 @@ protected:
     //virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
 private:
     int minColumnHeight;
+    qreal textDocWidth;
     quint32 numNew;
     QColor mouseOverColor, redNtfColor, newNtfColor, separatorColor;
 };
