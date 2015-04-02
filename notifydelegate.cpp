@@ -9,7 +9,6 @@
 #include <QTextOption>
 #include <QMouseEvent>
 #include <QTextFrame>
-#include <QTextFrameFormat>
 
 
 NotifyDelegate::NotifyDelegate(QObject *parent) //++ numRed
@@ -97,17 +96,7 @@ void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         QTextOption opt(Qt::AlignVCenter);
         opt.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
         doc.setDefaultTextOption(opt);
-        doc.setDocumentMargin(0.0);
-
-        // QTextFrame *root = doc.rootFrame();
-        //QTextFrameFormat format;
-        //format.setMargin(30.0);
-        //format.setTopMargin(50.0);
-        //QBrush brush(Qt::red);
-        //format.setBorderBrush(brush);
-        //format.setBorder(23.0);
-        //root->setFrameFormat(format);
-
+        doc.setDocumentMargin(0.0);    
         doc.setHtml(options.text);
         doc.setPageSize(QSize(options.rect.size()));
         options.text = "";
@@ -115,17 +104,13 @@ void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         QTextFrameFormat fmt = doc.rootFrame()->frameFormat();
         fmt.setMargin(12.0);
         fmt.setLeftMargin(0.0);
-
         //fmt.setBackground(QBrush(Qt::red));
         //fmt.setBorder(1.0);
         fmt.setBorderStyle(QTextFrameFormat::BorderStyle_None);
         doc.rootFrame()->setFrameFormat(fmt);
 
-        //  qDebug()<<"paint doc size"<<index.row()<<doc.size()<<doc.pageSize();
-
         QSize size = doc.size().toSize();
-        size.setHeight(72);
-        int l = options.rect.left(), t = options.rect.top();
+        size.setHeight(72);        
         QRect clip(0,0, options.rect.width(), options.rect.height());
 
         QPen bottomLine;
@@ -194,12 +179,9 @@ QSize NotifyDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelI
         QTextDocument doc;
         QTextOption opt(Qt::AlignVCenter);
         opt.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-        doc.setDefaultTextOption(opt);
-        //QTextFrameFormat fmt = doc.rootFrame()->frameFormat();
-        //doc.rootFrame()->setFrameFormat(fmt);
+        doc.setDefaultTextOption(opt);      
         doc.setHtml(options.text);
-        doc.setTextWidth(textDocWidth); //320
-        //doc.setPageSize(QSize(textDocWidth,options.rect.height()));
+        doc.setTextWidth(textDocWidth); //320        
         //  qDebug()<<"sizeHint 1"<< index.row()<< doc.size().height() <<option.rect.height() <<options.rect.height();
         return QSize(doc.size().width(), (((minColumnHeight>  doc.size().height()) ? minColumnHeight :  doc.size().height())+24)); //24 is for margines from the specification
     }
@@ -221,8 +203,7 @@ QWidget *NotifyDelegate::createEditor(QWidget *parent, const QStyleOptionViewIte
     {
         QLabel *textLabel = new QLabel(parent);
         //textLabel->setAlignment(Qt::AlignVCenter);
-        //textLabel->setMargin(12); //overriden dont work
-        //  textLabel->setContentsMargins(0,12,0,12);
+        //textLabel->setMargin(12); //overriden dont work        
         textLabel->setMouseTracking(true);
         return textLabel;
     }
