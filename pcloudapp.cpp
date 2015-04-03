@@ -944,7 +944,7 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcpy(title,"Share Request Canceled!");
         strcpy(msg, "\"");
         strcat(msg,data.share->email);
-        strcat(msg, "\" cancel his/her Share Request");
+        strcat(msg, "\" canceled his/her Share Request");
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
         if(PCloudApp::appStatic->isMainWinPageActive(SHARES_PAGE_NUM))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(SHARES_PAGE_NUM,1);
