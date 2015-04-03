@@ -102,8 +102,10 @@ void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         options.text = "";
 
         QTextFrameFormat fmt = doc.rootFrame()->frameFormat();
-        fmt.setMargin(12.0);
         fmt.setLeftMargin(0.0);
+        fmt.setTopMargin(10.0);
+        fmt.setRightMargin(12.0);
+        fmt.setBottomMargin(4.0);
         //fmt.setBackground(QBrush(Qt::red));
         //fmt.setBorder(1.0);
         fmt.setBorderStyle(QTextFrameFormat::BorderStyle_None);
@@ -183,7 +185,7 @@ QSize NotifyDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelI
         doc.setHtml(options.text);
         doc.setTextWidth(textDocWidth); //320        
         //  qDebug()<<"sizeHint 1"<< index.row()<< doc.size().height() <<option.rect.height() <<options.rect.height();
-        return QSize(doc.size().width(), (((minColumnHeight>  doc.size().height()) ? minColumnHeight :  doc.size().height())+24)); //24 is for margines from the specification
+        return QSize(doc.size().width(), (((minColumnHeight>  doc.size().height()) ? minColumnHeight : doc.size().height())+12)); //24 is for margines from the specification
     }
 }
 

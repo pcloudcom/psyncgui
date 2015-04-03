@@ -138,7 +138,7 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     //Ü7 - for tests
     textHtmlBeginStr = QString("<html></title><body><p style = \"margin:0px;\">");
     textHtmlEndStr = QString("</p>");
-    dtHtmlBeginStr = QString("<p style = \"margin-top:12px;margin-bottom:0px;margin-left:0px;margin-right:0px;font-size:").append(QString::number(dtFontSize)).append("pt; color:#797979;\">");
+    dtHtmlBeginStr = QString("<p style = \"margin-top:8px;margin-bottom:0px;margin-left:0px;margin-right:0px;font-size:").append(QString::number(dtFontSize)).append("pt; color:#797979;\">");
     dtHtmlEndStr = QString("</p></body></html>");
     table = new QTableView();
     this->setTableProps();
