@@ -44,7 +44,7 @@ public:
 protected:
     virtual void paintEvent(QPaintEvent *event);
 private:
-    int numNew;
+    int numNew, radius;
     QFont cntrFont;
 };
 

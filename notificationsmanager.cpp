@@ -93,6 +93,11 @@ CntrWidget::CntrWidget(QFont fontVal, QWidget *parent) :QWidget(parent)
     this->numNew = 0;
     this->cntrFont = fontVal;
     this->setMaximumSize(QSize(32,32));
+#ifdef Q_OS_WIN
+    this->radius = 10;
+#else
+    this->radius = 12;
+#endif
 }
 
 void CntrWidget::paintEvent(QPaintEvent *event)
@@ -109,11 +114,10 @@ void CntrWidget::paintEvent(QPaintEvent *event)
     brush.setStyle(Qt::SolidPattern);
     brush.setColor(color);
     painter.setBrush(brush);
-    painter.drawEllipse(QPoint(event->rect().width()/2, event->rect().height()/2),12,12);
-    //painter.drawArc(event->rect(),0,360*16);
+    painter.drawEllipse(QPoint(event->rect().width()/2, event->rect().height()/2), radius, radius);
     painter.setPen(Qt::white);
-    painter.drawText(event->rect(), Qt::AlignCenter, QString::number(this->numNew));
     painter.setFont(cntrFont);
+    painter.drawText(event->rect(), Qt::AlignCenter, QString::number(this->numNew));
 }
 
 void CntrWidget::setNumNew(int newValue)
