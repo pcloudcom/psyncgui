@@ -35,16 +35,17 @@ private:
 };
 
 
-class CntrWidget : public QWidget //orange icon
+class CntrWidget : public QWidget //the orange icon counter
 {
     Q_OBJECT
 public:
-    explicit CntrWidget(QWidget *parent = 0);
+    explicit CntrWidget(QFont fontVal, QWidget *parent = 0);
     void setNumNew(int newValue);
 protected:
     virtual void paintEvent(QPaintEvent *event);
 private:
     int numNew;
+    QFont cntrFont;
 };
 
 

@@ -88,10 +88,11 @@ void NotificationsWidget::focusOutEvent(QFocusEvent *event) // doesn't work when
 */
 
 
-CntrWidget::CntrWidget(QWidget *parent) :QWidget(parent)
+CntrWidget::CntrWidget(QFont fontVal, QWidget *parent) :QWidget(parent)
 {
     this->numNew = 0;
-    this->setMaximumSize(QSize(24,24));
+    this->cntrFont = fontVal;
+    this->setMaximumSize(QSize(32,32));
 }
 
 void CntrWidget::paintEvent(QPaintEvent *event)
@@ -108,11 +109,11 @@ void CntrWidget::paintEvent(QPaintEvent *event)
     brush.setStyle(Qt::SolidPattern);
     brush.setColor(color);
     painter.setBrush(brush);
-    painter.drawEllipse(event->rect().center(),10,10);
+    painter.drawEllipse(QPoint(event->rect().width()/2, event->rect().height()/2),12,12);
     //painter.drawArc(event->rect(),0,360*16);
     painter.setPen(Qt::white);
-    //painter.setFont();
     painter.drawText(event->rect(), Qt::AlignCenter, QString::number(this->numNew));
+    painter.setFont(cntrFont);
 }
 
 void CntrWidget::setNumNew(int newValue)
@@ -130,10 +131,17 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     updateFlag = false;
     lastNtfctId = -1;
 
+    QFont cntrFontVal;
     if(app->font().pointSize() > 10)
+    {
         dtFontSize = app->fontPointSize -3;
+        cntrFontVal = app->smaller2pFont;
+    }
     else
+    {
         dtFontSize = app->fontPointSize -1;
+        cntrFontVal = app->smaller1pFont;
+    }
 
     //Ü7 - for tests
     textHtmlBeginStr = QString("<html></title><body><p style = \"margin:0px;\">");
@@ -151,7 +159,7 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     layout = new QVBoxLayout();
     hlayout = new QHBoxLayout();
     QLabel *label = new QLabel(), *icon = new QLabel();
-    cntrWid = new CntrWidget();
+    cntrWid = new CntrWidget(cntrFontVal);
     label->setText(" pCloud Notifications");
 #ifdef Q_OS_LINUX
     label->setFont(app->bigger3pFont);
