@@ -22,7 +22,7 @@ class NotificationsWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit NotificationsWidget(NotificationsManager *mngr, int width, QWidget *parent = 0);
+    explicit NotificationsWidget(NotificationsManager *mngr, int height, QWidget *parent = 0);
 protected:
     virtual bool eventFilter(QObject *watched, QEvent *event);
     //virtual void leaveEvent();
