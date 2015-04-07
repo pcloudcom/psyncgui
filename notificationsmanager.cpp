@@ -7,15 +7,16 @@
 #include <QDesktopServices>
 #include <QUrl>
 #include <QPainter>
+#include <QDesktopWidget>
 
-NotificationsWidget::NotificationsWidget(NotificationsManager *mngr, QWidget *parent) : QWidget(parent)
+NotificationsWidget::NotificationsWidget(NotificationsManager *mngr, int width, QWidget *parent) : QWidget(parent)
 {
     //setFocusPolicy(Qt::ClickFocus);
     //setFocusPolicy((Qt::FocusPolicy)(Qt::TabFocus|Qt::ClickFocus));
     this->setWindowFlags(Qt::Dialog);
     this->setWindowFlags(Qt::FramelessWindowHint);
     this->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
-    setFixedSize(QSize(360,460));
+    setFixedSize(QSize(360,width));
     this->mngrParent = mngr;
     this->installEventFilter(this);
 
@@ -154,7 +155,9 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     dtHtmlBeginStr = QString("<p style = \"margin-top:8px;margin-bottom:0px;margin-left:0px;margin-right:0px;font-size:").append(QString::number(dtFontSize)).append("pt; color:#797979;\">");
     dtHtmlEndStr = QString("</p></body></html>");
 
-    notifywin = new NotificationsWidget(this);
+    QDesktopWidget *desktop = app->desktop();
+    int winWidth = (desktop->availableGeometry().width()/2 > 460 ? 460 : desktop->availableGeometry().width()/2);
+    notifywin = new NotificationsWidget(this,winWidth);
 
     layout = new QVBoxLayout();
     hlayout = new QHBoxLayout();
