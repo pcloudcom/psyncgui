@@ -7,7 +7,7 @@
 class NotifyDelegate : public QStyledItemDelegate
 {
 public:
-    NotifyDelegate(QObject *parent = 0);
+    NotifyDelegate(int tableWidth,QObject *parent = 0);
     void paint(QPainter *painter, const QStyleOptionViewItem &option,
                const QModelIndex &index) const;
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
@@ -17,6 +17,7 @@ public:
     void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void setNumNew(quint32 newcnt);
+
 protected:
     //virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
 private:
@@ -24,6 +25,9 @@ private:
     qreal textDocWidth;
     quint32 numNew;
     QColor mouseOverColor, redNtfColor, newNtfColor, separatorColor;
+public slots:
+     void updateTextDocWidth(qreal diff);
+     void sizeHintChanged(const QModelIndex &index);
 };
 
 #endif // NOTIFYDELEGATE_H

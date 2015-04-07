@@ -13,11 +13,11 @@ NotificationsWidget::NotificationsWidget(NotificationsManager *mngr, QWidget *pa
     //setFocusPolicy(Qt::ClickFocus);
     //setFocusPolicy((Qt::FocusPolicy)(Qt::TabFocus|Qt::ClickFocus));
     this->setWindowFlags(Qt::Dialog);
-    this->setWindowFlags(Qt::FramelessWindowHint);
-    this->setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
-    this->setMinimumWidth(420);
+    this->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+    setFixedSize(QSize(360,460));
     this->mngrParent = mngr;
     this->installEventFilter(this);
+
 }
 
 /*
@@ -152,13 +152,8 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     textHtmlEndStr = QString("</p>");
     dtHtmlBeginStr = QString("<p style = \"margin-top:8px;margin-bottom:0px;margin-left:0px;margin-right:0px;font-size:").append(QString::number(dtFontSize)).append("pt; color:#797979;\">");
     dtHtmlEndStr = QString("</p></body></html>");
-    table = new QTableView();
-    this->setTableProps();
 
-    notificationsModel = new QStandardItemModel(0, 2);
-    table->setModel(notificationsModel);
-    notifyDelegate = new NotifyDelegate(table);
-    table->setItemDelegate(notifyDelegate);
+    notifywin = new NotificationsWidget(this);
 
     layout = new QVBoxLayout();
     hlayout = new QHBoxLayout();
@@ -173,7 +168,7 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
 
     label->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     icon->setPixmap(QPixmap(":/48x34/images/48x34/notify.png"));
-    icon->setMaximumWidth(68);
+    icon->setMaximumWidth(72);
     icon->setMaximumHeight(80);
     icon->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     hlayout->addWidget(icon);
@@ -185,8 +180,17 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     noNtfctnsLabel->setMargin(50);
     noNtfctnsLabel->setVisible(false);
     layout->addWidget(noNtfctnsLabel);
+
+    table = new QTableView();
+    this->setTableProps();
+
+    qDebug()<<table->viewport()->height()<<notifywin->height();
+    notificationsModel = new QStandardItemModel(0, 2);
+    table->setModel(notificationsModel);
+    notifyDelegate = new NotifyDelegate(table->viewport()->geometry().width(),table);
+    table->setItemDelegate(notifyDelegate);
     layout->addWidget(table);
-    notifywin = new NotificationsWidget(this);
+
     notifywin->setLayout(layout);
     //notifywin->show(); //for dbg
     //notifywin->setFocus();
@@ -210,15 +214,20 @@ void NotificationsManager::setTableProps()
     table->setShowGrid(false);
     table->viewport()->setAttribute(Qt::WA_Hover);
     table->setMouseTracking(true);
-    table->setMinimumHeight(400);
+    //table->setMinimumHeight(400);
     QHeaderView *headerH = table->horizontalHeader(), *headerV = table->verticalHeader();
+    headerH->stretchLastSection();
     headerH->hide();
     headerV->hide();
-    table->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+    table->setFixedWidth(notifywin->width()-20);
+    table->setMinimumHeight(notifywin->height()-80);
+    table->resize(table->size());
+
+    qDebug()<<"setTableProps"<<table->width()<<table->height()<<notifywin->width()<<notifywin->height() <<app->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
 }
 
 void NotificationsManager::loadModel(psync_notification_list_t* notifications)
-{
+{    
     qDebug()<<"loadmodel"<<notifications->newnotificationcnt <<notifications->notificationcnt<<notifications->notifications;
 
     int ntfCnt = notifications->notificationcnt;
@@ -258,7 +267,6 @@ void NotificationsManager::loadModel(psync_notification_list_t* notifications)
 
         table->openPersistentEditor(notificationsModel->index(i, 1));
         table->openPersistentEditor(notificationsModel->index(i, 0));
-
         table->resizeRowsToContents();
     }
 }
@@ -276,6 +284,9 @@ void NotificationsManager::clearModel()
 
 void NotificationsManager::init()
 {
+    qDebug()<<" NotificationsManager::init";
+    hasTableScrollBar = false;
+
     psync_notification_list_t* notifications = psync_get_notifications();
     if(notifications != NULL && notifications->notificationcnt)
     {
@@ -291,7 +302,6 @@ void NotificationsManager::init()
     }
     table->resizeColumnsToContents();
     table->resizeRowsToContents();
-
     /*
      * OLD INIT TESTING MODEL
     notificationsModel->setRowCount(10);
@@ -329,6 +339,11 @@ void NotificationsManager::init()
 
 void NotificationsManager::clear()
 {
+    if(app->unlinkFlag && hasTableScrollBar)
+    {
+        this->hasTableScrollBar = false;
+        notifyDelegate->updateTextDocWidth(app->style()->pixelMetric(QStyle::PM_ScrollBarExtent));
+    }
     this->clearModel();
     this->resetNums();
 }
@@ -414,6 +429,36 @@ void NotificationsManager::showNotificationsWin()
     // notifywin->show();
 
     //if !num - set dflt text, hide table
+
+     if(!hasTableScrollBar) //recalc textdoc width according to having scrollbar
+    {
+        QModelIndex lastIndex = notificationsModel->index(notificationsModel->rowCount()-1, 1, QModelIndex());
+        if (table->visualRect(lastIndex).bottomRight().ry() > table->height())
+        {
+            hasTableScrollBar = true;
+            emit notifyDelegate->updateTextDocWidth(-app->style()->pixelMetric(QStyle::PM_ScrollBarExtent));
+            table->resizeColumnsToContents(); //calls sizehint
+            table->resizeRowsToContents();
+            table->viewport()->updateGeometry();
+            //table->repaint();
+            //table->viewport()->repaint();
+
+            /*
+            QModelIndex topLeftIndex = notificationsModel->index(0, 1, QModelIndex());
+            QModelIndex bottomRigthIndex = notificationsModel->index(notificationsModel->rowCount()-1, 1, QModelIndex());
+            emit notificationsModel->refresh(topLeftIndex,bottomRigthIndex);
+            //emit notificationsModel->layoutChanged(); //datachanged
+            for (int i = 0; i < notificationsModel->rowCount(); i++)
+            {
+                QModelIndex indexIcon0 = notificationsModel->index(i, 0, QModelIndex());
+                QModelIndex indexHtml = notificationsModel->index(i, 1, QModelIndex());
+               // table->update(indexHtml);
+                qDebug()<<table->visualRect(indexIcon0);
+                qDebug()<<table->visualRect(indexHtml)<<table->visualRect(indexHtml).bottomRight().ry() << table->visualRect(indexHtml).size().height();
+            }*/
+        }
+    }
+
     notifywin->raise();
     notifywin->activateWindow();
     notifywin->showNormal();

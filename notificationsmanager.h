@@ -84,6 +84,7 @@ private:
     QLabel *noNtfctnsLabel;
     CntrWidget *cntrWid;
     QTableView* table;
+    bool hasTableScrollBar;
     NotificationsWidget *notifywin;
     QVBoxLayout *layout;
     QHBoxLayout *hlayout;

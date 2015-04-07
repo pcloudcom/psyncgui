@@ -11,14 +11,12 @@
 #include <QTextFrame>
 
 
-NotifyDelegate::NotifyDelegate(QObject *parent) //++ numRed
+NotifyDelegate::NotifyDelegate(int tableWidth, QObject *parent)
     : QStyledItemDelegate(parent)
-{
-    qDebug()<<"NotifyDelegate create";
-    //++ calc size hint width - min(desktop/6 150)
-    //iconmargin
-    minColumnHeight = 60;
-    textDocWidth = 320.0; //table width - pic
+{       
+    qDebug()<<"NotifyDelegate"<<tableWidth;
+    minColumnHeight = 72; //equals to icon width
+    textDocWidth = tableWidth - minColumnHeight;
     numNew = 0;
     separatorColor = "#E0E0E0"; //eeeeee
     mouseOverColor = "#F3FBFE";
@@ -96,7 +94,7 @@ void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         QTextOption opt(Qt::AlignVCenter);
         opt.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
         doc.setDefaultTextOption(opt);
-        doc.setDocumentMargin(0.0);    
+        doc.setDocumentMargin(0.0);
         doc.setHtml(options.text);
         doc.setPageSize(QSize(options.rect.size()));
         options.text = "";
@@ -112,7 +110,7 @@ void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         doc.rootFrame()->setFrameFormat(fmt);
 
         QSize size = doc.size().toSize();
-        size.setHeight(72);        
+        size.setHeight(72);
         QRect clip(0,0, options.rect.width(), options.rect.height());
 
         QPen bottomLine;
@@ -181,9 +179,9 @@ QSize NotifyDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelI
         QTextDocument doc;
         QTextOption opt(Qt::AlignVCenter);
         opt.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-        doc.setDefaultTextOption(opt);      
+        doc.setTextWidth(textDocWidth); //320
+        doc.setDefaultTextOption(opt);
         doc.setHtml(options.text);
-        doc.setTextWidth(textDocWidth); //320        
         //  qDebug()<<"sizeHint 1"<< index.row()<< doc.size().height() <<option.rect.height() <<options.rect.height();
         return QSize(doc.size().width(), (((minColumnHeight>  doc.size().height()) ? minColumnHeight : doc.size().height())+12)); //24 is for margines from the specification
     }
@@ -255,6 +253,16 @@ void NotifyDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionVie
     //  qDebug()<<"updateEditorGeometry"<<index;
     editor->setGeometry(option.rect);
 }
+
+void NotifyDelegate::updateTextDocWidth(qreal diff)
+{
+    this->textDocWidth += diff;
+    qDebug()<<"updateTextDocWidth"<<textDocWidth;
+    //QAbstractItemView *table = qobject_cast<QAbstractItemView *>(this->parent());
+    //QModelIndex bottomRigthIndex = table->model()->index(0, 1, QModelIndex());
+    // emit sizeHintChanged(bottomRigthIndex);
+}
+
 /*
 bool NotifyDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
 {
@@ -263,3 +271,9 @@ bool NotifyDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const
     return QStyledItemDelegate::editorEvent(event,model,option,index);
 }
 */
+
+void NotifyDelegate::sizeHintChanged(const QModelIndex &index)
+{
+    qDebug()<<"sizeHintChanged"<<index;
+    QStyledItemDelegate::sizeHintChanged(index);
+}
