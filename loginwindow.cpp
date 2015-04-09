@@ -38,8 +38,9 @@ LoginWindow::~LoginWindow()
 
 void LoginWindow::showEvent(QShowEvent *)
 {
+    if(ui->checkBox->isChecked())
+        ui->checkBox->setCheckState(Qt::Unchecked);
     username = psync_get_username();
-    // ui->error->setText("");
     if (username == "")
     {
         ui->btnUnlink->setVisible(false);
@@ -56,19 +57,18 @@ void LoginWindow::showEvent(QShowEvent *)
     }
 }
 
-void LoginWindow::focusPass(){
+void LoginWindow::focusPass()
+{
     ui->password->setFocus();
 }
 
 void LoginWindow::showError(const char *err)
-{
-    //ui->error->setText(trUtf8(err)); //for translation
+{    
     QMessageBox::critical(this, "pCloud Drive", trUtf8(err));
 }
 
 void LoginWindow::logIn()
-{
-    // ui->error->setText("");
+{    
     QByteArray email=ui->email->text().toUtf8();
     QByteArray password=ui->password->text().toUtf8();
 
@@ -136,8 +136,6 @@ void LoginWindow::logIn()
     QApplication::restoreOverrideCursor();
     ui->password->clear();
     this->close();
-    //p app->openCloudDir();
-
 }
 
 void LoginWindow::forgotPassword()
