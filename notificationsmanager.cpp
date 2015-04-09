@@ -271,8 +271,9 @@ void NotificationsManager::loadModel(psync_notification_list_t* notifications)
 
         table->openPersistentEditor(notificationsModel->index(i, 1));
         table->openPersistentEditor(notificationsModel->index(i, 0));
-        table->resizeRowsToContents();
     }
+    table->resizeRowsToContents(); //recalc sizehint
+    table->resizeColumnsToContents();
 }
 
 void NotificationsManager::clearModel()
@@ -297,6 +298,8 @@ void NotificationsManager::init()
         this->loadModel(notifications);
         free(notifications);
         notifications = NULL;
+        table->resizeColumnsToContents(); //emits delegate recals size
+        table->resizeRowsToContents();
     }
     else
     {
@@ -304,8 +307,6 @@ void NotificationsManager::init()
         this->table->setVisible(false);
         this->noNtfctnsLabel->setVisible(true);
     }
-    table->resizeColumnsToContents();
-    table->resizeRowsToContents();
     /*
      * OLD INIT TESTING MODEL
     notificationsModel->setRowCount(10);
