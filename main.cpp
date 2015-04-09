@@ -2,6 +2,8 @@
 #include "mylogger.h"
 #include "psynclib.h"
 #include <QApplication>
+#include <QSysInfo>
+#include <QProcess>
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -91,6 +93,43 @@ bool isRunning(){
 
 int main(int argc, char *argv[])
 {    
+    QByteArray appSysInfo;
+#ifdef Q_OS_LINUX
+    appSysInfo = "Desktop, ";
+    QByteArray distr;
+    QProcess process;
+    process.start("lsb_release -ds");
+    process.waitForFinished();
+    distr = process.readAllStandardOutput();
+    if(!distr.isNull())
+    {
+        if (distr.endsWith("\n"))
+            distr.remove(distr.length()-1,1);
+    }
+    else
+        distr = "Linux";
+
+    appSysInfo += distr + ", pCloud (Qt) " ;
+#else
+    switch(QSysInfo::windowsVersion())
+    {
+    case QSysInfo::WV_XP:
+         appSysInfo = "Desktop, Windows XP, pCloud (Qt) ";
+        break;
+    case QSysInfo::WV_WINDOWS7:
+        appSysInfo = "Desktop, Windows 7, pCloud (Qt) ";
+        break;
+    case QSysInfo::WV_WINDOWS8:
+        appSysInfo = "Desktop, Windows 8, pCloud (Qt) ";
+        break;
+    default :
+        appSysInfo = "Desktop, Windows, pCloud (Qt) ";
+        break;
+    }
+#endif
+    appSysInfo += APP_VERSION;
+    psync_set_software_string(appSysInfo.constData());
+
     if (psync_init() == -1)
     {
         qDebug()<<"Init sync returned failed. It may be already running! "<<psync_get_last_error();
