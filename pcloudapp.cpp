@@ -1008,8 +1008,10 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
 
 void notification_callback(quint32 notificationcnt, quint32 newnotificationcnt)
 {
+    mutex.lock();
     qDebug()<<"notification_callback"<<notificationcnt<<newnotificationcnt;
     PCloudApp::appStatic->updateNotfctnsPublic(newnotificationcnt);
+    mutex.unlock();
 }
 
 PCloudApp::PCloudApp(int &argc, char **argv) :
@@ -1813,7 +1815,8 @@ void PCloudApp::updateNotfctnsPublic(int newcnt)
 {    
     emit this->updateNotfctnsModelSgnl(newcnt);
     this->newNtfFLag = newcnt ? true : false;
-    changeSyncIconPublic(this->lastTrayIconIndex);
+    if (this->isLogedIn())
+        changeSyncIconPublic(this->lastTrayIconIndex); //change current icon with the same with the notification red dot
 }
 
 void PCloudApp::setsyncSuggstLst(QStringList lst)
