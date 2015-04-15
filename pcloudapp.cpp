@@ -1746,8 +1746,8 @@ void PCloudApp::changeSyncIconPublic(int index)
     {
         noFreeSpaceMsgShownFlag = true;
         if(this->lastStatus == PSTATUS_DISK_FULL)    // no local disk space (according to settings)
-            emit this->showMsgBoxSgnl(trUtf8("pCloud Drive's free disk space quota reached"),
-                                      trUtf8("pCloud Drive might not behave properly, clean some space or edit Disk Usage settings to resume operations."), 5);
+            emit this->showMsgBoxSgnl(trUtf8("pCloud Drive: System disk space low"),
+                                      trUtf8("pCloud Drive might not behave properly.\nConsider freeing some space on your system drive or setting Minimum Disk Space to a lower value."), 5);
         else // pcloud account is full
             emit this->showMsgBoxSgnl(trUtf8("Account is full"),trUtf8("Your pCloud account is out of free space!"), 2); //++ get more space suggestion
     }
