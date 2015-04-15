@@ -13,8 +13,12 @@ NotificationsWidget::NotificationsWidget(NotificationsManager *mngr, int height,
 {
     //setFocusPolicy(Qt::ClickFocus);
     //setFocusPolicy((Qt::FocusPolicy)(Qt::TabFocus|Qt::ClickFocus));
-    this->setWindowFlags(Qt::Dialog);
+#ifdef Q_OS_LINUX
+    this->setWindowFlags(Qt::Popup | Qt::Window);
+#else
+    //this->setWindowFlags(Qt::Dialog);
     this->setWindowFlags(Qt::FramelessWindowHint);
+#endif
     this->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
     setFixedSize(QSize(360,height));
     this->mngrParent = mngr;
