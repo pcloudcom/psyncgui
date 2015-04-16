@@ -182,18 +182,20 @@ const QPoint PCloudApp::calcWinNextToTrayCoords(const int winWidth, const int wi
     QDesktopWidget *desktop = QApplication::desktop();
     int xres, yres, avlbGeomW = desktop->availableGeometry().width();
     QPoint trayBL = this->tray->geometry().bottomLeft();
-    QPoint avlbGeomBL = desktop->availableGeometry().bottomLeft();
+    if (trayBL.x() <2 || trayBL.y()<2)
+        trayBL = loggedmenu->geometry().topLeft(); //ubuntu14.04 for example returns (0,-1) for tray coords
+
+    QPoint avlbGeomBL = desktop->availableGeometry().topLeft();
     int trayx = trayBL.x(), trayy = trayBL.y();
 
-    qDebug()<<"calcWinNextToTrayCoords" << trayBL << avlbGeomBL << avlbGeomW;
-             qDebug()<<"coords"<< trayx<<trayy << winHeigh;
+    qDebug()<<"calcWinNextToTrayCoords" << trayBL << avlbGeomBL<<"menu"<<loggedmenu->geometry().topLeft()<<"tray coords"<< trayx<<trayy << winHeigh;
 
     //calc x
     if(trayx < avlbGeomW/2) // I or IV quadrant (left vertical half of the screen)
     {
         xres = qMax(trayx, avlbGeomBL.x());
     }
-        else //II or III quadrant
+    else //II or III quadrant
     {
         xres = qMin(trayx,avlbGeomW - winWidth);
     }
