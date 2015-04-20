@@ -168,13 +168,11 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     hlayout = new QHBoxLayout();
     QLabel *label = new QLabel(), *icon = new QLabel();
     cntrWid = new CntrWidget(cntrFontVal);
-    label->setText(" pCloud Notifications");
-#ifdef Q_OS_LINUX
-    label->setFont(app->bigger3pFont);
-#else
-    label->setFont(app->bigger1pFont);
-#endif
-
+    label->setText("pCloud Notifications");
+    if(app->font().pointSize() < 12)
+        label->setFont(app->bigger3pFont);
+    else
+        label->setFont(app->bigger1pFont);
     label->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     icon->setPixmap(QPixmap(":/48x34/images/48x34/notify.png"));
     icon->setMaximumWidth(72);
