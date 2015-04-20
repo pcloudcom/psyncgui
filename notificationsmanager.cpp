@@ -44,10 +44,11 @@ void NotificationsWidget::hideEvent(QHideEvent *event)
 bool NotificationsWidget::eventFilter(QObject *watched, QEvent *event)
 {
     // paint repaint show(51) actChange(99)
-    if(event->type() == QEvent::WindowDeactivate) //25
+    if(event->type() == QEvent::WindowDeactivate || event->type() == QEvent::Hide) //25  18
     {
         qDebug()<<"eventFilter win deactivate";
-        this->close();
+        if(this->isVisible())
+            this->close();
 
         if(mngrParent->getLastNtfctId() != -1)
         {
