@@ -19,8 +19,8 @@ NotificationsWidget::NotificationsWidget(NotificationsManager *mngr, int height,
     //this->setWindowFlags(Qt::Dialog);
     this->setWindowFlags(Qt::FramelessWindowHint);
 #endif
-    this->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
-    setFixedSize(QSize(360,height));
+    this->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);    
+    setFixedSize(QSize(356,height));
     this->mngrParent = mngr;
     this->installEventFilter(this);
 
@@ -161,8 +161,13 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     dtHtmlEndStr = QString("</p></body></html>");
 
     QDesktopWidget *desktop = app->desktop();
-    int winWidth = (desktop->availableGeometry().height()/2 > 460 ? 460 : desktop->availableGeometry().height()/2);
-    notifywin = new NotificationsWidget(this,winWidth);
+    int winHeight;
+#ifdef Q_OS_LINUX
+    winHeight = (desktop->availableGeometry().height()/2 > 460 ? 460 : desktop->availableGeometry().height()/2);
+#else
+    winHeight = 452;
+#endif
+    notifywin = new NotificationsWidget(this,winHeight);
 
     layout = new QVBoxLayout();
     hlayout = new QHBoxLayout();
@@ -176,7 +181,11 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     label->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     icon->setPixmap(QPixmap(":/48x34/images/48x34/notify.png"));
     icon->setMaximumWidth(72);
-    icon->setMaximumHeight(80);
+#ifdef Q_OS_LINUX
+    icon->setMaximumHeight(80);    
+#else
+    icon->setFixedHeight(44);
+#endif
     icon->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     hlayout->addWidget(icon);
     hlayout->addWidget(label);
@@ -226,9 +235,14 @@ void NotificationsManager::setTableProps()
     headerH->stretchLastSection();
     headerH->hide();
     headerV->hide();
-    table->setFixedWidth(notifywin->width()-20);
+    table->setFixedWidth(notifywin->width()-16);
+#ifdef Q_OS_LINUX
     table->setMinimumHeight(notifywin->height()-80);
-    table->resize(table->size());
+    table->setMaximumHeight(notifywin->height()-40);
+#else
+    table->setFixedHeight(400);
+#endif
+    //table->resize(table->size());
 
     qDebug()<<"setTableProps"<<table->width()<<table->height()<<notifywin->width()<<notifywin->height() <<app->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
 }
