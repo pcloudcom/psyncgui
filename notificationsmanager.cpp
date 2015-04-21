@@ -19,11 +19,10 @@ NotificationsWidget::NotificationsWidget(NotificationsManager *mngr, int height,
     //this->setWindowFlags(Qt::Dialog);
     this->setWindowFlags(Qt::FramelessWindowHint);
 #endif
-    this->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);    
+    this->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
     setFixedSize(QSize(356,height));
     this->mngrParent = mngr;
     this->installEventFilter(this);
-
 }
 
 /*
@@ -99,10 +98,11 @@ CntrWidget::CntrWidget(QFont fontVal, QWidget *parent) :QWidget(parent)
 {
     this->numNew = 0;
     this->cntrFont = fontVal;
-    this->setMaximumSize(QSize(32,32));
 #ifdef Q_OS_WIN
+    this->setMaximumSize(QSize(28,28));
     this->radius = 10;
 #else
+    this->setMaximumSize(QSize(32,32));
     this->radius = 12;
 #endif
 }
@@ -160,7 +160,6 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     dtHtmlBeginStr = QString("<p style = \"margin-top:8px;margin-bottom:0px;margin-left:0px;margin-right:0px;font-size:").append(QString::number(dtFontSize)).append("pt; color:#797979;\">");
     dtHtmlEndStr = QString("</p></body></html>");
 
-    QDesktopWidget *desktop = app->desktop();
     int winHeight;
 #ifdef Q_OS_LINUX
     winHeight = (desktop->availableGeometry().height()/2 > 460 ? 460 : desktop->availableGeometry().height()/2);
@@ -170,7 +169,12 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     notifywin = new NotificationsWidget(this,winHeight);
 
     layout = new QVBoxLayout();
+    layout->setSpacing(0);
+    layout->setMargin(0);
+    layout->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     hlayout = new QHBoxLayout();
+    hlayout->setSpacing(2);
+    hlayout->setMargin(0);
     QLabel *label = new QLabel(), *icon = new QLabel();
     cntrWid = new CntrWidget(cntrFontVal);
     label->setText("pCloud Notifications");
@@ -182,7 +186,7 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     icon->setPixmap(QPixmap(":/48x34/images/48x34/notify.png"));
     icon->setMaximumWidth(72);
 #ifdef Q_OS_LINUX
-    icon->setMaximumHeight(80);    
+    icon->setMaximumHeight(80);
 #else
     icon->setFixedHeight(44);
 #endif
@@ -225,7 +229,7 @@ void NotificationsManager::setTableProps()
 {
     table->setSelectionMode(QAbstractItemView::NoSelection);
     table->setSelectionBehavior(QTableView::SelectRows);
-    table->setContentsMargins(0,0,0,0);
+    table->setContentsMargins(8,0,8,8);
     table->setStyleSheet("QTableView{background-color:#F3F3F3;}");
     table->setShowGrid(false);
     table->viewport()->setAttribute(Qt::WA_Hover);
@@ -240,7 +244,7 @@ void NotificationsManager::setTableProps()
     table->setMinimumHeight(notifywin->height()-80);
     table->setMaximumHeight(notifywin->height()-40);
 #else
-    table->setFixedHeight(400);
+    table->setFixedHeight(394);
 #endif
     //table->resize(table->size());
 
@@ -452,7 +456,7 @@ void NotificationsManager::showNotificationsWin()
 
     //if !num - set dflt text, hide table
 
-     if(!hasTableScrollBar) //recalc textdoc width according to having scrollbar
+    if(!hasTableScrollBar) //recalc textdoc width according to having scrollbar
     {
         QModelIndex lastIndex = notificationsModel->index(notificationsModel->rowCount()-1, 1, QModelIndex());
         if (table->visualRect(lastIndex).bottomRight().ry() > table->height())
