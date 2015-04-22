@@ -162,6 +162,7 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
 
     int winHeight;
 #ifdef Q_OS_LINUX
+    QDesktopWidget *desktop = app->desktop();
     winHeight = (desktop->availableGeometry().height()/2 > 460 ? 460 : desktop->availableGeometry().height()/2);
 #else
     winHeight = 452;
@@ -187,6 +188,7 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     icon->setMaximumWidth(72);
 #ifdef Q_OS_LINUX
     icon->setMaximumHeight(80);
+    icon->setMinimumHeight(44);
 #else
     icon->setFixedHeight(44);
 #endif
@@ -242,7 +244,7 @@ void NotificationsManager::setTableProps()
     table->setFixedWidth(notifywin->width()-16);
 #ifdef Q_OS_LINUX
     table->setMinimumHeight(notifywin->height()-80);
-    table->setMaximumHeight(notifywin->height()-40);
+    table->setMaximumHeight(notifywin->height()-58);
 #else
     table->setFixedHeight(394);
 #endif

@@ -182,7 +182,7 @@ QSize NotifyDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelI
         doc.setTextWidth(textDocWidth); //320
         doc.setDefaultTextOption(opt);
         doc.setHtml(options.text);
-        qDebug()<<"sizeHint 1"<< index.row()<< doc.size().height() <<option.rect.height() <<options.rect.height();
+        //qDebug()<<"sizeHint 1"<< index.row()<< doc.size().height() <<option.rect.height() <<options.rect.height();
         return QSize(doc.size().width(), ((minColumnHeight > (doc.size().height()+ 12)) ? minColumnHeight : doc.size().height()+12)); //12 is for margines from the specification
     }
 }
