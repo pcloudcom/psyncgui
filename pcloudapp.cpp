@@ -1030,6 +1030,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     smaller1pFont.setPointSize(fontPointSize - 1);
     smaller2pFont.setPointSize(fontPointSize - 2);
     bigger1pFont.setPointSize(fontPointSize + 1);
+    bigger2pFont.setPointSize(fontPointSize + 2);
     bigger3pFont.setPointSize(fontPointSize + 3);
     regwin=NULL;
     logwin=NULL;

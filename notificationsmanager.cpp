@@ -174,13 +174,13 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     layout->setMargin(0);
     layout->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     hlayout = new QHBoxLayout();
-    hlayout->setSpacing(2);
+    hlayout->setSpacing(0);
     hlayout->setMargin(0);
     QLabel *label = new QLabel(), *icon = new QLabel();
     cntrWid = new CntrWidget(cntrFontVal);
     label->setText("pCloud Notifications");
     if(app->font().pointSize() < 12)
-        label->setFont(app->bigger3pFont);
+        label->setFont(app->bigger2pFont);
     else
         label->setFont(app->bigger1pFont);
     label->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -524,6 +524,17 @@ void NotificationsManager::actionExecSlot(const QModelIndex &index)
             notifywin->close();
         }
         break;
+    }
+    case PNOTIFICATION_ACTION_SHARE_REQUEST:
+    {
+        qDebug()<<"PNOTIFICATION_ACTION_SHARE_REQUEST";
+        app->showShares();
+        break;
+    }
+    case PNOTIFICATION_ACTION_GO_TO_URL:
+    {
+        QUrl url(QString(actnsMngrArr[index.row()].actionData.url));
+        QDesktopServices::openUrl(url);
     }
     default:
         break;

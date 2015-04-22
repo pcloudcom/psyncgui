@@ -106,7 +106,7 @@ public:
     QString usedSpaceStr;
     const char* OSStr;
     int fontPointSize;
-    QFont smaller2pFont,smaller1pFont, bigger1pFont, bigger3pFont;
+    QFont smaller2pFont,smaller1pFont, bigger1pFont,bigger2pFont,bigger3pFont;
     // PSettings *settings;
     QSettings *settings;
     QStringList syncSuggstLst; // send from context menu when add new syncs
