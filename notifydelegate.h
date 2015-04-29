@@ -24,7 +24,7 @@ private:
     int minColumnHeight;
     qreal textDocWidth;
     quint32 numNew;
-    QColor mouseOverColor, redNtfColor, newNtfColor, separatorColor;
+    QColor mouseOverColor, newNtfColor, separatorColor;
 public slots:
      void updateTextDocWidth(qreal diff);
      void sizeHintChanged(const QModelIndex &index);

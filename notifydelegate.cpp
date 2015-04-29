@@ -18,10 +18,9 @@ NotifyDelegate::NotifyDelegate(int tableWidth, QObject *parent)
     minColumnHeight = 72; //equals to icon width
     textDocWidth = tableWidth - minColumnHeight;
     numNew = 0;
-    separatorColor = "#E0E0E0"; //eeeeee
-    mouseOverColor = "#F3FBFE";
-    redNtfColor = "#F4F4F4";
-    newNtfColor = Qt::white;
+    separatorColor = "#E4E4E4";
+    mouseOverColor = "#F3FDFE";
+    newNtfColor = "#E1F9FD";
 }
 
 void NotifyDelegate::setNumNew(quint32 newcnt)

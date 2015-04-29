@@ -232,7 +232,7 @@ void NotificationsManager::setTableProps()
     table->setSelectionMode(QAbstractItemView::NoSelection);
     table->setSelectionBehavior(QTableView::SelectRows);
     table->setContentsMargins(8,0,8,8);
-    table->setStyleSheet("QTableView{background-color:#F3F3F3;}");
+    table->setStyleSheet("QTableView{background-color:#FFFFFF;}");
     table->setShowGrid(false);
     table->viewport()->setAttribute(Qt::WA_Hover);
     table->setMouseTracking(true);
