@@ -92,7 +92,7 @@ bool isRunning(){
 
 int main(int argc, char *argv[])
 {    
-    QByteArray appSysInfo("pCloud (Qt), ");
+    QByteArray appSysInfo("pCloud (Qt) ");
     appSysInfo += APP_VERSION;
     psync_set_software_string(appSysInfo.constData());
 
