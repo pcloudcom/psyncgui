@@ -149,4 +149,30 @@
         <file>images/tray/syncing.png</file>
         <file>images/tray/offline.png</file>
     </qresource>
+    <qresource prefix="/ntf">
+        <file>images/notifications/19.png</file>
+        <file>images/notifications/1.png</file>
+        <file>images/notifications/0.png</file>
+        <file>images/notifications/20-lin.png</file>
+        <file>images/notifications/20-win.png</file>
+        <file>images/notifications/21.png</file>
+        <file>images/notifications/18.png</file>
+        <file>images/notifications/16.png</file>
+        <file>images/notifications/15.png</file>
+        <file>images/notifications/14.png</file>
+        <file>images/notifications/13.png</file>
+        <file>images/notifications/9.png</file>
+        <file>images/notifications/8.png</file>
+        <file>images/notifications/7.png</file>
+        <file>images/notifications/6.png</file>
+        <file>images/notifications/5.png</file>
+        <file>images/notifications/4.png</file>
+        <file>images/notifications/3.png</file>
+        <file>images/notifications/2.png</file>
+        <file>images/notifications/23.png</file>
+        <file>images/notifications/22.png</file>
+        <file>images/notifications/12.png</file>
+        <file>images/notifications/11.png</file>
+        <file>images/notifications/10.png</file>
+    </qresource>
 </RCC>

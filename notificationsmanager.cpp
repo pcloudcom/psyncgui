@@ -164,8 +164,10 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
 #ifdef Q_OS_LINUX
     QDesktopWidget *desktop = app->desktop();
     winHeight = (desktop->availableGeometry().height()/2 > 460 ? 460 : desktop->availableGeometry().height()/2);
+    fldrIconPath = (":/ntf/images/notifications/20-lin.png");
 #else
     winHeight = 452;
+    fldrIconPath = (":/ntf/images/notifications/20-win.png");
 #endif
     notifywin = new NotificationsWidget(this,winHeight);
 
@@ -287,9 +289,10 @@ void NotificationsManager::loadModel(psync_notification_list_t* notifications)
         QString iconpath;
         if (notifications->notifications[i].thumb != NULL)
             iconpath = notifications->notifications[i].thumb;
+        else if(notifications->notifications[i].iconid != 20)
+            iconpath = QString(":/ntf/images/notifications/").append(QString::number(notifications->notifications[i].iconid) + ".png"); //OFFLINE_ICON
         else
-            //iconpath = dfltname+ notifications->notifications[i].iconid
-            iconpath = ":/images/images/testNtf.png";
+            iconpath = fldrIconPath;
         notificationsModel->setData(indexIcon, QVariant(iconpath));
 
         table->openPersistentEditor(notificationsModel->index(i, 1));

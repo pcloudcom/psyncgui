@@ -80,7 +80,7 @@ private:
     PCloudApp* app;
     actionsManager* actnsMngrArr;
     NotifyDelegate *notifyDelegate;
-    QString  textHtmlBeginStr,textHtmlEndStr, dtHtmlBeginStr, dtHtmlEndStr;
+    QString  textHtmlBeginStr,textHtmlEndStr, dtHtmlBeginStr, dtHtmlEndStr, fldrIconPath;
     QLabel *noNtfctnsLabel;
     CntrWidget *cntrWid;
     QTableView* table;
