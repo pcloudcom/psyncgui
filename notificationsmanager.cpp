@@ -173,8 +173,7 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
 
     layout = new QVBoxLayout();
     layout->setSpacing(0);
-    layout->setMargin(0);
-    layout->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    layout->setContentsMargins(QMargins(0,0,0,8));
     hlayout = new QHBoxLayout();
     hlayout->setSpacing(0);
     hlayout->setMargin(0);
@@ -189,7 +188,7 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     icon->setPixmap(QPixmap(":/48x34/images/48x34/notify.png"));
     icon->setMaximumWidth(72);
 #ifdef Q_OS_LINUX
-    icon->setMaximumHeight(80);
+    icon->setMaximumHeight(70);
     icon->setMinimumHeight(44);
 #else
     icon->setFixedHeight(44);
@@ -198,10 +197,13 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     hlayout->addWidget(icon);
     hlayout->addWidget(label);
     hlayout->addWidget(cntrWid);
+    hlayout->setAlignment(Qt::AlignVCenter);
     layout->addLayout(hlayout);
+    layout->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     noNtfctnsLabel = new QLabel("No notifications available.");
     noNtfctnsLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     noNtfctnsLabel->setMargin(50);
+    noNtfctnsLabel->setMinimumHeight(notifywin->height()-80);
     noNtfctnsLabel->setVisible(false);
     layout->addWidget(noNtfctnsLabel);
 
@@ -233,12 +235,10 @@ void NotificationsManager::setTableProps()
 {
     table->setSelectionMode(QAbstractItemView::NoSelection);
     table->setSelectionBehavior(QTableView::SelectRows);
-    table->setContentsMargins(8,0,8,8);
     table->setStyleSheet("QTableView{background-color:#FFFFFF;}");
     table->setShowGrid(false);
     table->viewport()->setAttribute(Qt::WA_Hover);
     table->setMouseTracking(true);
-    //table->setMinimumHeight(400);
     QHeaderView *headerH = table->horizontalHeader(), *headerV = table->verticalHeader();
     headerH->stretchLastSection();
     headerH->hide();
