@@ -321,6 +321,12 @@ void NotificationsManager::init()
     psync_notification_list_t* notifications = psync_get_notifications();
     if(notifications != NULL && notifications->notificationcnt)
     {
+        if(!table->isVisible()) //after unlink of account with no ntf
+        {
+            noNtfctnsLabel->setVisible(false);
+            table->setVisible(true);
+        }
+
         this->loadModel(notifications);
         free(notifications);
         notifications = NULL;
