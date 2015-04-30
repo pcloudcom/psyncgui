@@ -370,7 +370,7 @@ void NotificationsManager::init()
 
 void NotificationsManager::clear()
 {
-    if(app->unlinkFlag && hasTableScrollBar)
+    if(!app->isLogedIn() && hasTableScrollBar)
     {
         this->hasTableScrollBar = false;
         notifyDelegate->updateTextDocWidth(app->style()->pixelMetric(QStyle::PM_ScrollBarExtent));
