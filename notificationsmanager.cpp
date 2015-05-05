@@ -12,9 +12,10 @@
 NotificationsWidget::NotificationsWidget(NotificationsManager *mngr, int height, QWidget *parent) : QWidget(parent)
 {
     //setFocusPolicy(Qt::ClickFocus);
-    //setFocusPolicy((Qt::FocusPolicy)(Qt::TabFocus|Qt::ClickFocus));
+    setFocusPolicy((Qt::FocusPolicy)(Qt::TabFocus|Qt::ClickFocus));
 #ifdef Q_OS_LINUX
-    this->setWindowFlags(Qt::Popup | Qt::Window);
+    //this->setWindowFlags(Qt::Popup | Qt::Window);
+     this->setWindowFlags(Qt::FramelessWindowHint);
 #else
     //this->setWindowFlags(Qt::Dialog);
     this->setWindowFlags(Qt::FramelessWindowHint);
@@ -24,13 +25,14 @@ NotificationsWidget::NotificationsWidget(NotificationsManager *mngr, int height,
     this->mngrParent = mngr;
     this->installEventFilter(this);
 }
+//
 
-/*
-void NotificationsWidget::leaveEvent()
+void NotificationsWidget::leaveEvent(QEvent *event)
 {
-    qDebug()<<"NotificationsWidget::leaveEvent";
+    qDebug()<<"NotificationsWidget::leaveEvent"<<event->type(); //--
 }
 
+/*
 void NotificationsWidget::hideEvent(QHideEvent *event)
 {
     qDebug()<<"hideEvent";
@@ -43,8 +45,11 @@ void NotificationsWidget::hideEvent(QHideEvent *event)
 bool NotificationsWidget::eventFilter(QObject *watched, QEvent *event)
 {
     // paint repaint show(51) actChange(99)
-    if(event->type() == QEvent::WindowDeactivate || event->type() == QEvent::Hide) //25  18
+    //qDebug()<<"eventFilter"<<event->type();
+    if(event->type() == QEvent::WindowDeactivate || event->type() == QEvent::Hide
+            || event->type() == QEvent::ApplicationDeactivate  || event->type() == QEvent::ApplicationDeactivated ) //25  18
     {
+        //return true;
         qDebug()<<"eventFilter win deactivate";
         if(this->isVisible())
             this->close();
@@ -59,22 +64,22 @@ bool NotificationsWidget::eventFilter(QObject *watched, QEvent *event)
     QWidget::eventFilter(watched, event);
 }
 
-/*
-void NotificationsWidget::mouseEvent(QMouseEvent *event)
+
+void NotificationsWidget::mousePressEvent(QMouseEvent *event)
 {
     qDebug()<<"mousePressEvent";
     QPoint pos = event->globalPos();
-   if (this)
-   pos = this->mapFromGlobal(pos);
-   if (!this->rect().contains(pos))
-       this->close();
-  // hideTip();
-   QWidget::mouseMoveEvent(event);
+    if (this)
+        pos = this->mapFromGlobal(pos);
+    if (!this->rect().contains(pos))
+        this->close();
+    // hideTip();
+    QWidget::mouseMoveEvent(event);
 }
 
 void NotificationsWidget::focusOutEvent(QFocusEvent *event) // doesn't work when alt+tab and the mouse is over ttable item
 {
-   // qDebug()<<"focusOutEvent"<< this->isVisible();
+    qDebug()<<"focusOutEvent"<< this->isVisible(); // visible on left click
     QPoint pos = QCursor::pos(); //25 QEvent::WindowDeactivate
     if (this)
         pos = this->mapFromGlobal(pos);
@@ -91,7 +96,6 @@ void NotificationsWidget::focusOutEvent(QFocusEvent *event) // doesn't work when
     }
     event->accept();
 }
-*/
 
 
 CntrWidget::CntrWidget(QFont fontVal, QWidget *parent) :QWidget(parent)
@@ -218,9 +222,8 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     layout->addWidget(table);
 
     notifywin->setLayout(layout);
-    //notifywin->show(); //for dbg
-    //notifywin->setFocus();
 
+    qDebug()<<"win geometry"<<notifywin->geometry()<<notifywin->frameGeometry() <<"table:"<<table->width();
     // connect(table, SIGNAL(viewportEntered()), this, SLOT(setWinFocus()));
     //connect(table, SIGNAL(clicked(QModelIndex)), this, SLOT(setWinFocus()));
     connect(table, SIGNAL(clicked(QModelIndex)), this, SLOT(actionExecSlot(QModelIndex)));
@@ -294,6 +297,7 @@ void NotificationsManager::loadModel(psync_notification_list_t* notifications)
         else
             iconpath = fldrIconPath;
         notificationsModel->setData(indexIcon, QVariant(iconpath));
+        //qDebug()<<"icon path"<<iconpath;
 
         table->openPersistentEditor(notificationsModel->index(i, 1));
         table->openPersistentEditor(notificationsModel->index(i, 0));
@@ -304,6 +308,7 @@ void NotificationsManager::loadModel(psync_notification_list_t* notifications)
 
 void NotificationsManager::clearModel()
 {
+    qDebug()<<"clearModel";
     notificationsModel->removeRows(0, notificationsModel->rowCount());
 
     if (actnsMngrArr != NULL)
@@ -311,12 +316,14 @@ void NotificationsManager::clearModel()
         free(actnsMngrArr);
         actnsMngrArr = NULL;
     }
+    //this->resetNums();
 }
 
 void NotificationsManager::init()
 {
     qDebug()<<" NotificationsManager::init";
     hasTableScrollBar = false;
+    table->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
     psync_notification_list_t* notifications = psync_get_notifications();
     if(notifications != NULL && notifications->notificationcnt)
@@ -376,9 +383,12 @@ void NotificationsManager::init()
 
 void NotificationsManager::clear()
 {
+    qDebug()<<"NotificationsManager::clear"<<hasTableScrollBar;
+
     if(!app->isLogedIn() && hasTableScrollBar)
     {
         this->hasTableScrollBar = false;
+        table->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         notifyDelegate->updateTextDocWidth(app->style()->pixelMetric(QStyle::PM_ScrollBarExtent));
     }
     this->clearModel();
@@ -387,6 +397,7 @@ void NotificationsManager::clear()
 
 void NotificationsManager::updateNotfctnsModel(int newcnt)
 {
+    qDebug()<<"NotificationsManager updateNotfctnsModel";
     // if(!notifywin->isVisible())
     //  if(this->lastNtfctId != -1 && newcnt) // callbacked is called after marking red
     if(newcnt) // callbacked is called after marking red
@@ -460,20 +471,24 @@ void NotificationsManager::updateNotfctnsModel(int newcnt)
 }
 
 void NotificationsManager::showNotificationsWin()
-{
-    //
-    //  notifywin->setFocus((Qt::FocusReason)(Qt::MouseFocusReason | Qt::TabFocusReason));
+{    
+    notifywin->setFocus((Qt::FocusReason)(Qt::MouseFocusReason | Qt::TabFocusReason)); //tray
     // notifywin->show();
 
-    //if !num - set dflt text, hide table
+    //const QScrollBar *sc = table->verticalScrollBar();
+    qDebug()<<"showNotificationsWin"<<hasTableScrollBar;
+    //table->autoScrollMargin() <<table->hasAutoScroll() << table->verticalScrollBar()->value()
+           //<<table->verticalScrollBar()->pageStep() <<table->verticalScrollBar()->singleStep();
 
     if(!hasTableScrollBar) //recalc textdoc width according to having scrollbar
     {
         QModelIndex lastIndex = notificationsModel->index(notificationsModel->rowCount()-1, 1, QModelIndex());
+        qDebug()<<"hasTableScrollBar" << table->visualRect(lastIndex).bottomRight().ry() <<table->viewport()->height();
         if (table->visualRect(lastIndex).bottomRight().ry() > table->height())
         {
             hasTableScrollBar = true;
             emit notifyDelegate->updateTextDocWidth(-app->style()->pixelMetric(QStyle::PM_ScrollBarExtent));
+            table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
             table->resizeColumnsToContents(); //calls sizehint
             table->resizeRowsToContents();
             table->viewport()->updateGeometry();
@@ -494,6 +509,7 @@ void NotificationsManager::showNotificationsWin()
                 qDebug()<<table->visualRect(indexHtml)<<table->visualRect(indexHtml).bottomRight().ry() << table->visualRect(indexHtml).size().height();
             }*/
         }
+        qDebug()<<"hasTableScrollBar"<<hasTableScrollBar;
     }
 
     notifywin->raise();
@@ -504,7 +520,7 @@ void NotificationsManager::showNotificationsWin()
     table->scrollToTop();
 
     //notifywin->setWindowState(Qt::WindowActive);
-    //a.setActiveWindow(notifywin);
+    // app->setActiveWindow(notifywin);
 }
 
 void NotificationsManager::resetNums()

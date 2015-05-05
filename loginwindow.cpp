@@ -38,8 +38,8 @@ LoginWindow::~LoginWindow()
 
 void LoginWindow::showEvent(QShowEvent *)
 {
-    if(ui->checkBox->isChecked())
-        ui->checkBox->setCheckState(Qt::Unchecked);
+    //if(ui->checkBox->isChecked())
+        //ui->checkBox->setCheckState(Qt::Unchecked);
     username = psync_get_username();
     if (username == "")
     {

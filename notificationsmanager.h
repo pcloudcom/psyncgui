@@ -12,8 +12,9 @@
 #include <QLabel>
 #include <QPaintEvent>
 //#include <QHideEvent>
-//#include <QMouseEvent>
-//#include <QFocusEvent>
+#include <QMouseEvent>
+#include <QFocusEvent>
+#include <QScrollBar>
 
 class PCloudApp;
 class NotificationsManager;
@@ -25,10 +26,10 @@ public:
     explicit NotificationsWidget(NotificationsManager *mngr, int height, QWidget *parent = 0);
 protected:
     virtual bool eventFilter(QObject *watched, QEvent *event);
-    //virtual void leaveEvent();
+    virtual void leaveEvent(QEvent *event);
     //virtual void hideEvent(QHideEvent *event);
-    //virtual void focusOutEvent(QFocusEvent *event);
-    //virtual void mouseEvent(QMouseEvent *event);
+    virtual void focusOutEvent(QFocusEvent *event);
+    virtual void mousePressEvent(QMouseEvent *event);
 private:
     NotificationsManager *mngrParent;
     //NotifyDelegate *delegate;
