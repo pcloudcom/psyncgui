@@ -14,8 +14,8 @@ NotificationsWidget::NotificationsWidget(NotificationsManager *mngr, int height,
     //setFocusPolicy(Qt::ClickFocus);
     setFocusPolicy((Qt::FocusPolicy)(Qt::TabFocus|Qt::ClickFocus));
 #ifdef Q_OS_LINUX
-    //this->setWindowFlags(Qt::Popup | Qt::Window);
-     this->setWindowFlags(Qt::FramelessWindowHint);
+    this->setWindowFlags(Qt::Popup | Qt::Window);
+     //this->setWindowFlags(Qt::FramelessWindowHint);
 #else
     //this->setWindowFlags(Qt::Dialog);
     this->setWindowFlags(Qt::FramelessWindowHint);
@@ -29,7 +29,7 @@ NotificationsWidget::NotificationsWidget(NotificationsManager *mngr, int height,
 
 void NotificationsWidget::leaveEvent(QEvent *event)
 {
-    qDebug()<<"NotificationsWidget::leaveEvent"<<event->type(); //--
+    qDebug()<<"NotificationsWidget::leaveEvent"<<event->type();
 }
 
 /*
@@ -45,11 +45,9 @@ void NotificationsWidget::hideEvent(QHideEvent *event)
 bool NotificationsWidget::eventFilter(QObject *watched, QEvent *event)
 {
     // paint repaint show(51) actChange(99)
-    //qDebug()<<"eventFilter"<<event->type();
-    if(event->type() == QEvent::WindowDeactivate || event->type() == QEvent::Hide
-            || event->type() == QEvent::ApplicationDeactivate  || event->type() == QEvent::ApplicationDeactivated ) //25  18
+   // qDebug()<<"eventFilter"<<event->type();
+    if(event->type() == QEvent::WindowDeactivate || event->type() == QEvent::Hide)
     {
-        //return true;
         qDebug()<<"eventFilter win deactivate";
         if(this->isVisible())
             this->close();
