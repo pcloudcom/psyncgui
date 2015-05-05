@@ -183,7 +183,7 @@ const QPoint PCloudApp::calcWinNextToTrayCoords(const int winWidth, const int wi
     int xres, yres, avlbGeomW = desktop->availableGeometry().width();
     QPoint trayBL = this->tray->geometry().bottomLeft();
     if (trayBL.x() <2 || trayBL.y()<2)
-        trayBL = loggedmenu->geometry().topLeft(); //ubuntu14.04 for example returns (0,-1) for tray coords
+        trayBL = desktop->availableGeometry().bottomRight(); //default location
 
     QPoint avlbGeomBL = desktop->availableGeometry().topLeft();
     int trayx = trayBL.x(), trayy = trayBL.y();
