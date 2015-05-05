@@ -200,7 +200,7 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     hlayout->setAlignment(Qt::AlignVCenter);
     layout->addLayout(hlayout);
     layout->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    noNtfctnsLabel = new QLabel("No notifications available.");
+    noNtfctnsLabel = new QLabel("No notifications available");
     noNtfctnsLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     noNtfctnsLabel->setMargin(50);
     noNtfctnsLabel->setMinimumHeight(notifywin->height()-80);
