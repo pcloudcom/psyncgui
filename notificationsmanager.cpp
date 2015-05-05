@@ -26,6 +26,7 @@ NotificationsWidget::NotificationsWidget(NotificationsManager *mngr, int height,
     this->installEventFilter(this);
 }
 //
+/*
 
 void NotificationsWidget::leaveEvent(QEvent *event)
 {
@@ -62,7 +63,7 @@ bool NotificationsWidget::eventFilter(QObject *watched, QEvent *event)
     QWidget::eventFilter(watched, event);
 }
 
-
+/*
 void NotificationsWidget::mousePressEvent(QMouseEvent *event)
 {
     qDebug()<<"mousePressEvent";
@@ -94,7 +95,7 @@ void NotificationsWidget::focusOutEvent(QFocusEvent *event) // doesn't work when
     }
     event->accept();
 }
-
+*/
 
 CntrWidget::CntrWidget(QFont fontVal, QWidget *parent) :QWidget(parent)
 {
