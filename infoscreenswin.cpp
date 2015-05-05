@@ -52,7 +52,7 @@ void InfoScreensWin::showEvent(QShowEvent *event)
     ui->btnNext->setVisible(true);
     if(app->isFirstLaunch)
     {
-        //emit this->createDfltSync();
+        emit this->createDfltSync();
         ui->checkBox_showagain->setChecked(Qt::Checked);
     }
     event->accept();
