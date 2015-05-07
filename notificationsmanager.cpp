@@ -8,6 +8,7 @@
 #include <QUrl>
 #include <QPainter>
 #include <QDesktopWidget>
+#include <QPushButton>
 
 NotificationsWidget::NotificationsWidget(NotificationsManager *mngr, int height, QWidget *parent) : QWidget(parent)
 {
@@ -200,6 +201,17 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     hlayout->addWidget(icon);
     hlayout->addWidget(label);
     hlayout->addWidget(cntrWid);
+    if(app->desktopEnv == "ubuntu")
+    {
+        QPushButton* closeBtn = new QPushButton();
+        closeBtn->setText("");
+        closeBtn->setMaximumSize(QSize(16,16));
+        closeBtn->setIcon(QIcon(":/16x16/images/16x16/close.png"));
+        closeBtn->setFlat(true);
+        connect(closeBtn, SIGNAL(clicked()), notifywin, SLOT(close()));
+        hlayout->addWidget(closeBtn);
+    }
+
     hlayout->setAlignment(Qt::AlignVCenter);
     layout->addLayout(hlayout);
     layout->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);

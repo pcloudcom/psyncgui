@@ -78,6 +78,7 @@ private:
     int lastTrayIconIndex;
     void getQuota();
     void getUserInfo();
+    void getDeskopEnv();
 #ifdef Q_OS_WIN
     ShellExtThread *shellExtThread;
     //pRevNotifyThread *notifythread;
@@ -110,6 +111,7 @@ public:
     // PSettings *settings;
     QSettings *settings;
     QStringList syncSuggstLst; // send from context menu when add new syncs
+    QByteArray desktopEnv;
 #ifdef Q_OS_WIN
     QSettings *registrySttng;
 #endif    

@@ -11,6 +11,7 @@
 #include <QTextCodec>
 #include <QWidgetAction> //temp maybe
 #include <QMutex>
+#include <QProcess>
 #include "ui_pcloudwindow.h"
 
 #ifdef Q_OS_WIN
@@ -183,17 +184,17 @@ const QPoint PCloudApp::calcWinNextToTrayCoords(const int winWidth, const int wi
     int xres, yres, avlbGeomW = desktop->availableGeometry().width();
     QPoint trayBL = this->tray->geometry().bottomLeft();
     if (trayBL.x() <2 || trayBL.y()<2)
-        trayBL = desktop->availableGeometry().bottomRight(); //default location
+        return QPoint (desktop->availableGeometry().bottomRight().rx()-winWidth, desktop->availableGeometry().bottomRight().ry()-winHeigh); //default location
 
-    QPoint avlbGeomBL = desktop->availableGeometry().topLeft();
+    QPoint avlbGeomTL = desktop->availableGeometry().topLeft();
     int trayx = trayBL.x(), trayy = trayBL.y();
 
-    qDebug()<<"calcWinNextToTrayCoords" << trayBL << avlbGeomBL<<"menu"<<loggedmenu->geometry().topLeft()<<"tray coords"<< trayx<<trayy << winHeigh;
+    qDebug()<<"calcWinNextToTrayCoords" << trayBL << avlbGeomTL<<"menu"<<loggedmenu->geometry().topLeft()<<"tray coords"<< trayx<<trayy << winHeigh;
 
     //calc x
     if(trayx < avlbGeomW/2) // I or IV quadrant (left vertical half of the screen)
     {
-        xres = qMax(trayx, avlbGeomBL.x());
+        xres = qMax(trayx, avlbGeomTL.x());
     }
     else //II or III quadrant
     {
@@ -1057,7 +1058,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     unlinkFlag = false;
     isCursorChanged = false;
 
-
+    getDeskopEnv();
     lastStatus = PSTATUS_CONNECTING;
     tray=new QSystemTrayIcon(QIcon(OFFLINE_ICON),this);
     this->lastTrayIconIndex = 0;
@@ -1228,6 +1229,22 @@ PCloudApp::~PCloudApp(){
         delete welcomeWin;
     if(syncFldrsWin)
         delete syncFldrsWin;
+}
+
+void PCloudApp::getDeskopEnv()
+{
+    QByteArray env;
+    QProcess process;
+    process.start("bash -c \"echo $DESKTOP_SESSION\"");
+    process.waitForFinished(-1);
+    env = process.readAllStandardOutput();
+    if(!env.isNull())
+    {
+        if (env.toLower().contains("ubuntu"))
+            desktopEnv = "ubuntu";
+    }
+    else
+        desktopEnv = "";
 }
 
 void PCloudApp::check_error()
