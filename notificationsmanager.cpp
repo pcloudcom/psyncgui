@@ -16,7 +16,7 @@ NotificationsWidget::NotificationsWidget(NotificationsManager *mngr, int height,
     setFocusPolicy((Qt::FocusPolicy)(Qt::TabFocus|Qt::ClickFocus));
 #ifdef Q_OS_LINUX
     this->setWindowFlags(Qt::Popup | Qt::Window);
-     //this->setWindowFlags(Qt::FramelessWindowHint);
+    //this->setWindowFlags(Qt::FramelessWindowHint);
 #else
     //this->setWindowFlags(Qt::Dialog);
     this->setWindowFlags(Qt::FramelessWindowHint);
@@ -47,7 +47,7 @@ void NotificationsWidget::hideEvent(QHideEvent *event)
 bool NotificationsWidget::eventFilter(QObject *watched, QEvent *event)
 {
     // paint repaint show(51) actChange(99)
-   // qDebug()<<"eventFilter"<<event->type();
+    // qDebug()<<"eventFilter"<<event->type();
     if(event->type() == QEvent::WindowDeactivate || event->type() == QEvent::Hide)
     {
         qDebug()<<"eventFilter win deactivate";
@@ -128,7 +128,15 @@ void CntrWidget::paintEvent(QPaintEvent *event)
     painter.drawEllipse(QPoint(event->rect().width()/2, event->rect().height()/2), radius, radius);
     painter.setPen(Qt::white);
     painter.setFont(cntrFont);
+#ifdef Q_OS_WIN
+    if(this->numNew < 10)
+        painter.drawText(QRect(QPoint(event->rect().topLeft().rx()+1 ,event->rect().topLeft().ry()-1),
+                               QSize(event->rect().width(),event->rect().height())) , Qt::AlignCenter, QString::number(this->numNew));
+    else
+        painter.drawText(event->rect(), Qt::AlignCenter, QString::number(this->numNew));
+#else
     painter.drawText(event->rect(), Qt::AlignCenter, QString::number(this->numNew));
+#endif
 }
 
 void CntrWidget::setNumNew(int newValue)
@@ -489,7 +497,7 @@ void NotificationsManager::showNotificationsWin()
     //const QScrollBar *sc = table->verticalScrollBar();
     qDebug()<<"showNotificationsWin"<<hasTableScrollBar;
     //table->autoScrollMargin() <<table->hasAutoScroll() << table->verticalScrollBar()->value()
-           //<<table->verticalScrollBar()->pageStep() <<table->verticalScrollBar()->singleStep();
+    //<<table->verticalScrollBar()->pageStep() <<table->verticalScrollBar()->singleStep();
 
     if(!hasTableScrollBar) //recalc textdoc width according to having scrollbar
     {
