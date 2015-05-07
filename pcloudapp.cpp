@@ -704,7 +704,7 @@ void status_callback(pstatus_t *status)
         PCloudApp::appStatic->downldInfo = status->downloadstr;
         PCloudApp::appStatic->uploadInfo= status->uploadstr;
 
-        if (PCloudApp::appStatic->isMenuorWinActive())
+        if (PCloudApp::appStatic->isMenuorWinActive() || previousStatus != PSTATUS_DOWNLOADINGANDUPLOADING)
             PCloudApp::appStatic->updateSyncStatusPublic();
 
         /*
@@ -1082,8 +1082,8 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     nointernetFlag = false;
     bytestoDwnld = 0;
     bytestoUpld = 0;
-    downldInfo = QObject::trUtf8("Everything Downloaded"); //ok
-    uploadInfo = QObject::trUtf8("Everything Uploaded"); //ok
+    downldInfo = QObject::trUtf8("Everything Downloaded");
+    uploadInfo = QObject::trUtf8("Everything Uploaded");
     unlinkFlag = false;
     isCursorChanged = false;
 
@@ -1356,8 +1356,8 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
         //this->clearSyncFolderActions(); //fu4ur version menu
         resumeSyncAction->setVisible(false);
         pauseSyncAction->setVisible(true);
-        this->downldInfo = QObject::trUtf8("Everything Downloaded"); //ok
-        this->uploadInfo = QObject::trUtf8("Everything Uploaded"); //ok
+        this->downldInfo = QObject::trUtf8("Everything Downloaded");
+        this->uploadInfo = QObject::trUtf8("Everything Uploaded");
         //  this->pCloudWin->get_sync_page()->load();
         //this->pCloudWin->get_sync_page()->loadSettings();
         //this->pCloudWin->refreshPageSgnl(SETTINGS_PAGE_NUM, -1);
