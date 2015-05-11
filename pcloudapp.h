@@ -94,7 +94,7 @@ public:
     WelcomeWin *welcomeWin;
     SuggestnsBaseWin *syncFldrsWin; // for context menu
     QString username;
-    QString downldInfo, uplodInfo;
+    QString downldInfo, uploadInfo;
     bool rememberMe,isFirstLaunch;
     bool isPremium,isVerified;
     bool isCryptoExpired;

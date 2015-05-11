@@ -63,7 +63,7 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
     win->ui->treeSyncList->setColumnWidth(3, 32);
     //win->ui->label_syncinfo->setFont(app->smaller1pFont);
     win->ui->label_dwnld->setText(app->downldInfo);
-    win->ui->label_upld->setText(app->uplodInfo);
+    win->ui->label_upld->setText(app->uploadInfo);
 
     connect(win->ui->tabWidgetSync, SIGNAL(currentChanged(int)), this, SLOT(refreshTab(int)));
     connect(win->ui->treeSyncList, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(stopSync(QTreeWidgetItem*,int)));
