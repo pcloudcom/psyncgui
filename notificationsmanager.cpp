@@ -2,7 +2,6 @@
 #include "pcloudapp.h"
 
 #include <QDebug>
-#include <QCursor>
 #include <QDateTime>
 #include <QDesktopServices>
 #include <QUrl>
@@ -11,14 +10,11 @@
 #include <QPushButton>
 
 NotificationsWidget::NotificationsWidget(NotificationsManager *mngr, int height, QWidget *parent) : QWidget(parent)
-{
-    //setFocusPolicy(Qt::ClickFocus);
+{    
     setFocusPolicy((Qt::FocusPolicy)(Qt::TabFocus|Qt::ClickFocus));
 #ifdef Q_OS_LINUX
     this->setWindowFlags(Qt::Popup | Qt::Window);
-    //this->setWindowFlags(Qt::FramelessWindowHint);
-#else
-    //this->setWindowFlags(Qt::Dialog);
+#else    
     this->setWindowFlags(Qt::FramelessWindowHint);
 #endif
     this->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
@@ -26,77 +22,24 @@ NotificationsWidget::NotificationsWidget(NotificationsManager *mngr, int height,
     this->mngrParent = mngr;
     this->installEventFilter(this);
 }
-//
-/*
-
-void NotificationsWidget::leaveEvent(QEvent *event)
-{
-    qDebug()<<"NotificationsWidget::leaveEvent"<<event->type();
-}
-
-/*
-void NotificationsWidget::hideEvent(QHideEvent *event)
-{
-    qDebug()<<"hideEvent";
-     bool res = this->close();
-     qDebug()<<res;
-     event->accept();
-}
-*/
 
 bool NotificationsWidget::eventFilter(QObject *watched, QEvent *event)
-{
-    // paint repaint show(51) actChange(99)
-    // qDebug()<<"eventFilter"<<event->type();
+{    
     if(event->type() == QEvent::WindowDeactivate || event->type() == QEvent::Hide)
     {
-        qDebug()<<"eventFilter win deactivate";
+        //qDebug()<<"eventFilter win deactivate";
         if(this->isVisible())
             this->close();
 
         if(mngrParent->getLastNtfctId() != -1)
         {
-            psync_mark_notificaitons_read(mngrParent->getLastNtfctId()); //++ check errors
+            psync_mark_notificaitons_read(mngrParent->getLastNtfctId());
             mngrParent->resetNums();
         }
     }
 
     QWidget::eventFilter(watched, event);
 }
-
-/*
-void NotificationsWidget::mousePressEvent(QMouseEvent *event)
-{
-    qDebug()<<"mousePressEvent";
-    QPoint pos = event->globalPos();
-    if (this)
-        pos = this->mapFromGlobal(pos);
-    if (!this->rect().contains(pos))
-        this->close();
-    // hideTip();
-    QWidget::mouseMoveEvent(event);
-}
-
-void NotificationsWidget::focusOutEvent(QFocusEvent *event) // doesn't work when alt+tab and the mouse is over ttable item
-{
-    qDebug()<<"focusOutEvent"<< this->isVisible(); // visible on left click
-    QPoint pos = QCursor::pos(); //25 QEvent::WindowDeactivate
-    if (this)
-        pos = this->mapFromGlobal(pos);
-
-    if (!this->rect().contains(pos) || !this->isVisible())
-    {
-        this->close();
-
-        if(mngrParent->getLastNtfctId() != -1)
-        {
-            psync_mark_notificaitons_read(mngrParent->getLastNtfctId()); //++ check errors
-            mngrParent->resetNums();
-        }
-    }
-    event->accept();
-}
-*/
 
 CntrWidget::CntrWidget(QFont fontVal, QWidget *parent) :QWidget(parent)
 {
@@ -112,8 +55,7 @@ CntrWidget::CntrWidget(QFont fontVal, QWidget *parent) :QWidget(parent)
 }
 
 void CntrWidget::paintEvent(QPaintEvent *event)
-{
-    //   qDebug()<<"CntrWidget::paintEvent";
+{    
     if(!this->numNew)
         return;
 
@@ -166,7 +108,6 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
         cntrFontVal = app->smaller1pFont;
     }
 
-    //Ü7 - for tests
     textHtmlBeginStr = QString("<html></title><body><p style = \"margin:0px;\">");
     textHtmlEndStr = QString("</p>");
     dtHtmlBeginStr = QString("<p style = \"margin-top:8px;margin-bottom:0px;margin-left:0px;margin-right:0px;font-size:").append(QString::number(dtFontSize)).append("pt; color:#797979;\">");
@@ -233,7 +174,6 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     table = new QTableView();
     this->setTableProps();
 
-    qDebug()<<table->viewport()->height()<<notifywin->height();
     notificationsModel = new QStandardItemModel(0, 2);
     table->setModel(notificationsModel);
     notifyDelegate = new NotifyDelegate(table->viewport()->geometry().width(),table);
@@ -241,16 +181,7 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     layout->addWidget(table);
 
     notifywin->setLayout(layout);
-
-    qDebug()<<"win geometry"<<notifywin->geometry()<<notifywin->frameGeometry() <<"table:"<<table->width();
-    // connect(table, SIGNAL(viewportEntered()), this, SLOT(setWinFocus()));
-    //connect(table, SIGNAL(clicked(QModelIndex)), this, SLOT(setWinFocus()));
     connect(table, SIGNAL(clicked(QModelIndex)), this, SLOT(actionExecSlot(QModelIndex)));
-    //connect(table, SIGNAL(entered(QModelIndex)), this, SLOT(setWinFocus()));
-
-    //connect(table->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(setWinFocus()));
-    //connect(table->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(setWinFocus()));
-
 }
 
 void NotificationsManager::setTableProps()
@@ -271,10 +202,7 @@ void NotificationsManager::setTableProps()
     table->setMaximumHeight(notifywin->height()-58);
 #else
     table->setFixedHeight(394);
-#endif
-    //table->resize(table->size());
-
-    qDebug()<<"setTableProps"<<table->width()<<table->height()<<notifywin->width()<<notifywin->height() <<app->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
+#endif    
 }
 
 void NotificationsManager::loadModel(psync_notification_list_t* notifications)
@@ -290,33 +218,26 @@ void NotificationsManager::loadModel(psync_notification_list_t* notifications)
     this->notifyDelegate->setNumNew(notifications->newnotificationcnt);
     lastNtfctId = notifications->notifications[0].notificationid;
 
-    for (int i = 0; i < ntfCnt; i++)
+    for (int i = 0; i<ntfCnt; i++)
     {
-        //        qDebug()<< notifications->notifications[i].actiondata.folderid <<notifications->notifications[i].actionid <<
-        //                 "iconid="<< notifications->notifications[i].iconid<<"actionid"<<notifications->notifications[i].isnew<<
-        //               notifications->notifications[i].mtime << notifications->notifications[i].notificationid
-        //          <<notifications->notifications[i].text <<notifications->notifications[i].thumb;
-
         QModelIndex indexHtml = notificationsModel->index(i, 1, QModelIndex());
         QString htmldata(textHtmlBeginStr + notifications->notifications[i].text + textHtmlEndStr);
         htmldata.append(dtHtmlBeginStr).append((QDateTime::fromTime_t(notifications->notifications[i].mtime).toString())).append(dtHtmlEndStr);
-        notificationsModel->setData(indexHtml, QVariant(htmldata), Qt::EditRole); //displayrole
+        notificationsModel->setData(indexHtml, QVariant(htmldata), Qt::EditRole);
 
         actnsMngrArr[i].actionId = notifications->notifications[i].actionid;
         if(actnsMngrArr[i].actionId)
             actnsMngrArr[i].actionData = notifications->notifications[i].actiondata;
-        //        qDebug()<<"actnsMngrArr"<<actnsMngrArr[i].actionId<<actnsMngrArr[i].actionData.folderid;
 
         QModelIndex indexIcon = notificationsModel->index(i, 0, QModelIndex());
         QString iconpath;
         if (notifications->notifications[i].thumb != NULL)
             iconpath = notifications->notifications[i].thumb;
         else if(notifications->notifications[i].iconid != 20)
-            iconpath = QString(":/ntf/images/notifications/").append(QString::number(notifications->notifications[i].iconid) + ".png"); //OFFLINE_ICON
+            iconpath = QString(":/ntf/images/notifications/").append(QString::number(notifications->notifications[i].iconid) + ".png");
         else
             iconpath = fldrIconPath;
         notificationsModel->setData(indexIcon, QVariant(iconpath));
-        //qDebug()<<"icon path"<<iconpath;
 
         table->openPersistentEditor(notificationsModel->index(i, 1));
         table->openPersistentEditor(notificationsModel->index(i, 0));
@@ -327,7 +248,7 @@ void NotificationsManager::loadModel(psync_notification_list_t* notifications)
 
 void NotificationsManager::clearModel()
 {
-    qDebug()<<"clearModel";
+    //qDebug()<<"clearModel";
     notificationsModel->removeRows(0, notificationsModel->rowCount());
 
     if (actnsMngrArr != NULL)
@@ -335,12 +256,12 @@ void NotificationsManager::clearModel()
         free(actnsMngrArr);
         actnsMngrArr = NULL;
     }
-    //this->resetNums();
 }
 
 void NotificationsManager::init()
 {
-    qDebug()<<" NotificationsManager::init";
+    //qDebug()<<" NotificationsManager::init";
+
     hasTableScrollBar = false;
     table->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
@@ -361,48 +282,15 @@ void NotificationsManager::init()
     }
     else
     {
-        qDebug()<<"initmodel no notif";
+        qDebug()<<"NotificationsManager::init no notifications";
         this->table->setVisible(false);
         this->noNtfctnsLabel->setVisible(true);
     }
-    /*
-     * OLD INIT TESTING MODEL
-    notificationsModel->setRowCount(10);
-    for (int row = 0; row < notificationsModel->rowCount()-1; ++row)
-    {
-        {
-            QModelIndex index = notificationsModel->index(row, 1, QModelIndex());
-            //QString value = "<html><head/><body> <ul> <li>Secure place for private/business use</li> <li>Zero-Knowledge Privacy</li> </ul></body></html>"; //"test<b>fdsfdsfs</b>";
-            QString value;
-            if (row%2)
-                value = "<html><head/><body><p><span style=\" font-weight:600;\">User dlfdlsfjlsfjlsfjlsfjlsfjdlssadjkas@afd.bg<br>edited file blqbql<br>in folder lqlq2</span></p></body></html>"
-                        "      <p><span style=\" font-size:9pt; color:#2bc1d1;\">   dateexm</span></p></body></html>";
-            else
-                //  value = "<html><head/><body><p><span style=\" font-weight:600;\">User dlsadjcdfsfsfdfgskas@afd.bg<br>edited file blqbql<br>in folder lqlq2</span></p></body></html>"
-                //        "<p><span style=\" font-size:9pt; color:#2bc1d1;\">   dateexm<br>нов ред<br>another one</span></p></body></html>";
-                value = "We must be <b>bold</b>, very <b>bold</b><br><p><span style=\" font-size:9pt; color:#2bc1d1;\">   dateexm</span></p>";
-
-            notificationsModel->setData(index, QVariant(value),Qt::EditRole);
-            notificationsModel->setData(index,QVariant("datatest"), Qt::UserRole+1);
-            QModelIndex indexIcon = notificationsModel->index(row, 0, QModelIndex());
-            //QString iconpath = "/home/damyanka/git/psyncguiSeptm/psyncgui/images/menu 48x48/info.png";
-            QString iconpath = "/home/damyanka/git/psyncguiSeptm/psyncgui/images/testNtf.png";
-            notificationsModel->setData(indexIcon, QVariant(iconpath));
-        }
-    }
-
-
-    for (int i = 0; i < notificationsModel->rowCount(); ++i)
-    {
-        table->openPersistentEditor(notificationsModel->index(i, 1)) ;
-        table->openPersistentEditor(notificationsModel->index(i, 0)) ;
-    }
-    */
 }
 
 void NotificationsManager::clear()
 {
-    qDebug()<<"NotificationsManager::clear"<<hasTableScrollBar;
+    //qDebug()<<"NotificationsManager::clear"<<hasTableScrollBar;
 
     if(!app->isLogedIn() && hasTableScrollBar)
     {
@@ -417,14 +305,9 @@ void NotificationsManager::clear()
 void NotificationsManager::updateNotfctnsModel(int newcnt)
 {
     qDebug()<<"NotificationsManager updateNotfctnsModel";
-    // if(!notifywin->isVisible())
-    //  if(this->lastNtfctId != -1 && newcnt) // callbacked is called after marking red
     if(newcnt) // callbacked is called after marking red
     {
         psync_notification_list_t* notifications = psync_get_notifications();
-
-        //numread = new
-        qDebug()<<"updateNotfctnsModel"<< notifications->newnotificationcnt << notifications->notificationcnt;
         if (notifications != NULL && notifications->newnotificationcnt) //first notifications
         {
             if(!table->isVisible())
@@ -435,74 +318,22 @@ void NotificationsManager::updateNotfctnsModel(int newcnt)
 
             this->clear();
             this->loadModel(notifications);
-
-            /*     for (int i = 0; i < cnt; i++)
-        {
-            qDebug()<< notifications->notifications[i].actiondata.folderid <<notifications->notifications[i].actionid <<
-                       notifications->notifications[i].iconid<<notifications->notifications[i].isnew<<
-                       notifications->notifications[i].mtime << notifications->notifications[i].notificationid
-                    <<notifications->notifications[i].text <<notifications->notifications[i].thumb;
-
-            QModelIndex indexHtml = notificationsModel->index(i, 1, QModelIndex());
-            //QString htmldata("<b>");
-            QString htmldata(notifications->notifications[i].text); //    htmldata.append(notifications->notifications[i].text);
-            //      htmldata.append("</b>");
-            // htmldata.append("<p><span style=\" font-size:").append(QString::number(dtFontSize)).append("pt;\">").append((QDateTime::fromTime_t(notifications->notifications[i].mtime).toString())).append("</span></p>");
-            htmldata.append(dtHtmlBeginStr).append((QDateTime::fromTime_t(notifications->notifications[i].mtime).toString())).append(dtHtmlEndStr);
-
-            notificationsModel->setData(indexHtml, QVariant(htmldata), Qt::EditRole); //displayrole
-
-            actionsManager actionInfo; //(notifications->notifications[i].actionid,notifications->notifications[i].actiondata);
-            if(notifications->notifications[i].actionid)
-            {
-                actionInfo.actionData = notifications->notifications[i].actiondata;
-                actionInfo.actionId = notifications->notifications[i].actionid;
-                //actnsMngrArr[i].actionId = notifications->notifications[i].actionid;
-                //notificationsModel->setData(indexhtml, QVariant(notifications->notifications[i].actionid), (Qt::UserRole+1));
-
-            }
-            else
-                actionInfo.actionId= 0;
-
-            actnsMngrArr[i] = actionInfo;
-
-            qDebug()<<"actnsMngrArr"<<actnsMngrArr[i].actionId<<actnsMngrArr[i].actionData.folderid;
-
-            QModelIndex indexIcon = notificationsModel->index(i, 0, QModelIndex());
-            QString iconpath = "/home/damyanka/git/psyncguiSeptm/psyncgui/images/testNtf.png";  //notifications->notifications[i].iconid
-            notificationsModel->setData(indexIcon, QVariant(iconpath));
-
-            table->openPersistentEditor(notificationsModel->index(i, 1)) ;
-            table->openPersistentEditor(notificationsModel->index(i, 0)) ;
-        }
-*/
             free(notifications);
             notifications = NULL;
-
-            //emit chage tray
         }
         else
             qDebug()<<"updateNotfctnsModel no new notifications";
     }
-    //else
-    //  updateFlag = true;
-
 }
 
 void NotificationsManager::showNotificationsWin()
 {    
-    notifywin->setFocus((Qt::FocusReason)(Qt::MouseFocusReason | Qt::TabFocusReason)); //tray
-    // notifywin->show();
-
-    //const QScrollBar *sc = table->verticalScrollBar();
-    qDebug()<<"showNotificationsWin"<<hasTableScrollBar;
-    //table->autoScrollMargin() <<table->hasAutoScroll() << table->verticalScrollBar()->value()
-    //<<table->verticalScrollBar()->pageStep() <<table->verticalScrollBar()->singleStep();
+    notifywin->setFocus((Qt::FocusReason)(Qt::MouseFocusReason | Qt::TabFocusReason));
+    //qDebug()<<"showNotificationsWin"<<hasTableScrollBar;
 
     if(!hasTableScrollBar) //recalc textdoc width according to having scrollbar
     {
         QModelIndex lastIndex = notificationsModel->index(notificationsModel->rowCount()-1, 1, QModelIndex());
-        qDebug()<<"hasTableScrollBar" << table->visualRect(lastIndex).bottomRight().ry() <<table->viewport()->height();
         if (table->visualRect(lastIndex).bottomRight().ry() > table->height())
         {
             hasTableScrollBar = true;
@@ -511,24 +342,7 @@ void NotificationsManager::showNotificationsWin()
             table->resizeColumnsToContents(); //calls sizehint
             table->resizeRowsToContents();
             table->viewport()->updateGeometry();
-            //table->repaint();
-            //table->viewport()->repaint();
-
-            /*
-            QModelIndex topLeftIndex = notificationsModel->index(0, 1, QModelIndex());
-            QModelIndex bottomRigthIndex = notificationsModel->index(notificationsModel->rowCount()-1, 1, QModelIndex());
-            emit notificationsModel->refresh(topLeftIndex,bottomRigthIndex);
-            //emit notificationsModel->layoutChanged(); //datachanged
-            for (int i = 0; i < notificationsModel->rowCount(); i++)
-            {
-                QModelIndex indexIcon0 = notificationsModel->index(i, 0, QModelIndex());
-                QModelIndex indexHtml = notificationsModel->index(i, 1, QModelIndex());
-               // table->update(indexHtml);
-                qDebug()<<table->visualRect(indexIcon0);
-                qDebug()<<table->visualRect(indexHtml)<<table->visualRect(indexHtml).bottomRight().ry() << table->visualRect(indexHtml).size().height();
-            }*/
         }
-        qDebug()<<"hasTableScrollBar"<<hasTableScrollBar;
     }
 
     notifywin->raise();
@@ -583,12 +397,6 @@ void NotificationsManager::actionExecSlot(const QModelIndex &index)
     default:
         break;
     }
-}
-
-void NotificationsManager::setWinFocus()
-{
-    //qDebug()<<"setWinFocus";
-    // notifywin->setFocus((Qt::FocusReason)(Qt::MouseFocusReason | Qt::TabFocusReason));
 }
 
 quint32 NotificationsManager::getLastNtfctId()

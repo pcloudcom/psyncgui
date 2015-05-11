@@ -11,9 +11,6 @@
 #include <QMainWindow>
 #include <QLabel>
 #include <QPaintEvent>
-//#include <QHideEvent>
-//#include <QMouseEvent>
-//#include <QFocusEvent>
 
 class PCloudApp;
 class NotificationsManager;
@@ -25,13 +22,8 @@ public:
     explicit NotificationsWidget(NotificationsManager *mngr, int height, QWidget *parent = 0);
 protected:
     virtual bool eventFilter(QObject *watched, QEvent *event);
-    //virtual void leaveEvent(QEvent *event);
-    //virtual void hideEvent(QHideEvent *event);
-    //virtual void focusOutEvent(QFocusEvent *event);
-    //virtual void mousePressEvent(QMouseEvent *event);
 private:
     NotificationsManager *mngrParent;
-    //NotifyDelegate *delegate;
 };
 
 
@@ -93,13 +85,10 @@ private:
     void setTableProps();
     void loadModel(psync_notification_list_t* notifications);
     void clearModel();
-signals:
-private slots:
-
-public slots:
-    void setWinFocus();
+public slots:    
     void showNotificationsWin();
     void updateNotfctnsModel(int newcnt);
+private slots:
     void actionExecSlot(const QModelIndex &index);
 };
 

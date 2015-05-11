@@ -189,7 +189,7 @@ const QPoint PCloudApp::calcWinNextToTrayCoords(const int winWidth, const int wi
     QPoint avlbGeomTL = desktop->availableGeometry().topLeft();
     int trayx = trayBL.x(), trayy = trayBL.y();
 
-    qDebug()<<"calcWinNextToTrayCoords" << trayBL << avlbGeomTL<<"menu"<<loggedmenu->geometry().topLeft()<<"tray coords"<< trayx<<trayy << winHeigh;
+    //qDebug()<<"calcWinNextToTrayCoords" << trayBL << avlbGeomTL<<"menu"<<loggedmenu->geometry().topLeft()<<"tray coords"<< trayx<<trayy << winHeigh;
 
     //calc x
     if(trayx < avlbGeomW/2) // I or IV quadrant (left vertical half of the screen)
@@ -211,7 +211,7 @@ const QPoint PCloudApp::calcWinNextToTrayCoords(const int winWidth, const int wi
         yres = qMin(trayy, desktop->availableGeometry().bottom() - winHeigh);
     }
 
-    qDebug()<<"calcWinNextToTrayCoords res"<<xres<<yres;
+    //qDebug()<<"calcWinNextToTrayCoords res"<<xres<<yres;
     return QPoint(xres,yres);
 
 }

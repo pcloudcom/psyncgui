@@ -4,6 +4,7 @@
 #include <QStyledItemDelegate>
 #include <QModelIndex>
 #include <QColor>
+
 class NotifyDelegate : public QStyledItemDelegate
 {
 public:
@@ -18,8 +19,6 @@ public:
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void setNumNew(quint32 newcnt);
 
-protected:
-    //virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
 private:
     int minColumnHeight;
     qreal textDocWidth;
@@ -27,7 +26,6 @@ private:
     QColor mouseOverColor, newNtfColor, separatorColor;
 public slots:
      void updateTextDocWidth(qreal diff);
-     void sizeHintChanged(const QModelIndex &index);
 };
 
 #endif // NOTIFYDELEGATE_H

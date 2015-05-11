@@ -14,7 +14,7 @@
 NotifyDelegate::NotifyDelegate(int tableWidth, QObject *parent)
     : QStyledItemDelegate(parent)
 {       
-    qDebug()<<"NotifyDelegate"<<tableWidth;
+    //qDebug()<<"NotifyDelegate"<<tableWidth;
     minColumnHeight = 72; //equals to icon width
     textDocWidth = tableWidth - minColumnHeight;
     numNew = 0;
@@ -43,7 +43,6 @@ void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 
         QPixmap pixmap = index.data(Qt::EditRole).value<QPixmap>();
         QRect rect = options.rect;
-        //rect.setSize(QSize(options.rect.width()-6, options.rect.height() - 6));
         painter->drawPixmap(rect, pixmap, rect);
 
         QPen bottomLine;
@@ -103,8 +102,6 @@ void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         fmt.setTopMargin(10.0);
         fmt.setRightMargin(12.0);
         fmt.setBottomMargin(4.0);
-        //fmt.setBackground(QBrush(Qt::red));
-        //fmt.setBorder(1.0);
         fmt.setBorderStyle(QTextFrameFormat::BorderStyle_None);
         doc.rootFrame()->setFrameFormat(fmt);
 
@@ -153,8 +150,6 @@ void NotifyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 
         painter->drawLine(QPoint(0,options.rect.height()-1),QPoint(options.rect.width(),options.rect.height()-1));
         painter->restore();
-        //qDebug()<<"paint options"<<option.rect.size() << option.rect.bottomLeft() << options.rect.size() << options.rect.bottomLeft();
-        //qDebug()<<"paint options"<< index.row()<< options.rect.size() << doc.size()<<doc.pageSize()<<clip.size();
     }
 
 }
@@ -178,10 +173,9 @@ QSize NotifyDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelI
         QTextDocument doc;
         QTextOption opt(Qt::AlignVCenter);
         opt.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-        doc.setTextWidth(textDocWidth); //320
+        doc.setTextWidth(textDocWidth);
         doc.setDefaultTextOption(opt);
         doc.setHtml(options.text);
-        //qDebug()<<"sizeHint 1"<< index.row()<< doc.size().height() <<option.rect.height() <<options.rect.height();
         return QSize(doc.size().width(), ((minColumnHeight > (doc.size().height()+ 12)) ? minColumnHeight : doc.size().height()+12)); //12 is for margines from the specification
     }
 }
@@ -189,20 +183,18 @@ QSize NotifyDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelI
 QWidget *NotifyDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     //qDebug()<<"createEditor";
+
     if (index.column() == 0)
     {
         QLabel *iconLabel = new QLabel(parent);
         iconLabel->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
         iconLabel->setMargin(12);
-        //iconLabel->setContentsMargins(12,12,0,12);
         iconLabel->setMouseTracking(true);
         return iconLabel;
     }
     else if (index.column() == 1)
     {
         QLabel *textLabel = new QLabel(parent);
-        //textLabel->setAlignment(Qt::AlignVCenter);
-        //textLabel->setMargin(12); //overriden dont work        
         textLabel->setMouseTracking(true);
         return textLabel;
     }
@@ -220,14 +212,12 @@ void NotifyDelegate::setEditorData(QWidget *editor, const QModelIndex &index) co
         QString path  = index.model()->data(index, Qt::EditRole).toString();
         QLabel *iconLabel = static_cast<QLabel *>(editor); //++ setimage
         iconLabel->setPixmap(QPixmap(path));
-        //qDebug()<<"setEditorData2.1"<<index.model()->data(index, Qt::DisplayRole).toString();
     }
     else if(index.column() == 1)
     {
         QLabel *textLabel = qobject_cast<QLabel *>(editor);
         textLabel->setTextFormat(Qt::RichText);
         textLabel->clear();
-        //qDebug()<<"setEditorData2.2"<<index.model()->data(index, Qt::DisplayRole).toString();
     }
     else
         QStyledItemDelegate::setEditorData(editor, index);
@@ -240,7 +230,6 @@ void NotifyDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, co
     {
         QLabel *label = static_cast<QLabel*>(editor);
         model->setData(index,label->text(),Qt::EditRole);
-        // qDebug()<< "setModelData" << model->data(index,Qt::DisplayRole);
     }
     else
         QStyledItemDelegate::setModelData(editor, model, index);
@@ -248,31 +237,11 @@ void NotifyDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, co
 
 
 void NotifyDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex & index ) const
-{
-    //  qDebug()<<"updateEditorGeometry"<<index;
+{    
     editor->setGeometry(option.rect);
 }
 
 void NotifyDelegate::updateTextDocWidth(qreal diff)
 {
     this->textDocWidth += diff;
-    qDebug()<<"updateTextDocWidth"<<textDocWidth;
-    //QAbstractItemView *table = qobject_cast<QAbstractItemView *>(this->parent());
-    //QModelIndex bottomRigthIndex = table->model()->index(0, 1, QModelIndex());
-    // emit sizeHintChanged(bottomRigthIndex);
-}
-
-/*
-bool NotifyDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
-{
-    qDebug()<<"editorEvent"<<index;
-
-    return QStyledItemDelegate::editorEvent(event,model,option,index);
-}
-*/
-
-void NotifyDelegate::sizeHintChanged(const QModelIndex &index)
-{
-    qDebug()<<"sizeHintChanged"<<index;
-    QStyledItemDelegate::sizeHintChanged(index);
 }
