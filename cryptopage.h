@@ -7,6 +7,7 @@
 #include <QObject>
 
 class PCloudWindow;
+class CryptoKeyDialog;
 
 class CryptoPage : public QObject
 {
@@ -22,6 +23,7 @@ private:
     PCloudWindow* win;
     bool tryTrialClickedFlag;
     int pageIndex, passStrenth;
+    CryptoKeyDialog *requestCryptoKeyDialog;
     void setCurrentPageIndex();
     void setTrialUI(bool hasSubscriptoin, uint expTime);
     void showSetupCryptoError(int setupRes);

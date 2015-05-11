@@ -15,6 +15,7 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     this->app = a;
     this->win = w;
     passStrenth = -1;
+    requestCryptoKeyDialog = NULL;
 
     //welcome page
     win->ui->labelCryptoWlcmInfo1->setFont(app->bigger3pFont);
@@ -26,7 +27,7 @@ CryptoPage::CryptoPage(PCloudWindow *w, PCloudApp *a,QObject *parent) :
     win->ui->labelCryptoSetup->setFont(app->bigger3pFont);
     win->ui->progressBarCryptoPass->setMinimum(0);
     win->ui->progressBarCryptoPass->setMaximum(6);
-    win->ui->labelCryptoPassStrenth->setFont(app->smaller1pFont);    
+    win->ui->labelCryptoPassStrenth->setFont(app->smaller1pFont);
 
     //main page
     int maxbtnw = qMax(win->ui->btnCryptoOpenFldr->width(), qMax(win->ui->btnCryptoManageFldr->width(), win->ui->btnCryptoMainPagePay->width()));
@@ -116,7 +117,7 @@ void CryptoPage::setCurrentPageIndex()
             win->ui->progressBarCryptoPass->setVisible(true);
 
         app->isCryptoExpired = true;
-        this->pageIndex = 1; //show welcome crypto page        
+        this->pageIndex = 1; //show welcome crypto page
     }
     else //show main crypto page
     {
@@ -212,7 +213,7 @@ void CryptoPage::setProgressBar()
     QString pass = win->ui->lineEditCryptoPass->text();
     if(!pass.isEmpty())
     {
-        win->ui->progressBarCryptoPass->setVisible(true);        
+        win->ui->progressBarCryptoPass->setVisible(true);
         passStrenth = psync_password_quality(pass.toUtf8());
         QPalette paletteLabel;
         switch(passStrenth)
@@ -414,13 +415,24 @@ void CryptoPage::unlock()
 }
 
 void CryptoPage::requestCryptoKey()
-{    
-        CryptoKeyDialog *requestCryptoKeyDialog = new CryptoKeyDialog(this);
+{       
+    if(requestCryptoKeyDialog == NULL)
+    {
+        requestCryptoKeyDialog = new CryptoKeyDialog(this);
+        app->setActiveWindow(requestCryptoKeyDialog);
+    }
+    else
+    {
+        requestCryptoKeyDialog->show();
+        app->setActiveWindow(requestCryptoKeyDialog);
+        return;
+    }
     if (requestCryptoKeyDialog->exec() == QDialog::Accepted) // also starts the crypto if pass is ok
     {
         emit this->setUnlockedFldrUI();
         emit this->openCryptoFldr();
     }
+    requestCryptoKeyDialog = NULL;
 }
 
 void CryptoPage::openCryptoFldr()
