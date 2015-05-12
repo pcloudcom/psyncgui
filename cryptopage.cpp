@@ -77,7 +77,7 @@ void CryptoPage::initCryptoPage() //called when user has just loggedin
 void CryptoPage::showEventCrypto()
 {    
     setCurrentPageIndex();
-    qDebug()<<this->pageIndex<<win->ui->pagedWidgetCrypto->height();
+    //qDebug()<<this->pageIndex<<win->ui->pagedWidgetCrypto->height();
 }
 
 void CryptoPage::setCurrentPageIndex()
@@ -88,8 +88,11 @@ void CryptoPage::setCurrentPageIndex()
     uint subscbtntTime = psync_crypto_expires();
     qDebug()<<QDateTime::fromTime_t(subscbtntTime);
     if (!tryTrialClickedFlag &&                                                                         //for case when entered pass but hasn't already setup and went to another flag
-            (!subscbtntTime ||  //trial
-             QDateTime::fromTime_t(subscbtntTime).addDays(30) < QDateTime::currentDateTime()))    // in active subscription or 30 days read only mode
+            (!subscbtntTime ||                                                                           // 1. trial
+             (QDateTime::fromTime_t(subscbtntTime).addDays(30) < QDateTime::currentDateTime()) ||        // 2. in active subscription or 30 days read only mode
+             (QDateTime::fromTime_t(subscbtntTime).addDays(30) > QDateTime::currentDateTime() &&         // 3. resetted crypto in read-only mode
+              QDateTime::fromTime_t(subscbtntTime) < QDateTime::currentDateTime() && !psync_crypto_issetup())))
+
     {
         if(!subscbtntTime)
         {
