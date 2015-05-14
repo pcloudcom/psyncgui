@@ -1135,6 +1135,7 @@ PCloudApp::PCloudApp(int &argc, char **argv) :
     shellExtThread = new ShellExtThread(this);
     shellExtThread->start();
 #endif
+    this->setWheelScrollLines(1);
     pCloudWin = new PCloudWindow(this);  //needs settings to be created
     pCloudWin->layout()->setSizeConstraint(QLayout::SetFixedSize); //for auto resize
     pCloudWin->setOnlineItems(false);
