@@ -260,7 +260,7 @@ void NotificationsManager::init()
     //qDebug()<<" NotificationsManager::init";
 
     hasTableScrollBar = false;
-    table->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    //table->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
     psync_notification_list_t* notifications = psync_get_notifications();
     if(notifications != NULL && notifications->notificationcnt)
@@ -292,8 +292,8 @@ void NotificationsManager::clear()
     if(!app->isLogedIn() && hasTableScrollBar)
     {
         this->hasTableScrollBar = false;
-        table->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-        notifyDelegate->updateTextDocWidth(app->style()->pixelMetric(QStyle::PM_ScrollBarExtent));
+        //table->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        notifyDelegate->updateTextDocWidth(app->style()->pixelMetric(QStyle::PM_ScrollBarExtent)+app->style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing));
     }
     this->clearModel();
     this->resetNums();
@@ -334,8 +334,8 @@ void NotificationsManager::showNotificationsWin()
         if (table->visualRect(lastIndex).bottomRight().ry() > table->height())
         {
             hasTableScrollBar = true;
-            emit notifyDelegate->updateTextDocWidth(-app->style()->pixelMetric(QStyle::PM_ScrollBarExtent));
-            table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+            emit notifyDelegate->updateTextDocWidth(-app->style()->pixelMetric(QStyle::PM_ScrollBarExtent) - app->style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing));
+            //table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
             table->resizeColumnsToContents(); //calls sizehint
             table->resizeRowsToContents();
             table->viewport()->updateGeometry();
@@ -356,7 +356,7 @@ void NotificationsManager::showNotificationsWin()
 void NotificationsManager::markRead() //called when closing the ntf win
 {
     if(this->lastNtfctId != -2)
-     {
+    {
         if (psync_mark_notificaitons_read(lastNtfctId) == -1)
             app->updateTrayNtfIcon(); // no internet connection update tray manually, callback is not called when no internet
         this->resetNums();
