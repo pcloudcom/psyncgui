@@ -1790,6 +1790,12 @@ void PCloudApp::logoutPublic()
     emit this->logoutSignl();
 }
 
+void PCloudApp::updateTrayNtfIcon()
+{
+    this->newNtfFLag = false;
+    emit changeSyncIcon(lastTrayIconIndex);
+}
+
 void PCloudApp::changeSyncIconPublic(int index)
 {
     emit this->changeSyncIcon(index);

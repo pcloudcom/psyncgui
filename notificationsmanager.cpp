@@ -32,11 +32,7 @@ bool NotificationsWidget::eventFilter(QObject *watched, QEvent *event)
         if(this->isVisible())
             this->close();
 
-        if(mngrParent->getLastNtfctId() != -1)
-        {
-            psync_mark_notificaitons_read(mngrParent->getLastNtfctId());
-            mngrParent->resetNums();
-        }
+        mngrParent->markRead();
     }
 
     QWidget::eventFilter(watched, event);
@@ -95,7 +91,7 @@ NotificationsManager::NotificationsManager(PCloudApp *a, QObject *parent) :
     app = a;
     actnsMngrArr = NULL;
     updateFlag = false;
-    lastNtfctId = -1;
+    lastNtfctId = -2;
 
     QFont cntrFontVal;
     if(app->font().pointSize() > 10)
@@ -357,10 +353,19 @@ void NotificationsManager::showNotificationsWin()
     // app->setActiveWindow(notifywin);
 }
 
+void NotificationsManager::markRead() //called when closing the ntf win
+{
+    if(this->lastNtfctId != -2)
+     {
+        if (psync_mark_notificaitons_read(lastNtfctId) == -1)
+            app->updateTrayNtfIcon(); // no internet connection update tray manually, callback is not called when no internet
+        this->resetNums();
+    }
+}
 void NotificationsManager::resetNums()
 {
     notifyDelegate->setNumNew(0);
-    this->lastNtfctId = -1;
+    this->lastNtfctId = -2;
     cntrWid->setNumNew(0);
 }
 
@@ -398,9 +403,4 @@ void NotificationsManager::actionExecSlot(const QModelIndex &index)
     default:
         break;
     }
-}
-
-quint32 NotificationsManager::getLastNtfctId()
-{
-    return this->lastNtfctId;
 }

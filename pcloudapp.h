@@ -171,6 +171,7 @@ public:
     void removeSetting(QString settingKey);
     void clearUpdtNotifctnSettngs();
     void clearAllSettings();
+    void updateTrayNtfIcon();
 signals:
     void showLoginSgnl();
     void changeSyncIcon(int index);

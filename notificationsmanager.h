@@ -64,9 +64,8 @@ public:
     explicit NotificationsManager(PCloudApp *a, QObject *parent = 0);
     bool updateFlag;
     void init();
-    void clear();
-    quint32 getLastNtfctId();
-    void resetNums();
+    void clear();    
+    void markRead();
 private:
     quint8 numRead, dtFontSize;
     PCloudApp* app;
@@ -85,6 +84,7 @@ private:
     void setTableProps();
     void loadModel(psync_notification_list_t* notifications);
     void clearModel();
+    void resetNums();
 public slots:    
     void showNotificationsWin();
     void updateNotfctnsModel(int newcnt);
