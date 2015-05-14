@@ -16,6 +16,7 @@ NotificationsWidget::NotificationsWidget(NotificationsManager *mngr, int height,
     this->setWindowFlags(Qt::Popup | Qt::Window);
 #else    
     this->setWindowFlags(Qt::FramelessWindowHint);
+    this->setWindowTitle(trUtf8("pCloud Notifications"));
 #endif
     this->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
     setFixedSize(QSize(356,height));
