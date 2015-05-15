@@ -1,36 +1,13 @@
 <RCC>
     <qresource prefix="/images">
-        <file>images/arrowdown.png</file>
-        <file>images/arrowup.png</file>
-        <file>images/folder.png</file>
-        <file>images/help.png</file>
-        <file>images/info.png</file>
-        <file>images/myshares.png</file>
         <file>images/pcloud.ico</file>
-        <file>images/settings.png</file>
-        <file>images/settings2.png</file>
-        <file>images/sharedwithme.png</file>
-        <file>images/shares.png</file>
-        <file>images/synced.png</file>
-        <file>images/sync-full.png</file>
-        <file>images/syncing.png</file>
-        <file>images/sync-paused.png</file>
-        <file>images/user.png</file>
-        <file>images/web.png</file>
         <file>images/folder-p.png</file>
-        <file>images/both.png</file>
-        <file>images/download.png</file>
-        <file>images/upload.png</file>
         <file>images/log-reg.png</file>
         <file>images/log-reg_small.png</file>
-        <file>images/synco-de.png</file>
-        <file>images/sync-w.png</file>
         <file>images/sync_XP.png</file>
         <file>images/sync_XP_146x226.png</file>
-        <file>images/testNtf.png</file>
     </qresource>
     <qresource prefix="/128x128">
-        <file>images/128x128/FolderIconX.png</file>
         <file>images/128x128/help.png</file>
         <file>images/128x128/info.png</file>
         <file>images/128x128/sync.png</file>
@@ -51,8 +28,6 @@
         <file>images/48x48/faq-modal.png</file>
         <file>images/48x48/feedback-modal.png</file>
         <file>images/48x48/onlinehelp-modal.png</file>
-        <file>images/48x48/both.png</file>
-        <file>images/48x48/in.png</file>
     </qresource>
     <qresource prefix="/24x24">
         <file>images/24x24/offline.png</file>
@@ -105,7 +80,6 @@
     <qresource prefix="/32x32">
         <file>images/32x32/stop-sync.png</file>
         <file>images/32x32/sync.png</file>
-        <file>images/32x32/pcl-folder.png</file>
         <file>images/32x32/empty-folder.png</file>
         <file>images/32x32/notifications.png</file>
     </qresource>
