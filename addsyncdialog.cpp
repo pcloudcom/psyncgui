@@ -256,7 +256,7 @@ void addSyncDialog::addSync()
             app->check_error();
             return;
         }
-        QAction *fldrAction = new QAction(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),localname,app);
+        QAction *fldrAction = new QAction(app->emptyFldrIcon,localname,app);
         fldrAction->setProperty("path",localpath);
         connect(fldrAction,SIGNAL(triggered()),app, SLOT(openLocalDir()));
         app->addNewFolderInMenu(fldrAction);

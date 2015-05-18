@@ -38,33 +38,7 @@
         <file>images/24x24/sync-paused.png</file>
     </qresource>
     <qresource prefix="/menu">
-        <file>images/menu 48x48/download.png</file>
-        <file>images/menu 48x48/emptyfolder.png</file>
-        <file>images/menu 48x48/exit.png</file>
-        <file>images/menu 48x48/login.png</file>
         <file>images/menu 48x48/newsync.png</file>
-        <file>images/menu 48x48/pause.png</file>
-        <file>images/menu 48x48/register.png</file>
-        <file>images/menu 48x48/resume.png</file>
-        <file>images/menu 48x48/upload.png</file>
-        <file>images/menu16x16/info.png</file>
-        <file>images/menu16x16/help.png</file>
-        <file>images/menu16x16/drive.png</file>
-        <file>images/menu16x16/share.png</file>
-        <file>images/menu16x16/sync.png</file>
-        <file>images/menu16x16/user.png</file>
-        <file>images/menu16x16/manage.png</file>
-        <file>images/menu16x16/settings.png</file>
-        <file>images/menu16x16/spaceinfo.png</file>
-        <file>images/menu 32x32/sync.png</file>
-        <file>images/menu 32x32/share.png</file>
-        <file>images/menu 32x32/settings.png</file>
-        <file>images/menu 32x32/help.png</file>
-        <file>images/menu 32x32/user.png</file>
-        <file>images/menu 32x32/info.png</file>
-        <file>images/menu16x16/crypto.png</file>
-        <file>images/menu16x16/crypto-unlck.png</file>
-        <file>images/menu16x16/cryptoFldr.png</file>
         <file>images/menu 16x16/white/cryptoFldr.png</file>
         <file>images/menu 16x16/white/notifications-new.png</file>
         <file>images/menu 16x16/white/crypto-unlck.png</file>

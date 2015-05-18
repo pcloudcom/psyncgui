@@ -368,7 +368,7 @@ void SuggestnsBaseWin::finish()
             qDebug() << name;
             if (!fldrActionsLst.contains(name))
             {
-                QAction *fldrAction = new QAction(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),name, app);
+                QAction *fldrAction = new QAction(app->emptyFldrIcon,name, app);
                 fldrAction->setProperty("path", localpath);
                 connect(fldrAction, SIGNAL(triggered()), app, SLOT(openLocalDir()));
                 app->addNewFolderInMenu(fldrAction);

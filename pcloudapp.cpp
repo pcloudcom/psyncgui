@@ -343,8 +343,9 @@ void PCloudApp::trayClicked(QSystemTrayIcon::ActivationReason reason)
 
 void PCloudApp::createMenus()
 {
+    notloggedmenu=new QMenu();
     QIcon plusIcon, loginIcon,helpIcon, aboutIcon, exitIcon, accntIcon, userinfoIcon, driveIcon, cryptoIcon, cryptoUnlckIcon, cryptoFldrIcon,
-            ntfIcon, sttngsIcon, pauseIcon, resumeIcon, dwnldIcon, upldIcon, syncIcon, shareIcon, manageIcon, emptyFldrIcon;
+            ntfIcon, sttngsIcon, pauseIcon, resumeIcon, dwnldIcon, upldIcon, syncIcon, shareIcon, manageIcon;
 
     if(this->desktopEnv == "ubuntu") //
     {
@@ -420,8 +421,6 @@ void PCloudApp::createMenus()
     }
 
     //NOTLOGGED MENU
-    notloggedmenu=new QMenu();
-
     registerAction=new QAction(plusIcon, trUtf8 ("Register"), this);
     connect(registerAction, SIGNAL(triggered()), this, SLOT(showRegister()));
     loginAction=new QAction(loginIcon, trUtf8("Login"), this);
@@ -2113,7 +2112,7 @@ void PCloudApp::createSyncFolderActions() //refreshes menu when user rename/dele
             QDir localDir(fldrsList->folders[i].localpath);
             if (localDir.exists())
             {
-                QAction *fldrAction = new QAction(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),fldrsList->folders[i].localname,this);
+                QAction *fldrAction = new QAction(this->emptyFldrIcon,fldrsList->folders[i].localname,this);
                 fldrAction->setProperty("path", fldrsList->folders[i].localpath);
                 connect(fldrAction, SIGNAL(triggered()),this, SLOT(openLocalDir()));
                 this->syncedFldrsMenu->addAction(fldrAction);
