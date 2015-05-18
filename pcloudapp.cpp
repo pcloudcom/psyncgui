@@ -622,7 +622,7 @@ void status_callback(pstatus_t *status)
                 }
         */
 
-        if(previousStatus == PSTATUS_DOWNLOADINGANDUPLOADING || previousStatus == PSTATUS_UPLOADING) //case when come upload just has finished
+        if(previousStatus == PSTATUS_DOWNLOADINGANDUPLOADING || previousStatus == PSTATUS_UPLOADING || previousStatus == PSTATUS_PAUSED) //case when come upload just has finished
             PCloudApp::appStatic->uploadInfo = status->uploadstr;
 
         if(PCloudApp::appStatic->isMenuorWinActive() || previousStatus != PSTATUS_DOWNLOADING)
@@ -677,7 +677,7 @@ void status_callback(pstatus_t *status)
         */
 
         //case when download just has finished
-        if(previousStatus == PSTATUS_DOWNLOADINGANDUPLOADING || previousStatus == PSTATUS_DOWNLOADING)
+        if(previousStatus == PSTATUS_DOWNLOADINGANDUPLOADING || previousStatus == PSTATUS_DOWNLOADING || previousStatus == PSTATUS_PAUSED)
             PCloudApp::appStatic->downldInfo = status->downloadstr;
 
         if(PCloudApp::appStatic->isMenuorWinActive() || previousStatus != PSTATUS_UPLOADING)
@@ -812,6 +812,8 @@ void status_callback(pstatus_t *status)
         qDebug()<<"PSTATUS_PAUSED";
         if (PCloudApp::appStatic->isLogedIn() && previousStatus != PSTATUS_PAUSED)
             PCloudApp::appStatic->changeSyncIconPublic(3);
+        PCloudApp::appStatic->downldInfo = status->downloadstr;
+        PCloudApp::appStatic->uploadInfo = status->uploadstr;
         PCloudApp::appStatic->lastStatus = PSTATUS_PAUSED;
         //update menu -> start sync for initial login
         break;
