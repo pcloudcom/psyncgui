@@ -321,6 +321,11 @@ void NotificationsManager::updateNotfctnsModel(int newcnt)
         else
             qDebug()<<"updateNotfctnsModel no new notifications";
     }
+    else if(this->lastNtfctId != -2) //ntf are read from another platform
+    {
+        this->resetNums(); //reset ui
+    }
+
 }
 
 void NotificationsManager::showNotificationsWin()
