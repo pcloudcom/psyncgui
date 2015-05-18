@@ -201,8 +201,7 @@ public slots:
     void showDrive();
     void showShares();
     void showCrypto();
-    void showSync();
-    void showSyncSttngs(); // sync page, second tab
+    void showSync();    
     void showSettings();
     void showpCloudAbout();
     void showpcloudHelp();

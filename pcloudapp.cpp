@@ -136,14 +136,6 @@ void PCloudApp::showSync()
     this->showWindow(pCloudWin);
 }
 
-void PCloudApp::showSyncSttngs()
-{
-    hideAllWindows();
-    pCloudWin->setCurrntIndxPclWin(SYNC_PAGE_NUM);
-    pCloudWin->get_sync_page()->openTab(1);
-    this->showWindow(pCloudWin);
-}
-
 void PCloudApp::showShares()
 {
     hideAllWindows();
@@ -353,15 +345,88 @@ void PCloudApp::createMenus()
 {
     //NOTLOGGED MENU
     notloggedmenu=new QMenu();
-    registerAction=new QAction(QIcon(":/menu/images/menu 48x48/register.png"),trUtf8 ("Register"), this);
+
+    QIcon plusIcon, loginIcon,helpIcon, aboutIcon, exitIcon, accntIcon, userinfoIcon, driveIcon, cryptoIcon, cryptoUnlckIcon, cryptoFldrIcon,
+            ntfIcon, sttngsIcon, pauseIcon, resumeIcon, dwnldIcon, upldIcon, syncIcon, manageIcon;
+
+
+    if(this->desktopEnv != "ubuntu") //
+    {
+        plusIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/plus.png"), QIcon::Normal);
+        loginIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/login.png"), QIcon::Normal);
+        aboutIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/info.png"), QIcon::Normal);
+        helpIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/help.png"), QIcon::Normal);
+        exitIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/exit.png"), QIcon::Normal);
+        accntIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/user.png"), QIcon::Normal);
+        userinfoIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/spaceinfo.png"), QIcon::Normal);
+        driveIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/drive.png"), QIcon::Normal);
+        cryptoIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/crypto.png"), QIcon::Normal);
+        cryptoUnlckIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/crypto-unlck.png"), QIcon::Normal);
+        cryptoFldrIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/cryptoFldr.png"), QIcon::Normal);
+        ntfIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/notifications.png"), QIcon::Normal);
+        sttngsIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/settings.png"), QIcon::Normal);
+        pauseIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/pause.png"), QIcon::Normal);
+        resumeIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/resume.png"), QIcon::Normal);
+        dwnldIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/download.png"), QIcon::Normal);
+        upldIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/upload.png"), QIcon::Normal);
+        syncIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/login.png"), QIcon::Normal);
+        manageIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/manage.png"), QIcon::Normal);
+    }
+    else
+    {
+        plusIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/plus.png"), QIcon::Normal);
+        loginIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/login.png"), QIcon::Normal);
+        aboutIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/info.png"), QIcon::Normal);
+        helpIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/help.png"), QIcon::Normal);
+        exitIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/exit.png"), QIcon::Normal);
+        accntIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/user.png"), QIcon::Normal);
+        userinfoIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/spaceinfo.png"), QIcon::Normal);
+        driveIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/drive.png"), QIcon::Normal);
+        cryptoIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/crypto.png"), QIcon::Normal);
+        cryptoUnlckIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/crypto-unlck.png"), QIcon::Normal);
+        cryptoFldrIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/cryptoFldr.png"), QIcon::Normal);
+        ntfIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/notifications.png"), QIcon::Normal);
+        sttngsIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/settings.png"), QIcon::Normal);
+        pauseIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/pause.png"), QIcon::Normal);
+        resumeIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/resume.png"), QIcon::Normal);
+        dwnldIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/download.png"), QIcon::Normal);
+        upldIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/upload.png"), QIcon::Normal);
+        syncIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/login.png"), QIcon::Normal);
+        manageIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/manage.png"), QIcon::Normal);
+    }
+    if(notloggedmenu->palette().highlightedText().color().value() > 200)
+    {
+        plusIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/plus.png"), QIcon::Active);
+        loginIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/login.png"), QIcon::Active);
+        aboutIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/info.png"), QIcon::Active);
+        helpIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/help.png"), QIcon::Active);
+        exitIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/exit.png"), QIcon::Active);
+        accntIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/user.png"), QIcon::Active);
+        userinfoIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/spaceinfo.png"), QIcon::Active);
+        driveIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/drive.png"), QIcon::Active);
+        cryptoIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/crypto.png"), QIcon::Active);
+        cryptoUnlckIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/crypto-unlck.png"), QIcon::Active);
+        cryptoFldrIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/cryptoFldr.png"), QIcon::Active);
+        ntfIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/notifications.png"), QIcon::Active);
+        sttngsIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/settings.png"), QIcon::Active);
+        pauseIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/pause.png"), QIcon::Active);
+        resumeIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/resume.png"), QIcon::Active);
+        dwnldIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/download.png"), QIcon::Active);
+        upldIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/upload.png"), QIcon::Active);
+        syncIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/login.png"), QIcon::Active);
+        manageIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/manage.png"), QIcon::Active);
+    }
+
+
+    registerAction=new QAction(plusIcon, trUtf8 ("Register"), this);
     connect(registerAction, SIGNAL(triggered()), this, SLOT(showRegister()));
-    loginAction=new QAction(QIcon(":/menu/images/menu 48x48/login.png"),trUtf8("Login"), this);
+    loginAction=new QAction(loginIcon, trUtf8("Login"), this);
     connect(loginAction, SIGNAL(triggered()), this, SLOT(showLogin()));
-    helpAction = new QAction(QIcon(":/menu/images/menu 32x32/help.png"),trUtf8("Help"),this);
+    helpAction = new QAction(helpIcon, trUtf8("Help"),this);
     connect(helpAction, SIGNAL(triggered()), this, SLOT(showpcloudHelp()));
-    aboutPCloudAction = new QAction(QIcon(":/menu/images/menu 32x32/info.png"),trUtf8("About"), this);
+    aboutPCloudAction = new QAction(aboutIcon, trUtf8("About"), this);
     connect(aboutPCloudAction, SIGNAL(triggered()), this, SLOT(showpCloudAbout()));
-    exitAction=new QAction(QIcon(":/menu/images/menu 48x48/exit.png"),trUtf8("Exit"), this); // to be hidden in account tab
+    exitAction=new QAction(exitIcon, trUtf8("Exit"), this); // to be hidden in account tab
     connect(exitAction, SIGNAL(triggered()), this, SLOT(doExit()));
 
     notloggedmenu->addAction(registerAction);
@@ -374,48 +439,46 @@ void PCloudApp::createMenus()
 
     //LOGGED MENU
     //main menu actions
-    accountAction = new QAction(QIcon(":/menu/images/menu 32x32/user.png"),trUtf8("Account"), this); // Account tab
+    accountAction = new QAction(accntIcon, trUtf8("Account"), this); // Account tab
     connect(accountAction, SIGNAL(triggered()),this, SLOT(showAccount()));
-    userinfoAction = new QAction(QIcon(":/menu/images/menu16x16/spaceinfo.png"), "", this); //UserInfo - space action
-    driveAction = new QAction(QIcon(":/menu/images/menu16x16/drive.png"),trUtf8("Open Drive"), this); //pDrive tab
+    userinfoAction = new QAction(userinfoIcon,  "", this); //UserInfo - space action
+    driveAction = new QAction(driveIcon, trUtf8("Open Drive"), this); //pDrive tab
     //connect(driveAction, SIGNAL(triggered()), this, SLOT(showDrive()));
     connect(driveAction, SIGNAL(triggered()), this, SLOT(openCloudDir()));
 
     //crypto
-    cryptoWelcomeAction = new QAction(QIcon(":/menu/images/menu16x16/crypto.png"),trUtf8("Crypto"), this); //Crypto tab
+    cryptoWelcomeAction = new QAction(cryptoIcon, trUtf8("Crypto"), this); //Crypto tab
     connect(cryptoWelcomeAction, SIGNAL(triggered()), this, SLOT(showCrypto()));
-    cryptoFldrLockedAction = new QAction(QIcon(":/menu/images/menu16x16/crypto-unlck.png"),trUtf8("Unlock Crypto"), this);
+    cryptoFldrLockedAction = new QAction(cryptoUnlckIcon, trUtf8("Unlock Crypto"), this);
     connect(cryptoFldrLockedAction, SIGNAL(triggered()), this, SLOT(unlockCryptoFldr()));
-    cryptoFldrUnlockedAction =  new QAction(QIcon(":/menu/images/menu16x16/crypto.png"),trUtf8("Lock Crypto"), this);
+    cryptoFldrUnlockedAction =  new QAction(cryptoIcon, trUtf8("Lock Crypto"), this);
     connect(cryptoFldrUnlockedAction, SIGNAL(triggered()), this, SLOT(lockCryptoFldr()));
-    cryptoOpenFldrAction = new QAction(QIcon(":/menu/images/menu16x16/cryptoFldr.png"),trUtf8("Open Folder"),this);
+    cryptoOpenFldrAction = new QAction(cryptoFldrIcon, trUtf8("Open Folder"),this);
     connect(cryptoOpenFldrAction, SIGNAL(triggered()), this, SLOT(openCryptoFldr()));
 
-    notfctnsAction = new QAction (QIcon(":/32x32/images/32x32/notifications.png"),trUtf8("Notifications"), this); // to update Icon
+    notfctnsAction = new QAction (ntfIcon, trUtf8("Notifications"), this); // to update Icon
     connect(notfctnsAction, SIGNAL(triggered()), notificationsMngr, SLOT(showNotificationsWin()));
-    settingsAction=new QAction(QIcon(":/menu/images/menu 32x32/settings.png"),trUtf8("Settings"), this); //Settings tab
+    settingsAction=new QAction(sttngsIcon, trUtf8("Settings"), this); //Settings tab
     connect(settingsAction, SIGNAL(triggered()), this, SLOT(showSettings()));
-    pauseSyncAction = new QAction(QIcon(":/menu/images/menu 48x48/pause.png"),trUtf8("Pause"),this);
+    pauseSyncAction = new QAction(pauseIcon, trUtf8("Pause"),this);
     connect(pauseSyncAction, SIGNAL(triggered()),this,SLOT(pauseSync()));
-    resumeSyncAction = new QAction(QIcon(":/menu/images/menu 48x48/resume.png"),trUtf8("Resume"), this);
+    resumeSyncAction = new QAction(resumeIcon, trUtf8("Resume"), this);
     connect(resumeSyncAction, SIGNAL(triggered()), this, SLOT(resumeSync()));
-    syncDownldAction = new QAction(QIcon(":/menu/images/menu 48x48/download.png"),trUtf8("Everything downloaded"),this);
-    syncUpldAction = new QAction(QIcon(":/menu/images/menu 48x48/upload.png"),trUtf8("Everything uploaded"),this);
+    syncDownldAction = new QAction(dwnldIcon, trUtf8("Everything downloaded"),this);
+    syncUpldAction = new QAction(upldIcon, trUtf8("Everything uploaded"),this);
 
     //sync actions
-    syncAction = new QAction(QIcon(":/menu/images/menu16x16/manage.png"),trUtf8("Manage"),this);
+    syncAction = new QAction(manageIcon, trUtf8("Manage"),this);
     connect(syncAction, SIGNAL(triggered()), this, SLOT(showSync()));
-    addSyncAction = new QAction(QIcon(":/menu/images/menu 48x48/newsync.png"),trUtf8("Add New"),this);
+    addSyncAction = new QAction(plusIcon, trUtf8("Add New"),this);
     connect(addSyncAction, SIGNAL(triggered()),this, SLOT(addNewSync()));
     connect(this, SIGNAL(addNewSyncSgnl()), this, SLOT(addNewSync()));
     connect(this, SIGNAL(addNewSyncLstSgnl(bool)), this, SLOT(addNewSyncLst(bool)));  //for creating syncs from OS file browser Contextmenu
-    syncSttngsAction = new QAction(QIcon(":/menu/images/menu 32x32/settings.png"),trUtf8("Settings"),this); // may be to del
-    connect(syncSttngsAction, SIGNAL(triggered()), this, SLOT(showSyncSttngs()));
 
     //shares actions
-    sharesAction = new QAction(QIcon(":/menu/images/menu16x16/manage.png"),trUtf8("Manage"),this);
+    sharesAction = new QAction(manageIcon, trUtf8("Manage"),this);
     connect(sharesAction, SIGNAL(triggered()), this, SLOT(showShares()));
-    shareFolderAction = new QAction(QIcon(":/menu/images/menu 48x48/newsync.png"), trUtf8("Add New"),this);
+    shareFolderAction = new QAction(plusIcon, trUtf8("Add New"),this);
     connect(shareFolderAction, SIGNAL(triggered()), this, SLOT(addNewShare()));
 
     //create tray menu and it's submenus and add actions
@@ -484,6 +547,8 @@ void PCloudApp::createMenus()
 #endif
 
 }
+
+
 #ifdef Q_OS_WIM
 #define  PIPE_NAME L"\\\\.\\pipe\\shellextnpipe2"
 
