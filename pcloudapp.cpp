@@ -343,14 +343,10 @@ void PCloudApp::trayClicked(QSystemTrayIcon::ActivationReason reason)
 
 void PCloudApp::createMenus()
 {
-    //NOTLOGGED MENU
-    notloggedmenu=new QMenu();
-
     QIcon plusIcon, loginIcon,helpIcon, aboutIcon, exitIcon, accntIcon, userinfoIcon, driveIcon, cryptoIcon, cryptoUnlckIcon, cryptoFldrIcon,
-            ntfIcon, sttngsIcon, pauseIcon, resumeIcon, dwnldIcon, upldIcon, syncIcon, manageIcon;
+            ntfIcon, sttngsIcon, pauseIcon, resumeIcon, dwnldIcon, upldIcon, syncIcon, shareIcon, manageIcon, emptyFldrIcon;
 
-
-    if(this->desktopEnv != "ubuntu") //
+    if(this->desktopEnv == "ubuntu") //
     {
         plusIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/plus.png"), QIcon::Normal);
         loginIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/login.png"), QIcon::Normal);
@@ -369,8 +365,10 @@ void PCloudApp::createMenus()
         resumeIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/resume.png"), QIcon::Normal);
         dwnldIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/download.png"), QIcon::Normal);
         upldIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/upload.png"), QIcon::Normal);
-        syncIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/login.png"), QIcon::Normal);
+        syncIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/sync.png"), QIcon::Normal);
+        shareIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/share.png"), QIcon::Normal);
         manageIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/manage.png"), QIcon::Normal);
+        emptyFldrIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/emptyfolder.png"), QIcon::Normal);
     }
     else
     {
@@ -391,8 +389,10 @@ void PCloudApp::createMenus()
         resumeIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/resume.png"), QIcon::Normal);
         dwnldIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/download.png"), QIcon::Normal);
         upldIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/upload.png"), QIcon::Normal);
-        syncIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/login.png"), QIcon::Normal);
+        syncIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/sync.png"), QIcon::Normal);
+        shareIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/share.png"), QIcon::Normal);
         manageIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/manage.png"), QIcon::Normal);
+        emptyFldrIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/emptyfolder.png"), QIcon::Normal);
     }
     if(notloggedmenu->palette().highlightedText().color().value() > 200)
     {
@@ -413,10 +413,14 @@ void PCloudApp::createMenus()
         resumeIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/resume.png"), QIcon::Active);
         dwnldIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/download.png"), QIcon::Active);
         upldIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/upload.png"), QIcon::Active);
-        syncIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/login.png"), QIcon::Active);
+        syncIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/sync.png"), QIcon::Active);
+        shareIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/share.png"), QIcon::Active);
         manageIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/manage.png"), QIcon::Active);
+        emptyFldrIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/emptyfolder.png"), QIcon::Active);
     }
 
+    //NOTLOGGED MENU
+    notloggedmenu=new QMenu();
 
     registerAction=new QAction(plusIcon, trUtf8 ("Register"), this);
     connect(registerAction, SIGNAL(triggered()), this, SLOT(showRegister()));
@@ -487,20 +491,20 @@ void PCloudApp::createMenus()
     loggedmenu->addAction(cryptoWelcomeAction);
     loggedmenu->addAction(cryptoFldrLockedAction);
     cryptoUnlockedMenu = new QMenu(trUtf8("Crypto"));
-    cryptoUnlockedMenu->setIcon(QIcon(":/menu/images/menu16x16/crypto.png"));
+    cryptoUnlockedMenu->setIcon(cryptoIcon);
     cryptoUnlockedMenuAction = loggedmenu->addMenu(cryptoUnlockedMenu);
     cryptoUnlockedMenu->addAction(cryptoOpenFldrAction);
     cryptoUnlockedMenu->addAction(cryptoFldrUnlockedAction);
     loggedmenu->addSeparator();
 
-    syncMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu 32x32/sync.png"),trUtf8("Sync"));
-    syncedFldrsMenu = syncMenu->addMenu(QIcon(":/menu/images/menu 48x48/emptyfolder.png"),trUtf8("Synced Folders"));
+    syncMenu = loggedmenu->addMenu(syncIcon, trUtf8("Sync"));
+    syncedFldrsMenu = syncMenu->addMenu(emptyFldrIcon, trUtf8("Synced Folders"));
     // this->createSyncFolderActions(); //loads sub menu with local synced folders
     syncMenu->addSeparator();
     syncMenu->addAction(syncAction);
     syncMenu->addAction(addSyncAction);
 
-    sharesMenu = loggedmenu->addMenu(QIcon(":/menu/images/menu 32x32/share.png"),trUtf8("Shares"));
+    sharesMenu = loggedmenu->addMenu(shareIcon, trUtf8("Shares"));
     sharesMenu->addAction(sharesAction);
     sharesMenu->addAction(shareFolderAction);
 
@@ -539,12 +543,6 @@ void PCloudApp::createMenus()
     userinfoAction->setEnabled(false);
     syncDownldAction->setEnabled(false);
     syncUpldAction->setEnabled(false);
-
-#ifdef Q_OS_WIM
-    dbgPipeHlprActn = new QAction("Debug Pipe",this); //TEMP
-    connect(dbgPipeHlprActn, SIGNAL(triggered()), this, SLOT(dbgPipeHlprSLot()));
-    loggedmenu->addAction(dbgPipeHlprActn);
-#endif
 
 }
 
