@@ -65,6 +65,71 @@
         <file>images/menu16x16/crypto.png</file>
         <file>images/menu16x16/crypto-unlck.png</file>
         <file>images/menu16x16/cryptoFldr.png</file>
+        <file>images/menu 16x16/white/cryptoFldr.png</file>
+        <file>images/menu 16x16/white/notifications-new.png</file>
+        <file>images/menu 16x16/white/crypto-unlck.png</file>
+        <file>images/menu 16x16/white/manage.png</file>
+        <file>images/menu 16x16/white/crypto.png</file>
+        <file>images/menu 16x16/white/notifications.png</file>
+        <file>images/menu 16x16/white/upload.png</file>
+        <file>images/menu 16x16/white/sync.png</file>
+        <file>images/menu 16x16/white/spaceinfo.png</file>
+        <file>images/menu 16x16/white/resume.png</file>
+        <file>images/menu 16x16/white/share.png</file>
+        <file>images/menu 16x16/white/settings.png</file>
+        <file>images/menu 16x16/white/plus.png</file>
+        <file>images/menu 16x16/white/pause.png</file>
+        <file>images/menu 16x16/white/login.png</file>
+        <file>images/menu 16x16/white/info.png</file>
+        <file>images/menu 16x16/white/help.png</file>
+        <file>images/menu 16x16/white/emptyfolder.png</file>
+        <file>images/menu 16x16/white/exit.png</file>
+        <file>images/menu 16x16/white/drive.png</file>
+        <file>images/menu 16x16/white/download.png</file>
+        <file>images/menu 16x16/white/user.png</file>
+        <file>images/menu 16x16/darkgray/crypto.png</file>
+        <file>images/menu 16x16/darkgray/cryptoFldr.png</file>
+        <file>images/menu 16x16/darkgray/crypto-unlck.png</file>
+        <file>images/menu 16x16/darkgray/download.png</file>
+        <file>images/menu 16x16/darkgray/drive.png</file>
+        <file>images/menu 16x16/darkgray/emptyfolder.png</file>
+        <file>images/menu 16x16/darkgray/exit.png</file>
+        <file>images/menu 16x16/darkgray/help.png</file>
+        <file>images/menu 16x16/darkgray/info.png</file>
+        <file>images/menu 16x16/darkgray/login.png</file>
+        <file>images/menu 16x16/darkgray/manage.png</file>
+        <file>images/menu 16x16/darkgray/notifications.png</file>
+        <file>images/menu 16x16/darkgray/pause.png</file>
+        <file>images/menu 16x16/darkgray/plus.png</file>
+        <file>images/menu 16x16/darkgray/resume.png</file>
+        <file>images/menu 16x16/darkgray/settings.png</file>
+        <file>images/menu 16x16/darkgray/share.png</file>
+        <file>images/menu 16x16/darkgray/spaceino.png</file>
+        <file>images/menu 16x16/darkgray/sync.png</file>
+        <file>images/menu 16x16/darkgray/upload.png</file>
+        <file>images/menu 16x16/darkgray/user.png</file>
+        <file>images/menu 16x16/lightgray/crypto.png</file>
+        <file>images/menu 16x16/lightgray/cryptoFldr.png</file>
+        <file>images/menu 16x16/lightgray/crypto-unlck.png</file>
+        <file>images/menu 16x16/lightgray/download.png</file>
+        <file>images/menu 16x16/lightgray/drive.png</file>
+        <file>images/menu 16x16/lightgray/emptyfolder.png</file>
+        <file>images/menu 16x16/lightgray/exit.png</file>
+        <file>images/menu 16x16/lightgray/help.png</file>
+        <file>images/menu 16x16/lightgray/info.png</file>
+        <file>images/menu 16x16/lightgray/login.png</file>
+        <file>images/menu 16x16/lightgray/manage.png</file>
+        <file>images/menu 16x16/lightgray/notifications.png</file>
+        <file>images/menu 16x16/lightgray/notifications-new.png</file>
+        <file>images/menu 16x16/lightgray/pause.png</file>
+        <file>images/menu 16x16/lightgray/plus.png</file>
+        <file>images/menu 16x16/lightgray/resume.png</file>
+        <file>images/menu 16x16/lightgray/settings.png</file>
+        <file>images/menu 16x16/lightgray/share.png</file>
+        <file>images/menu 16x16/lightgray/spaceinfo.png</file>
+        <file>images/menu 16x16/lightgray/sync.png</file>
+        <file>images/menu 16x16/lightgray/upload.png</file>
+        <file>images/menu 16x16/lightgray/user.png</file>
     </qresource>
     <qresource prefix="/debian">
         <file>images/pcloud.xpm</file>
