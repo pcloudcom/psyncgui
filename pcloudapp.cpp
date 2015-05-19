@@ -397,30 +397,31 @@ void PCloudApp::createMenus()
         manageIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/manage.png"), QIcon::Normal);
         emptyFldrIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/emptyfolder.png"), QIcon::Normal);
     }
-    if(notloggedmenu->palette().highlightedText().color().value() == 255)
-    {
-        plusIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/plus.png"), QIcon::Active);
-        loginIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/login.png"), QIcon::Active);
-        aboutIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/info.png"), QIcon::Active);
-        helpIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/help.png"), QIcon::Active);
-        exitIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/exit.png"), QIcon::Active);
-        accntIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/user.png"), QIcon::Active);
-        userinfoIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/spaceinfo.png"), QIcon::Active);
-        driveIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/drive.png"), QIcon::Active);
-        cryptoIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/crypto.png"), QIcon::Active);
-        cryptoUnlckIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/crypto-unlck.png"), QIcon::Active);
-        cryptoFldrIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/cryptoFldr.png"), QIcon::Active);
-        ntfIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/notifications.png"), QIcon::Active);
-        sttngsIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/settings.png"), QIcon::Active);
-        pauseIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/pause.png"), QIcon::Active);
-        resumeIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/resume.png"), QIcon::Active);
-        dwnldIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/download.png"), QIcon::Active);
-        upldIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/upload.png"), QIcon::Active);
-        syncIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/sync.png"), QIcon::Active);
-        shareIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/share.png"), QIcon::Active);
-        manageIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/manage.png"), QIcon::Active);
-        emptyFldrIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/emptyfolder.png"), QIcon::Active);
-    }
+
+#ifdef Q_OS_WIN
+   // if(notloggedmenu->palette().highlightedText().color().value() == 255)
+    plusIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/plus.png"), QIcon::Active);
+    loginIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/login.png"), QIcon::Active);
+    aboutIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/info.png"), QIcon::Active);
+    helpIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/help.png"), QIcon::Active);
+    exitIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/exit.png"), QIcon::Active);
+    accntIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/user.png"), QIcon::Active);
+    userinfoIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/spaceinfo.png"), QIcon::Active);
+    driveIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/drive.png"), QIcon::Active);
+    cryptoIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/crypto.png"), QIcon::Active);
+    cryptoUnlckIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/crypto-unlck.png"), QIcon::Active);
+    cryptoFldrIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/cryptoFldr.png"), QIcon::Active);
+    ntfIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/notifications.png"), QIcon::Active);
+    sttngsIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/settings.png"), QIcon::Active);
+    pauseIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/pause.png"), QIcon::Active);
+    resumeIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/resume.png"), QIcon::Active);
+    dwnldIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/download.png"), QIcon::Active);
+    upldIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/upload.png"), QIcon::Active);
+    syncIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/sync.png"), QIcon::Active);
+    shareIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/share.png"), QIcon::Active);
+    manageIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/manage.png"), QIcon::Active);
+    emptyFldrIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/emptyfolder.png"), QIcon::Active);
+#endif
 
     //NOTLOGGED MENU
     registerAction=new QAction(plusIcon, trUtf8 ("Register"), this);
