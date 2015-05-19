@@ -371,7 +371,7 @@ void PCloudApp::createMenus()
         manageIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/manage.png"), QIcon::Normal);
         emptyFldrIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/emptyfolder.png"), QIcon::Normal);
         newNtfIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/notifications-new.png"), QIcon::Normal);
-        //newNtfIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/notifications-new.png"), QIcon::Active);
+        newNtfIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/notifications-new-active.png"), QIcon::Active);
     }
     else
     {

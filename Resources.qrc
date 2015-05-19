@@ -103,6 +103,7 @@
         <file>images/menu 16x16/lightgray/sync.png</file>
         <file>images/menu 16x16/lightgray/upload.png</file>
         <file>images/menu 16x16/lightgray/user.png</file>
+        <file>images/menu 16x16/lightgray/notifications-new-active.png</file>
     </qresource>
     <qresource prefix="/debian">
         <file>images/pcloud.xpm</file>
