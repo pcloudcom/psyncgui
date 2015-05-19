@@ -38,7 +38,6 @@
         <file>images/24x24/sync-paused.png</file>
     </qresource>
     <qresource prefix="/menu">
-        <file>images/menu 48x48/newsync.png</file>
         <file>images/menu 16x16/white/cryptoFldr.png</file>
         <file>images/menu 16x16/white/notifications-new.png</file>
         <file>images/menu 16x16/white/crypto-unlck.png</file>
