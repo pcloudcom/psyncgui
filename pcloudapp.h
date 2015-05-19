@@ -108,7 +108,7 @@ public:
     const char* OSStr;
     int fontPointSize;
     QFont smaller2pFont,smaller1pFont, bigger1pFont,bigger2pFont,bigger3pFont;
-    QIcon emptyFldrIcon;
+    QIcon emptyFldrIcon, ntfIcon, newNtfIcon;
     QSettings *settings;
     QStringList syncSuggstLst; // send from context menu when add new syncs
     QByteArray desktopEnv;

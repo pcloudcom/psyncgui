@@ -345,7 +345,7 @@ void PCloudApp::createMenus()
 {
     notloggedmenu=new QMenu();
     QIcon plusIcon, loginIcon,helpIcon, aboutIcon, exitIcon, accntIcon, userinfoIcon, driveIcon, cryptoIcon, cryptoUnlckIcon, cryptoFldrIcon,
-            ntfIcon, sttngsIcon, pauseIcon, resumeIcon, dwnldIcon, upldIcon, syncIcon, shareIcon, manageIcon;
+            sttngsIcon, pauseIcon, resumeIcon, dwnldIcon, upldIcon, syncIcon, shareIcon, manageIcon;
 
     if(this->desktopEnv == "ubuntu") //
     {
@@ -370,6 +370,8 @@ void PCloudApp::createMenus()
         shareIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/share.png"), QIcon::Normal);
         manageIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/manage.png"), QIcon::Normal);
         emptyFldrIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/emptyfolder.png"), QIcon::Normal);
+        newNtfIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/lightgray/notifications-new.png"), QIcon::Normal);
+        //newNtfIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/notifications-new.png"), QIcon::Active);
     }
     else
     {
@@ -459,7 +461,7 @@ void PCloudApp::createMenus()
     cryptoOpenFldrAction = new QAction(cryptoFldrIcon, trUtf8("Open Folder"),this);
     connect(cryptoOpenFldrAction, SIGNAL(triggered()), this, SLOT(openCryptoFldr()));
 
-    notfctnsAction = new QAction (ntfIcon, trUtf8("Notifications"), this); // to update Icon
+    notfctnsAction = new QAction (ntfIcon, trUtf8("Notifications"), this);
     connect(notfctnsAction, SIGNAL(triggered()), notificationsMngr, SLOT(showNotificationsWin()));
     settingsAction=new QAction(sttngsIcon, trUtf8("Settings"), this); //Settings tab
     connect(settingsAction, SIGNAL(triggered()), this, SLOT(showSettings()));
@@ -1939,7 +1941,16 @@ void PCloudApp::updateNotfctnsPublic(int newcnt)
     emit this->updateNotfctnsModelSgnl(newcnt);
     this->newNtfFLag = newcnt ? true : false;
     if (this->isLogedIn())
+    {
         changeSyncIconPublic(this->lastTrayIconIndex); //change current icon with the same with the notification red dot
+        if(this->desktopEnv == "ubuntu")
+        {
+            if(newNtfFLag)
+                notfctnsAction->setIcon(newNtfIcon);
+            else
+                notfctnsAction->setIcon(ntfIcon);
+        }
+    }
 }
 
 void PCloudApp::setsyncSuggstLst(QStringList lst)
