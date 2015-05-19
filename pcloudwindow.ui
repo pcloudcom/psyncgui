@@ -1657,7 +1657,7 @@
                      <item row="1" column="0">
                       <widget class="QLineEdit" name="lineEditCryptoPass">
                        <property name="inputMethodHints">
-                        <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhSensitiveData</set>
+                        <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText</set>
                        </property>
                        <property name="echoMode">
                         <enum>QLineEdit::Password</enum>
@@ -1733,7 +1733,7 @@
                      <item row="3" column="0">
                       <widget class="QLineEdit" name="lineEditCryptoPass2">
                        <property name="inputMethodHints">
-                        <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhSensitiveData</set>
+                        <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText</set>
                        </property>
                        <property name="echoMode">
                         <enum>QLineEdit::Password</enum>

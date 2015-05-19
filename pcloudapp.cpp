@@ -395,7 +395,7 @@ void PCloudApp::createMenus()
         manageIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/manage.png"), QIcon::Normal);
         emptyFldrIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/darkgray/emptyfolder.png"), QIcon::Normal);
     }
-    if(notloggedmenu->palette().highlightedText().color().value() > 200)
+    if(notloggedmenu->palette().highlightedText().color().value() == 255)
     {
         plusIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/plus.png"), QIcon::Active);
         loginIcon.addPixmap(QPixmap(":/menu/images/menu 16x16/white/login.png"), QIcon::Active);
