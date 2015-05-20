@@ -988,16 +988,19 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         break;
     case PEVENT_SHARE_REQUESTIN:
         qDebug()<<"PEVENT_SHARE_REQUESTIN"; // someone else shares me a folder, can be added from web
+        /*  moved in notifications win
         strcpy(title, "New Share Request Received!");
         strcpy(msg,"You received a new Share Request from \"");
         strcat(msg, data.share->email);
         strcat(msg,"\"");
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
+        */
         if(PCloudApp::appStatic->isMainWinPageActive(SHARES_PAGE_NUM)) //if shraes page is visible
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(SHARES_PAGE_NUM,1);
         break;
     case PEVENT_SHARE_REQUESTOUT:
         qDebug()<<"PEVENT_SHARE_REQUESTOUT" <<data.share->email<< data.share->sharename; // i share a folder 1.1
+        /*  moved in notifications win
         strcpy(title, "Share Request Sent Successfully!");
         strcpy(msg,"You successfully sent a Share Request \"");
         strcat(msg, data.share->sharename);
@@ -1005,6 +1008,7 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcat(msg, data.share->email);
         strcat(msg,"\"");
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,0);
+        */
         if(PCloudApp::appStatic->isMainWinPageActive(SHARES_PAGE_NUM))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(SHARES_PAGE_NUM,0);
         break;
@@ -1015,6 +1019,7 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         break;
     case PEVENT_SHARE_ACCEPTOUT: // when someones accept what i've shared to him
         qDebug()<<"PEVENT_SHARE_ACCEPTOUT";
+        /*  moved in notifications win
         strcpy(title, "Share Request Accepted!");
         strcpy(msg,"\"");
         strcat(msg,data.share->email);
@@ -1022,6 +1027,7 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcat(msg, data.share->sharename);
         strcat(msg,"\"");
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,0);
+        */
         if(PCloudApp::appStatic->isMainWinPageActive(SHARES_PAGE_NUM))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(SHARES_PAGE_NUM,0);
         break;
@@ -1032,6 +1038,7 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         break;
     case PEVENT_SHARE_DECLINEOUT:
         qDebug()<<"PEVENT_SHARE_DECLINEOUT"; //when someones rejected what i've shared to him
+        /*  moved in notifications win
         strcpy(title, "Share Request Declined!");
         strcpy(msg,"\"");
         strcat(msg,data.share->email);
@@ -1039,17 +1046,20 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         strcat(msg, data.share->sharename);
         strcat(msg,"\"");
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,0);
+        */
         if(PCloudApp::appStatic->isMainWinPageActive(SHARES_PAGE_NUM))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(SHARES_PAGE_NUM,0);
         break;
     case PEVENT_SHARE_CANCELIN:
         qDebug()<<"PEVENT_SHARE_CANCELIN";
         // some one send me a request and HE stopped the request before i choose what to do with it
+        /*  moved in notifications win
         strcpy(title,"Share Request Canceled!");
         strcpy(msg, "\"");
         strcat(msg,data.share->email);
         strcat(msg, "\" canceled his/her Share Request");
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
+        */
         if(PCloudApp::appStatic->isMainWinPageActive(SHARES_PAGE_NUM))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(SHARES_PAGE_NUM,1);
         break;
@@ -1089,13 +1099,15 @@ static void event_callback(psync_eventtype_t event, psync_eventdata_t data)
         break;
     case PEVENT_SHARE_MODIFYIN:
         qDebug()<<"PEVENT_SHARE_MODIFYIN"; // some one shared me smthn and changes the permissions
-        strcpy(title,"Share Modified!");
+      /*  moved in notifications win
+       * strcpy(title,"Share Modified!");
         strcpy(msg,"The Share \"");
         strcat(msg,data.share->sharename);
         strcat(msg,"\" has been modified by \"");
         strcat(msg,data.share->email);
         strcat(msg,"\"");
         PCloudApp::appStatic->sendTrayMsgTypePublic(title,msg,1);
+        */
         if(PCloudApp::appStatic->isMainWinPageActive(SHARES_PAGE_NUM))
             PCloudApp::appStatic->pCloudWin->refreshPagePulbic(SHARES_PAGE_NUM,1);
         break;
