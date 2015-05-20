@@ -1497,6 +1497,8 @@ void PCloudApp::logIn(const QString &uname, bool remember) //needs STATUS_READY
     pCloudWin->initOnlinePages();
     tray->setContextMenu(loggedmenu);
     notificationsMngr->init();
+    if(this->desktopEnv == "ubuntu" && this->newNtfFLag)
+        notfctnsAction->setIcon(newNtfIcon);
 
     // isFirstLaunch = true; // for test TEMP
     /*
