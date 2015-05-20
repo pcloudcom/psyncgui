@@ -7,6 +7,7 @@
 
 #include <QWidget>
 #include <QTreeWidgetItem>
+#include <QIcon>
 
 class PCloudApp;
 class PCloudWindow;
@@ -23,6 +24,7 @@ public:
 private:
     PCloudWindow *win;
     PCloudApp *app;
+    QIcon syncIcon, stopIcon, emptyFldrIcon, pFldrIcon;
     QString patterns;
     void initSyncPage();
 public slots:

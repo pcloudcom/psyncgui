@@ -115,6 +115,13 @@
         <file>images/16x16/status_upld.png</file>
         <file>images/16x16/bshares.png</file>
         <file>images/16x16/close.png</file>
+        <file>images/16x16/emptyfolder-w.png</file>
+        <file>images/16x16/emptyfolder.png</file>
+        <file>images/16x16/folder-p-w.png</file>
+        <file>images/16x16/close-w.png</file>
+        <file>images/16x16/folder-p.png</file>
+        <file>images/16x16/sync-w.png</file>
+        <file>images/16x16/sync.png</file>
     </qresource>
     <qresource prefix="/32x32">
         <file>images/32x32/stop-sync.png</file>

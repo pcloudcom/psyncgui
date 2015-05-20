@@ -20,8 +20,16 @@ SyncPage::SyncPage(PCloudWindow *w, PCloudApp *a, QWidget *parent) :
 {
     win = w;
     app = a;
+    syncIcon.addPixmap(QPixmap(":/16x16/images/16x16/sync.png"), QIcon::Normal);
+    syncIcon.addPixmap(QPixmap(":/16x16/images/16x16/sync-w.png"), QIcon::Selected);
+    stopIcon.addPixmap(QPixmap(":/16x16/images/16x16/close.png"), QIcon::Normal);
+    stopIcon.addPixmap(QPixmap(":/16x16/images/16x16/close-w.png"), QIcon::Selected);
+    emptyFldrIcon.addPixmap(QPixmap(":/16x16/images/16x16/emptyfolder.png"), QIcon::Normal);
+    emptyFldrIcon.addPixmap(QPixmap(":/16x16/images/16x16/emptyfolder-w.png"), QIcon::Selected);
+    pFldrIcon.addPixmap(QPixmap(":/16x16/images/16x16/folder-p.png"), QIcon::Normal);
+    pFldrIcon.addPixmap(QPixmap(":/16x16/images/16x16/folder-p-w.png"), QIcon::Selected);
 
-    initSyncPage();    
+    initSyncPage();
 
     //word wrap property breaks the layouts min size policy
     win->ui->label_syncinfo->setText("With Sync you can synchronize\n"
@@ -135,10 +143,10 @@ void SyncPage::load()
             QStringList row;
             row <<fldrsList->folders[i].localpath <<""<< fldrsList->folders[i].remotepath;
             QTreeWidgetItem *item = new QTreeWidgetItem(row);
-            item->setIcon(0,QIcon(":/32x32/images/32x32/empty-folder.png"));
-            item->setIcon(1,QIcon(":/32x32/images/32x32/sync.png"));
-            item->setIcon(2,QIcon(":images/images/folder-p.png"));
-            item->setIcon(3,QIcon(":/32x32/images/32x32/stop-sync.png"));
+            item->setIcon(0, emptyFldrIcon);
+            item->setIcon(1, syncIcon);
+            item->setIcon(2, pFldrIcon);
+            item->setIcon(3, stopIcon);
 
             QDir localDir(fldrsList->folders[i].localpath);
             if(localDir.exists())
