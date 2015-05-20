@@ -260,6 +260,7 @@ void NotificationsManager::init()
     //qDebug()<<" NotificationsManager::init";
 
     hasTableScrollBar = false;
+    initRefresh = false; //ntf callback comes after inits state so an additional init refresh of model is needed
     //table->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
     psync_notification_list_t* notifications = psync_get_notifications();
@@ -302,12 +303,25 @@ void NotificationsManager::clear()
 void NotificationsManager::updateNotfctnsModel(int newcnt)
 {
     qDebug()<<"NotificationsManager updateNotfctnsModel";
-    if(newcnt) // callbacked is called after marking red
+    if(newcnt || !initRefresh) // callbacked is called after marking the read
     {
+        if (!initRefresh)
+            initRefresh = true;
+
         psync_notification_list_t* notifications = psync_get_notifications();
-        if (notifications != NULL && notifications->newnotificationcnt) //first notifications
+        if (notifications != NULL)
         {
-            if(!table->isVisible())
+            if(!notifications->notificationcnt) //possible after unlink and login with account with no ntf
+            {
+                table->setVisible(false);
+                noNtfctnsLabel->setVisible(true);
+                free(notifications);
+                notifications = NULL;
+                qDebug()<<"updateNotfctnsModel no notifications";
+                return;
+            }
+
+            if(notifications->notificationcnt && !table->isVisible())
             {
                 noNtfctnsLabel->setVisible(false);
                 table->setVisible(true);
@@ -317,9 +331,7 @@ void NotificationsManager::updateNotfctnsModel(int newcnt)
             this->loadModel(notifications);
             free(notifications);
             notifications = NULL;
-        }
-        else
-            qDebug()<<"updateNotfctnsModel no new notifications";
+        }                    
     }
     else if(this->lastNtfctId != -2) //ntf are read from another platform
     {

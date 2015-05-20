@@ -75,7 +75,7 @@ private:
     QLabel *noNtfctnsLabel;
     CntrWidget *cntrWid;
     QTableView* table;
-    bool hasTableScrollBar;
+    bool hasTableScrollBar, initRefresh;
     NotificationsWidget *notifywin;
     QVBoxLayout *layout;
     QHBoxLayout *hlayout;
