@@ -463,6 +463,9 @@ void PCloudApp::createMenus()
     connect(cryptoOpenFldrAction, SIGNAL(triggered()), this, SLOT(openCryptoFldr()));
 
     notfctnsAction = new QAction (ntfIcon, trUtf8("Notifications"), this);
+    if(this->desktopEnv == "ubuntu" && this->newNtfFLag)
+        notfctnsAction->setIcon(newNtfIcon);
+
     connect(notfctnsAction, SIGNAL(triggered()), notificationsMngr, SLOT(showNotificationsWin()));
     settingsAction=new QAction(sttngsIcon, trUtf8("Settings"), this); //Settings tab
     connect(settingsAction, SIGNAL(triggered()), this, SLOT(showSettings()));
